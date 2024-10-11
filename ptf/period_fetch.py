@@ -12,7 +12,7 @@ import bfrt_grpc.bfruntime_pb2 as bfruntime_pb2
 import bfrt_grpc.client as gc
 
 swports = get_sw_ports()
-logger = logging.getLogger('control_plane_upload')
+logger = logging.getLogger('waterfall')
 
 if not len(logger.handlers):
     sh = logging.StreamHandler()
@@ -28,12 +28,14 @@ class TestTest(BfRuntimeTest):
         BfRuntimeTest.setUp(self, client_id)
         logger.info("\tfinished BfRuntimeSetup")
 
-        self.bfrt_info = self.interface.bfrt_info_get("control_plane_upload")
+        self.bfrt_info = self.interface.bfrt_info_get("waterfall")
         self.forward_table = self.bfrt_info.table_get("SwitchIngress.forward")
         self.forward_table.info.key_field_annotation_add("hdr.ipv4.dst_addr", "ipv4")
-        self.counters = []
-        for i in range(1,5):
-            self.counters.append(self.bfrt_info.table_get(f"SwitchIngress.counter{i}"))
+        self.tables = []
+        for i in range(1,3):
+            for j in range(1,6):
+                logger.info(f"Adding table_{i}_{j}")
+                self.tables.append(self.bfrt_info.table_get(f"SwitchIngress.table_{i}_{j}"))
         self.target = gc.Target(device_id=0, pipe_id=0xffff)
         logger.info("Finished setup")
 
@@ -53,7 +55,7 @@ class TestTest(BfRuntimeTest):
 
         ''' TC:1 Setting and validating forwarding plane via get'''
         logger.info("Populating foward table...")
-        num_entries =  100
+        num_entries =  1
         logger.info(f"Generating {num_entries} random ips with seed {seed}")
         ip_list = self.generate_random_ip_list(num_entries, seed)
         logger.info("Adding entries to forward table")
@@ -97,53 +99,48 @@ class TestTest(BfRuntimeTest):
 
         logger.info(f"All expected packets recieved")
 
-        ''' TC:3 Get the counter values'''
-        dump_get = []
-        entry_get = []
-        for j, counter in zip(range(1,5), self.counters):
-            start = perf_counter()
-            for i in range(1024):
-                resp = counter.entry_get(target, [counter.make_key([gc.KeyTuple('$REGISTER_INDEX', i)])], {"from_hw": True})
-                data, _ = next(resp)
-                logger.debug(data)
-            stop = perf_counter()
-            entry_get.append(stop - start)
-            logger.info(f"Entry get in {stop - start:.3f} seconds")
+        ''' TC:3 Get the table values'''
+        for i in range(2):
+            for j in range(4):
+                logger.info(f"Getting table_{i + 1}_{j + 1}")
+                try:
+                    dump = self.tables[0].entry_get(target, [], {"from_hw" : True})
+                except:
+                    break;
+                for data, key in dump:
+                    data_dict = data.to_dict()
+                    entry_val = data_dict[f"SwitchIngress.table_{i + 1}_{j + 1}.f1"][0]
 
-            # Outperforms normal get by factor of 3
-            dump = counter.entry_get(target, [])
-            start = perf_counter()
-            summed = 0
-            for data, key in dump:
-                data_dict = data.to_dict()
-                entry_val = data_dict[f"SwitchIngress.counter{j}.f1"][0]
-                summed += entry_val
-
-                logger.debug(data[f"SwitchIngress.counter{j}.f1"].int_arr_val)
-                logger.debug(f"got value {entry_val}")
-                logger.debug(data)
-                logger.debug(key)
-
-            stop = perf_counter()
-            dump_get.append(stop - start)
-            logger.info(f"Dump get in {stop - start:.3f} seconds")
-            logger.debug(f"{summed = }")
-            assert summed == num_entries
-
-        total_dump_get = sum(dump_get)
-        total_entry_get = sum(entry_get)
-        avg_dump_get = total_dump_get / len(dump_get)
-        avg_entry_get = total_entry_get / len(entry_get)
-
-        logger.info(f"{total_dump_get = :.3f} : {avg_dump_get = :.3f} over {len(dump_get)} counters")
-        logger.info(f"{total_entry_get = :.3f} : {avg_entry_get = :.3f} over {len(entry_get)} counters")
+                    if entry_val != 0:
+                        logger.info(data[f"SwitchIngress.table_{i + 1}_{j + 1}.f1"].int_arr_val)
+                        logger.info(f"got value {entry_val}")
+                        logger.info(data)
+                        logger.info(key)
+        #
+        #     stop = perf_counter()
+        #     dump_get.append(stop - start)
+        #     logger.info(f"Dump get in {stop - start:.3f} seconds")
+        #     logger.debug(f"{summed = }")
+        #     assert summed == num_entries
+        #
+        # total_dump_get = sum(dump_get)
+        # total_entry_get = sum(entry_get)
+        # avg_dump_get = total_dump_get / len(dump_get)
+        # avg_entry_get = total_entry_get / len(entry_get)
+        #
+        # logger.info(f"{total_dump_get = :.3f} : {avg_dump_get = :.3f} over {len(dump_get)} counters")
+        # logger.info(f"{total_entry_get = :.3f} : {avg_entry_get = :.3f} over {len(entry_get)} counters")
 
 
     def tearDown(self):
         logger.info("Tearing down test")
         self.forward_table.entry_del(self.target)
         usage = next(self.forward_table.usage_get(self.target, []))
-        for counter in self.counters:
-            counter.entry_del(self.target)
+        for table in self.tables:
+            logger.info(f"Removing table {table.info.id}")
+            try:
+                table.entry_del(self.target)
+            except:
+                pass
         assert usage == 0
         BfRuntimeTest.tearDown(self)

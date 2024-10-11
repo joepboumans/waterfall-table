@@ -28,18 +28,13 @@
 #include "common/headers.p4"
 #include "common/util.p4"
 
-#define COUNTER_WIDTH 1024
-#define COUNTER_BIT_WIDTH 10 // 2^COUNTER_BIT_WIDTH = COUNTER_WIDTH
+#define WATERFALL_WIDTH 1024
+#define WATERFALL_BIT_WIDTH 10 // 2^WATERFALL_BIT_WIDTH = WATERFALL_WIDTH
 
 struct metadata_t {
-  bit<32> count1;
-  bit<32> count2;
-  bit<32> count3;
-  bit<32> count4;
-  bit<COUNTER_BIT_WIDTH> idx1;
-  bit<COUNTER_BIT_WIDTH> idx2;
-  bit<COUNTER_BIT_WIDTH> idx3;
-  bit<COUNTER_BIT_WIDTH> idx4;
+  bit<WATERFALL_BIT_WIDTH> idx1;
+  bool found;
+  bit<WATERFALL_BIT_WIDTH> idx2;
 }
 
 // ---------------------------------------------------------------------------
@@ -103,43 +98,40 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
               inout ingress_intrinsic_metadata_for_deparser_t ig_intr_dprsr_md,
               inout ingress_intrinsic_metadata_for_tm_t ig_intr_tm_md) {
 
-  Hash<bit<COUNTER_BIT_WIDTH>>(HashAlgorithm_t.CRC16) hash1;
-  Hash<bit<COUNTER_BIT_WIDTH>>(HashAlgorithm_t.CRC16) hash2;
-  Hash<bit<COUNTER_BIT_WIDTH>>(HashAlgorithm_t.CRC16) hash3;
-  Hash<bit<COUNTER_BIT_WIDTH>>(HashAlgorithm_t.CRC16) hash4;
-  Register<bit<32>, bit<COUNTER_BIT_WIDTH>>(COUNTER_WIDTH, 0) counter1;
-  Register<bit<32>, bit<COUNTER_BIT_WIDTH>>(COUNTER_WIDTH, 0) counter2;
-  Register<bit<32>, bit<COUNTER_BIT_WIDTH>>(COUNTER_WIDTH, 0) counter3;
-  Register<bit<32>, bit<COUNTER_BIT_WIDTH>>(COUNTER_WIDTH, 0) counter4;
+  Register<bit<32>, bit<WATERFALL_BIT_WIDTH>>(WATERFALL_WIDTH, 0) table_1_1;  // src_addr
+  Register<bit<32>, bit<WATERFALL_BIT_WIDTH>>(WATERFALL_WIDTH, 0) table_1_2;  // dst_addr
+  Register<bit<16>, bit<WATERFALL_BIT_WIDTH>>(WATERFALL_WIDTH, 0) table_1_3;  // src_port
+  Register<bit<16>, bit<WATERFALL_BIT_WIDTH>>(WATERFALL_WIDTH, 0) table_1_4;  // dst_port
+  Register<bit<8>, bit<WATERFALL_BIT_WIDTH>>(WATERFALL_WIDTH, 0) table_1_5;   // protocol
+  //
+  Register<bit<32>, bit<WATERFALL_BIT_WIDTH>>(WATERFALL_WIDTH, 0) table_2_1;  // src_addr
+  Register<bit<32>, bit<WATERFALL_BIT_WIDTH>>(WATERFALL_WIDTH, 0) table_2_2;  // dst_addr
+  Register<bit<16>, bit<WATERFALL_BIT_WIDTH>>(WATERFALL_WIDTH, 0) table_2_3;  // src_port
+  Register<bit<16>, bit<WATERFALL_BIT_WIDTH>>(WATERFALL_WIDTH, 0) table_2_4;  // dst_port
+  Register<bit<8>, bit<WATERFALL_BIT_WIDTH>>(WATERFALL_WIDTH, 0) table_2_5;   // protocol
+  
+  Hash<bit<WATERFALL_BIT_WIDTH>>(HashAlgorithm_t.CRC16) hash1;
+  Hash<bit<WATERFALL_BIT_WIDTH>>(HashAlgorithm_t.CRC16) hash2;
 
-  RegisterAction<bit<32>, bit<COUNTER_BIT_WIDTH>, bit<32>>(counter1) inc_counter_write1 = {
-    void apply(inout bit<32> val, out bit<32> out_val) {
-      val = val + 1;
-      out_val = val;
+  bit<32> key_1 = 0;
+
+  RegisterAction<bit<32>, _, bool>(table_1_1) table_1_1_lookup = {
+    void apply(inout bit<32> val, out bool read_value) {
+      if (hdr.ipv4.src_addr == val) {
+        read_value = true;
+      } else {
+        read_value = false;
+      }
     }
   };
 
-  RegisterAction<bit<32>, bit<COUNTER_BIT_WIDTH>, bit<32>>(counter2) inc_counter_write2 = {
-    void apply(inout bit<32> val, out bit<32> out_val) {
-      val = val + 1;
-      out_val = val;
+
+  RegisterAction<bit<32>, _, bit<32>>(table_1_1) table_1_1_swap = {
+    void apply(inout bit<32> val, out bit<32> read_value) {
+      read_value = val;
+      val = key_1;
     }
   };
-
-  RegisterAction<bit<32>, bit<COUNTER_BIT_WIDTH>, bit<32>>(counter3) inc_counter_write3 = {
-    void apply(inout bit<32> val, out bit<32> out_val) {
-      val = val + 1;
-      out_val = val;
-    }
-  };
-
-  RegisterAction<bit<32>, bit<COUNTER_BIT_WIDTH>, bit<32>>(counter4) inc_counter_write4 = {
-    void apply(inout bit<32> val, out bit<32> out_val) {
-      val = val + 1;
-      out_val = val;
-    }
-  };
-
   action get_hash1() {
     ig_md.idx1 = hash1.get({hdr.ipv4.src_addr, 
                             hdr.ipv4.dst_addr, 
@@ -156,40 +148,10 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
                             hdr.ipv4.protocol});
   }
 
-  action get_hash3() {
-    ig_md.idx3 = hash3.get({hdr.ipv4.src_addr, 
-                            hdr.ipv4.dst_addr, 
-                            hdr.udp.src_port, 
-                            hdr.udp.dst_port,
-                            hdr.ipv4.protocol});
-  }
-  
-  action get_hash4() {
-    ig_md.idx4 = hash4.get({hdr.ipv4.src_addr, 
-                            hdr.ipv4.dst_addr, 
-                            hdr.udp.src_port, 
-                            hdr.udp.dst_port,
-                            hdr.ipv4.protocol});
-  }
-
-  action increment_counter1() {
-    ig_md.count1 = inc_counter_write1.execute(ig_md.idx1);
-  }
-
-  action increment_counter2() {
-    ig_md.count2 = inc_counter_write2.execute(ig_md.idx2);
-  }
-
-  action increment_counter3() {
-    ig_md.count3 = inc_counter_write3.execute(ig_md.idx3);
-  }
-
-  action increment_counter4() {
-    ig_md.count4 = inc_counter_write4.execute(ig_md.idx4);
-  }
 
   action hit(PortId_t port) {
     ig_intr_tm_md.ucast_egress_port = port;
+    ig_intr_dprsr_md.drop_ctl = 0x0;
   }
 
   action route(PortId_t dst_port) {
@@ -211,16 +173,17 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
   size = 1024;
  }
 
+
   apply { 
     get_hash1();
     get_hash2();
-    get_hash3();
-    get_hash4();
-    increment_counter1();
-    increment_counter2();
-    increment_counter3();
-    increment_counter4();
 
+    key_1 = hdr.ipv4.src_addr;
+    ig_md.found = table_1_1_lookup.execute(ig_md.idx1); 
+    if (!ig_md.found) {
+      table_1_1_swap.execute(ig_md.idx1);
+      
+    }
     forward.apply(); 
     ig_intr_tm_md.bypass_egress = 1w1;
   }
