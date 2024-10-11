@@ -1,7 +1,7 @@
 cmake*
 CMake*
 Make*
-control_plane_upload/
+waterfall/
 pcap_output
 bf_drivers.*
 model*
