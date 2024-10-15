@@ -34,7 +34,22 @@
 const bit<8> RESUB = 255;
 const bit<3> DPRSR_RESUB = 5;
 
+header resubmit_type {
+  bit<8> type;
+  bit<8> f1;
+  bit<16> f2;
+  bit<32> f3;
+}
+
+header port_metadata {
+  bit<32> f1;
+  bit<32> f2;
+}
+
 struct metadata_t {
+  port_metadata port_md;
+  bit<8> resub_type;
+  resubmit_type a;
   bit<WATERFALL_BIT_WIDTH> idx1;
   bit<WATERFALL_BIT_WIDTH> idx2;
   bit<32> in_src_addr;
@@ -50,7 +65,23 @@ parser SwitchIngressParser(packet_in pkt, out header_t hdr, out metadata_t ig_md
   TofinoIngressParser() tofino_parser;
 
   state start {
-    tofino_parser.apply(pkt, ig_intr_md);
+    pkt.extract(ig_intr_md);
+    /*tofino_parser.apply(pkt, ig_intr_md);*/
+    /*transition parse_ethernet;*/
+    transition select(ig_intr_md.resubmit_flag) {
+      0 : parse_init;
+      1 : parse_resubmit;
+    }
+  }
+
+  state parse_init {
+    ig_md.port_md = port_metadata_unpack<port_metadata>(pkt);
+    transition parse_ethernet;
+  }
+
+  state parse_resubmit {
+    ig_md.resub_type = pkt.lookahead<bit<8>>()[7:0];
+    pkt.extract(ig_md.a);
     transition parse_ethernet;
   }
 
@@ -66,7 +97,6 @@ parser SwitchIngressParser(packet_in pkt, out header_t hdr, out metadata_t ig_md
 
   state parse_ipv4 {
     pkt.extract(hdr.ipv4);
-    /*ig_md.in_src_addrs = hdr.ipv4.src_addr;*/
     transition select(hdr.ipv4.protocol) {
     IP_PROTOCOLS_UDP:
       parse_udp;
@@ -179,7 +209,7 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
   RegisterAction<bit<32>, _, bit<32>>(table_1_1) table_1_1_swap = {
     void apply(inout bit<32> val, out bit<32> read_value) {
       read_value = val;
-      val = hdr.ipv4.src_addr;
+      val = ig_md.in_src_addr;
     }
   };
 
@@ -190,7 +220,6 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
     }
   };
   action get_hash1() {
-    /*ig_md.in_src_addr = hdr.ipv4.src_addr;*/
     ig_md.idx1 = hash1.get({hdr.ipv4.src_addr, 
                             hdr.ipv4.dst_addr, 
                             hdr.udp.src_port, 
@@ -233,10 +262,9 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
 
 
   apply { 
-    get_hash1();
-    get_hash2();
-
     if (ig_intr_md.resubmit_flag == 0) {
+      get_hash1();
+      get_hash2();
       bool found_t_1_1 = table_1_1_lookup.execute(ig_md.idx1); 
       bool found_t_1_2 = table_1_2_lookup.execute(ig_md.idx1); 
       bool found_t_1_3 = table_1_3_lookup.execute(ig_md.idx1); 
@@ -249,6 +277,7 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
       /*hdr.ethernet.dst_addr = 1;*/
       /*hdr.ethernet.src_addr = 0;*/
       ig_intr_dprsr_md.resubmit_type = DPRSR_RESUB;
+      ig_md.in_src_addr = hdr.ipv4.src_addr;
     } else {
       /*if (!ig_md.found) {*/
       table_1_1_entry = table_1_1_swap.execute(ig_md.idx1);
