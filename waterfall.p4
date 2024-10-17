@@ -148,10 +148,20 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
 
   /*bit<32> table_1_1_entry = 0;*/
 
-
+  
   RegisterAction<bit<32>, _, bool>(table_1_1) table_1_1_lookup = {
     void apply(inout bit<32> val, out bool read_value) {
       if (hdr.ipv4.src_addr == val) {
+        read_value = true;
+      } else {
+        read_value = false;
+      }
+    }
+  };
+
+  RegisterAction<bit<32>, _, bool>(table_1_2) table_1_2_lookup = {
+    void apply(inout bit<32> val, out bool read_value) {
+      if (hdr.ipv4.dst_addr == val) {
         read_value = true;
       } else {
         read_value = false;
@@ -261,17 +271,16 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
     get_hash1();
     get_hash2();
     if (ig_intr_md.resubmit_flag == 0) {
-      ig_md.found = table_1_1_lookup.execute(ig_md.idx1); 
-      resub.apply();
-
-      /*bool found_t_1_2 = table_1_2_lookup.execute(ig_md.idx1); */
-      /*bool found_t_1_3 = table_1_3_lookup.execute(ig_md.idx1); */
-      /*bool found_t_1_4 = table_1_4_lookup.execute(ig_md.idx1); */
-      /*bool found_t_1_5 = table_1_5_lookup.execute(ig_md.idx1); */
-      /*if (found_t_1_1 && found_t_1_2 && found_t_1_3 && found_t_1_4 && found_t_1_5) {*/
-      /*  ig_md.found = true;*/
-      /*}*/
+      bool found_t_1_1 = table_1_1_lookup.execute(ig_md.idx1); 
+      bool found_t_1_2 = table_1_2_lookup.execute(ig_md.idx1); 
+      bool found_t_1_3 = table_1_3_lookup.execute(ig_md.idx1); 
+      bool found_t_1_4 = table_1_4_lookup.execute(ig_md.idx1); 
+      bool found_t_1_5 = table_1_5_lookup.execute(ig_md.idx1); 
+      if (found_t_1_1 && found_t_1_2 && found_t_1_3 && found_t_1_4 && found_t_1_5) {
+        ig_md.found = true;
+      }
       // Resubmit packet
+      resub.apply();
     } else {
       pass_two.apply();
       /*if (!ig_md.found) {*/
