@@ -45,6 +45,14 @@ struct port_metadata_t {
   bit<32> f2;
 }
 
+struct digest_t {
+  bit<32> src_addr;
+  bit<32> dst_addr;
+  bit<16> src_port;
+  bit<16> dst_port;
+  bit<8> protocol;
+}
+
 struct metadata_t {
   port_metadata_t port_metadata;
   resubmit_md_t resubmit_md;
@@ -53,6 +61,8 @@ struct metadata_t {
   bit<WATERFALL_REMAIN_BIT_WIDTH> remain1;
   bit<WATERFALL_REMAIN_BIT_WIDTH> remain2;
   bool found;
+  bit<16> src_port;
+  bit<16> dst_port;
 }
 
 // ---------------------------------------------------------------------------
@@ -103,11 +113,15 @@ parser SwitchIngressParser(packet_in pkt, out header_t hdr, out metadata_t ig_md
 
   state parse_tcp {
     pkt.extract(hdr.tcp);
+    ig_md.src_port = hdr.tcp.src_port;
+    ig_md.dst_port = hdr.tcp.dst_port;
     transition accept;
   }
 
   state parse_udp {
     pkt.extract(hdr.udp);
+    ig_md.src_port = hdr.udp.src_port;
+    ig_md.dst_port = hdr.udp.dst_port;
     transition accept;
   }
 }
@@ -117,9 +131,13 @@ parser SwitchIngressParser(packet_in pkt, out header_t hdr, out metadata_t ig_md
 control SwitchIngressDeparser( packet_out pkt, inout header_t hdr, in metadata_t ig_md,
     in ingress_intrinsic_metadata_for_deparser_t ig_intr_dprsr_md) {
 
+  Digest<digest_t>() digest;
   Resubmit() resubmit;
 
   apply {
+    if (ig_intr_dprsr_md.digest_type == 1) {
+      digest.pack({hdr.ipv4.src_addr, hdr.ipv4.dst_addr, ig_md.src_port, ig_md.dst_port, hdr.ipv4.protocol});
+    }
     if (ig_intr_dprsr_md.resubmit_type == DPRSR_RESUB) {
       resubmit.emit(ig_md.resubmit_md);
     }
@@ -202,6 +220,7 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
 
   action resubmit_hdr() {
     ig_intr_dprsr_md.resubmit_type = DPRSR_RESUB;
+    ig_intr_dprsr_md.digest_type = 1;
     ig_md.resubmit_md.idx = ig_md.idx1;
     ig_md.resubmit_md.remain = ig_md.remain1;
   }
@@ -232,7 +251,7 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
     if (ig_intr_md.resubmit_flag == 0) {
       key_1 = hdr.ipv4.src_addr;
       key_2 = hdr.ipv4.dst_addr;
-      ports = hdr.udp.src_port ++ hdr.udp.dst_port;
+      ports = ig_md.src_port ++ ig_md.dst_port;
       proto = hdr.ipv4.protocol;
       get_hash1(key_1, key_2, ports, proto);
       key_1 = ig_md.idx1 ++ ig_md.remain1;
