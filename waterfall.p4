@@ -30,13 +30,14 @@
 
 #define WATERFALL_BIT_WIDTH 16 
 #define WATERFALL_REMAIN_BIT_WIDTH 16 // 32 - WATERFALL_BIT_WIDTH
-#define WATERFALL_WIDTH 16 // 2 ^ WATERFALL_BIT_WIDTH = WATERFALL_WIDTH
+#define WATERFALL_WIDTH 65536 // 2 ^ WATERFALL_BIT_WIDTH = WATERFALL_WIDTH
 
 const bit<8> RESUB = 1;
 const bit<3> DPRSR_RESUB = 1;
 
 header resubmit_md_t {
-  bit<32> hash;
+  bit<16> idx;
+  bit<16> remain;
 }
 
 struct port_metadata_t {
@@ -135,8 +136,23 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
   Register<bit<WATERFALL_REMAIN_BIT_WIDTH>, bit<WATERFALL_BIT_WIDTH>>(WATERFALL_WIDTH, 0) table_1; 
   Register<bit<WATERFALL_REMAIN_BIT_WIDTH>, bit<WATERFALL_BIT_WIDTH>>(WATERFALL_WIDTH, 0) table_2;
   
-  Hash<bit<32>>(HashAlgorithm_t.CRC16) hash1;
-  Hash<bit<32>>(HashAlgorithm_t.CRC16) hash2;
+  CRCPolynomial<bit<32>>(32w0x04C11DB7, // polynomial
+                         true,          // reversed
+                         false,         // use msb?
+                         false,         // extended?
+                         32w0xFFFFFFFF, // initial shift register value
+                         32w0xFFFFFFFF  // result xor
+                         ) CRC32_1;
+  Hash<bit<32>>(HashAlgorithm_t.CUSTOM, CRC32_1) hash1;
+
+  CRCPolynomial<bit<32>>(32w0x04C11DB7, // polynomial
+                         true,          // reversed
+                         false,         // use msb?
+                         false,         // extended?
+                         32w0xFFFFFFF0, // initial shift register value
+                         32w0xFFFFFFFF  // result xor
+                         ) CRC32_2;
+  Hash<bit<32>>(HashAlgorithm_t.CUSTOM, CRC32_2) hash2;
 
   RegisterAction<bit<WATERFALL_REMAIN_BIT_WIDTH>, bit<WATERFALL_BIT_WIDTH>, bool>(table_1) table_1_lookup = {
     void apply(inout bit<WATERFALL_REMAIN_BIT_WIDTH> val, out bool read_value) {
@@ -161,7 +177,7 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
   RegisterAction<bit<WATERFALL_REMAIN_BIT_WIDTH>, bit<WATERFALL_BIT_WIDTH>, bit<WATERFALL_REMAIN_BIT_WIDTH>>(table_1) table_1_swap = {
     void apply(inout bit<WATERFALL_REMAIN_BIT_WIDTH> val, out bit<WATERFALL_REMAIN_BIT_WIDTH> read_value) {
       read_value = val;
-      val = ig_md.remain1;
+      val = ig_md.resubmit_md.remain;
     }
   };
 
@@ -172,28 +188,22 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
     }
   };
 
-  action get_hash1() {
-    bit<32> hash_val = hash1.get({hdr.ipv4.src_addr, 
-                            hdr.ipv4.dst_addr, 
-                            hdr.udp.src_port, 
-                            hdr.udp.dst_port,
-                            hdr.ipv4.protocol});
+  action get_hash1(bit<32> src_addr, bit<32> dst_addr, bit<32> ports, bit<8> protocol) {
+    bit<32> hash_val = hash1.get({src_addr, dst_addr, ports, protocol});
     ig_md.idx1 = hash_val[WATERFALL_BIT_WIDTH - 1:0];
     ig_md.remain1 = hash_val[31:WATERFALL_BIT_WIDTH];
   }
 
-  action get_hash2() {
-    bit<32> hash_val = hash2.get({hdr.ipv4.src_addr, 
-                            hdr.ipv4.dst_addr, 
-                            hdr.udp.src_port, 
-                            hdr.udp.dst_port,
-                            hdr.ipv4.protocol});
+  action get_hash2(bit<32> src_addr, bit<32> dst_addr, bit<32> ports, bit<8> protocol) {
+    bit<32> hash_val = hash2.get({src_addr, dst_addr, ports, protocol});
     ig_md.idx2 = hash_val[WATERFALL_BIT_WIDTH - 1:0];
     ig_md.remain2 = hash_val[31:WATERFALL_BIT_WIDTH];
   }
 
   action resubmit_hdr() {
     ig_intr_dprsr_md.resubmit_type = DPRSR_RESUB;
+    ig_md.resubmit_md.idx = ig_md.idx1;
+    ig_md.resubmit_md.remain = ig_md.remain1;
   }
 
   action no_resub() {}
@@ -213,20 +223,40 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
   }
 
 
+  bit<32> key_1 = 0;
+  bit<32> key_2 = 0;
+  bit<32> ports = 0;
+  bit<8> proto = 0;
+
   apply { 
-    get_hash1();
-    get_hash2();
     if (ig_intr_md.resubmit_flag == 0) {
+      key_1 = hdr.ipv4.src_addr;
+      key_2 = hdr.ipv4.dst_addr;
+      ports = hdr.udp.src_port ++ hdr.udp.dst_port;
+      proto = hdr.ipv4.protocol;
+      get_hash1(key_1, key_2, ports, proto);
+      key_1 = ig_md.idx1 ++ ig_md.remain1;
+      key_2 = 0;
+      ports = 0;
+      proto = 0;
+      get_hash2(key_1, key_2, ports, proto);
       bool found_t_1 = table_1_lookup.execute(ig_md.idx1); 
       bool found_t_2 = table_2_lookup.execute(ig_md.idx2); 
       if (found_t_1 || found_t_2) {
         ig_md.found = true;
+      } else {
+        ig_md.found = false;
       }
       
       resub.apply();
     } else {
-      table_1_swap.execute(ig_md.idx1);
-      table_2_swap.execute(ig_md.idx2);
+      bit<16> remain1 = table_1_swap.execute(ig_md.resubmit_md.idx);
+      key_1 = ig_md.resubmit_md.idx ++ remain1;
+      key_2 = 0;
+      ports = 0;
+      proto = 0;
+      get_hash2(key_1, key_2, ports, proto);
+      bit<16> remain2 = table_2_swap.execute(ig_md.idx2);
     }
 
     ig_intr_tm_md.ucast_egress_port = ig_intr_md.ingress_port;
