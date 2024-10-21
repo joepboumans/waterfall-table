@@ -37,7 +37,6 @@ class NoResubmitTest(BfRuntimeTest):
         logger.info("Finished setup")
 
     def runTest(self):
-        return
         logger.info("Start testing")
         ig_port = swports[0]
         target = self.target
@@ -149,9 +148,8 @@ class ResubmitTest(BfRuntimeTest):
             summed += entry_val
             if entry_val != 0:
                 logger.info(data_dict)
-                logger.info(entry_val)
-
-        # assert(summed != 0)
+                logger.info(entry_val.to_bytes(2,'big'))
+        assert(summed != 0)
 
         # Get data from table_2
         summed = 0
@@ -162,7 +160,7 @@ class ResubmitTest(BfRuntimeTest):
             summed += entry_val
             if entry_val != 0:
                 logger.info(data_dict)
-                logger.info(entry_val)
+                logger.info(entry_val.to_bytes(2,'big'))
 
         assert(summed != 0)
 

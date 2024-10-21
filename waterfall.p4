@@ -251,12 +251,14 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
       resub.apply();
     } else {
       bit<16> remain1 = table_1_swap.execute(ig_md.resubmit_md.idx);
-      key_1 = ig_md.resubmit_md.idx ++ remain1;
-      key_2 = 0;
-      ports = 0;
-      proto = 0;
-      get_hash2(key_1, key_2, ports, proto);
-      bit<16> remain2 = table_2_swap.execute(ig_md.idx2);
+      if ( remain1 != 0x0) {
+        key_1 = ig_md.resubmit_md.idx ++ remain1;
+        key_2 = 0;
+        ports = 0;
+        proto = 0;
+        get_hash2(key_1, key_2, ports, proto);
+        bit<16> remain2 = table_2_swap.execute(ig_md.idx2);
+      }
     }
 
     ig_intr_tm_md.ucast_egress_port = ig_intr_md.ingress_port;
