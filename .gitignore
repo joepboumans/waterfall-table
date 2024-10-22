@@ -8,3 +8,5 @@ model*
 install_manifest*
 zlog*
 *pycache*
+ptf.log
+ptf.pcap
