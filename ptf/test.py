@@ -22,156 +22,6 @@ if not len(logger.handlers):
     sh.setLevel(logging.INFO)
     logger.addHandler(sh)
 
-# class NoResubmitTest(BfRuntimeTest):
-#     def setUp(self):
-#         logger.info("Starting setup")
-#         client_id = 0
-#         BfRuntimeTest.setUp(self, client_id)
-#         logger.info("\tfinished BfRuntimeSetup")
-#
-#         self.bfrt_info = self.interface.bfrt_info_get(project_name)
-#         self.port_meta = self.bfrt_info.table_get("$PORT_METADATA")
-#         self.resub = self.bfrt_info.table_get("resub")
-#         self.table_1 = self.bfrt_info.table_get("table_1")
-#         self.target = gc.Target(device_id=0, pipe_id=0xffff)
-#         logger.info("Finished setup")
-#
-#     def runTest(self):
-#         logger.info("Start testing")
-#         ig_port = swports[0]
-#         target = self.target
-#         port_meta = self.port_meta
-#         resub = self.resub
-#
-#         ''' TC:1 Setting up port_metadata and resub'''
-#         logger.info("Populating port_meta and resub tables...")
-#         ig_port = random.choice(swports)
-#         port_meta_values = [random.getrandbits(32), random.getrandbits(32)]
-#
-#         logger.debug(f"\tport metadata - inserting table entry with port {ig_port} and f1,f2 {port_meta_values}")
-#         key = port_meta.make_key([gc.KeyTuple('ig_intr_md.ingress_port', ig_port)])
-#         data = port_meta.make_data([gc.DataTuple('f1', port_meta_values[0]), gc.DataTuple('f2', port_meta_values[1])])
-#         port_meta.entry_add(target, [key], [data])
-#
-#         logger.debug(f"\tresub - inserting table entry with port {ig_port} and f1,f2 {port_meta_values}")
-#         key = resub.make_key([gc.KeyTuple('ig_md.found', True)])
-#         data = resub.make_data([], "SwitchIngress.no_resub")
-#         key = resub.make_key([gc.KeyTuple('ig_md.found', False)])
-#         data = resub.make_data([], "SwitchIngress.no_resub")
-#         resub.entry_add(target, [key], [data])
-#
-#         logger.info("Adding entries to port_meta and resub tables")
-#         ''' TC:2 Send, receive and verify packets'''
-#         pkt_in = testutils.simple_ip_packet()
-#         logger.info("Sending simple packet to switch")
-#         testutils.send_packet(self, ig_port, pkt_in)
-#         logger.info("Verifying simple packet has been correct...")
-#         testutils.verify_packet(self, pkt_in, ig_port)
-#         logger.info("..packet received correctly")
-#
-#     def tearDown(self):
-#         logger.info("Tearing down test")
-#         self.resub.entry_del(self.target)
-#         self.port_meta.entry_del(self.target)
-#         self.table_1.entry_del(self.target)
-#         BfRuntimeTest.tearDown(self)
-#
-# class ResubmitTest(BfRuntimeTest):
-#     def setUp(self):
-#         logger.info("Starting setup")
-#         client_id = 0
-#         BfRuntimeTest.setUp(self, client_id)
-#         logger.info("\tfinished BfRuntimeSetup")
-#
-#         self.bfrt_info = self.interface.bfrt_info_get(project_name)
-#         self.port_meta = self.bfrt_info.table_get("$PORT_METADATA")
-#         self.resub = self.bfrt_info.table_get("resub")
-#         self.table_1 = self.bfrt_info.table_get("table_1")
-#         self.table_2 = self.bfrt_info.table_get("table_2")
-#         self.target = gc.Target(device_id=0, pipe_id=0xffff)
-#         logger.info("Finished setup")
-#
-#     def runTest(self):
-#         logger.info("Start testing")
-#         ig_port = swports[0]
-#         target = self.target
-#         port_meta = self.port_meta
-#         resub = self.resub
-#         table_1 = self.table_1
-#         table_2 = self.table_2
-#
-#         ip_list = self.generate_random_ip_list(1, 1)
-#         ''' TC:1 Setting up port_metadata and resub'''
-#         for ip_entry in ip_list:
-#             src_addr = getattr(ip_entry, "ip")
-#
-#             logger.info("Populating port_meta table...")
-#             ig_port = random.choice(swports)
-#             port_meta_values = [random.getrandbits(32), random.getrandbits(32)]
-#
-#             logger.debug(f"\tport metadata - inserting table entry with port {ig_port} and f1,f2 {port_meta_values}")
-#             key = port_meta.make_key([gc.KeyTuple('ig_intr_md.ingress_port', ig_port)])
-#             data = port_meta.make_data([gc.DataTuple('f1', port_meta_values[0]), gc.DataTuple('f2', port_meta_values[1])])
-#             port_meta.entry_add(target, [key], [data])
-#
-#             logger.info("Populating resub table...")
-#             logger.debug(f"\tresub - inserting table entry with port {ig_port} and f1,f2 {port_meta_values}")
-#
-#             key = resub.make_key([gc.KeyTuple('ig_md.found', True)])
-#             data = resub.make_data([], "SwitchIngress.no_resub")
-#             key = resub.make_key([gc.KeyTuple('ig_md.found', False)])
-#             data = resub.make_data([], "SwitchIngress.resubmit_hdr")
-#             resub.entry_add(target, [key], [data])
-#
-#             logger.info("Adding entries to port_meta and resub tables")
-#             ''' TC:2 Send, receive and verify packets'''
-#             pkt_in = testutils.simple_ip_packet(ip_src=src_addr)
-#             logger.info("Sending simple packet to switch")
-#             testutils.send_packet(self, ig_port, pkt_in)
-#             logger.info("Verifying simple packet has been correct...")
-#             testutils.verify_packet(self, pkt_in, ig_port)
-#             logger.info("..packet received correctly")
-#
-#             # logger.info("Sending second simple packet to switch")
-#             # testutils.send_packet(self, ig_port, pkt_in)
-#             # logger.info("2nd verifying simple packet has been correct...")
-#             # testutils.verify_packet(self, pkt_in, ig_port)
-#             # logger.info("..packet received correctly")
-#
-#
-#         # Get data from table_1
-#         summed = 0
-#         data_table_1 = table_1.entry_get(target, [])
-#         for data, key in data_table_1:
-#             data_dict = data.to_dict()
-#             entry_val = data_dict[f"SwitchIngress.table_1.f1"][0]
-#             summed += entry_val
-#             if entry_val != 0:
-#                 logger.info(data_dict)
-#                 logger.info(entry_val.to_bytes(2,'big'))
-#         assert(summed != 0)
-#
-#         # Get data from table_2
-#         # summed = 0
-#         # data_table_2 = table_2.entry_get(target, [])
-#         # for data, key in data_table_2:
-#         #     data_dict = data.to_dict()
-#         #     entry_val = data_dict[f"SwitchIngress.table_2.f1"][0]
-#         #     summed += entry_val
-#         #     if entry_val != 0:
-#         #         logger.info(data_dict)
-#         #         logger.info(entry_val.to_bytes(2,'big'))
-#         #
-#         # assert(summed != 0)
-#
-#
-#     def tearDown(self):
-#         logger.info("Tearing down test")
-#         self.resub.entry_del(self.target)
-#         self.port_meta.entry_del(self.target)
-#         self.table_1.entry_del(self.target)
-#         self.table_2.entry_del(self.target)
-#
 class DigestResubmitTest(BfRuntimeTest):
     def setUp(self):
         logger.info("Starting setup")
@@ -192,6 +42,8 @@ class DigestResubmitTest(BfRuntimeTest):
         # Get Waterfall tables
         self.table_1 = self.bfrt_info.table_get("table_1")
         self.table_2 = self.bfrt_info.table_get("table_2")
+        self.table_3 = self.bfrt_info.table_get("table_3")
+        self.table_4 = self.bfrt_info.table_get("table_4")
 
         self.target = gc.Target(device_id=0, pipe_id=0xffff)
         logger.info("Finished setup")
@@ -207,8 +59,10 @@ class DigestResubmitTest(BfRuntimeTest):
 
         table_1 = self.table_1
         table_2 = self.table_2
+        table_3 = self.table_3
+        table_4 = self.table_4
 
-        num_entries = 10
+        num_entries = 1
         seed = 1001
         ip_list = self.generate_random_ip_list(num_entries, seed)
         ''' TC:1 Setting up port_metadata and resub'''
@@ -228,10 +82,10 @@ class DigestResubmitTest(BfRuntimeTest):
             ig_port = swports[2]
             port_meta_values = [random.getrandbits(32), random.getrandbits(32)]
 
-            logger.debug(f"\tport metadata - inserting table entry with port {ig_port} and f1,f2 {port_meta_values}")
-            key = port_meta.make_key([gc.KeyTuple('ig_intr_md.ingress_port', ig_port)])
-            data = port_meta.make_data([gc.DataTuple('f1', port_meta_values[0]), gc.DataTuple('f2', port_meta_values[1])])
-            port_meta.entry_add(target, [key], [data])
+            # logger.debug(f"\tport metadata - inserting table entry with port {ig_port} and f1,f2 {port_meta_values}")
+            # key = port_meta.make_key([gc.KeyTuple('ig_intr_md.ingress_port', ig_port)])
+            # data = port_meta.make_data([gc.DataTuple('f1', port_meta_values[0]), gc.DataTuple('f2', port_meta_values[1])])
+            # port_meta.entry_add(target, [key], [data])
 
 
             logger.info("Adding entries to port_meta and resub tables")
@@ -264,6 +118,62 @@ class DigestResubmitTest(BfRuntimeTest):
                 break;
         assert(total_recv == num_entries)
 
+        ''' TC:4 Validate received digest data'''
+        # Get data from table_1
+        summed = 0
+        data_table_1 = table_1.entry_get(target, [])
+        for data, key in data_table_1:
+            data_dict = data.to_dict()
+            entry_val = data_dict[f"SwitchIngress.table_1.f1"][0]
+            summed += entry_val
+            if entry_val != 0:
+                logger.info(data_dict)
+                logger.info(entry_val.to_bytes(2,'big'))
+        logger.info(f"Table1 has {summed} total remainders")
+        # assert(summed != 0)
+
+        # Get data from table_2
+        summed = 0
+        data_table_2 = table_2.entry_get(target, [])
+        for data, key in data_table_2:
+            data_dict = data.to_dict()
+            entry_val = data_dict[f"SwitchIngress.table_2.f1"][0]
+            summed += entry_val
+            if entry_val != 0:
+                logger.info(data_dict)
+                logger.info(entry_val.to_bytes(2,'big'))
+
+        # assert(summed != 0)
+        logger.info(f"Table2 has {summed} total remainders")
+
+        # Get data from table_3
+        summed = 0
+        data_table_3 = table_3.entry_get(target, [])
+        for data, key in data_table_3:
+            data_dict = data.to_dict()
+            entry_val = data_dict[f"SwitchIngress.table_3.f1"][0]
+            summed += entry_val
+            if entry_val != 0:
+                logger.info(data_dict)
+                logger.info(entry_val.to_bytes(2,'big'))
+
+        # assert(summed != 0)
+        logger.info(f"Table3 has {summed} total remainders")
+
+        # Get data from table_4
+        summed = 0
+        data_table_4 = table_4.entry_get(target, [])
+        for data, key in data_table_4:
+            data_dict = data.to_dict()
+            entry_val = data_dict[f"SwitchIngress.table_4.f1"][0]
+            summed += entry_val
+            if entry_val != 0:
+                logger.info(data_dict)
+                logger.info(entry_val.to_bytes(2,'big'))
+
+        # assert(summed != 0)
+        logger.info(f"Table4 has {summed} total remainders")
+
     def tearDown(self):
         logger.info("Tearing down test")
         self.resub.entry_del(self.target)
@@ -271,3 +181,5 @@ class DigestResubmitTest(BfRuntimeTest):
 
         self.table_1.entry_del(self.target)
         self.table_2.entry_del(self.target)
+        self.table_3.entry_del(self.target)
+        self.table_4.entry_del(self.target)
