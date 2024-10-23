@@ -272,21 +272,21 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
   RegisterAction<bit<WATERFALL_REMAIN_BIT_WIDTH>, bit<WATERFALL_BIT_WIDTH>, bit<WATERFALL_REMAIN_BIT_WIDTH>>(table_2) table_2_swap = {
     void apply(inout bit<WATERFALL_REMAIN_BIT_WIDTH> val, out bit<WATERFALL_REMAIN_BIT_WIDTH> read_value) {
       read_value = val;
-      val = ig_md.out_remain;
+      val = ig_md.remain2;
     }
   };
 
   RegisterAction<bit<WATERFALL_REMAIN_BIT_WIDTH>, bit<WATERFALL_BIT_WIDTH>, bit<WATERFALL_REMAIN_BIT_WIDTH>>(table_3) table_3_swap = {
     void apply(inout bit<WATERFALL_REMAIN_BIT_WIDTH> val, out bit<WATERFALL_REMAIN_BIT_WIDTH> read_value) {
       read_value = val;
-      val = ig_md.out_remain;
+      val = ig_md.remain3;
     }
   };
 
   RegisterAction<bit<WATERFALL_REMAIN_BIT_WIDTH>, bit<WATERFALL_BIT_WIDTH>, bit<WATERFALL_REMAIN_BIT_WIDTH>>(table_4) table_4_swap = {
     void apply(inout bit<WATERFALL_REMAIN_BIT_WIDTH> val, out bit<WATERFALL_REMAIN_BIT_WIDTH> read_value) {
       read_value = val;
-      val = ig_md.out_remain;
+      val = ig_md.remain4;
     }
   };
 
@@ -310,13 +310,13 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
   }
 
   action get_hash3(bit<32> src_addr, bit<32> dst_addr, bit<32> ports, bit<8> protocol) {
-    bit<32> hash_val = hash2.get({src_addr, dst_addr, ports, protocol});
+    bit<32> hash_val = hash3.get({src_addr, dst_addr, ports, protocol});
     ig_md.idx3 = hash_val[WATERFALL_BIT_WIDTH - 1:0];
     ig_md.remain3 = hash_val[31:WATERFALL_BIT_WIDTH];
   }
 
   action get_hash4(bit<32> src_addr, bit<32> dst_addr, bit<32> ports, bit<8> protocol) {
-    bit<32> hash_val = hash2.get({src_addr, dst_addr, ports, protocol});
+    bit<32> hash_val = hash4.get({src_addr, dst_addr, ports, protocol});
     ig_md.idx4 = hash_val[WATERFALL_BIT_WIDTH - 1:0];
     ig_md.remain4 = hash_val[31:WATERFALL_BIT_WIDTH];
   }
@@ -394,21 +394,21 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
       resub.apply();
     } else {
       ig_md.out_remain = table_1_swap.execute(ig_md.resubmit_md.idx);
-      if ( ig_md.out_remain == 0x0) {
+      /*if ( ig_md.out_remain == 0x0) {*/
         key_1 = ig_md.resubmit_md.idx ++ ig_md.out_remain;
         key_2 = 0;
         ports = 0;
         proto = 0;
         get_hash2(key_1, key_2, ports, proto);
         ig_md.out_remain2 = table_2_swap.execute(ig_md.idx2);
-      } else if ( ig_md.out_remain2 == 0x0) {
+      /*} else if ( ig_md.out_remain2 == 0x0) {*/
         key_1 = ig_md.idx2 ++ ig_md.out_remain2;
         get_hash3(key_1, key_2, ports, proto);
-        ig_md.out_remain = table_3_swap.execute(ig_md.idx3);
-      } else if ( ig_md.out_remain == 0x0) {
-        key_1 = ig_md.idx3 ++ ig_md.out_remain;
+        ig_md.out_remain3 = table_3_swap.execute(ig_md.idx3);
+      /*} else if ( ig_md.out_remain3 == 0x0) {*/
+        key_1 = ig_md.idx3 ++ ig_md.out_remain3;
         get_hash4(key_1, key_2, ports, proto);
-        ig_md.out_remain = table_4_swap.execute(ig_md.idx4);
+        ig_md.out_remain4 = table_4_swap.execute(ig_md.idx4);
       /*} else if ( ig_md.out_remain != 0x0) {*/
       /*  key_1 = ig_md.idx5 ++ ig_md.out_remain;*/
       /*  key_2 = 0;*/
@@ -416,7 +416,7 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
       /*  proto = 0;*/
       /*  get_hash5(key_1, key_2, ports, proto);*/
       /*  ig_md.out_remain = table_5_swap.execute(ig_md.idx5);*/
-      }
+      /*}*/
     }
 
     ig_intr_tm_md.ucast_egress_port = ig_intr_md.ingress_port;
