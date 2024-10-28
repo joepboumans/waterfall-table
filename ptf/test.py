@@ -119,59 +119,59 @@ class DigestResubmitTest(BfRuntimeTest):
 
         ''' TC:4 Validate received digest data'''
         # # Get data from table_1
-        # summed = 0
-        # data_table_1 = table_1.entry_get(target, [], {"from_hw" : True})
-        # for data, key in data_table_1:
-        #     data_dict = data.to_dict()
-        #     entry_val = data_dict[f"SwitchIngress.table_1.f1"][0]
-        #     summed += entry_val
-        #     if entry_val != 0:
-        #         logger.info(data_dict)
-        #         logger.info(entry_val.to_bytes(2,'big'))
-        # logger.info(f"Table1 has {summed} total remainders")
+        summed = 0
+        data_table_1 = table_1.entry_get(target, [], {"from_hw" : True})
+        for data, key in data_table_1:
+            data_dict = data.to_dict()
+            entry_val = data_dict[f"SwitchIngress.table_1.f1"][0]
+            summed += entry_val
+            if entry_val != 0:
+                logger.info(data_dict)
+                logger.info(entry_val.to_bytes(2,'big'))
+        logger.info(f"Table1 has {summed} total remainders")
         # assert(summed != 0)
-        # #
-        # # # Get data from table_2
-        # summed = 0
-        # data_table_2 = table_2.entry_get(target, [], {"from_hw" : True})
-        # for data, key in data_table_2:
-        #     data_dict = data.to_dict()
-        #     entry_val = data_dict[f"SwitchIngress.table_2.f1"][0]
-        #     summed += entry_val
-        #     if entry_val != 0:
-        #         logger.info(data_dict)
-        #         logger.info(entry_val.to_bytes(2,'big'))
         #
-        # # # assert(summed != 0)
-        # logger.info(f"Table2 has {summed} total remainders")
-        #
-        # # Get data from table_3
-        # summed = 0
-        # data_table_3 = table_3.entry_get(target, [], {"from_hw" : True})
-        # for data, key in data_table_3:
-        #     data_dict = data.to_dict()
-        #     entry_val = data_dict[f"SwitchIngress.table_3.f1"][0]
-        #     summed += entry_val
-        #     if entry_val != 0:
-        #         logger.info(data_dict)
-        #         logger.info(entry_val.to_bytes(2,'big'))
-        #
+        # # Get data from table_2
+        summed = 0
+        data_table_2 = table_2.entry_get(target, [], {"from_hw" : True})
+        for data, key in data_table_2:
+            data_dict = data.to_dict()
+            entry_val = data_dict[f"SwitchIngress.table_2.f1"][0]
+            summed += entry_val
+            if entry_val != 0:
+                logger.info(data_dict)
+                logger.info(entry_val.to_bytes(2,'big'))
+
         # # assert(summed != 0)
-        # logger.info(f"Table3 has {summed} total remainders")
+        logger.info(f"Table2 has {summed} total remainders")
+
+        # Get data from table_3
+        summed = 0
+        data_table_3 = table_3.entry_get(target, [], {"from_hw" : True})
+        for data, key in data_table_3:
+            data_dict = data.to_dict()
+            entry_val = data_dict[f"SwitchIngress.table_3.f1"][0]
+            summed += entry_val
+            if entry_val != 0:
+                logger.info(data_dict)
+                logger.info(entry_val.to_bytes(2,'big'))
+
+        # assert(summed != 0)
+        logger.info(f"Table3 has {summed} total remainders")
 
         # Get data from table_4
-        # summed = 0
-        # data_table_4 = table_4.entry_get(target, [], {"from_hw" : True})
-        # for data, key in data_table_4:
-        #     data_dict = data.to_dict()
-        #     entry_val = data_dict[f"SwitchIngress.table_4.f1"][0]
-        #     summed += entry_val
-        #     if entry_val != 0:
-        #         logger.info(data_dict)
-        #         logger.info(entry_val.to_bytes(2,'big'))
+        summed = 0
+        data_table_4 = table_4.entry_get(target, [], {"from_hw" : True})
+        for data, key in data_table_4:
+            data_dict = data.to_dict()
+            entry_val = data_dict[f"SwitchIngress.table_4.f1"][0]
+            summed += entry_val
+            if entry_val != 0:
+                logger.info(data_dict)
+                logger.info(entry_val.to_bytes(2,'big'))
 
         # assert(summed != 0)
-        # logger.info(f"Table4 has {summed} total remainders")
+        logger.info(f"Table4 has {summed} total remainders")
 
         # Logs show storing in 0x1BB5 or 7093 while it is 0xBB5
         data_BBB5, _ = next(table_1.entry_get(target, [table_1.make_key([gc.KeyTuple("$REGISTER_INDEX", 0xBBB5)])]))        

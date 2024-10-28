@@ -67,7 +67,7 @@ struct metadata_t {
   bit<WATERFALL_REMAIN_BIT_WIDTH> remain3;
   bit<WATERFALL_REMAIN_BIT_WIDTH> remain4;
   bool found;
-  bit<WATERFALL_REMAIN_BIT_WIDTH> out_remain;
+  bit<WATERFALL_REMAIN_BIT_WIDTH> out_remain1;
   bit<WATERFALL_REMAIN_BIT_WIDTH> out_remain2;
   bit<WATERFALL_REMAIN_BIT_WIDTH> out_remain3;
   bit<WATERFALL_REMAIN_BIT_WIDTH> out_remain4;
@@ -217,7 +217,7 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
   RegisterAction<bit<WATERFALL_REMAIN_BIT_WIDTH>, _, bit<WATERFALL_REMAIN_BIT_WIDTH>>(table_1) table_1_swap = {
     void apply(inout bit<WATERFALL_REMAIN_BIT_WIDTH> val, out bit<WATERFALL_REMAIN_BIT_WIDTH> read_value) {
       read_value = val;
-      val = ig_md.remain1;
+      val = ig_md.resubmit_md.remain;
     }
   };
 
@@ -259,6 +259,7 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
                          32w0xFFFFFFFF  // result xor
                          ) CRC32_2;
   Hash<bit<32>>(HashAlgorithm_t.CUSTOM, CRC32_2) hash2;
+  Hash<bit<32>>(HashAlgorithm_t.CUSTOM, CRC32_2) hash2_swap;
 
   CRCPolynomial<bit<32>>(32w0x04C11DB7, // polynomial
                          true,          // reversed
@@ -268,6 +269,7 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
                          32w0xFFFFFFFF  // result xor
                          ) CRC32_3;
   Hash<bit<32>>(HashAlgorithm_t.CUSTOM, CRC32_3) hash3;
+  Hash<bit<32>>(HashAlgorithm_t.CUSTOM, CRC32_3) hash3_swap;
 
   CRCPolynomial<bit<32>>(32w0x04C11DB7, // polynomial
                          true,          // reversed
@@ -277,31 +279,50 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
                          32w0xFFFFFFFF  // result xor
                          ) CRC32_4;
   Hash<bit<32>>(HashAlgorithm_t.CUSTOM, CRC32_4) hash4;
+  Hash<bit<32>>(HashAlgorithm_t.CUSTOM, CRC32_4) hash4_swap;
 
-  action get_hash1(bit<32> src_addr, bit<32> dst_addr, bit<32> ports, bit<8> protocol) {
-    bit<32> hash_val = hash1.get({src_addr, dst_addr, ports, protocol});
+  action get_hash1() {
+    bit<32> hash_val = hash1.get({hdr.ipv4.src_addr, hdr.ipv4.dst_addr, ig_md.src_port ++ ig_md.dst_port, hdr.ipv4.protocol});
     ig_md.idx1 = hash_val[31:WATERFALL_BIT_WIDTH];
     ig_md.remain1 = hash_val[WATERFALL_BIT_WIDTH - 1:0];
   }
 
-  action get_hash2(bit<32> src_addr, bit<32> dst_addr, bit<32> ports, bit<8> protocol) {
-    bit<32> hash_val = hash2.get({src_addr, dst_addr, ports, protocol});
+  action get_hash2() {
+    bit<32> hash_val = hash2.get({ig_md.idx1, ig_md.remain1});
     ig_md.idx2 = hash_val[31:WATERFALL_BIT_WIDTH];
     ig_md.remain2 = hash_val[WATERFALL_BIT_WIDTH - 1:0];
   }
 
-  action get_hash3(bit<32> src_addr, bit<32> dst_addr, bit<32> ports, bit<8> protocol) {
-    bit<32> hash_val = hash3.get({src_addr, dst_addr, ports, protocol});
+  action get_hash2_swap() {
+    bit<32> hash_val = hash2_swap.get({ig_md.resubmit_md.idx, ig_md.out_remain1});
+    ig_md.idx2 = hash_val[31:WATERFALL_BIT_WIDTH];
+    ig_md.remain2 = hash_val[WATERFALL_BIT_WIDTH - 1:0];
+  }
+
+  action get_hash3() {
+    bit<32> hash_val = hash3.get({ig_md.idx2, ig_md.remain2});
     ig_md.idx3 = hash_val[31:WATERFALL_BIT_WIDTH];
     ig_md.remain3 = hash_val[WATERFALL_BIT_WIDTH - 1:0];
   }
 
-  action get_hash4(bit<32> src_addr, bit<32> dst_addr, bit<32> ports, bit<8> protocol) {
-    bit<32> hash_val = hash4.get({src_addr, dst_addr, ports, protocol});
+  action get_hash3_swap() {
+    bit<32> hash_val = hash3_swap.get({ig_md.idx2, ig_md.out_remain2});
+    ig_md.idx3 = hash_val[31:WATERFALL_BIT_WIDTH];
+    ig_md.remain3 = hash_val[WATERFALL_BIT_WIDTH - 1:0];
+  }
+
+  action get_hash4() {
+    bit<32> hash_val = hash4.get({ig_md.idx3, ig_md.remain3});
     ig_md.idx4 = hash_val[31:WATERFALL_BIT_WIDTH];
     ig_md.remain4 = hash_val[WATERFALL_BIT_WIDTH - 1:0];
   }
 
+  action get_hash4_swap() {
+    bit<32> hash_val = hash4_swap.get({ig_md.idx4, ig_md.out_remain4});
+    ig_md.idx4 = hash_val[31:WATERFALL_BIT_WIDTH];
+    ig_md.remain4 = hash_val[WATERFALL_BIT_WIDTH - 1:0];
+  }
+  
   action resubmit_hdr() {
     ig_md.resubmit_md.type = RESUB;
     ig_intr_dprsr_md.resubmit_type = DPRSR_RESUB;
@@ -326,44 +347,36 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
     size = 2;
   }
 
-
-  bit<32> key_1 = 0;
-  bit<32> key_2 = 0;
-  bit<32> ports = 0;
-  bit<8> proto = 0;
-
-
-  action reset_hash_val() {
-    key_2 = 0;
-    ports = 0;
-    proto = 0;
+  action check_and_swap1() {
+    ig_md.out_remain1 = table_1_swap.execute(ig_md.resubmit_md.idx);
   }
+
+  /*action check_and_swap2() {*/
+  /*}*/
+
+  /*action check_and_swap3() {*/
+  /*  get_hash3();*/
+  /*  ig_md.out_remain3 = table_3_swap.execute(ig_md.idx3);*/
+  /*}*/
+
+  /*action check_and_swap4() {*/
+  /*  get_hash4();*/
+  /*  ig_md.out_remain4 = table_4_swap.execute(ig_md.idx4);*/
+  /*}*/
 
   apply { 
     if (ig_intr_md.resubmit_flag == 0) {
-      key_1 = hdr.ipv4.src_addr;
-      key_2 = hdr.ipv4.dst_addr;
-      ports = ig_md.src_port ++ ig_md.dst_port;
-      proto = hdr.ipv4.protocol;
-      get_hash1(key_1, key_2, ports, proto);
-
-      key_1 = ig_md.idx1 ++ ig_md.remain1;
-      reset_hash_val();
-      /*key_1 = ig_md.remain1 ++ ig_md.idx1;*/
-      get_hash2(key_1, key_2, ports, proto);
-
-      key_1 = ig_md.idx2 ++ ig_md.remain2;
-      get_hash3(key_1, key_2, ports, proto);
-
-      key_1 = ig_md.idx3 ++ ig_md.remain3;
-      get_hash4(key_1, key_2, ports, proto);
+      get_hash1();
+      get_hash2();
+      get_hash3();
+      get_hash4();
 
       bool found_t_1 = table_1_lookup.execute(ig_md.idx1); 
       bool found_t_2 = table_2_lookup.execute(ig_md.idx2); 
       bool found_t_3 = table_3_lookup.execute(ig_md.idx3); 
       bool found_t_4 = table_4_lookup.execute(ig_md.idx4); 
 
-      if (found_t_1 || found_t_2 || found_t_3 || found_t_4) {
+      if (found_t_1 || found_t_2 || found_t_3 || found_t_4 ) {
         ig_md.found = true;
       } else {
         ig_md.found = false;
@@ -371,23 +384,20 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
       
       resub.apply();
     } else {
-      ig_md.idx1 = ig_md.resubmit_md.idx;
-      ig_md.remain1 = ig_md.resubmit_md.remain;
-      ig_md.out_remain = table_1_swap.execute(ig_md.idx1);
-      if ( ig_md.out_remain == 0x0) {
-        key_1 = ig_md.resubmit_md.idx ++ ig_md.out_remain;
-        reset_hash_val();
-        get_hash2(key_1, key_2, ports, proto);
+      check_and_swap1();
+      /*if ( ig_md.remain1 == 0x0) {*/
+        get_hash2_swap();
         ig_md.out_remain2 = table_2_swap.execute(ig_md.idx2);
-      /*} else if ( ig_md.out_remain2 == 0x0) {*/
-        key_1 = ig_md.idx2 ++ ig_md.out_remain2;
-        get_hash3(key_1, key_2, ports, proto);
+        /*check_and_swap2();*/
+      /*} else if ( ig_md.remain2 == 0x0) {*/
+        get_hash3_swap();
         ig_md.out_remain3 = table_3_swap.execute(ig_md.idx3);
-      /*} else if ( ig_md.out_remain3 == 0x0) {*/
-        key_1 = ig_md.idx3 ++ ig_md.out_remain3;
-        get_hash4(key_1, key_2, ports, proto);
+        /*check_and_swap3();*/
+      /*} else if ( ig_md.remain3 == 0x0) {*/
+        get_hash4_swap();
         ig_md.out_remain4 = table_4_swap.execute(ig_md.idx4);
-      }
+        /*check_and_swap4();*/
+      /*}*/
     }
 
     ig_intr_tm_md.ucast_egress_port = ig_intr_md.ingress_port;
