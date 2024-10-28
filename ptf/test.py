@@ -10,6 +10,8 @@ from p4testutils.misc_utils import *
 from bfruntime_client_base_tests import BfRuntimeTest
 import bfrt_grpc.bfruntime_pb2 as bfruntime_pb2
 import bfrt_grpc.client as gc
+from utils import *
+import numpy as np
 
 swports = get_sw_ports()
 project_name = 'waterfall'
@@ -62,7 +64,7 @@ class DigestResubmitTest(BfRuntimeTest):
         table_3 = self.table_3
         table_4 = self.table_4
 
-        num_entries = 1
+        num_entries = 2
         seed = 1001
         ip_list = self.generate_random_ip_list(num_entries, seed)
         ''' TC:1 Setting up port_metadata and resub'''
@@ -71,6 +73,8 @@ class DigestResubmitTest(BfRuntimeTest):
 
         key = resub.make_key([gc.KeyTuple('ig_md.found', True)])
         data = resub.make_data([], "SwitchIngress.no_resub")
+        resub.entry_add(target, [key], [data])
+
         key = resub.make_key([gc.KeyTuple('ig_md.found', False)])
         data = resub.make_data([], "SwitchIngress.resubmit_hdr")
         resub.entry_add(target, [key], [data])
@@ -78,24 +82,19 @@ class DigestResubmitTest(BfRuntimeTest):
         for ip_entry in ip_list:
             src_addr = getattr(ip_entry, "ip")
 
-            logger.info("Populating port_meta table...")
+            # logger.info("Populating port_meta table...")
             ig_port = swports[2]
-            port_meta_values = [random.getrandbits(32), random.getrandbits(32)]
 
-            # logger.debug(f"\tport metadata - inserting table entry with port {ig_port} and f1,f2 {port_meta_values}")
-            # key = port_meta.make_key([gc.KeyTuple('ig_intr_md.ingress_port', ig_port)])
-            # data = port_meta.make_data([gc.DataTuple('f1', port_meta_values[0]), gc.DataTuple('f2', port_meta_values[1])])
-            # port_meta.entry_add(target, [key], [data])
-
-
-            logger.info("Adding entries to port_meta and resub tables")
+            # logger.info("Adding entries to port_meta and resub tables")
             ''' TC:2 Send, receive and verify packets'''
             pkt_in = testutils.simple_tcp_packet(ip_src=src_addr)
-            logger.info("Sending simple packet to switch")
+            # logger.info("Sending simple packet to switch")
             testutils.send_packet(self, ig_port, pkt_in)
-            logger.info("Verifying simple packet has been correct...")
+            # logger.info("Verifying simple packet has been correct...")
             testutils.verify_packet(self, pkt_in, ig_port)
             logger.info("..packet received correctly")
+            # testutils.send_packet(self, ig_port, pkt_in)
+            # testutils.verify_packet(self, pkt_in, ig_port)
 
         ''' TC:3 Get data from the digest'''
         total_recv = 0
@@ -119,9 +118,9 @@ class DigestResubmitTest(BfRuntimeTest):
         assert(total_recv == num_entries)
 
         ''' TC:4 Validate received digest data'''
-        # Get data from table_1
+        # # Get data from table_1
         # summed = 0
-        # data_table_1 = table_1.entry_get(target, [])
+        # data_table_1 = table_1.entry_get(target, [], {"from_hw" : True})
         # for data, key in data_table_1:
         #     data_dict = data.to_dict()
         #     entry_val = data_dict[f"SwitchIngress.table_1.f1"][0]
@@ -130,11 +129,11 @@ class DigestResubmitTest(BfRuntimeTest):
         #         logger.info(data_dict)
         #         logger.info(entry_val.to_bytes(2,'big'))
         # logger.info(f"Table1 has {summed} total remainders")
-        # # assert(summed != 0)
-        #
-        # # Get data from table_2
+        # assert(summed != 0)
+        # #
+        # # # Get data from table_2
         # summed = 0
-        # data_table_2 = table_2.entry_get(target, [])
+        # data_table_2 = table_2.entry_get(target, [], {"from_hw" : True})
         # for data, key in data_table_2:
         #     data_dict = data.to_dict()
         #     entry_val = data_dict[f"SwitchIngress.table_2.f1"][0]
@@ -143,12 +142,12 @@ class DigestResubmitTest(BfRuntimeTest):
         #         logger.info(data_dict)
         #         logger.info(entry_val.to_bytes(2,'big'))
         #
-        # # assert(summed != 0)
+        # # # assert(summed != 0)
         # logger.info(f"Table2 has {summed} total remainders")
         #
         # # Get data from table_3
         # summed = 0
-        # data_table_3 = table_3.entry_get(target, [])
+        # data_table_3 = table_3.entry_get(target, [], {"from_hw" : True})
         # for data, key in data_table_3:
         #     data_dict = data.to_dict()
         #     entry_val = data_dict[f"SwitchIngress.table_3.f1"][0]
@@ -161,20 +160,40 @@ class DigestResubmitTest(BfRuntimeTest):
         # logger.info(f"Table3 has {summed} total remainders")
 
         # Get data from table_4
-        summed = 0
-        data_table_4 = table_4.entry_get(target, [])
-        for data, key in data_table_4:
-            data_dict = data.to_dict()
-            entry_val = data_dict[f"SwitchIngress.table_4.f1"][0]
-            summed += entry_val
-            if entry_val != 0:
-                logger.info(data_dict)
-                logger.info(entry_val.to_bytes(2,'big'))
+        # summed = 0
+        # data_table_4 = table_4.entry_get(target, [], {"from_hw" : True})
+        # for data, key in data_table_4:
+        #     data_dict = data.to_dict()
+        #     entry_val = data_dict[f"SwitchIngress.table_4.f1"][0]
+        #     summed += entry_val
+        #     if entry_val != 0:
+        #         logger.info(data_dict)
+        #         logger.info(entry_val.to_bytes(2,'big'))
 
         # assert(summed != 0)
-        logger.info(f"Table4 has {summed} total remainders")
-        data_5998, _ = next(table_4.entry_get(target, [table_4.make_key([gc.KeyTuple("$REGISTER_INDEX", 3411)])]))        
-        logger.info(data_5998)
+        # logger.info(f"Table4 has {summed} total remainders")
+
+        # Logs show storing in 0x1BB5 or 7093 while it is 0xBB5
+        data_BBB5, _ = next(table_1.entry_get(target, [table_1.make_key([gc.KeyTuple("$REGISTER_INDEX", 0xBBB5)])]))        
+        data_1BB5, _ = next(table_1.entry_get(target, [table_1.make_key([gc.KeyTuple("$REGISTER_INDEX", 0x1BB5)])]))        
+        logger.info(f"T1 Data in 0xBBB5 = {data_BBB5}")
+        logger.info(f"T1 Data in 0x1BB5 = {data_1BB5}")
+
+        # Logs show storing in 0x13AF but is stored in 0xB3AF as it should
+        data_B3AF, _ = next(table_2.entry_get(target, [table_2.make_key([gc.KeyTuple("$REGISTER_INDEX", 0xB3AF)])]))        
+        data_13AF, _ = next(table_2.entry_get(target, [table_2.make_key([gc.KeyTuple("$REGISTER_INDEX", 0x13AF)])]))        
+        logger.info(f"T2 Data in 0xB3AF = {data_B3AF}")
+        logger.info(f"T2 Data in 0x13AF = {data_13AF}")
+
+        data_E27D, _ = next(table_3.entry_get(target, [table_3.make_key([gc.KeyTuple("$REGISTER_INDEX", 0xE27D)])]))        
+        logger.info(f"T3 Data in 0xE27D = {data_E27D}")
+
+        # Logs show storing in 0x13D0 and it should be 0x13D0, but cannot get back results.
+        data_13D0, _ = next(table_4.entry_get(target, [table_4.make_key([gc.KeyTuple("$REGISTER_INDEX", 0x13D0)])]))        
+        data_B3D0, _ = next(table_4.entry_get(target, [table_4.make_key([gc.KeyTuple("$REGISTER_INDEX", 0xB3D0)])]))        
+        logger.info(f"T4 Data in 0x13D0 = {data_13D0}")
+        logger.info(f"T4 Data in 0xB3D0 = {data_B3D0}")
+
 
     def tearDown(self):
         logger.info("Tearing down test")
