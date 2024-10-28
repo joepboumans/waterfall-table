@@ -351,18 +351,17 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
     ig_md.out_remain1 = table_1_swap.execute(ig_md.resubmit_md.idx);
   }
 
-  /*action check_and_swap2() {*/
-  /*}*/
+  action check_and_swap2() {
+    ig_md.out_remain2 = table_2_swap.execute(ig_md.idx2);
+  }
 
-  /*action check_and_swap3() {*/
-  /*  get_hash3();*/
-  /*  ig_md.out_remain3 = table_3_swap.execute(ig_md.idx3);*/
-  /*}*/
+  action check_and_swap3() {
+    ig_md.out_remain3 = table_3_swap.execute(ig_md.idx3);
+  }
 
-  /*action check_and_swap4() {*/
-  /*  get_hash4();*/
-  /*  ig_md.out_remain4 = table_4_swap.execute(ig_md.idx4);*/
-  /*}*/
+  action check_and_swap4() {
+    ig_md.out_remain4 = table_4_swap.execute(ig_md.idx4);
+  }
 
   apply { 
     if (ig_intr_md.resubmit_flag == 0) {
@@ -385,19 +384,18 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
       resub.apply();
     } else {
       check_and_swap1();
-      /*if ( ig_md.remain1 == 0x0) {*/
+      if ( ig_md.out_remain1 == 0x0) {
         get_hash2_swap();
-        ig_md.out_remain2 = table_2_swap.execute(ig_md.idx2);
-        /*check_and_swap2();*/
-      /*} else if ( ig_md.remain2 == 0x0) {*/
-        get_hash3_swap();
-        ig_md.out_remain3 = table_3_swap.execute(ig_md.idx3);
-        /*check_and_swap3();*/
-      /*} else if ( ig_md.remain3 == 0x0) {*/
+        check_and_swap2();
+      }
+      if ( ig_md.out_remain2 == 0x0) {
+          get_hash3_swap();
+          check_and_swap3();
+      } 
+      if ( ig_md.out_remain3 == 0x0) {
         get_hash4_swap();
-        ig_md.out_remain4 = table_4_swap.execute(ig_md.idx4);
-        /*check_and_swap4();*/
-      /*}*/
+        check_and_swap4();
+      }
     }
 
     ig_intr_tm_md.ucast_egress_port = ig_intr_md.ingress_port;
