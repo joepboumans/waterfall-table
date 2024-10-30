@@ -52,6 +52,10 @@ struct digest_t {
   bit<16> src_port;
   bit<16> dst_port;
   bit<8> protocol;
+  bit<WATERFALL_REMAIN_BIT_WIDTH> remain1;
+  bit<WATERFALL_REMAIN_BIT_WIDTH> remain2;
+  bit<WATERFALL_REMAIN_BIT_WIDTH> remain3;
+  bit<WATERFALL_REMAIN_BIT_WIDTH> remain4;
 }
 
 struct metadata_t {
@@ -153,7 +157,8 @@ control SwitchIngressDeparser( packet_out pkt, inout header_t hdr, in metadata_t
 
   apply {
     if (ig_intr_dprsr_md.digest_type == 1) {
-      digest.pack({hdr.ipv4.src_addr, hdr.ipv4.dst_addr, ig_md.src_port, ig_md.dst_port, hdr.ipv4.protocol});
+      digest.pack({hdr.ipv4.src_addr, hdr.ipv4.dst_addr, ig_md.src_port, ig_md.dst_port, hdr.ipv4.protocol, ig_md.out_remain1, ig_md.out_remain2, ig_md.out_remain3, ig_md.out_remain4});
+      /*digest.pack({hdr.ipv4.src_addr, hdr.ipv4.dst_addr, ig_md.src_port, ig_md.dst_port, hdr.ipv4.protocol, ig_md.out_remain4});*/
     }
     if (ig_intr_dprsr_md.resubmit_type == DPRSR_RESUB) {
       resubmit.emit(ig_md.resubmit_md);
@@ -318,7 +323,7 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
   }
 
   action get_hash4_swap() {
-    bit<32> hash_val = hash4_swap.get({ig_md.idx4, ig_md.out_remain4});
+    bit<32> hash_val = hash4_swap.get({ig_md.idx4, ig_md.out_remain3});
     ig_md.idx4 = hash_val[31:WATERFALL_BIT_WIDTH];
     ig_md.remain4 = hash_val[WATERFALL_BIT_WIDTH - 1:0];
   }
@@ -326,7 +331,6 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
   action resubmit_hdr() {
     ig_md.resubmit_md.type = RESUB;
     ig_intr_dprsr_md.resubmit_type = DPRSR_RESUB;
-    ig_intr_dprsr_md.digest_type = 1;
     ig_md.resubmit_md.idx = ig_md.idx1;
     ig_md.resubmit_md.remain = ig_md.remain1;
   }
@@ -348,7 +352,7 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
   }
 
   action check_and_swap1() {
-    ig_md.out_remain1 = table_1_swap.execute(ig_md.resubmit_md.idx);
+    ig_md.out_remain1 = table_1_swap.execute(ig_md.idx1);
   }
 
   action check_and_swap2() {
@@ -383,18 +387,26 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
       
       resub.apply();
     } else {
+      ig_intr_dprsr_md.digest_type = 1;
+      ig_md.idx1 = ig_md.resubmit_md.idx;
       check_and_swap1();
-      if ( ig_md.out_remain1 == 0x0) {
+      if ( ig_md.out_remain1 != 0x0) {
         get_hash2_swap();
         check_and_swap2();
+      } else {
+        ig_md.out_remain2 = 0x0;
       }
-      if ( ig_md.out_remain2 == 0x0) {
+      if ( ig_md.out_remain2 != 0x0) {
           get_hash3_swap();
           check_and_swap3();
+      } else {
+        ig_md.out_remain3 = 0x0;
       } 
-      if ( ig_md.out_remain3 == 0x0) {
+      if ( ig_md.out_remain3 != 0x0) {
         get_hash4_swap();
         check_and_swap4();
+      } else {
+        ig_md.out_remain4 = 0x0;
       }
     }
 
