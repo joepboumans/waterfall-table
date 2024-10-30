@@ -52,7 +52,6 @@ class FullTest(BfRuntimeTest):
         logger.info("Finished setup")
 
     def runTest(self):
-        return
         logger.info("Start testing")
         ig_port = swports[0]
         target = self.target
@@ -91,6 +90,16 @@ class FullTest(BfRuntimeTest):
                 testutils.verify_packet(self, pkt_in, ig_port)
 
         ''' TC:3 Get data from the digest'''
+        self.evalutate_digest(num_entries)
+
+        ''' TC:4 Validate received digest data'''
+        self.evalutate_table("table_1")
+        self.evalutate_table("table_2")
+        self.evalutate_table("table_3")
+        self.evalutate_table("table_4")
+
+    def evalutate_digest(self, num_entries):
+        learn_filter = self.learn_filter
         total_recv = 0
         digest = self.interface.digest_get()
         while(digest != None):
@@ -104,19 +113,16 @@ class FullTest(BfRuntimeTest):
                 recv_src_port = data_dict["src_port"]
                 recv_dst_port = data_dict["dst_port"]
                 recv_protocol = data_dict["protocol"]
-                recv_dump = data_dict["dump"]
-                logger.info(f"{recv_src_addr = } : {recv_dst_addr = } | {recv_src_port = } {recv_dst_port = } | {recv_protocol = } | {recv_dump}")
+                recv_remain1 = data_dict["remain1"]
+                recv_remain2 = data_dict["remain2"]
+                recv_remain3 = data_dict["remain3"]
+                recv_remain4 = data_dict["remain4"]
+                logger.info(f"{recv_src_addr = } : {recv_dst_addr = } | {recv_src_port = } {recv_dst_port = } | {recv_protocol = } | {recv_remain1} {recv_remain2} {recv_remain3} {recv_remain4}")
             try:
                 digest = self.interface.digest_get()
             except:
                 break;
-        assert(total_recv == num_entries * num_entries)
-
-        ''' TC:4 Validate received digest data'''
-        self.evalutate_table("table_1")
-        self.evalutate_table("table_2")
-        self.evalutate_table("table_3")
-        self.evalutate_table("table_4")
+        assert(total_recv == num_entries)
 
     def evalutate_table(self, name):
         table = self.table_dict[name]
