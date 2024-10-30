@@ -227,7 +227,7 @@ class PassAllTables(BfRuntimeTest):
         self.evalutate_digest(num_entries * 5)
 
         ''' TC:4 Validate received digest data'''
-        logger.info(f"All tables should have {num_entries} of entries")
+        logger.info(f"All tables should have {num_entries} entries")
         self.evalutate_table("table_1")
         self.evalutate_table("table_2")
         self.evalutate_table("table_3")
