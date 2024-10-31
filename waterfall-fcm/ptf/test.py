@@ -47,7 +47,8 @@ class DigestResubmitTest(BfRuntimeTest):
         self.table_2 = self.bfrt_info.table_get("table_2")
         self.table_3 = self.bfrt_info.table_get("table_3")
         self.table_4 = self.bfrt_info.table_get("table_4")
-        self.table_dict = {"table_1" : self.table_1, "table_2" : self.table_2, "table_3" : self.table_3, "table_4" : self.table_4}
+        self.table_5 = self.bfrt_info.table_get("table_5")
+        self.table_dict = {"table_1" : self.table_1, "table_2" : self.table_2, "table_3" : self.table_3, "table_4" : self.table_4, "table_5" : self.table_5}
 
         self.target = gc.Target(device_id=0, pipe_id=0xffff)
         logger.info("Finished setup")
@@ -93,6 +94,7 @@ class DigestResubmitTest(BfRuntimeTest):
         self.evalutate_table("table_2")
         self.evalutate_table("table_3")
         self.evalutate_table("table_4")
+        self.evalutate_table("table_5")
 
     def evalutate_digest(self, num_entries):
         learn_filter = self.learn_filter
@@ -113,7 +115,8 @@ class DigestResubmitTest(BfRuntimeTest):
                 recv_remain2 = data_dict["remain2"]
                 recv_remain3 = data_dict["remain3"]
                 recv_remain4 = data_dict["remain4"]
-                logger.info(f"{recv_src_addr = } : {recv_dst_addr = } | {recv_src_port = } {recv_dst_port = } | {recv_protocol = } | {recv_remain1} {recv_remain2} {recv_remain3} {recv_remain4}")
+                recv_remain5 = data_dict["remain5"]
+                logger.info(f"{recv_src_addr = } : {recv_dst_addr = } | {recv_src_port = } {recv_dst_port = } | {recv_protocol = } | {recv_remain1} {recv_remain2} {recv_remain3} {recv_remain4} {recv_remain5}")
             try:
                 digest = self.interface.digest_get()
             except:
@@ -145,6 +148,7 @@ class DigestResubmitTest(BfRuntimeTest):
         self.table_2.entry_del(self.target)
         self.table_3.entry_del(self.target)
         self.table_4.entry_del(self.target)
+        self.table_4.entry_del(self.target)
 
         BfRuntimeTest.tearDown(self)
 
@@ -171,7 +175,8 @@ class PassAllTables(BfRuntimeTest):
         self.table_2 = self.bfrt_info.table_get("table_2")
         self.table_3 = self.bfrt_info.table_get("table_3")
         self.table_4 = self.bfrt_info.table_get("table_4")
-        self.table_dict = {"table_1" : self.table_1, "table_2" : self.table_2, "table_3" : self.table_3, "table_4" : self.table_4}
+        self.table_5 = self.bfrt_info.table_get("table_5")
+        self.table_dict = {"table_1" : self.table_1, "table_2" : self.table_2, "table_3" : self.table_3, "table_4" : self.table_4, "table_5" : self.table_5}
 
         self.target = gc.Target(device_id=0, pipe_id=0xffff)
         logger.info("Finished setup")
@@ -210,21 +215,14 @@ class PassAllTables(BfRuntimeTest):
             testutils.send_packet(self, ig_port, pkt_in)
             testutils.verify_packet(self, pkt_in, ig_port)
 
-            testutils.send_packet(self, ig_port, pkt_in)
-            testutils.verify_packet(self, pkt_in, ig_port)
+            for _ in range(len(self.table_dict.items())):
+                testutils.send_packet(self, ig_port, pkt_in)
+                testutils.verify_packet(self, pkt_in, ig_port)
 
-            testutils.send_packet(self, ig_port, pkt_in)
-            testutils.verify_packet(self, pkt_in, ig_port)
-
-            testutils.send_packet(self, ig_port, pkt_in)
-            testutils.verify_packet(self, pkt_in, ig_port)
-
-            testutils.send_packet(self, ig_port, pkt_in)
-            testutils.verify_packet(self, pkt_in, ig_port)
             logger.info("..all packets sent and received")
 
         ''' TC:3 Get data from the digest'''
-        self.evalutate_digest(num_entries * 5)
+        self.evalutate_digest(num_entries * (len(self.table_dict.items()) + 1))
 
         ''' TC:4 Validate received digest data'''
         logger.info(f"All tables should have {num_entries} entries")
@@ -232,6 +230,7 @@ class PassAllTables(BfRuntimeTest):
         self.evalutate_table("table_2")
         self.evalutate_table("table_3")
         self.evalutate_table("table_4")
+        self.evalutate_table("table_5")
 
     def evalutate_digest(self, num_entries):
         learn_filter = self.learn_filter
@@ -252,7 +251,8 @@ class PassAllTables(BfRuntimeTest):
                 recv_remain2 = data_dict["remain2"]
                 recv_remain3 = data_dict["remain3"]
                 recv_remain4 = data_dict["remain4"]
-                logger.info(f"{recv_src_addr = } : {recv_dst_addr = } | {recv_src_port = } {recv_dst_port = } | {recv_protocol = } | {recv_remain1} {recv_remain2} {recv_remain3} {recv_remain4}")
+                recv_remain5 = data_dict["remain5"]
+                logger.info(f"{recv_src_addr = } : {recv_dst_addr = } | {recv_src_port = } {recv_dst_port = } | {recv_protocol = } | {recv_remain1} {recv_remain2} {recv_remain3} {recv_remain4} {recv_remain5}")
             try:
                 digest = self.interface.digest_get()
             except:
@@ -282,5 +282,6 @@ class PassAllTables(BfRuntimeTest):
         self.table_2.entry_del(self.target)
         self.table_3.entry_del(self.target)
         self.table_4.entry_del(self.target)
+        self.table_5.entry_del(self.target)
 
         BfRuntimeTest.tearDown(self)
