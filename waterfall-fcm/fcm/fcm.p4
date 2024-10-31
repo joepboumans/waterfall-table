@@ -1,3 +1,6 @@
+#ifndef _FCM_
+#define _FCM_
+
 /* -*- P4_16 -*- */
 
 // ------------------------------------------------------------
@@ -29,9 +32,8 @@
 #include <tna.p4>
 #endif
 
-#include "common/headers.p4"
-#include "common/util.p4"
-
+#include "../common/headers.p4"
+#include "../common/util.p4"
 
 #define SKETCH_W1 0x80000 // 8 bits, width at layer 1, 2^19 = 524288
 #define SKETCH_W2 0x10000 // 16 bits, width at layer 2, 2^16 = 65536
@@ -56,31 +58,26 @@ struct fcm_metadata_t {
     bit<32> increment_occupied;
 }
 
-// for ingress metadata
-struct metadata_t {
-	fcm_metadata_t	fcm_mdata;
-}
-
 // ---------------------------------------------------------------------------
-// Ingress parser
+// FCM Egress parser
 // ---------------------------------------------------------------------------
 
-parser SwitchIngressParser(
+parser FcmEgressParser(
         packet_in pkt,
         out header_t hdr,
-        out metadata_t ig_md,
-        out ingress_intrinsic_metadata_t ig_intr_md) {
+        out fcm_metadata_t eg_md,
+        out egress_intrinsic_metadata_t eg_intr_md) {
 
-    TofinoIngressParser() tofino_parser;
+    TofinoEgressParser() tofino_parser;
 
     state start {
-        tofino_parser.apply(pkt, ig_intr_md);
+        tofino_parser.apply(pkt, eg_intr_md);
         // initialize metadata
-    	ig_md.fcm_mdata.result_d1 = 0;
-    	ig_md.fcm_mdata.result_d2 = 0;
-    	ig_md.fcm_mdata.increment_occupied = 0;
+    	eg_md.result_d1 = 0;
+    	eg_md.result_d2 = 0;
+    	eg_md.increment_occupied = 0;
 
-        transition parse_ethernet;
+      transition parse_ethernet;
     }
 
     state parse_ethernet {
@@ -115,22 +112,6 @@ parser SwitchIngressParser(
     }
 }
 
-// ---------------------------------------------------------------------------
-// Ingress Deparser
-// ---------------------------------------------------------------------------
-control SwitchIngressDeparser(
-        packet_out pkt,
-        inout header_t hdr,
-        in metadata_t ig_md,
-        in ingress_intrinsic_metadata_for_deparser_t ig_dprsr_md) {
-
-    apply {
-        pkt.emit(hdr);
-        pkt.emit(hdr.ipv4);
-        pkt.emit(hdr.tcp);
-        pkt.emit(hdr.udp);
-    }
-}
 
 // ---------------------------------------------------------------------------
 // FCM logic control block
@@ -139,8 +120,7 @@ control FCMSketch (
 	inout header_t hdr,
 	out fcm_metadata_t fcm_mdata,
 	out bit<19> num_occupied_reg, 
-	out bit<32> flow_size,
-    out bit<32> cardinality) {
+	out bit<32> flow_size) {
 
 	// +++++++++++++++++++ 
 	//	hashings & hash action
@@ -276,18 +256,18 @@ control FCMSketch (
 
 
 	// increment reg of occupied leaf number
-	action fcm_action_increment_cardreg() {
-		num_occupied_reg = (increment_occupied_reg.execute(0))[19:1];
-	}
+	/*action fcm_action_increment_cardreg() {*/
+	/*	num_occupied_reg = (increment_occupied_reg.execute(0))[19:1];*/
+	/*}*/
 
 	action fcm_action_check_occupied(bit<32> increment_val) {
 		fcm_mdata.increment_occupied = increment_val;
 	}
 
 
-	action fcm_action_set_cardinality(bit<32> card_match) {
-		cardinality = card_match;
-	}
+	/*action fcm_action_set_cardinality(bit<32> card_match) {*/
+	/*	cardinality = card_match;*/
+	/*}*/
 
 	// +++++++++++++++++++ 
 	//	tables
@@ -379,16 +359,16 @@ control FCMSketch (
 	// look up LC cardinality using number of empty counters at level 1
 	// [30:12] : divide by 2 ("average" empty_reg number). 
 	// Each array size is 2 ** 19, so slice 19 bits
-	table tb_fcm_cardinality {
-		key = {
-			num_occupied_reg : range; // 19 bits
-		}
-		actions = {
-			fcm_action_set_cardinality;
-		}
-		const default_action = fcm_action_set_cardinality(0);
-		size = 4096;
-	}
+	/*table tb_fcm_cardinality {*/
+	/*	key = {*/
+	/*		num_occupied_reg : range; // 19 bits*/
+	/*	}*/
+	/*	actions = {*/
+	/*		fcm_action_set_cardinality;*/
+	/*	}*/
+	/*	const default_action = fcm_action_set_cardinality(0);*/
+	/*	size = 4096;*/
+	/*}*/
 
 
 	// +++++++++++++++++++ 
@@ -399,8 +379,8 @@ control FCMSketch (
 		fcm_action_l1_d2();			// increment level 1, depth 2
 		/* increment the number of occupied leaf nodes */
 		tb_fcm_increment_occupied.apply(); 
-		fcm_action_increment_cardreg(); 
-		tb_fcm_cardinality.apply(); // calculate cardinality estimate
+		/*fcm_action_increment_cardreg(); */
+		/*tb_fcm_cardinality.apply(); // calculate cardinality estimate*/
 		tb_fcm_l1_to_l2_d1.apply(); // conditional increment level 2, depth 1
 		tb_fcm_l1_to_l2_d2.apply(); // conditional increment level 2, depth 2
 		tb_fcm_l2_to_l3_d1.apply(); // conditional increment level 3, depth 1
@@ -412,13 +392,13 @@ control FCMSketch (
 }
 
 
-control SwitchIngress(
+control FcmEgress(
         inout header_t hdr,
-        inout metadata_t ig_md,
-        in ingress_intrinsic_metadata_t ig_intr_md,
-        in ingress_intrinsic_metadata_from_parser_t ig_prsr_md,
-        inout ingress_intrinsic_metadata_for_deparser_t ig_dprsr_md,
-        inout ingress_intrinsic_metadata_for_tm_t ig_tm_md) {
+        inout fcm_metadata_t eg_md,
+        in egress_intrinsic_metadata_t eg_intr_md,
+        in egress_intrinsic_metadata_from_parser_t eg_prsr_md,
+        inout egress_intrinsic_metadata_for_deparser_t eg_dprsr_md,
+        inout egress_intrinsic_metadata_for_output_port_t eg_oport_md) {
 
 
 		/*** temp ***/
@@ -441,28 +421,31 @@ control SwitchIngress(
 		apply {
 			bit<19> num_occupied_reg; // local variable for cardinality
 			bit<32> flow_size; // local variable for final query
-		    bit<32> cardinality; // local variable for final query
+		    /*bit<32> cardinality; // local variable for final query*/
 			
 			count_pkt(); // temp
 			fcmsketch.apply(hdr, 
-							ig_md.fcm_mdata, 
+							eg_md, 
 							num_occupied_reg, 
-							flow_size, 
-							cardinality);
+							flow_size);
 		}
 }
 
+// ---------------------------------------------------------------------------
+// FCM Egress Deparser
+// ---------------------------------------------------------------------------
+control FcmEgressDeparser(
+        packet_out pkt,
+        inout header_t hdr,
+        in fcm_metadata_t eg_md,
+        in egress_intrinsic_metadata_for_deparser_t eg_dprsr_md) {
 
+    apply {
+        pkt.emit(hdr);
+        pkt.emit(hdr.ipv4);
+        pkt.emit(hdr.tcp);
+        pkt.emit(hdr.udp);
+    }
+}
 
-
-Pipeline(SwitchIngressParser(),
-         SwitchIngress(),
-         SwitchIngressDeparser(),
-         EmptyEgressParser(),
-         EmptyEgress(),
-         EmptyEgressDeparser()
-         ) pipe;
-
-Switch(pipe) main;
-
-
+#endif // !_FCM_

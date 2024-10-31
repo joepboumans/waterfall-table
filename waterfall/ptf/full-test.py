@@ -14,7 +14,7 @@ from utils import *
 import numpy as np
 
 swports = get_sw_ports()
-project_name = 'waterfall'
+project_name = 'waterfall_fcm'
 logger = logging.getLogger(project_name)
 
 if not len(logger.handlers):

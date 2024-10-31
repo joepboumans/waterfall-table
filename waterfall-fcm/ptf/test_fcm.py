@@ -56,6 +56,8 @@ logger = logging.getLogger('Test')
 if not len(logger.handlers):
     logger.addHandler(logging.StreamHandler())
 
+name = "waterfall_fcm"
+
 swports = []
 for device, port, ifname in config["interfaces"]:
     swports.append(port)
@@ -81,7 +83,7 @@ class FCMTest(BfRuntimeTest):
 		num_pipes = int(testutils.test_param_get('num_pipes'))
 
 		logger.info("[INFO-Switch] Adding TCAM Ranges for cardinality...")
-		bfrt_info = self.interface.bfrt_info_get("fcm")
+		bfrt_info = self.interface.bfrt_info_get(name)
 		card_range_tcam = bfrt_info.table_get("SwitchIngress.fcmsketch.tb_fcm_cardinality")
 		target = gc.Target(device_id=0, pipe_id=0xffff)
 

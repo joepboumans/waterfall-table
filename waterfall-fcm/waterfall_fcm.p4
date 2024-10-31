@@ -29,17 +29,10 @@
 #include "common/util.p4"
 
 #include "waterfall/waterfall.p4"
+#include "fcm/fcm.p4"
 
-
-// FCM Sketch defines
-#define SKETCH_W1 0x80000 // 8 bits, width at layer 1, 2^19 = 524288
-#define SKETCH_W2 0x10000 // 16 bits, width at layer 2, 2^16 = 65536
-#define SKETCH_W3 0x2000 // 32 bits, width at layer 3, 2^13 = 8192 
-
-#define ADD_LEVEL1 0x000000ff // 2^8 - 2 + 1 (property of SALU)
-#define ADD_LEVEL2 0x000100fd // (2^8 - 2) + (2^16 - 2) + 1 (property of SALU)
 
 Pipeline(WaterfallIngressParser(), WaterfallIngress(), WaterfallIngressDeparser(),
-         EmptyEgressParser(), EmptyEgress(), EmptyEgressDeparser()) pipe;
+         FcmEgressParser(), FcmEgress(), FcmEgressDeparser()) pipe;
 
 Switch(pipe) main;

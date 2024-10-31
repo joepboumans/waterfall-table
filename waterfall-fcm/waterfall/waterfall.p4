@@ -430,7 +430,6 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     }
 
     ig_intr_tm_md.ucast_egress_port = ig_intr_md.ingress_port;
-    ig_intr_tm_md.bypass_egress = 1w1;
   }
 }
 // ---------------------------------------------------------------------------
