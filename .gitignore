@@ -1,7 +1,8 @@
 cmake*
 CMake*
 Make*
-waterfall/
+waterfall/waterfall/*
+waterfall-fcm/waterfall_fcm/*
 pcap_output
 bf_drivers.*
 model*
