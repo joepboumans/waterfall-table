@@ -326,7 +326,7 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
     key = {
       ig_intr_md.resubmit_flag : exact;
     }
-    actions = {
+    actions = { 
       do_swap1;
       lookup1;
       no_action;
