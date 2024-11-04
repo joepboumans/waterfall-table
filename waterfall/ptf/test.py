@@ -47,8 +47,6 @@ class DigestResubmitTest(BfRuntimeTest):
         self.table_2 = self.bfrt_info.table_get("table_2")
         self.table_3 = self.bfrt_info.table_get("table_3")
         self.table_4 = self.bfrt_info.table_get("table_4")
-        # self.table_5 = self.bfrt_info.table_get("table_5")
-        # self.table_dict = {"table_1" : self.table_1, "table_2" : self.table_2, "table_3" : self.table_3, "table_4" : self.table_4, "table_5" : self.table_5}
         self.table_dict = {"table_1" : self.table_1, "table_2" : self.table_2, "table_3" : self.table_3, "table_4" : self.table_4}
 
         self.swap1 = self.bfrt_info.table_get("swap1")
@@ -162,8 +160,6 @@ class DigestResubmitTest(BfRuntimeTest):
                 recv_remain2 = data_dict["remain2"]
                 recv_remain3 = data_dict["remain3"]
                 recv_remain4 = data_dict["remain4"]
-                # recv_remain5 = data_dict["remain5"]
-                # logger.info(f"{recv_src_addr = } : {recv_dst_addr = } | {recv_src_port = } {recv_dst_port = } | {recv_protocol = } | {recv_remain1} {recv_remain2} {recv_remain3} {recv_remain4} {recv_remain5}")
                 logger.info(f"{recv_src_addr = } : {recv_dst_addr = } | {recv_src_port = } {recv_dst_port = } | {recv_protocol = } | {recv_remain1} {recv_remain2} {recv_remain3} {recv_remain4}")
             try:
                 digest = self.interface.digest_get()
@@ -227,8 +223,6 @@ class PassAllTables(BfRuntimeTest):
         self.table_2 = self.bfrt_info.table_get("table_2")
         self.table_3 = self.bfrt_info.table_get("table_3")
         self.table_4 = self.bfrt_info.table_get("table_4")
-        # self.table_5 = self.bfrt_info.table_get("table_5")
-        # self.table_dict = {"table_1" : self.table_1, "table_2" : self.table_2, "table_3" : self.table_3, "table_4" : self.table_4, "table_5" : self.table_5}
         self.table_dict = {"table_1" : self.table_1, "table_2" : self.table_2, "table_3" : self.table_3, "table_4" : self.table_4}
 
         self.swap1 = self.bfrt_info.table_get("swap1")
@@ -325,7 +319,6 @@ class PassAllTables(BfRuntimeTest):
         self.evalutate_table("table_2")
         self.evalutate_table("table_3")
         self.evalutate_table("table_4")
-        # self.evalutate_table("table_5")
 
     def evalutate_digest(self, num_entries):
         learn_filter = self.learn_filter
@@ -346,8 +339,6 @@ class PassAllTables(BfRuntimeTest):
                 recv_remain2 = data_dict["remain2"]
                 recv_remain3 = data_dict["remain3"]
                 recv_remain4 = data_dict["remain4"]
-                # recv_remain5 = data_dict["remain5"]
-                # logger.info(f"{recv_src_addr = } : {recv_dst_addr = } | {recv_src_port = } {recv_dst_port = } | {recv_protocol = } | {recv_remain1} {recv_remain2} {recv_remain3} {recv_remain4} {recv_remain5}")
                 logger.info(f"{recv_src_addr = } : {recv_dst_addr = } | {recv_src_port = } {recv_dst_port = } | {recv_protocol = } | {recv_remain1} {recv_remain2} {recv_remain3} {recv_remain4}")
             try:
                 digest = self.interface.digest_get()
@@ -378,7 +369,6 @@ class PassAllTables(BfRuntimeTest):
         self.table_2.entry_del(self.target)
         self.table_3.entry_del(self.target)
         self.table_4.entry_del(self.target)
-        # self.table_5.entry_del(self.target)
 
         self.swap1.entry_del(self.target)
         self.swap2.entry_del(self.target)
