@@ -80,7 +80,7 @@ struct metadata_t {
   /*bit<WATERFALL_REMAIN_BIT_WIDTH> out_remain5;*/
   bit<16> src_port;
   bit<16> dst_port;
-  bit<4> found;
+  bool found;
 }
 
 // ---------------------------------------------------------------------------
@@ -184,34 +184,34 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
   /*Register<bit<WATERFALL_REMAIN_BIT_WIDTH>, bit<WATERFALL_BIT_WIDTH>>(WATERFALL_WIDTH, 0) table_5;*/
 
 
-  RegisterAction<bit<WATERFALL_REMAIN_BIT_WIDTH>, bit<WATERFALL_BIT_WIDTH>, bit<4>>(table_1) table_1_lookup = {
-    void apply(inout bit<WATERFALL_REMAIN_BIT_WIDTH> val, out bit<4> read_value) {
+  RegisterAction<bit<WATERFALL_REMAIN_BIT_WIDTH>, bit<WATERFALL_BIT_WIDTH>, bool>(table_1) table_1_lookup = {
+    void apply(inout bit<WATERFALL_REMAIN_BIT_WIDTH> val, out bool read_value) {
       if (ig_md.remain1 == val) {
-        read_value = 0x1;
+        read_value = true;
       }
     }
   };
 
-  RegisterAction<bit<WATERFALL_REMAIN_BIT_WIDTH>, bit<WATERFALL_BIT_WIDTH>, bit<4>>(table_2) table_2_lookup = {
-    void apply(inout bit<WATERFALL_REMAIN_BIT_WIDTH> val, out bit<4> read_value) {
+  RegisterAction<bit<WATERFALL_REMAIN_BIT_WIDTH>, bit<WATERFALL_BIT_WIDTH>, bool>(table_2) table_2_lookup = {
+    void apply(inout bit<WATERFALL_REMAIN_BIT_WIDTH> val, out bool read_value) {
       if (ig_md.remain2 == val) {
-        read_value = 0x1;
+        read_value = true;
       }
     }
   };
 
-  RegisterAction<bit<WATERFALL_REMAIN_BIT_WIDTH>, bit<WATERFALL_BIT_WIDTH>, bit<4>>(table_3) table_3_lookup = {
-    void apply(inout bit<WATERFALL_REMAIN_BIT_WIDTH> val, out bit<4> read_value) {
+  RegisterAction<bit<WATERFALL_REMAIN_BIT_WIDTH>, bit<WATERFALL_BIT_WIDTH>, bool>(table_3) table_3_lookup = {
+    void apply(inout bit<WATERFALL_REMAIN_BIT_WIDTH> val, out bool read_value) {
       if (ig_md.remain3 == val) {
-        read_value = 0x1;
+        read_value = true;
       }
     }
   };
 
-  RegisterAction<bit<WATERFALL_REMAIN_BIT_WIDTH>, bit<WATERFALL_BIT_WIDTH>, bit<4>>(table_4) table_4_lookup = {
-    void apply(inout bit<WATERFALL_REMAIN_BIT_WIDTH> val, out bit<4> read_value) {
+  RegisterAction<bit<WATERFALL_REMAIN_BIT_WIDTH>, bit<WATERFALL_BIT_WIDTH>, bool>(table_4) table_4_lookup = {
+    void apply(inout bit<WATERFALL_REMAIN_BIT_WIDTH> val, out bool read_value) {
       if (ig_md.remain4 == val) {
-        read_value = 0x1;
+        read_value = true;
       }
     }
   };
@@ -311,46 +311,46 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
   /*Hash<bit<32>>(HashAlgorithm_t.CUSTOM, CRC32_5) hash5_swap;*/
 
   action get_hash1() {
-    bit<32> hash_val = hash1.get({hdr.ipv4.src_addr, hdr.ipv4.dst_addr, ig_md.src_port ++ ig_md.dst_port, hdr.ipv4.protocol});
+    bit<32> hash_val = hash1.get({hdr.ipv4.src_addr, hdr.ipv4.dst_addr, ig_md.src_port, ig_md.dst_port, hdr.ipv4.protocol});
     ig_md.idx1 = hash_val[31:WATERFALL_BIT_WIDTH];
     ig_md.remain1 = hash_val[WATERFALL_BIT_WIDTH - 1:0];
   }
 
   action get_hash2() {
-    bit<32> hash_val = hash2.get({ig_md.idx1, ig_md.remain1});
+    bit<32> hash_val = hash2.get({ig_md.idx1, ig_md.out_remain1});
     ig_md.idx2 = hash_val[31:WATERFALL_BIT_WIDTH];
     ig_md.remain2 = hash_val[WATERFALL_BIT_WIDTH - 1:0];
   }
 
-  action get_hash2_swap() {
-    bit<32> hash_val = hash2_swap.get({ig_md.resubmit_md.idx, ig_md.out_remain1});
-    ig_md.idx2 = hash_val[31:WATERFALL_BIT_WIDTH];
-    ig_md.remain2 = hash_val[WATERFALL_BIT_WIDTH - 1:0];
-  }
+  /*action get_hash2_swap() {*/
+  /*  bit<32> hash_val = hash2_swap.get({ig_md.idx1, ig_md.out_remain1});*/
+  /*  ig_md.idx2 = hash_val[31:WATERFALL_BIT_WIDTH];*/
+  /*  ig_md.remain2 = hash_val[WATERFALL_BIT_WIDTH - 1:0];*/
+  /*}*/
 
   action get_hash3() {
-    bit<32> hash_val = hash3.get({ig_md.idx2, ig_md.remain2});
+    bit<32> hash_val = hash3.get({ig_md.idx2, ig_md.out_remain2});
     ig_md.idx3 = hash_val[31:WATERFALL_BIT_WIDTH];
     ig_md.remain3 = hash_val[WATERFALL_BIT_WIDTH - 1:0];
   }
 
-  action get_hash3_swap() {
-    bit<32> hash_val = hash3_swap.get({ig_md.idx2, ig_md.out_remain2});
-    ig_md.idx3 = hash_val[31:WATERFALL_BIT_WIDTH];
-    ig_md.remain3 = hash_val[WATERFALL_BIT_WIDTH - 1:0];
-  }
+  /*action get_hash3_swap() {*/
+  /*  bit<32> hash_val = hash3_swap.get({ig_md.idx2, ig_md.out_remain2});*/
+  /*  ig_md.idx3 = hash_val[31:WATERFALL_BIT_WIDTH];*/
+  /*  ig_md.remain3 = hash_val[WATERFALL_BIT_WIDTH - 1:0];*/
+  /*}*/
 
   action get_hash4() {
-    bit<32> hash_val = hash4.get({ig_md.idx3, ig_md.remain3});
+    bit<32> hash_val = hash4.get({ig_md.idx3, ig_md.out_remain3});
     ig_md.idx4 = hash_val[31:WATERFALL_BIT_WIDTH];
     ig_md.remain4 = hash_val[WATERFALL_BIT_WIDTH - 1:0];
   }
 
-  action get_hash4_swap() {
-    bit<32> hash_val = hash4_swap.get({ig_md.idx3, ig_md.out_remain3});
-    ig_md.idx4 = hash_val[31:WATERFALL_BIT_WIDTH];
-    ig_md.remain4 = hash_val[WATERFALL_BIT_WIDTH - 1:0];
-  }
+  /*action get_hash4_swap() {*/
+  /*  bit<32> hash_val = hash4_swap.get({ig_md.idx3, ig_md.out_remain3});*/
+  /*  ig_md.idx4 = hash_val[31:WATERFALL_BIT_WIDTH];*/
+  /*  ig_md.remain4 = hash_val[WATERFALL_BIT_WIDTH - 1:0];*/
+  /*}*/
   
   /*action get_hash5() {*/
   /*  bit<32> hash_val = hash5.get({ig_md.idx4, ig_md.remain4});*/
@@ -377,6 +377,7 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
   table resub {
     key = {
       ig_md.found : exact;
+      ig_intr_md.resubmit_flag : exact;
     }
     actions = {
       resubmit_hdr;
@@ -384,15 +385,54 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
       drop;
     }
     default_action = no_action;
-    size = 2;
+    size = 3;
   }
 
   action do_swap1() {
+    ig_intr_dprsr_md.digest_type = 1;
     ig_md.out_remain1 = table_1_swap.execute(ig_md.idx1);
   }
 
+  action remain1_to_out() {
+    ig_md.remain1 = ig_md.out_remain1;
+  }
+
+  action lookup1(){
+      ig_md.found = false;
+      ig_md.found = table_1_lookup.execute(ig_md.idx1); 
+      ig_md.out_remain1 = ig_md.remain1;
+  }
+
+  table swap1 {
+    key = {
+      ig_intr_md.resubmit_flag : exact;
+    }
+    actions = {
+      do_swap1;
+      lookup1;
+      no_action;
+    }
+    default_action = no_action;
+    size = 2;
+  }
+
+  table hash1_out_remain {
+    key = {
+      ig_intr_md.resubmit_flag : exact;
+    }
+    actions = {
+      remain1_to_out;
+      no_action;
+    }
+    default_action = no_action;
+    size = 1;
+  }
   /*action do_swap5() {*/
   /*  ig_md.out_remain5 = table_5_swap.execute(ig_md.idx5);*/
+  /*}*/
+
+  /*action remain2_to_out() {*/
+  /*  ig_md.remain2 = ig_md.out_remain2;*/
   /*}*/
 
   action do_swap2() {
@@ -403,18 +443,38 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
     ig_md.out_remain2 = 0x0;
   }
 
+  action lookup2(){
+      ig_md.found = table_2_lookup.execute(ig_md.idx2); 
+      ig_md.out_remain2 = ig_md.remain2;
+  }
+
+
   table swap2 {
     key = {
       ig_md.out_remain1 : range;
+      ig_intr_md.resubmit_flag : exact;
     }
     actions = {
       do_swap2;
       no_swap2;
+      lookup2;
     }
     default_action = no_swap2;
-    size = 1;
+    size = 3;
   }
 
+
+  /*table hash2_out_remain {*/
+  /*  key = {*/
+  /*    ig_intr_md.resubmit_flag : exact;*/
+  /*  }*/
+  /*  actions = {*/
+  /*    remain2_to_out;*/
+  /*    no_action;*/
+  /*  }*/
+  /*  default_action = no_action;*/
+  /*  size = 1;*/
+  /*}*/
 
   action do_swap3() {
     ig_md.out_remain3 = table_3_swap.execute(ig_md.idx3);
@@ -424,16 +484,27 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
     ig_md.out_remain3 = 0x0;
   }
 
+  action lookup3(){
+      ig_md.found = table_3_lookup.execute(ig_md.idx3); 
+      ig_md.out_remain3 = ig_md.remain3;
+  }
+
+  action remain3_to_out() {
+    ig_md.remain3 = ig_md.out_remain3;
+  }
+
   table swap3 {
     key = {
       ig_md.out_remain2 : range;
+      ig_intr_md.resubmit_flag : exact;
     }
     actions = {
       do_swap3;
       no_swap3;
+      lookup3;
     }
     default_action = no_swap3;
-    size = 1;
+    size = 2;
   }
 
   action do_swap4() {
@@ -444,16 +515,26 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
     ig_md.out_remain4 = 0x0;
   }
 
+  action lookup4(){
+    ig_md.found = table_4_lookup.execute(ig_md.idx4); 
+  }
+
+  action remain4_to_out() {
+    ig_md.remain4 = ig_md.out_remain4;
+  }
+
   table swap4 {
     key = {
       ig_md.out_remain3 : range;
+      ig_intr_md.resubmit_flag : exact;
     }
     actions = {
       do_swap4;
       no_swap4;
+      lookup4;
     }
     default_action = no_swap4;
-    size = 1;
+    size = 2;
   }
 
   action bypass_and_set_egress() {
@@ -462,45 +543,65 @@ control SwitchIngress(inout header_t hdr, inout metadata_t ig_md,
   }
 
   apply { 
-    if (ig_intr_md.resubmit_flag == 0) {
-      get_hash1();
-      get_hash2();
-      get_hash3();
-      get_hash4();
+    ig_md.idx1 = ig_md.resubmit_md.idx;
+    get_hash1();
+    swap1.apply();
+    /*hash1_out_remain.apply();*/
+    
+    get_hash2();
+    swap2.apply();
+    /*hash2_out_remain.apply();*/
+
+    get_hash3();
+    swap3.apply();
+    /*remain3_to_out();*/
+
+    get_hash4();
+    swap4.apply();
+    /*remain4_to_out();*/
+
+    resub.apply();
+    /*if (ig_intr_md.resubmit_flag == 0) {*/
+    /*  get_hash1();*/
+    /*  get_hash2();*/
+    /*  get_hash3();*/
+    /*  get_hash4();*/
       /*get_hash5();*/
-
-      ig_md.found = table_1_lookup.execute(ig_md.idx1); 
-      ig_md.found = table_2_lookup.execute(ig_md.idx2); 
-      ig_md.found = table_3_lookup.execute(ig_md.idx3); 
-      ig_md.found = table_4_lookup.execute(ig_md.idx4); 
+    /**/
+    /*  ig_md.found = table_3_lookup.execute(ig_md.idx3); */
+    /*  ig_md.found = table_4_lookup.execute(ig_md.idx4); */
       /*bool found_t_5 = table_5_lookup.execute(ig_md.idx5); */
-
+    /**/
       /*if (found_t_1 || found_t_2 || found_t_3 || found_t_4 || found_t_5 ) {*/
       /*if (found_t_1 || found_t_2 || found_t_3 || found_t_4) {*/
       /*  ig_md.found = true;*/
       /*} else {*/
       /*  ig_md.found = false;*/
       /*}*/
-      
-      resub.apply();
-    } else {
-      ig_intr_dprsr_md.digest_type = 1;
-      ig_md.idx1 = ig_md.resubmit_md.idx;
-      do_swap1();
-      get_hash2_swap();
-      swap2.apply();
-      get_hash3_swap();
-      swap3.apply();
-      get_hash4_swap();
-      swap4.apply();
-
+    /**/
+    /*  resub.apply();*/
+    /*} else {*/
+    /*  ig_intr_dprsr_md.digest_type = 1;*/
+    /*  ig_md.idx1 = ig_md.resubmit_md.idx;*/
+    /*  do_swap1();*/
+    /*  remain1_to_out();*/
+      /*get_hash2_swap();*/
+    /*  get_hash2();*/
+    /*  swap2.apply();*/
+    /*  remain2_to_out();*/
+      /*get_hash3_swap();*/
+    /*  get_hash3();*/
+    /*  swap3.apply();*/
+    /*  get_hash4_swap();*/
+    /*  swap4.apply();*/
+    /**/
       /*if ( ig_md.out_remain4 != 0x0) {*/
       /*  get_hash5_swap();*/
       /*  do_swap5();*/
       /*} else {*/
       /*  ig_md.out_remain5 = 0x0;*/
       /*}*/
-    }
+    /*}*/
 
     bypass_and_set_egress();
   }

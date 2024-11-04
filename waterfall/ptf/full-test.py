@@ -50,11 +50,15 @@ class FullTest(BfRuntimeTest):
         # self.table_dict = {"table_1" : self.table_1, "table_2" : self.table_2, "table_3" : self.table_3, "table_4" : self.table_4, "table_5" : self.table_5}
         self.table_dict = {"table_1" : self.table_1, "table_2" : self.table_2, "table_3" : self.table_3, "table_4" : self.table_4}
 
+        self.swap1 = self.bfrt_info.table_get("swap1")
+        self.swap2 = self.bfrt_info.table_get("swap2")
+        self.swap3 = self.bfrt_info.table_get("swap3")
+        self.swap4 = self.bfrt_info.table_get("swap4")
+
         self.target = gc.Target(device_id=0, pipe_id=0xffff)
         logger.info("Finished setup")
 
     def runTest(self):
-        return
         logger.info("Start testing")
         ig_port = swports[0]
         target = self.target
@@ -71,13 +75,50 @@ class FullTest(BfRuntimeTest):
         logger.info("Populating resub table...")
         logger.debug(f"\tresub - inserting table entry with port {ig_port}")
 
+        swap1 = self.swap1
+        swap2 = self.swap2
+        swap3 = self.swap3
+        swap4 = self.swap4
+
         key = resub.make_key([gc.KeyTuple('ig_md.found', True)])
-        data = resub.make_data([], "SwitchIngress.no_resub")
+        data = resub.make_data([], "SwitchIngress.no_action")
         resub.entry_add(target, [key], [data])
 
         key = resub.make_key([gc.KeyTuple('ig_md.found', False)])
         data = resub.make_data([], "SwitchIngress.resubmit_hdr")
         resub.entry_add(target, [key], [data])
+
+        key = swap1.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0)])
+        data = swap1.make_data([], "SwitchIngress.lookup1")
+        swap1.entry_add(target, [key], [data])
+
+        key = swap1.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
+        data = swap1.make_data([], "SwitchIngress.do_swap1")
+        swap1.entry_add(target, [key], [data])
+
+        key = swap2.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0)])
+        data = swap2.make_data([], "SwitchIngress.lookup2")
+        swap2.entry_add(target, [key], [data])
+
+        key = swap2.make_key([gc.KeyTuple('ig_md.out_remain1', low=0x1, high=0xFFFF), gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
+        data = swap2.make_data([], "SwitchIngress.do_swap2")
+        swap2.entry_add(target, [key], [data])
+
+        key = swap3.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0)])
+        data = swap3.make_data([], "SwitchIngress.lookup3")
+        swap3.entry_add(target, [key], [data])
+
+        key = swap3.make_key([gc.KeyTuple('ig_md.out_remain2', low=0x1, high=0xFFFF), gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
+        data = swap3.make_data([], "SwitchIngress.do_swap3")
+        swap3.entry_add(target, [key], [data])
+
+        key = swap4.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0)])
+        data = swap4.make_data([], "SwitchIngress.lookup4")
+        swap4.entry_add(target, [key], [data])
+
+        key = swap4.make_key([gc.KeyTuple('ig_md.out_remain3', low=0x1, high=0xFFFF), gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
+        data = swap4.make_data([], "SwitchIngress.do_swap4")
+        swap4.entry_add(target, [key], [data])
 
         logger.info(f"Start sending {num_entries_src * num_entries_dst} entries")
         for src_ip in src_ip_list:
@@ -156,6 +197,11 @@ class FullTest(BfRuntimeTest):
         self.table_3.entry_del(self.target)
         self.table_4.entry_del(self.target)
         # self.table_5.entry_del(self.target)
+
+        self.swap1.entry_del(self.target)
+        self.swap2.entry_del(self.target)
+        self.swap3.entry_del(self.target)
+        self.swap4.entry_del(self.target)
 
         BfRuntimeTest.tearDown(self)
 
