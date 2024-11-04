@@ -220,9 +220,3 @@ class FCMTest(BfRuntimeTest):
         # Currently, our simulator supports only 3-level FCM (8,16,32-bit).
         # Mainly it is because of heuristic complexity truncation of EM algorithm.
         # In future, we will generalize the implementation.
-
-
-
-
-
-
