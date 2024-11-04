@@ -35,13 +35,10 @@ struct digest_t {
   bit<16> src_port;
   bit<16> dst_port;
   bit<8> protocol;
-  bit<WATERFALL_REMAIN_BIT_WIDTH> remain1;
-  bit<WATERFALL_REMAIN_BIT_WIDTH> remain2;
-  bit<WATERFALL_REMAIN_BIT_WIDTH> remain3;
   bit<WATERFALL_REMAIN_BIT_WIDTH> remain4;
 }
 
-struct metadata_t {
+struct waterfall_metadata_t {
   port_metadata_t port_metadata;
   resubmit_md_t resubmit_md;
   bit<16> src_port;
@@ -385,11 +382,6 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     size = 2;
   }
 
-  action bypass_egress() {
-    ig_intr_tm_md.ucast_egress_port = ig_intr_md.ingress_port;
-    ig_intr_tm_md.bypass_egress = 1w1;
-  }
-
   apply { 
     ig_md.idx1 = ig_md.resubmit_md.idx;
 
@@ -406,7 +398,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     swap4.apply();
 
     resub.apply();
-    bypass_egress();
+    ig_intr_tm_md.ucast_egress_port = ig_intr_md.ingress_port;
   }
 }
 
