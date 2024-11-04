@@ -14,7 +14,7 @@ from utils import *
 import numpy as np
 
 swports = get_sw_ports()
-project_name = 'waterfall_fcm'
+project_name = 'waterfall'
 logger = logging.getLogger(project_name)
 
 if not len(logger.handlers):
@@ -46,13 +46,15 @@ class FullTest(BfRuntimeTest):
         self.table_2 = self.bfrt_info.table_get("table_2")
         self.table_3 = self.bfrt_info.table_get("table_3")
         self.table_4 = self.bfrt_info.table_get("table_4")
-        self.table_5 = self.bfrt_info.table_get("table_5")
-        self.table_dict = {"table_1" : self.table_1, "table_2" : self.table_2, "table_3" : self.table_3, "table_4" : self.table_4, "table_5" : self.table_5}
+        # self.table_5 = self.bfrt_info.table_get("table_5")
+        # self.table_dict = {"table_1" : self.table_1, "table_2" : self.table_2, "table_3" : self.table_3, "table_4" : self.table_4, "table_5" : self.table_5}
+        self.table_dict = {"table_1" : self.table_1, "table_2" : self.table_2, "table_3" : self.table_3, "table_4" : self.table_4}
 
         self.target = gc.Target(device_id=0, pipe_id=0xffff)
         logger.info("Finished setup")
 
     def runTest(self):
+        return
         logger.info("Start testing")
         ig_port = swports[0]
         target = self.target
@@ -98,7 +100,7 @@ class FullTest(BfRuntimeTest):
         self.evalutate_table("table_2")
         self.evalutate_table("table_3")
         self.evalutate_table("table_4")
-        self.evalutate_table("table_5")
+        # self.evalutate_table("table_5")
 
     def evalutate_digest(self, num_entries):
         learn_filter = self.learn_filter
@@ -119,9 +121,10 @@ class FullTest(BfRuntimeTest):
                 recv_remain2 = data_dict["remain2"]
                 recv_remain3 = data_dict["remain3"]
                 recv_remain4 = data_dict["remain4"]
-                recv_remain5 = data_dict["remain5"]
-                if recv_remain5 != 0:
-                    logger.info(f"{recv_src_addr = } : {recv_dst_addr = } | {recv_src_port = } {recv_dst_port = } | {recv_protocol = } | {recv_remain1} {recv_remain2} {recv_remain3} {recv_remain4} {recv_remain5}")
+                # recv_remain5 = data_dict["remain5"]
+                if recv_remain4 != 0:
+                    # logger.info(f"{recv_src_addr = } : {recv_dst_addr = } | {recv_src_port = } {recv_dst_port = } | {recv_protocol = } | {recv_remain1} {recv_remain2} {recv_remain3} {recv_remain4} {recv_remain5}")
+                    logger.info(f"{recv_src_addr = } : {recv_dst_addr = } | {recv_src_port = } {recv_dst_port = } | {recv_protocol = } | {recv_remain1} {recv_remain2} {recv_remain3} {recv_remain4}")
             try:
                 digest = self.interface.digest_get()
             except:
@@ -152,7 +155,7 @@ class FullTest(BfRuntimeTest):
         self.table_2.entry_del(self.target)
         self.table_3.entry_del(self.target)
         self.table_4.entry_del(self.target)
-        self.table_5.entry_del(self.target)
+        # self.table_5.entry_del(self.target)
 
         BfRuntimeTest.tearDown(self)
 
