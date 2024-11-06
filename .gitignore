@@ -11,3 +11,5 @@ zlog*
 *pycache*
 ptf.log
 ptf.pcap
+ptf/EM/.*
+ptf/EM/build/
