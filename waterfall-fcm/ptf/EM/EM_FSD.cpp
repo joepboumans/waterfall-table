@@ -72,8 +72,10 @@ public:
       }
     }
     for (size_t d = 0; d < DEPTH; d++) {
-      for (size_t i = 0; i < init_degree.size(); i++) {
-        std::cout << i << ":" << init_degree[d][i] << " ";
+      for (size_t i = 0; i < init_degree[d].size(); i++) {
+        if (init_degree[d][i] > 0) {
+          std::cout << i << ":" << init_degree[d][i] << " ";
+        }
       }
       std::cout << std::endl;
     }
