@@ -27,6 +27,7 @@ using std::unordered_map;
 using std::vector;
 
 #define NUM_STAGES 3
+#define DEPTH 2
 #define W1 524288        // 8-bit, level 1
 #define W2 65536         // 16-bit, level 2
 #define W3 8192          // 32-bit, level 3
@@ -46,6 +47,8 @@ class EMFSD {
   array<uint32_t, W3> stage3;
 
   vector<FIVE_TUPLE> tuples; // Found tuples by Waterfall Filter
+  array<array<uint32_t, W1>, DEPTH> init_degree;
+  array<uint32_t, DEPTH> init_max_degree = {0, 0};
 
 public:
   vector<double> ns; // for integer n
@@ -59,6 +62,21 @@ public:
       : stage_sz(szes), stage1(s1), stage2(s2), stage3(s3), tuples(tuples) {
 
     std::cout << "Init EM_FSD" << std::endl;
+    // Get inital degree guesses
+    for (auto &tuple : this->tuples) {
+      for (size_t d = 0; d < DEPTH; d++) {
+        uint32_t hash_idx = this->hashing(tuple, d);
+        init_degree[d][hash_idx]++;
+        init_max_degree[d] =
+            std::max(init_max_degree[d], init_degree[d][hash_idx]);
+      }
+    }
+    for (size_t d = 0; d < DEPTH; d++) {
+      for (size_t i = 0; i < init_degree.size(); i++) {
+        std::cout << i << ":" << init_degree[d][i] << " ";
+      }
+      std::cout << std::endl;
+    }
     // Calculate Virtual Counters and thresholds
 
     std::cout << "Hashing tests" << std::endl;
@@ -66,7 +84,6 @@ public:
     for (auto &tuple : this->tuples) {
       hash_idx1 = this->hashing(tuple, 0);
       hash_idx2 = this->hashing(tuple, 1);
-      std::cout << "Got " << hash_idx1 << " and " << hash_idx2 << std::endl;
     }
 
     return;
@@ -441,7 +458,7 @@ public:
         }
       }
     }
-    return crc;
+    return crc % W1;
   }
   /*vector<double> get_distribution(std::set<FIVE_TUPLE> tuples,*/
   /*                                std::array<uint32_t, 3> stages_szes,*/
