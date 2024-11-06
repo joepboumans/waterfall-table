@@ -6,6 +6,7 @@
 #include <array>
 #include <chrono>
 #include <cmath>
+#include <codecvt>
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
@@ -15,9 +16,11 @@
 #include <ostream>
 #include <sys/types.h>
 #include <thread>
+#include <tuple>
 #include <unistd.h>
 #include <unordered_map>
 #include <vector>
+#include <zlib.h>
 
 using std::array;
 using std::unordered_map;
@@ -51,11 +54,20 @@ public:
   uint32_t iter = 0;
   bool inited = false;
   EMFSD(array<uint32_t, NUM_STAGES> szes, array<uint32_t, W1> s1,
-        array<uint32_t, W2> s2, array<uint32_t, W3> s3)
-      : stage_sz(szes), stage1(s1), stage2(s2), stage3(s3) {
+        array<uint32_t, W2> s2, array<uint32_t, W3> s3,
+        vector<FIVE_TUPLE> tuples)
+      : stage_sz(szes), stage1(s1), stage2(s2), stage3(s3), tuples(tuples) {
 
     std::cout << "Init EM_FSD" << std::endl;
     // Calculate Virtual Counters and thresholds
+
+    std::cout << "Hashing tests" << std::endl;
+    uint32_t hash_idx1, hash_idx2;
+    for (auto &tuple : this->tuples) {
+      hash_idx1 = this->hashing(tuple, 0);
+      hash_idx2 = this->hashing(tuple, 1);
+      std::cout << "Got " << hash_idx1 << " and " << hash_idx2 << std::endl;
+    }
 
     return;
     // Setup distribution and the thresholds for it
@@ -409,6 +421,28 @@ public:
     // std::cout << std::endl;
   }
 
+  uint32_t hashing(FIVE_TUPLE tuple, uint32_t depth) {
+    uint32_t crc = 0;
+    if (depth == 0) {
+      crc = crc32(0L, Z_NULL, 0);
+      for (int i = 0; i < 13; ++i) {
+        crc = crc32(crc, tuple.num_array + i, 1);
+      }
+    } else {
+      uint32_t msb;
+      crc = 0xFFFFFFFF;
+      for (size_t i = 0; i < 13; i++) {
+        // xor next byte to upper bits of crc
+        crc ^= (((uint32_t)tuple.num_array[i]) << 24);
+        for (size_t j = 0; j < 8; j++) { // Do eight times.
+          msb = crc >> 31;
+          crc <<= 1;
+          crc ^= (0 - msb) & 0x04C11DB7;
+        }
+      }
+    }
+    return crc;
+  }
   /*vector<double> get_distribution(std::set<FIVE_TUPLE> tuples,*/
   /*                                std::array<uint32_t, 3> stages_szes,*/
   /*                                uint32_t n_stages) {*/
@@ -565,7 +599,8 @@ public:
 };
 
 extern "C" {
-EMFSD *EMFSD_new(uint32_t *szes, uint32_t *s1, uint32_t *s2, uint32_t *s3) {
+EMFSD *EMFSD_new(uint32_t *szes, uint32_t *s1, uint32_t *s2, uint32_t *s3,
+                 FIVE_TUPLE *tuples, uint32_t tuples_sz) {
   // Copy all pointer arrays into std::array
   array<uint32_t, NUM_STAGES> stage_szes;
   std::copy_n(szes, NUM_STAGES, stage_szes.begin());
@@ -579,7 +614,20 @@ EMFSD *EMFSD_new(uint32_t *szes, uint32_t *s1, uint32_t *s2, uint32_t *s3) {
   array<uint32_t, W3> stage3;
   std::copy_n(s3, W3, stage3.begin());
 
-  return new EMFSD(stage_szes, stage1, stage2, stage3);
+  // Setup tuple list
+  std::cout << "Setup FiveTuple vector with size " << tuples_sz << std::endl;
+  std::vector<FIVE_TUPLE> tuples_vec(tuples_sz);
+  for (size_t i = 0; i < tuples_sz; i++) {
+    std::cout << tuples_vec.at(i) << std::endl;
+    tuples_vec.at(i) = tuples[i];
+    std::cout << tuples_vec.at(i) << std::endl;
+  }
+
+  std::cout << "Checking vector with " << tuples_vec.size() << std::endl;
+  for (size_t i = 0; i < tuples_vec.size(); i++) {
+    std::cout << tuples_vec.at(i) << std::endl;
+  }
+  return new EMFSD(stage_szes, stage1, stage2, stage3, tuples_vec);
 }
 void EMFSD_next_epoch(EMFSD *Em_fsd) { Em_fsd->next_epoch(); }
 }

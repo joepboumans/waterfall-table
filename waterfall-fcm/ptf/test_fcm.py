@@ -10,6 +10,7 @@ import random
 import time
 
 from fcm_utils import *
+import EM_ctypes
 
 ## SKETCH CONSTANT VALUES ##
 
@@ -220,3 +221,5 @@ class FCMTest(BfRuntimeTest):
         # Currently, our simulator supports only 3-level FCM (8,16,32-bit).
         # Mainly it is because of heuristic complexity truncation of EM algorithm.
         # In future, we will generalize the implementation.
+
+        # FSD from C
