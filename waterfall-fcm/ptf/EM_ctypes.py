@@ -1,6 +1,7 @@
 import os
 from ctypes import *
 
+DEPTH = 2
 NUM_STAGES = 3
 SKETCH_W1 = 524288              # 8-bit, level 1
 SKETCH_W2 = 65536               # 16-bit, level 2
@@ -27,42 +28,68 @@ class EM_FSD(object):
         for i in range(len(in_tuples)):
             tuples[i] = in_tuples[i]
 
-        stage1 = Stage1()
-        for i in range(len(stage1)):
-            if i < len(s1):
-                stage1[i] = s1[i]
-            else:
-                stage1[i] = 0
-        print("S1 done")
 
-        stage2 = Stage2()
-        for i in range(len(stage2)):
-            if i < len(s2):
-                stage2[i] = s2[i]
+        # Needs separate list per depth as passing to c++ does not work well with c_uint32** 
+        stage1_1 = Stage1()
+        for i in range(len(stage1_1)):
+            if i < len(s1[0]):
+                stage1_1[i] = s1[0][i]
             else:
-                stage2[i] = 0
-        print("S2 done")
+                stage1_1[i] = 0
+        print("S1_1 done")
 
-        stage3 = Stage3()
-        for i in range(len(stage3)):
-            if i < len(s3):
-                stage3[i] = s3[i]
+        stage1_2 = Stage1()
+        for i in range(len(stage1_2)):
+            if i < len(s1[1]):
+                stage1_2[i] = s1[1][i]
             else:
-                stage3[i] = 0
-        print("S3 done")
+                stage1_2[i] = 0
+        print("S1_2 done")
+
+        stage2_1 = Stage2()
+        for i in range(len(stage2_1)):
+            if i < len(s2[0]):
+                stage2_1[i] = s2[0][i]
+            else:
+                stage2_1[i] = 0
+        print("S2_1 done")
+        
+        stage2_2 = Stage2()
+        for i in range(len(stage2_2)):
+            if i < len(s2[1]):
+                stage2_2[i] = s2[1][i]
+            else:
+                stage2_2[i] = 0
+        print("S2_2 done")
+
+        stage3_1 = Stage3()
+        for i in range(len(stage3_1)):
+            if i < len(s3[0]):
+                stage3_1[i] = s3[0][i]
+            else:
+                stage3_1[i] = 0
+        print("S3_1 done")
+        
+        stage3_2 = Stage3()
+        for i in range(len(stage3_2)):
+            if i < len(s3[1]):
+                stage3_2[i] = s3[1][i]
+            else:
+                stage3_2[i] = 0
+        print("S3_2 done")
 
         stage_sz = Stage_szes(SKETCH_W1, SKETCH_W2, SKETCH_W3)
         print("stage szes done")
 
-        self.obj = lib.EMFSD_new(stage_sz, stage1, stage2, stage3, tuples, len(tuples))
+        self.obj = lib.EMFSD_new(stage_sz, stage1_1, stage1_2, stage2_1, stage2_2, stage3_1, stage3_1, tuples, len(tuples))
 
     def next_epoch(self):
         lib.EMFSD_next_epoch(self.obj)
 
 print("Creating EM_FSD")
-s1 = [ 1,2,3 ]
-s2 = [ 4,5,6 ]
-s3 = [ 7,8,9 ]
+s1 = [ [ 1,2,3 ], [ 11,12,13 ] ]
+s2 = [ [ 2,3,4 ], [ 12,13,14 ] ]
+s3 = [ [ 3,4,5 ], [ 13,14,15 ] ]
 test_tuple = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
 test_tuple2 = [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 t1 = FiveTuple(*test_tuple)
