@@ -120,7 +120,7 @@ public:
             summary[d][s][i][1] = init_degree[d][i];
             overflow_paths[d][s].at(i) = {(uint32_t)s, init_degree[d][i], 1,
                                           summary[d][s][i][0]};
-            std::cout << overflow_paths[d][s][i][0] << std::endl;
+            std::cout << overflow_paths[d][s][i][1] << std::endl;
           }
         }
       }
