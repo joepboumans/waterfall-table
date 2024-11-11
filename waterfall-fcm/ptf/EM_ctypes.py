@@ -16,7 +16,7 @@ Stage3 = c_uint32 * SKETCH_W3
 FiveTuple = c_uint8 * 13
 
 lib = cdll.LoadLibrary(f"{os.getcwd()}/ptf/EM/lib/libEM_FSD.so")
-lib.EMFSD_new.restype = None
+lib.EMFSD_new.restype = c_void_p
 
 class EM_FSD(object):
     def __init__(self, s1, s2, s3, in_tuples):
@@ -79,7 +79,7 @@ class EM_FSD(object):
         stage_sz = Stage_szes(SKETCH_W1, SKETCH_W2, SKETCH_W3)
         print("stage szes done")
 
-        self.obj = lib.EMFSD_new(stage_sz, stage1_1, stage1_2, stage2_1, stage2_2, stage3_1, stage3_1, tuples, len(tuples))
+        self.obj = c_void_p(lib.EMFSD_new(stage_sz, stage1_1, stage1_2, stage2_1, stage2_2, stage3_1, stage3_1, tuples, len(tuples)))
 
     def next_epoch(self):
         lib.EMFSD_next_epoch(self.obj)
@@ -94,5 +94,8 @@ t1 = FiveTuple(*test_tuple)
 t2 = FiveTuple(*test_tuple2)
 tuples = [ t1, t2]
 f = EM_FSD(s1, s2, s3, tuples)
+print("Finish init EM_FSD")
+print("Start EM")
+print(f)
+f.next_epoch()
 print("done!")
-# f.next_epoch()

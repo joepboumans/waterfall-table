@@ -13,6 +13,7 @@
 #include <cstdlib>
 #include <functional>
 #include <iostream>
+#include <iterator>
 #include <numeric>
 #include <ostream>
 #include <sys/types.h>
@@ -39,12 +40,15 @@ using std::vector;
 #define OVERFLOW_LEVEL2 65535 // 2^16 - 1 maximum count is 65536
 
 class EMFSD {
+public:
   uint32_t w; // width of counters
   array<vector<vector<uint32_t>>, DEPTH>
       counters;                      // Counters as depth, degree, value
   vector<double> dist_old, dist_new; // for ratio \phi
   array<vector<vector<uint32_t>>, DEPTH> counter_dist; // initial counter values
-  array<vector<vector<array<uint32_t, 4>>>, DEPTH> thresholds;
+  array<vector<vector<vector<array<uint32_t, 4>>>>, DEPTH>
+      thresholds; // depth, degree, count, < stage, total coll, local colll,
+                  // min_value >
 
   array<uint32_t, NUM_STAGES> stage_szes;
   vector<vector<vector<uint32_t>>> stages;
@@ -56,7 +60,6 @@ class EMFSD {
   array<uint32_t, DEPTH> max_degree = {
       0, 0}; // Maximum degree from FCM Sketch with inital degree from Waterfall
 
-public:
   vector<double> ns; // for integer n
   double n_sum;
   double card_init; // initial cardinality by MLE
@@ -266,7 +269,7 @@ public:
 
         for (size_t i = 0; i < this->counters[d][xi].size(); i++) {
           this->counter_dist[d][xi][counters[d][xi][i]]++;
-          this->thresholds[d][this->counters[d][xi][i]] = thresh[d][xi][i];
+          this->thresholds[d][xi][this->counters[d][xi][i]] = thresh[d][xi][i];
         }
       }
     }
@@ -277,6 +280,7 @@ public:
 
     // Inital guess for Flow Size Distribution (Phi)
     this->dist_new.resize(this->max_counter_value + 1);
+    this->dist_old.resize(this->max_counter_value + 1);
     for (auto &counters : this->counters) {
       for (auto &degree : counters) {
         for (auto count : degree) {
@@ -321,10 +325,10 @@ private:
     int now_flow_num;
     int flow_num_limit;
     vector<int> now_result;
-    array<uint32_t, 4> thresh;
+    vector<array<uint32_t, 4>> thresh;
 
     explicit BetaGenerator(uint32_t _sum, uint32_t _in_degree,
-                           array<uint32_t, 4> _thresh)
+                           vector<array<uint32_t, 4>> _thresh)
         : sum(_sum), flow_num_limit(_in_degree), thresh(_thresh) {
       now_flow_num = flow_num_limit;
       now_result.resize(_in_degree);
@@ -486,7 +490,7 @@ private:
     printf("[EM_WATERFALL_FCM] ******** Running for degree %2d with a size of "
            "%12zu\t\t"
            "**********\n",
-           xi, counter_dist[xi].size());
+           xi, counter_dist[d][xi].size());
 
     double lambda = n_old * xi / double(w);
     for (uint32_t i = 0; i < counter_dist[d][xi].size(); i++) {
@@ -495,8 +499,8 @@ private:
         continue;
       }
       // std::cout << i << std::endl;
-      BetaGenerator alpha(i, xi, this->thresholds[d][xi]),
-          beta(i, xi, this->thresholds[d][xi]);
+      BetaGenerator alpha(i, xi, this->thresholds[d][xi][i]),
+          beta(i, xi, this->thresholds[d][xi][i]);
       double sum_p = 0;
       uint32_t it = 0;
       while (alpha.get_next()) {
@@ -508,7 +512,7 @@ private:
       if (sum_p == 0.0) {
         if (it > 0) {
           uint32_t temp_val = this->counters[d][xi][i];
-          vector<array<uint32_t, 4>> temp_thresh = this->thresholds[d][xi];
+          vector<array<uint32_t, 4>> temp_thresh = this->thresholds[d][xi][i];
           // Start from lowest layer to highest layer
           std::reverse(temp_thresh.begin(), temp_thresh.end());
           for (auto &t : temp_thresh) {
@@ -546,13 +550,18 @@ private:
 public:
   void next_epoch() {
     auto start = std::chrono::high_resolution_clock::now();
-    double lambda = n_old / double(w);
-    dist_old = dist_new;
-    n_old = n_new;
+    std::cout << "Start next epoch" << std::endl;
 
+    std::cout << "Calc lambda " << w << std::endl;
+    /*double lambda = this->n_old / static_cast<double>(this->w);*/
+    /*n_old = n_new;*/
+    /*dist_old = dist_new;*/
+
+    std::cout << "Setup NT and NS" << std::endl;
     array<vector<vector<double>>, DEPTH> nt;
-    std::fill(ns.begin(), ns.end(), 0);
+    /*std::fill(ns.begin(), ns.end(), 0);*/
 
+    std::cout << "Setup NT and NS" << std::endl;
     // Always copy first degree as this is can be considered a perfect
     // estimation. qWaterfall is not perfect, but assumed to be
     for (size_t d = 0; d < DEPTH; d++) {
@@ -562,6 +571,8 @@ public:
         nt[d][1][i] = counter_dist[d][1][i];
       }
     }
+
+    std::cout << "Init first degree" << std::endl;
     // Simple Multi thread
     uint32_t total_degree = this->max_degree[0] + this->max_degree[1];
     std::thread threads[total_degree + 1];
@@ -584,25 +595,33 @@ public:
     //   }
     // }
 
+    for (size_t d = 0; d < DEPTH; d++) {
+      for (size_t xi = 0; xi < nt.size(); xi++) {
+        // if (nt[d].size() > 0) {
+        //   std::cout << "Size of nt[" << d << "] " << nt[d].size() <<
+        //   std::endl;
+        // }
+        for (uint32_t i = 0; i < nt[xi].size(); i++) {
+          ns[i] += nt[d][xi][i];
+        }
+      }
+    }
+
     n_new = 0.0;
-    for (size_t d = 0; d < nt.size(); d++) {
-      // if (nt[d].size() > 0) {
-      //   std::cout << "Size of nt[" << d << "] " << nt[d].size() <<
-      //   std::endl;
-      // }
-      /*for (uint32_t i = 0; i < nt[d].size(); i++) {*/
-      /*  ns[i] += nt[d][i];*/
-      /*  n_new += nt[d][i];*/
-      /*}*/
+    for (size_t i = 0; i < ns.size(); i++) {
+      if (ns[i] != 0) {
+        ns[i] /= static_cast<double>(DEPTH);
+        n_new += ns[i];
+      }
     }
     for (uint32_t i = 0; i < ns.size(); i++) {
       dist_new[i] = ns[i] / n_new;
     }
-    auto stop = std::chrono::high_resolution_clock::now();
-    auto time = duration_cast<std::chrono::milliseconds>(stop - start);
+    /*auto stop = std::chrono::high_resolution_clock::now();*/
+    /*auto time = duration_cast<std::chrono::milliseconds>(stop - start);*/
 
-    printf("[EM_WATERFALL_FCM - iter %2d] Compute time : %li\n", iter,
-           time.count());
+    /*printf("[EM_WATERFALL_FCM - iter %2d] Compute time : %li\n", iter,*/
+    /*       time.count());*/
     printf("[EM_WATERFALL_FCM - iter %2d] Intermediate cardianlity : "
            "%9.1f\n\n",
            iter, n_new);
@@ -636,14 +655,15 @@ public:
         }
       }
     }
-    return crc % W1;
+    /*return crc % W1;*/
+    return tuple.num_array[0] - 1;
   }
 };
 
 extern "C" {
-EMFSD *EMFSD_new(uint32_t *szes, uint32_t *s1_1, uint32_t *s1_2, uint32_t *s2_1,
-                 uint32_t *s2_2, uint32_t *s3_1, uint32_t *s3_2,
-                 FIVE_TUPLE *tuples, uint32_t tuples_sz) {
+void *EMFSD_new(uint32_t *szes, uint32_t *s1_1, uint32_t *s1_2, uint32_t *s2_1,
+                uint32_t *s2_2, uint32_t *s3_1, uint32_t *s3_2,
+                FIVE_TUPLE *tuples, uint32_t tuples_sz) {
 
   std::cout << "Start parsing python to c" << std::endl;
   array<uint32_t, NUM_STAGES> stage_szes;
@@ -681,7 +701,12 @@ EMFSD *EMFSD_new(uint32_t *szes, uint32_t *s1_1, uint32_t *s1_2, uint32_t *s2_1,
   }
   return new EMFSD(stage_szes, stages, tuples_vec);
 }
-void EMFSD_next_epoch(EMFSD *Em_fsd) { Em_fsd->next_epoch(); }
+void EMFSD_next_epoch(void *ptr) {
+  EMFSD *em = reinterpret_cast<EMFSD *>(ptr);
+  std::cout << "Pass to next_epoch" << std::endl;
+  std::cout << em->w << std::endl;
+  em->next_epoch();
+}
 }
 
 /*EMFSD EM(.stages_sz, thresholds, max_counter_value, max_degree,
