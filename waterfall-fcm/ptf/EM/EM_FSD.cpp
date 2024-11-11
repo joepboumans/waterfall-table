@@ -7,6 +7,7 @@
 #include <chrono>
 #include <cmath>
 #include <codecvt>
+#include <cstddef>
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
@@ -28,6 +29,7 @@ using std::vector;
 
 #define NUM_STAGES 3
 #define DEPTH 2
+#define K 8
 #define W1 524288        // 8-bit, level 1
 #define W2 65536         // 16-bit, level 2
 #define W3 8192          // 32-bit, level 3
@@ -37,19 +39,22 @@ using std::vector;
 #define OVERFLOW_LEVEL2 65535 // 2^16 - 1 maximum count is 65536
 
 class EMFSD {
-  vector<vector<uint32_t>> counters;
-  uint32_t w;                            // width of counters
-  vector<double> dist_old, dist_new;     // for ratio \phi
-  vector<vector<uint32_t>> counter_dist; // initial counter values
-  vector<vector<vector<vector<uint32_t>>>> thresholds;
+  uint32_t w; // width of counters
+  array<vector<vector<uint32_t>>, DEPTH>
+      counters;                      // Counters as depth, degree, value
+  vector<double> dist_old, dist_new; // for ratio \phi
+  array<vector<vector<uint32_t>>, DEPTH> counter_dist; // initial counter values
+  array<vector<vector<array<uint32_t, 4>>>, DEPTH> thresholds;
 
   array<uint32_t, NUM_STAGES> stage_szes;
-
   vector<vector<vector<uint32_t>>> stages;
-
   vector<FIVE_TUPLE> tuples; // Found tuples by Waterfall Filter
+
   array<array<uint32_t, W1>, DEPTH> init_degree;
-  array<uint32_t, DEPTH> init_max_degree = {0, 0};
+  array<uint32_t, DEPTH> init_max_degree = {
+      0, 0}; // Maximum degree from Waterfall Tables
+  array<uint32_t, DEPTH> max_degree = {
+      0, 0}; // Maximum degree from FCM Sketch with inital degree from Waterfall
 
 public:
   vector<double> ns; // for integer n
@@ -80,11 +85,12 @@ public:
       std::cout << std::endl;
     }
     // Calculate Virtual Counters and thresholds
-    // depth, stage, idx, (count, degree, min_value)
+    // depth, stage, idx, (count, degree, overflown)
     array<array<vector<array<uint32_t, 3>>, NUM_STAGES>, DEPTH> summary;
     // depth, stage, idx, layer, (stage, total degree/collisions, local
     // collisions, min_value)
-    array<array<vector<array<uint32_t, 4>>, NUM_STAGES>, DEPTH> overflow_paths;
+    array<array<vector<vector<array<uint32_t, 4>>>, NUM_STAGES>, DEPTH>
+        overflow_paths;
 
     // Setup sizes for summary and overflow_paths
     for (size_t d = 0; d < DEPTH; d++) {
@@ -97,55 +103,123 @@ public:
     // Create virtual counters based on depth, degree and count
     // depth, degree, count value, n
     array<vector<vector<uint32_t>>, DEPTH> virtual_counters;
-    array<vector<vector<vector<vector<uint32_t>>>>, DEPTH> thresholds;
+    array<vector<vector<vector<array<uint32_t, 4>>>>, DEPTH> thresh;
     // Resize to fill all possible degrees
     for (size_t d = 0; d < DEPTH; d++) {
       virtual_counters[d].resize(init_max_degree[d] + 1);
-      thresholds[d].resize(init_max_degree[d] + 1);
+      thresh[d].resize(init_max_degree[d] + 1);
     }
     std::cout << "Created virtual counters and thresholds" << std::endl;
 
-    uint32_t max_degree = 0;
     for (size_t d = 0; d < DEPTH; d++) {
       for (size_t s = 0; s < NUM_STAGES; s++) {
         for (size_t i = 0; i < this->stage_szes[i]; i++) {
           summary[d][s][i][0] = this->stages[d][s][i];
           // If overflown increase the minimal value for the collisions
-          if (s == 0 && this->stages[d][s][i] >= ADD_LEVEL1) {
-            summary[d][s][i][0] = ADD_LEVEL1;
-          } else if (s == 1 && this->stages[d][s][i]) {
+          if (s == 0 && this->stages[d][s][i] >= OVERFLOW_LEVEL1) {
+            summary[d][s][i][2] = 1;
+            std::cout << "Overflown in " << s << " " << i << std::endl;
+          } else if (s == 1 && this->stages[d][s][i] >= OVERFLOW_LEVEL2) {
             summary[d][s][i][0] = ADD_LEVEL2;
+            summary[d][s][i][2] = 1;
+            std::cout << "Overflown in " << s << " " << i << std::endl;
           }
           if (s == 0) {
             summary[d][s][i][1] = init_degree[d][i];
-            overflow_paths[d][s].at(i) = {(uint32_t)s, init_degree[d][i], 1,
-                                          summary[d][s][i][0]};
-            std::cout << overflow_paths[d][s][i][1] << std::endl;
+            overflow_paths[d][s][i].push_back(
+                {(uint32_t)s, init_degree[d][i], 1, summary[d][s][i][0]});
+
+          } else {
+            uint32_t overflown = 0;
+            // Loop over all childeren
+            for (size_t k = 0; k < K; k++) {
+              uint32_t child_idx = i * K + k;
+              // Add childs count and degree to current counter if they have
+              // overflown
+              if (summary[d][s - 1][child_idx][2] > 0) {
+                summary[d][s][i][0] += summary[d][s - 1][child_idx][0];
+                summary[d][s][i][1] += summary[d][s - 1][child_idx][1];
+                // If any of my predecessors have overflown, add them to my
+                // overflown paths
+                overflown++;
+                for (size_t j = 0; j < overflow_paths[s - 1][child_idx].size();
+                     j++) {
+                  overflow_paths[s][i].push_back(
+                      overflow_paths[s - 1][child_idx][j]);
+                }
+              }
+            }
+            // If any of my childeren have overflown, add me to the overflow
+            // path
+            if (overflown > 0) {
+              uint32_t max_count = 0;
+              if (s == 1) {
+                max_count = ADD_LEVEL1;
+              } else {
+
+                max_count = ADD_LEVEL2;
+              }
+              std::cout << "Overflown childeren " << s << " " << i << std::endl;
+              array<uint32_t, 4> imm_overflow = {
+                  (uint32_t)s, summary[d][s][i][1], overflown, max_count};
+
+              overflow_paths[d][s][i].insert(overflow_paths[d][s][i].begin(),
+                                             imm_overflow);
+            }
+          }
+
+          // If not overflown and non-zero, we are at the end of the path
+          // End of finding path of VC, add it to virtual counter and thresholds
+          if (summary[d][s][i][2] == 0 && summary[d][s][i][0] > 0) {
+            uint32_t count = summary[d][s][i][0];
+            uint32_t degree = summary[d][s][i][1];
+            // Add entry to VC with its degree [1] and count [0]
+            virtual_counters[d][degree].push_back(count);
+            max_counter_value = std::max(max_counter_value, count);
+            this->max_degree[d] = std::max(this->max_degree[d], degree);
+
+            // Remove single collsions
+            if (overflow_paths[d][s][i].size() != 0) {
+              for (int j = overflow_paths[d][s][i].size() - 1; j > 0; --j) {
+                if (overflow_paths[d][s][i][j][2] <= 1) {
+                  overflow_paths[d][s][i].erase(
+                      overflow_paths[d][s][i].begin() + j);
+                }
+              }
+            }
+
+            thresh[d][degree].push_back(overflow_paths[d][s][i]);
           }
         }
       }
     }
 
-    /*} for (size_t d = 0; d < thresholds.size(); d++) {*/
-    /*  if (thresholds[d].size() == 0) {*/
-    /*    continue;*/
-    /*  }*/
-    // std::cout << "Degree: " << d << '\t';
-    // for (size_t i = 0; i < thresholds[d].size(); i++) {
-    //   std::cout << "i " << i << ":";
-    //   for (size_t l = 0; l < thresholds[d][i].size(); l++) {
-    //     std::cout << " <";
-    //     for (auto &col : thresholds[d][i][l]) {
-    //       std::cout << col;
-    //       if (&col != &thresholds[d][i][l].back()) {
-    //         std::cout << ", ";
-    //       }
-    //     }
-    //     std::cout << "> ";
-    //   }
-    //   std::cout << std::endl;
-    // }
-    /*}*/
+    // Show collision paths for all degrees and counts
+    for (auto &threshold : thresh) {
+      for (size_t d = 0; d < threshold.size(); d++) {
+        if (thresh[d].size() == 0) {
+          continue;
+        }
+        std::cout << "Degree: " << d << std::endl;
+        for (size_t i = 0; i < threshold[d].size(); i++) {
+          if (threshold[d][i].size() == 0) {
+            continue;
+          }
+          std::cout << "i" << i << ":";
+          for (size_t l = 0; l < threshold[d][i].size(); l++) {
+            std::cout << " <";
+            for (auto &col : threshold[d][i][l]) {
+              std::cout << col;
+              if (&col != &threshold[d][i][l].back()) {
+                std::cout << ", ";
+              }
+            }
+            std::cout << "> ";
+          }
+        }
+      }
+      std::cout << std::endl;
+    }
 
     std::cout << std::endl;
     for (auto &vc : virtual_counters) {
@@ -160,136 +234,97 @@ public:
         std::cout << std::endl;
       }
     }
-    return;
-    /*summary[stage][i][0] = stages[stage][i].count;*/
-    /**/
-    /*// Start checking childeren from stage 1 and up*/
-    /*else {*/
-    /*  uint32_t overflown = 0;*/
-    /*  // Loop over all childeren*/
-    /*  for (size_t k = 0; k < k; k++) {*/
-    /*    uint32_t child_idx = i * k + k;*/
-    /*    // Add childs count, degree and min_value to current counter*/
-    /*    if (.stages[stage - 1][child_idx].overflow) {*/
-    /*      summary[stage][i][0] += summary[stage - 1][child_idx][0];*/
-    /*      summary[stage][i][1] += summary[stage - 1][child_idx][1];*/
-    /*      // If any of my predecessors have overflown, add them to my*/
-    /*      // overflown paths*/
-    /*      overflown++;*/
-    /*      for (size_t j = 0; j < overflow_paths[stage -
-     * 1][child_idx].size();*/
-    /*           j++) {*/
-    /*        overflow_paths[stage][i].push_back(*/
-    /*            overflow_paths[stage - 1][child_idx][j]);*/
-    /*      }*/
-    /*    }*/
-    /*  }*/
-    /*  // If any of my childeren have overflown, add me to the overflow path*/
-    /*  if (overflown > 0) {*/
-    /*    vector<uint32_t> imm_overflow = {(uint32_t)stage,
-     * summary[stage][i][1],*/
-    /*                                     overflown,*/
-    /*                                     stages[stage - 1][i].max_count};*/
-    /*    overflow_paths[stage][i].insert(overflow_paths[stage][i].begin(),*/
-    /*                                    imm_overflow);*/
-    /*  }*/
-    /*}*/
-    /**/
-    /*// If not overflown and non-zero, we are at the end of the path*/
-    /*if (!.stages[stage][i].overflow && summary[stage][i][0] > 0) {*/
-    /*  uint32_t count = summary[stage][i][0];*/
-    /*  uint32_t degree = summary[stage][i][1];*/
-    /*  // Add entry to VC with its degree [1] and count [0]*/
-    /*  virtual_counters[degree].push_back(count);*/
-    /*  max_counter_value = std::max(max_counter_value, count);*/
-    /*  max_degree = std::max(max_degree, degree);*/
 
-    // Remove 1 collsions
-    // for (size_t j = overflow_paths[stage][i].size() - 1; j > 0; --j) {
-    //   if (overflow_paths[stage][i][j][2] <= 1) {
-    // overflow_paths[stage][i].erase(overflow_paths[stage][i].begin()
-    //     +
-    //                                    j);
-    //   }
-    // }
+    std::cout << "CHT maximum degree is: " << init_max_degree[0] << " and "
+              << init_max_degree[1] << std::endl;
+    std::cout << "Maximum degree is: " << this->max_degree[0] << " and "
+              << this->max_degree[1] << std::endl;
+    std::cout << "Maximum counter value is: " << max_counter_value << std::endl;
 
-    /*      thresholds[degree].push_back(overflow_paths[stage][i]);*/
-    /*    }*/
-    /*  }*/
-
-    /*std::cout << "CHT maximum degree is: " << cht_max_degree << std::endl;*/
-    /*std::cout << "Maximum degree is: " << max_degree << std::endl;*/
-    /*std::cout << "Maximum counter value is: " << max_counter_value <<
-     * std::endl;*/
-
-    // Setup distribution and the thresholds for it
-    this->counter_dist = vector<vector<uint32_t>>(
-        max_degree + 1, vector<uint32_t>(this->max_counter_value + 1, 0));
-    this->thresholds.resize(this->counters.size());
-    for (size_t d = 0; d < this->counters.size(); d++) {
-      if (counters[d].size() == 0) {
-        continue;
+    // Setup counters and counters_distribution for estimation
+    for (size_t d = 0; d < DEPTH; d++) {
+      this->counter_dist[d] = vector<vector<uint32_t>>(
+          this->max_degree[d] + 1,
+          vector<uint32_t>(this->max_counter_value + 1, 0));
+      this->thresholds[d].resize(this->counters.size());
+      for (size_t xi = 0; xi < this->counters[d].size(); xi++) {
+        if (counters[d][xi].size() == 0) {
+          continue;
+        }
+        this->thresholds[xi].resize(this->max_counter_value + 1);
       }
-      this->thresholds[d].resize(this->max_counter_value + 1);
     }
     std::cout << "[EM_WATERFALL_FCM] Finished setting up counter_dist and "
                  "thresholds"
               << std::endl;
-    // Inital guess for # of flows
+    // Inital guess for # of flows, sum total number of counters
     this->n_new = 0.0; // # of flows (Cardinality)
-    for (size_t d = 0; d < this->counters.size(); d++) {
-      this->n_new += this->counters[d].size();
-      for (size_t i = 0; i < this->counters[d].size(); i++) {
-        this->counter_dist[d][counters[d][i]]++;
-        /*this->thresholds[d][this->counters[d][i]] = thresh[d][i];*/
+    for (size_t d = 0; d < DEPTH; d++) {
+      for (size_t xi = 0; xi < this->counters[d].size(); xi++) {
+
+        this->n_new += this->counters[d][xi].size();
+
+        for (size_t i = 0; i < this->counters[d][xi].size(); i++) {
+          this->counter_dist[d][xi][counters[d][xi][i]]++;
+          this->thresholds[d][this->counters[d][xi][i]] = thresh[d][xi][i];
+        }
       }
     }
     this->w = this->stage_szes[0];
-
+    // Divide by number of sketches
+    this->n_new = this->n_new / static_cast<double>(DEPTH);
     std::cout << "[EM_WATERFALL_FCM] Initial cardinality guess" << std::endl;
+
     // Inital guess for Flow Size Distribution (Phi)
     this->dist_new.resize(this->max_counter_value + 1);
-    for (auto &degree : this->counters) {
-      for (auto count : degree) {
-        this->dist_new[count]++;
+    for (auto &counters : this->counters) {
+      for (auto &degree : counters) {
+        for (auto count : degree) {
+          this->dist_new[count]++;
+        }
       }
     }
     std::cout << "[EM_WATERFALL_FCM] Initial Flow Size Distribution guess"
               << std::endl;
+
     this->ns.resize(this->max_counter_value + 1);
-    for (size_t d = 0; d < this->counter_dist.size(); d++) {
-      for (size_t i = 0; i < this->counter_dist[d].size(); i++) {
-        if (this->counter_dist[d].size() == 0) {
-          continue;
+    for (size_t d = 0; d < DEPTH; d++) {
+      for (size_t xi = 0; xi < this->counter_dist[d].size(); xi++) {
+        for (size_t i = 0; i < this->counter_dist[d][xi].size(); i++) {
+          if (this->counter_dist[d][xi].size() == 0) {
+            continue;
+          }
+          this->dist_new[i] += this->counter_dist[d][xi][i];
+          this->ns[i] += this->counter_dist[d][xi][i];
         }
-        this->dist_new[i] += this->counter_dist[d][i];
-        this->ns[i] += this->counter_dist[d][i];
       }
     }
     std::cout << "[EM_WATERFALL_FCM] Normalize guesses" << std::endl;
     // Normalize over inital cardinality
     for (size_t i = 0; i < this->dist_new.size(); i++) {
-      this->dist_new[i] /= this->n_new;
+      this->dist_new[i] /= (static_cast<double>(DEPTH) * this->n_new);
+      this->ns[i] /= static_cast<double>(DEPTH);
     }
     printf("[EM_WATERFALL_FCM] Initial Cardinality : %9.1f\n", this->n_new);
     printf("[EM_WATERFALL_FCM] Max Counter value : %d\n",
            this->max_counter_value);
-    printf("[EM_WATERFALL_FCM] Max max degree : %d\n", this->max_degree);
+    printf("[EM_WATERFALL_FCM] Max max degree : %d %d\n", this->max_degree[0],
+           this->max_degree[1]);
   };
 
 private:
   double n_old,
       n_new; // cardinality
-  uint32_t max_counter_value, max_degree;
+  uint32_t max_counter_value;
   struct BetaGenerator {
     int sum;
     int now_flow_num;
     int flow_num_limit;
     vector<int> now_result;
-    vector<vector<uint32_t>> thresh;
+    array<uint32_t, 4> thresh;
 
     explicit BetaGenerator(uint32_t _sum, uint32_t _in_degree,
-                           vector<vector<uint32_t>> _thresh)
+                           array<uint32_t, 4> _thresh)
         : sum(_sum), flow_num_limit(_in_degree), thresh(_thresh) {
       now_flow_num = flow_num_limit;
       now_result.resize(_in_degree);
@@ -444,36 +479,36 @@ private:
     return ret;
   }
 
-  void calculate_degree(vector<double> &nt, int d) {
+  void calculate_degree(vector<double> &nt, int d, int xi) {
     nt.resize(this->max_counter_value + 1);
     std::fill(nt.begin(), nt.end(), 0.0);
 
     printf("[EM_WATERFALL_FCM] ******** Running for degree %2d with a size of "
            "%12zu\t\t"
            "**********\n",
-           d, counter_dist[d].size());
+           xi, counter_dist[xi].size());
 
-    double lambda = n_old * d / double(w);
-    for (uint32_t i = 0; i < counter_dist[d].size(); i++) {
+    double lambda = n_old * xi / double(w);
+    for (uint32_t i = 0; i < counter_dist[d][xi].size(); i++) {
       // enum how to form val:i
-      if (counter_dist[d][i] == 0) {
+      if (counter_dist[d][xi][i] == 0) {
         continue;
       }
       // std::cout << i << std::endl;
-      BetaGenerator alpha(i, d, this->thresholds[d][i]),
-          beta(i, d, this->thresholds[d][i]);
+      BetaGenerator alpha(i, xi, this->thresholds[d][xi]),
+          beta(i, xi, this->thresholds[d][xi]);
       double sum_p = 0;
       uint32_t it = 0;
       while (alpha.get_next()) {
-        double p = get_p_from_beta(alpha, lambda, dist_old, n_old, d);
+        double p = get_p_from_beta(alpha, lambda, dist_old, n_old, xi);
         sum_p += p;
         it++;
       }
 
       if (sum_p == 0.0) {
         if (it > 0) {
-          uint32_t temp_val = this->counters[d][i];
-          vector<vector<uint32_t>> temp_thresh = this->thresholds[d][i];
+          uint32_t temp_val = this->counters[d][xi][i];
+          vector<array<uint32_t, 4>> temp_thresh = this->thresholds[d][xi];
           // Start from lowest layer to highest layer
           std::reverse(temp_thresh.begin(), temp_thresh.end());
           for (auto &t : temp_thresh) {
@@ -486,9 +521,9 @@ private:
         }
       } else {
         while (beta.get_next()) {
-          double p = get_p_from_beta(beta, lambda, dist_old, n_old, d);
+          double p = get_p_from_beta(beta, lambda, dist_old, n_old, xi);
           for (size_t j = 0; j < beta.now_flow_num; ++j) {
-            nt[beta.now_result[j]] += counter_dist[d][i] * p / sum_p;
+            nt[beta.now_result[j]] += counter_dist[d][xi][i] * p / sum_p;
           }
         }
       }
@@ -502,10 +537,10 @@ private:
       }
       std::cout << std::endl;
     }
-    if (counter_dist[d].size() != 0)
+    if (counter_dist[d][xi].size() != 0)
       printf("[EM_WATERFALL_FCM] ******** degree %2d is "
              "finished...(accum:%10.1f #val:%8d)\t**********\n",
-             d, accum, (int)this->counters[d].size());
+             xi, accum, (int)this->counters[d][xi].size());
   }
 
 public:
@@ -515,23 +550,29 @@ public:
     dist_old = dist_new;
     n_old = n_new;
 
-    vector<vector<double>> nt;
-    nt.resize(max_degree + 1);
+    array<vector<vector<double>>, DEPTH> nt;
     std::fill(ns.begin(), ns.end(), 0);
 
-    // Always copy first degree as this is the already perfect estimation
-    nt[1].resize(counter_dist[1].size());
-    for (size_t i = 0; i < counter_dist[1].size(); i++) {
-      nt[1][i] = counter_dist[1][i];
+    // Always copy first degree as this is can be considered a perfect
+    // estimation. qWaterfall is not perfect, but assumed to be
+    for (size_t d = 0; d < DEPTH; d++) {
+      nt[d].resize(this->max_degree[d] + 1);
+      nt[d][1].resize(counter_dist[d][1].size());
+      for (size_t i = 0; i < counter_dist[d][1].size(); i++) {
+        nt[d][1][i] = counter_dist[d][1][i];
+      }
     }
     // Simple Multi thread
-    std::thread threads[max_degree + 1];
-    for (size_t t = 2; t <= max_degree; t++) {
-      threads[t] =
-          std::thread(&EMFSD::calculate_degree, *this, std::ref(nt[t]), t);
-    }
-    for (size_t t = 2; t <= max_degree; t++) {
-      threads[t].join();
+    uint32_t total_degree = this->max_degree[0] + this->max_degree[1];
+    std::thread threads[total_degree + 1];
+    for (size_t d = 0; d < DEPTH; d++) {
+      for (size_t t = 2; t <= this->max_degree[d]; t++) {
+        threads[t] = std::thread(&EMFSD::calculate_degree, *this,
+                                 std::ref(nt[d][t]), d, t);
+      }
+      for (size_t t = 2; t <= this->max_degree[d]; t++) {
+        threads[t].join();
+      }
     }
 
     // Single threaded
@@ -549,10 +590,10 @@ public:
       //   std::cout << "Size of nt[" << d << "] " << nt[d].size() <<
       //   std::endl;
       // }
-      for (uint32_t i = 0; i < nt[d].size(); i++) {
-        ns[i] += nt[d][i];
-        n_new += nt[d][i];
-      }
+      /*for (uint32_t i = 0; i < nt[d].size(); i++) {*/
+      /*  ns[i] += nt[d][i];*/
+      /*  n_new += nt[d][i];*/
+      /*}*/
     }
     for (uint32_t i = 0; i < ns.size(); i++) {
       dist_new[i] = ns[i] / n_new;
@@ -625,7 +666,7 @@ EMFSD *EMFSD_new(uint32_t *szes, uint32_t *s1_1, uint32_t *s1_2, uint32_t *s2_1,
   std::copy_n(s3_2, W3, stages[1][2].begin());
   std::cout << "\tdone stages" << std::endl;
 
-  // Setup tuple listSession
+  // Setup tuple list
   std::cout << "Setup FiveTuple vector with size " << tuples_sz << std::endl;
   std::vector<FIVE_TUPLE> tuples_vec(tuples_sz);
   for (size_t i = 0; i < tuples_sz; i++) {

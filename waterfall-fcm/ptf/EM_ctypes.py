@@ -15,9 +15,7 @@ Stage2 = c_uint32 * SKETCH_W2
 Stage3 = c_uint32 * SKETCH_W3
 FiveTuple = c_uint8 * 13
 
-print(os.getcwd())
 lib = cdll.LoadLibrary(f"{os.getcwd()}/ptf/EM/lib/libEM_FSD.so")
-# lib.EMFSD_new.argtypes = [POINTER(c_uint32), POINTER(c_uint32), POINTER(c_uint32), POINTER(c_uint32), POINTER(POINTER(c_uint8)), c_uint32]
 lib.EMFSD_new.restype = None
 
 class EM_FSD(object):
@@ -87,11 +85,11 @@ class EM_FSD(object):
         lib.EMFSD_next_epoch(self.obj)
 
 print("Creating EM_FSD")
-s1 = [ [ 1,2,3 ], [ 11,12,13 ] ]
-s2 = [ [ 2,3,4 ], [ 12,13,14 ] ]
-s3 = [ [ 3,4,5 ], [ 13,14,15 ] ]
+s1 = [ [ 255,2,3 ], [ 11,12,13 ] ]
+s2 = [ [ 12,13,14 ], [ 12,13,14 ] ]
+s3 = [ [ 103,104,105 ], [ 13,14,15 ] ]
 test_tuple = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-test_tuple2 = [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+test_tuple2 = [ 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
 t1 = FiveTuple(*test_tuple)
 t2 = FiveTuple(*test_tuple2)
 tuples = [ t1, t2]
