@@ -96,6 +96,5 @@ tuples = [ t1, t2]
 f = EM_FSD(s1, s2, s3, tuples)
 print("Finish init EM_FSD")
 print("Start EM")
-print(f)
 f.next_epoch()
 print("done!")

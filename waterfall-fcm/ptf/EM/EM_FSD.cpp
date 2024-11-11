@@ -105,12 +105,11 @@ public:
 
     // Create virtual counters based on depth, degree and count
     // depth, degree, count value, n
-    array<vector<vector<uint32_t>>, DEPTH> virtual_counters;
-    array<vector<vector<vector<array<uint32_t, 4>>>>, DEPTH> thresh;
+    /*array<vector<vector<vector<array<uint32_t, 4>>>>, DEPTH> thresholds;*/
     // Resize to fill all possible degrees
     for (size_t d = 0; d < DEPTH; d++) {
-      virtual_counters[d].resize(init_max_degree[d] + 1);
-      thresh[d].resize(init_max_degree[d] + 1);
+      counters[d].resize(init_max_degree[d] + 1);
+      thresholds[d].resize(init_max_degree[d] + 1);
     }
     std::cout << "Created virtual counters and thresholds" << std::endl;
 
@@ -177,7 +176,7 @@ public:
             uint32_t count = summary[d][s][i][0];
             uint32_t degree = summary[d][s][i][1];
             // Add entry to VC with its degree [1] and count [0]
-            virtual_counters[d][degree].push_back(count);
+            counters[d][degree].push_back(count);
             max_counter_value = std::max(max_counter_value, count);
             this->max_degree[d] = std::max(this->max_degree[d], degree);
 
@@ -191,16 +190,16 @@ public:
               }
             }
 
-            thresh[d][degree].push_back(overflow_paths[d][s][i]);
+            thresholds[d][degree].push_back(overflow_paths[d][s][i]);
           }
         }
       }
     }
 
     // Show collision paths for all degrees and counts
-    for (auto &threshold : thresh) {
+    for (auto &threshold : thresholds) {
       for (size_t d = 0; d < threshold.size(); d++) {
-        if (thresh[d].size() == 0) {
+        if (thresholds[d].size() == 0) {
           continue;
         }
         std::cout << "Degree: " << d << std::endl;
@@ -225,7 +224,7 @@ public:
     }
 
     std::cout << std::endl;
-    for (auto &vc : virtual_counters) {
+    for (auto &vc : counters) {
       for (size_t st = 0; st < vc.size(); st++) {
         if (vc[st].size() == 0) {
           continue;
@@ -268,14 +267,16 @@ public:
         this->n_new += this->counters[d][xi].size();
 
         for (size_t i = 0; i < this->counters[d][xi].size(); i++) {
-          this->counter_dist[d][xi][counters[d][xi][i]]++;
-          this->thresholds[d][xi][this->counters[d][xi][i]] = thresh[d][xi][i];
+          this->counter_dist[d][xi][this->counters[d][xi][i]]++;
+          /*this->thresholds[d][xi][this->counters[d][xi][i]] =*/
+          /*    thresholds[d][xi][i];*/
         }
       }
     }
     this->w = this->stage_szes[0];
     // Divide by number of sketches
-    this->n_new = this->n_new / static_cast<double>(DEPTH);
+    std::cout << std::endl;
+    this->n_new = this->n_new / double(DEPTH);
     std::cout << "[EM_WATERFALL_FCM] Initial cardinality guess" << std::endl;
 
     // Inital guess for Flow Size Distribution (Phi)
@@ -287,6 +288,9 @@ public:
           this->dist_new[count]++;
         }
       }
+    }
+    for (auto &x : this->dist_new) {
+      std::cout << x << " ";
     }
     std::cout << "[EM_WATERFALL_FCM] Initial Flow Size Distribution guess"
               << std::endl;
@@ -303,11 +307,20 @@ public:
         }
       }
     }
+    for (auto &x : this->dist_new) {
+      std::cout << x << " ";
+    }
     std::cout << "[EM_WATERFALL_FCM] Normalize guesses" << std::endl;
     // Normalize over inital cardinality
     for (size_t i = 0; i < this->dist_new.size(); i++) {
+      /*if (this->n_new != 0) {*/
+
       this->dist_new[i] /= (static_cast<double>(DEPTH) * this->n_new);
+      /*}*/
       this->ns[i] /= static_cast<double>(DEPTH);
+    }
+    for (auto &x : this->dist_new) {
+      std::cout << x << " ";
     }
     printf("[EM_WATERFALL_FCM] Initial Cardinality : %9.1f\n", this->n_new);
     printf("[EM_WATERFALL_FCM] Max Counter value : %d\n",
@@ -552,14 +565,12 @@ public:
     auto start = std::chrono::high_resolution_clock::now();
     std::cout << "Start next epoch" << std::endl;
 
-    std::cout << "Calc lambda " << w << std::endl;
-    /*double lambda = this->n_old / static_cast<double>(this->w);*/
-    /*n_old = n_new;*/
-    /*dist_old = dist_new;*/
+    double lambda = this->n_old / static_cast<double>(this->w);
+    n_old = n_new;
+    dist_old = dist_new;
 
-    std::cout << "Setup NT and NS" << std::endl;
     array<vector<vector<double>>, DEPTH> nt;
-    /*std::fill(ns.begin(), ns.end(), 0);*/
+    std::fill(ns.begin(), ns.end(), 0);
 
     std::cout << "Setup NT and NS" << std::endl;
     // Always copy first degree as this is can be considered a perfect
@@ -576,12 +587,15 @@ public:
     // Simple Multi thread
     uint32_t total_degree = this->max_degree[0] + this->max_degree[1];
     std::thread threads[total_degree + 1];
+
+    std::cout << "Created " << total_degree + 1 << " threads" << std::endl;
     for (size_t d = 0; d < DEPTH; d++) {
-      for (size_t t = 2; t <= this->max_degree[d]; t++) {
+      for (size_t t = 0; t <= this->max_degree[d]; t++) {
+        std::cout << "Start thread " << t << std::endl;
         threads[t] = std::thread(&EMFSD::calculate_degree, *this,
                                  std::ref(nt[d][t]), d, t);
       }
-      for (size_t t = 2; t <= this->max_degree[d]; t++) {
+      for (size_t t = 0; t <= this->max_degree[d]; t++) {
         threads[t].join();
       }
     }
