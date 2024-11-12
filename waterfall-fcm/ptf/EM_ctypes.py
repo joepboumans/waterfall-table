@@ -98,24 +98,30 @@ class EM_FSD(object):
             ns.append(x)
         return ns
 
-print("Creating EM_FSD")
-s1 = [ [ 255,2,3 ], [ 255,12,13 ] ]
-s2 = [ [ 12,13,14 ], [ 12,13,14 ] ]
-s3 = [ [ 103,104,105 ], [ 13,14,15 ] ]
-test_tuple = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-test_tuple2 = [ 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
-test_tuple3 = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-tuples = [FiveTuple(*[i for i in range(1,14)]) for _ in range(1, 4)]
-t1 = FiveTuple(*test_tuple)
-t2 = FiveTuple(*test_tuple2)
-t3 = FiveTuple(*test_tuple3)
-tuples = [ t1, t2, t3]
-f = EM_FSD(s1, s2, s3, tuples)
-print("Finish init EM_FSD")
-print("Start EM")
-f.next_epoch()
-print("EM finished")
+    def run_em(self, iters):
+        print(f"Run EM_FSD over {iters} iterations")
+        for i in range(iters):
+            self.next_epoch()
 
-ns = []
-ns = f.get_ns(ns)
-print(ns)
+        print(f"Finished estimation")
+        ns = f.get_ns([])
+        print(f"FSD is : ")
+        print(ns)
+        return ns
+
+if __name__ == "__main__":
+    
+    print("Creating EM_FSD")
+    s1 = [ [ 255,2,3 ], [ 255,12,13 ] ]
+    s2 = [ [ 12,13,14 ], [ 12,13,14 ] ]
+    s3 = [ [ 103,104,105 ], [ 13,14,15 ] ]
+    test_tuple = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+    test_tuple2 = [ 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+    test_tuple3 = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+    tuples = [FiveTuple(*[i for i in range(1,14)]) for _ in range(1, 4)]
+    t1 = FiveTuple(*test_tuple)
+    t2 = FiveTuple(*test_tuple2)
+    t3 = FiveTuple(*test_tuple3)
+    tuples = [ t1, t2, t3]
+    f = EM_FSD(s1, s2, s3, tuples)
+    f.run_em(5)
