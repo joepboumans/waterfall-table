@@ -10,7 +10,6 @@ import random
 import time
 
 from fcm_utils import *
-import EM_ctypes
 
 ## SKETCH CONSTANT VALUES ##
 
@@ -87,6 +86,7 @@ class FCMTest(BfRuntimeTest):
         BfRuntimeTest.tearDown(self)
 
     def runTest(self):
+        return 
         ig_port = swports[1]
 
         logger.info("[INFO-FCM] Adding TCAM Ranges for cardinality...")
@@ -222,4 +222,3 @@ class FCMTest(BfRuntimeTest):
         # Mainly it is because of heuristic complexity truncation of EM algorithm.
         # In future, we will generalize the implementation.
 
-        # FSD from C

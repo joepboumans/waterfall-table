@@ -762,13 +762,4 @@ size_t vector_size(vector<double> *v) { return v->size(); }
 double vector_get(vector<double> *v, size_t i) { return v->at(i); }
 }
 
-/*EMFSD EM(.stages_sz, thresholds, max_counter_value, max_degree,
- * max_degree,*/
-/*         virtual_counters);*/
-/*std::cout << "Initialized EM_FSD, starting estimation..." << std::endl;*/
-/*for (size_t i = 0; i < em_iters; i++) {*/
-/*  EM.next_epoch();*/
-/*}*/
-/*std::cout << "...done!" << std::endl;*/
-/*vector<double> output = EM.ns;*/
 #endif

@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 from ctypes import *
 
 DEPTH = 2
@@ -16,7 +17,7 @@ Stage3 = c_uint32 * SKETCH_W3
 FiveTuple = c_uint8 * 13
 
 class EM_FSD(object):
-    lib = cdll.LoadLibrary(f"{os.getcwd()}/ptf/EM/lib/libEM_FSD.so")
+    lib = cdll.LoadLibrary(f"{os.path.dirname(__file__)}/EM/lib/libEM_FSD.so")
     lib.EMFSD_new.restype = c_void_p
 
     lib.get_ns.restype = c_void_p
@@ -110,7 +111,6 @@ class EM_FSD(object):
         return ns
 
 if __name__ == "__main__":
-    
     print("Creating EM_FSD")
     s1 = [ [ 255,2,3 ], [ 255,12,13 ] ]
     s2 = [ [ 12,13,14 ], [ 12,13,14 ] ]

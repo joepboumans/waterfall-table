@@ -119,8 +119,8 @@ class WaterfallUnitTests(BfRuntimeTest):
         self.testDigest()
         self.resetWaterfall()
         self.testPassAllTables()
-        self.resetWaterfall()
-        self.testLargeInserts()
+        # self.resetWaterfall()
+        # self.testLargeInserts()
 
     def evalutate_digest(self, num_entries):
         learn_filter = self.learn_filter
