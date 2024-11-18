@@ -84,6 +84,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         self.fcm_l1_d2 = self.bfrt_info.table_get("sketch_reg_l1_d2")
         self.fcm_l2_d2 = self.bfrt_info.table_get("sketch_reg_l2_d2")
         self.fcm_l3_d2 = self.bfrt_info.table_get("sketch_reg_l3_d2")
+        self.fcm_tables = {"fcm_l1_d1" : self.fcm_l1_d1, "fcm_l2_d1" : self.fcm_l2_d1, "fcm_l3_d1" : self.fcm_l3_d1, "fcm_l1_d2" : self.fcm_l1_d2, "fcm_l2_d2" : self.fcm_l2_d2, "fcm_l3_d2" : self.fcm_l3_d2}
 
         # Get Pkt count register of FCM
         self.num_pkt = self.bfrt_info.table_get("num_pkt")
@@ -123,7 +124,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         self.testWaterfallFcm()
         # self.resetWaterfall()
 
-    def evalutate_digest(self, num_entries):
+    def evaluate_digest(self, num_entries):
         learn_filter = self.learn_filter
         total_recv = 0
         digest = self.interface.digest_get()
@@ -159,15 +160,26 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
                 break;
         logger.info(f"Received {total_recv} of {num_entries} packets and {len(tuples)} of unique tuples")
         # assert(total_recv == num_entries)
+        return tuples
 
-    def evalutate_table(self, name):
-        table = self.table_dict[name]
+    def evaluate_table(self, tables, name):
+        table = tables[name]
+        control_name = ""
+        if "fcm" in name:
+            control_name = "FcmEgress.fcmsketch"
+            name = name.replace("fcm", "sketch_reg")
+        else:
+            control_name = "WaterfallIngress"
+
+        logger.info(f"[FCM] Load in all data from {control_name}.{name}")
         summed = 0
         nonzero_entries = 0
         data_table = table.entry_get(self.target, [], {"from_hw" : True})
+        entries = []
         for data, key in data_table:
             data_dict = data.to_dict()
-            entry_val = data_dict[f"WaterfallIngress.{name}.f1"][0]
+            entry_val = data_dict[f"{control_name}.{name}.f1"][0]
+            entries.append(entry_val)
             if entry_val != 0:
                 summed += entry_val
                 nonzero_entries += 1
@@ -175,6 +187,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
                 # logger.info(entry_val.to_bytes(2,'big'))
 
         logger.info(f"{name} has {summed} total remainders and {nonzero_entries} entries")
+        return entries
 
 
     def testWaterfallFcm(self):
@@ -269,7 +282,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         logger.info(f"...done sending {total_pkts_sends} packets send")
 
         ''' TC:3 Look for data in digest'''
-        self.evalutate_digest(num_entries_src * num_entries_dst)
+        tuples = self.evaluate_digest(num_entries_src * num_entries_dst)
 
         logger.info("[INFO-FCM] Wait until packets are all received...")
 
@@ -287,12 +300,13 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
             data_dict = data.to_dict()
             
             logger.info("[INFO-FCM] Sent : %d, Received : %d\t\t wait 10s more...", total_pkts_sends, data_dict["FcmEgress.num_pkt.f1"][0])
-            if (data_dict["FcmEgress.num_pkt.f1"][0] - 1 == total_pkts_sends or iters > 2):
+            if (data_dict["FcmEgress.num_pkt.f1"][0] == total_pkts_sends or iters > 2):
+                logger.info("[INFO-FCM] Found all packets, continue...")
                 break
             iters += 1
             time.sleep(10)
 
-        assert data_dict["FcmEgress.num_pkt.f1"][0] - 1 == total_pkts_sends, "Error: Packets are not correctly inserted..."
+        assert data_dict["FcmEgress.num_pkt.f1"][0] == total_pkts_sends, "Error: Packets are not correctly inserted..."
 
         fcm_l1_d1 = self.fcm_l1_d1
         fcm_l2_d1 = self.fcm_l2_d1
@@ -300,14 +314,29 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         fcm_l1_d2 = self.fcm_l1_d2
         fcm_l2_d2 = self.fcm_l2_d2
         fcm_l3_d2 = self.fcm_l3_d2
+
+        logger.info("[INFO-FCM] Start parsing in tables...")
+        # Get all FCM entries
+        fcm_table = [[], []]
+        # fcm_table[0].append(self.evaluate_table(self.fcm_tables, "fcm_l1_d1"))
+        fcm_table[0].append([0, 0])
+        fcm_table[0].append(self.evaluate_table(self.fcm_tables, "fcm_l2_d1"))
+        fcm_table[0].append(self.evaluate_table(self.fcm_tables, "fcm_l3_d1"))
+        # fcm_table[1].append(self.evaluate_table(self.fcm_tables, "fcm_l1_d2"))
+        fcm_table[1].append([0, 0])
+        fcm_table[1].append(self.evaluate_table(self.fcm_tables, "fcm_l2_d2"))
+        fcm_table[1].append(self.evaluate_table(self.fcm_tables, "fcm_l3_d2"))
+
+
+        for fcm_d in fcm_table:
+            for st in fcm_d:
+                logger.info(f"Got values {st[0]}")
+
         # call the register values and get flow size estimation
         logger.info("[INFO-FCM] Start query processing...")
         ARE = 0
         AAE = 0
-        Card_RE = 0
         for key, value in in_tuples.items():
-            logger.info(value)
-            logger.info(key)
             ## depth 1, level 1
             hash_d1 = fcm_crc32(key)
             register_l1_d1 = fcm_l1_d1
@@ -317,6 +346,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
             data_d1, _ = next(resp_l1_d1)
             data_d1_dict = data_d1.to_dict()
             val_d1 = data_d1_dict["FcmEgress.fcmsketch.sketch_reg_l1_d1.f1"][0]
+
             # overflow to level 2?
             if (val_d1 == ADD_LEVEL1):
                 register_l2_d1 = fcm_l2_d1
@@ -326,6 +356,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
                 data_d1, _ = next(resp_l2_d1)
                 data_d1_dict = data_d1.to_dict()
                 val_d1 = data_d1_dict["FcmEgress.fcmsketch.sketch_reg_l2_d1.f1"][0] + ADD_LEVEL1 - 1
+
                 # overflow to level 3?
                 if (val_d1 == ADD_LEVEL2):
                     register_l3_d1 = fcm_l3_d1
@@ -346,6 +377,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
             data_d2, _ = next(resp_l1_d2)
             data_d2_dict = data_d2.to_dict()
             val_d2 = data_d2_dict["FcmEgress.fcmsketch.sketch_reg_l1_d2.f1"][0]
+
             # overflow to level 2?
             if (val_d2 == ADD_LEVEL1):
                 register_l2_d2 = fcm_l2_d2
@@ -355,6 +387,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
                 data_d2, _ = next(resp_l2_d2)
                 data_d2_dict = data_d2.to_dict()
                 val_d2 = data_d2_dict["FcmEgress.fcmsketch.sketch_reg_l2_d2.f1"][0] + ADD_LEVEL1 - 1
+
                 # overflow to level 3?
                 if (val_d2 == ADD_LEVEL2):
                     register_l3_d2 = fcm_l3_d2
@@ -373,3 +406,9 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
             AAE += abs(final_query - value) / 1.0
         logger.info(bcolors.OKBLUE + "[INFO-FCM] Flow Size - ARE = %2.8f" + bcolors.ENDC, (ARE / NUM_FLOWS))
         logger.info(bcolors.OKBLUE + "[INFO-FCM] Flow Size - AAE = %2.8f" + bcolors.ENDC, (AAE / NUM_FLOWS))
+
+        logger.info("[WaterfallFcm] Start EM FSD...")
+        em_fsd = EM_FSD(fcm_table[0][0] + fcm_table[1][0], fcm_table[0][1] + fcm_table[1][1], fcm_table[0][2] + fcm_table[1][2], tuples.values())
+        ns = em_fsd.run_em(1)
+        
+        logger.info("[WaterfallFcm] Start EM FSD...")

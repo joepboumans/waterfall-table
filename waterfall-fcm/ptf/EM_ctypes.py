@@ -2,6 +2,16 @@ import os
 from pathlib import Path
 from ctypes import *
 
+import logging
+logger = logging.getLogger("EM_ctype")
+
+if not len(logger.handlers):
+    sh = logging.StreamHandler()
+    formatter = logging.Formatter('[%(levelname)s - %(name)s - %(funcName)s]: %(message)s')
+    sh.setFormatter(formatter)
+    sh.setLevel(logging.INFO)
+    logger.addHandler(sh)
+
 DEPTH = 2
 NUM_STAGES = 3
 SKETCH_W1 = 524288              # 8-bit, level 1
@@ -28,11 +38,14 @@ class EM_FSD(object):
     lib.vector_get.argtypes = [c_void_p, c_size_t]
 
     def __init__(self, s1, s2, s3, in_tuples):
-
+        logger.info(in_tuples)
         Tuples = FiveTuple * len(in_tuples)
         tuples = Tuples()
-        for i in range(len(in_tuples)):
-            tuples[i] = in_tuples[i]
+        in2Tuples = []
+        for val in in_tuples:
+            in2Tuples.append(FiveTuple(*val))
+        for i in range(len(in2Tuples)):
+            tuples[i] = in2Tuples[i]
 
 
         # Needs separate list per depth as passing to c++ does not work well with c_uint32** 
