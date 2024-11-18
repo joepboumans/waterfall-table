@@ -49,6 +49,9 @@
 
 // metadata fields for fcm
 struct fcm_metadata_t {
+    bit<16> src_port;
+    bit<16> dst_port;
+
     bit<32> hash_meta_d1;
     bit<32> hash_meta_d2;
 
@@ -99,6 +102,8 @@ parser FcmEgressParser(
     
     state parse_tcp {
         pkt.extract(hdr.tcp);
+        eg_md.src_port = hdr.tcp.src_port;
+        eg_md.dst_port = hdr.tcp.dst_port;
         transition select(hdr.ipv4.total_len) {
             default : accept;
         }
@@ -106,6 +111,8 @@ parser FcmEgressParser(
     
     state parse_udp {
         pkt.extract(hdr.udp);
+        eg_md.src_port = hdr.udp.src_port;
+        eg_md.dst_port = hdr.udp.dst_port;
         transition select(hdr.udp.dst_port) {
             default: accept;
         }
@@ -225,33 +232,40 @@ control FCMSketch (
 	// +++++++++++++++++++ 
 	//	actions
 	// +++++++++++++++++++
+  action fcm_hash_d1() {
+    fcm_mdata.hash_meta_d1 = hash_d1.get({ hdr.ipv4.src_addr, hdr.ipv4.dst_addr, fcm_mdata.src_port, fcm_mdata.dst_port, hdr.ipv4.protocol});
+  }
+
+  action fcm_hash_d2() {
+    fcm_mdata.hash_meta_d2 = hash_d2.get({ hdr.ipv4.src_addr, hdr.ipv4.dst_addr, fcm_mdata.src_port, fcm_mdata.dst_port, hdr.ipv4.protocol});
+  }
 
 	// action for level 1, depth 1, you can re-define the flow key identification
 	action fcm_action_l1_d1() {
-		fcm_mdata.result_d1 = increment_l1_d1.execute(hash_d1.get({ hdr.ipv4.src_addr })[18:0]);
+		fcm_mdata.result_d1 = increment_l1_d1.execute(fcm_mdata.hash_meta_d1[18:0]);
 	}
 	// action for level 2, depth 1
 	action fcm_action_l2_d1() {
-    bit<32> res = increment_l2_d1.execute(hash_d1.get({ hdr.ipv4.src_addr })[18:3]);
+    bit<32> res = increment_l2_d1.execute(fcm_mdata.hash_meta_d1[18:3]);
     fcm_mdata.result_d1 = res + ADD_LEVEL1;
 	}
 	// action for level 3, depth 1
 	action fcm_action_l3_d1() {
-		fcm_mdata.result_d1 = increment_l3_d1.execute(hash_d1.get({ hdr.ipv4.src_addr })[18:6]);
+		fcm_mdata.result_d1 = increment_l3_d1.execute(fcm_mdata.hash_meta_d1[18:6]);
 	}
 
 	// action for level 1, depth 2, you can re-define the flow key identification
 	action fcm_action_l1_d2() {
-		fcm_mdata.result_d2 = increment_l1_d2.execute(hash_d2.get({ hdr.ipv4.src_addr })[18:0]);
+		fcm_mdata.result_d2 = increment_l1_d2.execute(fcm_mdata.hash_meta_d2[18:0]);
 	}
 	// action for level 2, depth 2
 	action fcm_action_l2_d2() {
-    bit<32> res = increment_l2_d2.execute(hash_d2.get({ hdr.ipv4.src_addr })[18:0][18:3]);
+    bit<32> res = increment_l2_d2.execute(fcm_mdata.hash_meta_d2[18:0][18:3]);
     fcm_mdata.result_d2 = res + ADD_LEVEL1;
 	}
 	// action for level 3, depth 2
 	action fcm_action_l3_d2() {
-		fcm_mdata.result_d2 = increment_l3_d2.execute(hash_d2.get({ hdr.ipv4.src_addr })[18:0][18:6]);
+		fcm_mdata.result_d2 = increment_l3_d2.execute(fcm_mdata.hash_meta_d2[18:6]);
 	}
 
 
@@ -375,6 +389,9 @@ control FCMSketch (
 	//	apply
 	// +++++++++++++++++++
 	apply {
+    fcm_hash_d1();
+    fcm_hash_d2();
+
 		fcm_action_l1_d1();			// increment level 1, depth 1
 		fcm_action_l1_d2();			// increment level 1, depth 2
 		/* increment the number of occupied leaf nodes */

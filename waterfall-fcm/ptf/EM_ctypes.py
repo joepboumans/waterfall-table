@@ -38,7 +38,7 @@ class EM_FSD(object):
     lib.vector_get.argtypes = [c_void_p, c_size_t]
 
     def __init__(self, s1, s2, s3, in_tuples):
-        logger.info(in_tuples)
+        # logger.info(in_tuples)
         Tuples = FiveTuple * len(in_tuples)
         tuples = Tuples()
         in2Tuples = []

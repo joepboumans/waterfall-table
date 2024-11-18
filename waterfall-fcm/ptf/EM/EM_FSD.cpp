@@ -65,8 +65,10 @@ public:
   bool inited = false;
   EMFSD(array<uint32_t, NUM_STAGES> szes,
         vector<vector<vector<uint32_t>>> stages, vector<FIVE_TUPLE> tuples)
-      : stage_szes(szes), stages(stages), tuples(tuples) {
+      : stage_szes(szes), stages(stages) {
 
+    /*this->tuples.resize(tuples.size());*/
+    this->tuples = tuples;
     std::cout << "Init EM_FSD" << std::endl;
     // Get inital degree guesses
     for (auto &tuple : this->tuples) {
@@ -77,6 +79,8 @@ public:
             std::max(init_max_degree[d], init_degree[d][hash_idx]);
       }
     }
+    std::cout << "[WaterfallFcm] Colleted all initial degrees from Waterfall"
+              << std::endl;
     for (size_t d = 0; d < DEPTH; d++) {
       for (size_t i = 0; i < init_degree[d].size(); i++) {
         if (init_degree[d][i] > 0) {
@@ -93,6 +97,7 @@ public:
     array<array<vector<vector<array<uint32_t, 4>>>, NUM_STAGES>, DEPTH>
         overflow_paths;
 
+    std::cout << "[WaterfallFcm] Setup Summary and Overflow Paths" << std::endl;
     // Setup sizes for summary and overflow_paths
     for (size_t d = 0; d < DEPTH; d++) {
       for (size_t stage = 0; stage < NUM_STAGES; stage++) {
@@ -703,8 +708,7 @@ public:
         }
       }
     }
-    /*return crc % W1;*/
-    return tuple.num_array[0] - 1;
+    return crc % W1;
   }
 };
 
@@ -743,7 +747,7 @@ void *EMFSD_new(uint32_t *szes, uint32_t *s1_1, uint32_t *s1_2, uint32_t *s2_1,
 
   std::cout << "Checking vector with " << tuples_vec.size() << std::endl;
   for (size_t i = 0; i < tuples_vec.size(); i++) {
-    std::cout << tuples_vec.at(i) << std::endl;
+    std::cout << i << " : " << tuples_vec.at(i) << std::endl;
   }
   return new EMFSD(stage_szes, stages, tuples_vec);
 }
