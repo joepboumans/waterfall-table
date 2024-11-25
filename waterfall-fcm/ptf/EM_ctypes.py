@@ -122,7 +122,7 @@ class EM_FSD(object):
             self.next_epoch()
 
         print(f"Finished estimation")
-        ns = f.get_ns([])
+        ns = self.get_ns([])
         print(f"FSD is : ")
         print(ns)
         return ns

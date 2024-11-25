@@ -64,12 +64,17 @@ public:
   uint32_t iter = 0;
   bool inited = false;
   EMFSD(array<uint32_t, NUM_STAGES> szes,
-        vector<vector<vector<uint32_t>>> stages, vector<FIVE_TUPLE> tuples)
-      : stage_szes(szes) {
+        vector<vector<vector<uint32_t>>> stages, vector<FIVE_TUPLE> tuples) {
 
     /*this->tuples.resize(tuples.size());*/
     this->tuples = tuples;
     this->stages = stages;
+    this->stage_szes = szes;
+    std::cout << "[WaterfallFcm] Stage szes:" << std::endl;
+    for (auto &sz : this->stage_szes) {
+      std::cout << sz << " ";
+    }
+    std::cout << std::endl;
     std::cout << "Init EM_FSD" << std::endl;
     // Get inital degree guesses
     for (auto &tuple : this->tuples) {
@@ -124,7 +129,7 @@ public:
 
     for (size_t d = 0; d < DEPTH; d++) {
       for (size_t s = 0; s < NUM_STAGES; s++) {
-        for (size_t i = 0; i < this->stage_szes[i]; i++) {
+        for (size_t i = 0; i < this->stage_szes[s]; i++) {
           summary[d][s][i][0] = this->stages[d][s][i];
           // If overflown increase the minimal value for the collisions
           if (s == 0 && this->stages[d][s][i] >= OVERFLOW_LEVEL1) {
@@ -135,6 +140,7 @@ public:
             summary[d][s][i][2] = 1;
             std::cout << "Overflown in " << s << " " << i << std::endl;
           }
+
           if (s == 0) {
             summary[d][s][i][1] = init_degree[d][i];
             overflow_paths[d][s][i].push_back(
@@ -206,6 +212,8 @@ public:
     }
 
     // Show collision paths for all degrees and counts
+    std::cout << "[WaterfallFcm] Setup summary and thresholds" << std::endl;
+    std::cout << "[WaterfallFcm] Thresholds:" << std::endl;
     for (auto &threshold : init_thresholds) {
       for (size_t d = 0; d < threshold.size(); d++) {
         if (init_thresholds[d].size() == 0) {
@@ -232,8 +240,8 @@ public:
       }
       std::cout << std::endl;
     }
-
     std::cout << std::endl;
+    std::cout << "[WaterfallFcm] Counters:" << std::endl;
     for (auto &vc : counters) {
       for (size_t st = 0; st < vc.size(); st++) {
         if (vc[st].size() == 0) {
@@ -725,7 +733,7 @@ void *EMFSD_new(uint32_t *szes, uint32_t *s1_1, uint32_t *s1_2, uint32_t *s2_1,
   std::copy_n(s1_1, W1, stages[0][0].begin());
   std::copy_n(s2_1, W2, stages[0][1].begin());
   std::copy_n(s3_1, W3, stages[0][2].begin());
-  std::copy_n(s1_2, W2, stages[1][0].begin());
+  std::copy_n(s1_2, W1, stages[1][0].begin());
   std::copy_n(s2_2, W2, stages[1][1].begin());
   std::copy_n(s3_2, W3, stages[1][2].begin());
   std::cout << "\tdone stages" << std::endl;
