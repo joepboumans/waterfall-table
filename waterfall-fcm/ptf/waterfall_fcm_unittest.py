@@ -44,10 +44,12 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         client_id = 0
         BfRuntimeTest.setUp(self, client_id)
         logger.info("\tfinished BfRuntimeSetup")
+        self.target = gc.Target(device_id=0, pipe_id=0xffff)
 
         self.setupWaterfall()
+        self.resetWaterfall()
+        self.setupWaterfall()
 
-        self.target = gc.Target(device_id=0, pipe_id=0xffff)
         logger.info("Finished setup")
 
     def setupWaterfall(self):
@@ -100,6 +102,9 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         self.port_meta.entry_del(self.target)
 
         for _, table in self.table_dict.items():
+            table.entry_del(self.target)
+
+        for table in self.fcm_tables.values():
             table.entry_del(self.target)
 
         for _, swap in self.swap_dict.items():
@@ -244,7 +249,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         data = swap4.make_data([], "WaterfallIngress.do_swap4")
         swap4.entry_add(target, [key], [data])
 
-        num_entries_src = 100
+        num_entries_src = 1
         num_entries_dst = 1
         total_pkts_sends = 0
         seed = 1001
@@ -254,7 +259,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         in_tuples = {}
 
         NUM_FLOWS = num_entries_src * num_entries_dst            # number of sample flows
-        MAX_FLOW_SIZE = 2          # max size of flows
+        MAX_FLOW_SIZE = 1          # max size of flows
 
         logger.info(f"Start sending {num_entries_src * num_entries_dst} entries")
         for src_ip in src_ip_list:
@@ -355,6 +360,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
             val_d1 = data_d1_dict["FcmEgress.fcmsketch.sketch_reg_l1_d1.f1"][0]
 
 
+            fcm_table[0][0][hash_d1 % SKETCH_W1] = val_d1
             # overflow to level 2?
             if (val_d1 == ADD_LEVEL1):
                 register_l2_d1 = fcm_l2_d1
@@ -379,21 +385,19 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
                     fcm_table[0][2][hash_d1 % SKETCH_W3] = val_d1
 
             logger.info(f"Store value {val_d1} in {hash_d1 % SKETCH_W1}")
-            fcm_table[0][0][hash_d1 % SKETCH_W1] = val_d1
 
 
             ## depth 2, level 1
-            hash_d2 = fcm_crc32_mpeg2(key)
-            hash_d2_w1 = int(hash_d2 % SKETCH_W1)
+            hash_d2 = fcm_crc32_init_val(key, 0xF0000000)
             register_l1_d2 = fcm_l1_d2
             resp_l1_d2 = register_l1_d2.entry_get(target,
-                    [register_l1_d2.make_key([gc.KeyTuple('$REGISTER_INDEX', hash_d2_w1)])],
+                    [register_l1_d2.make_key([gc.KeyTuple('$REGISTER_INDEX', hash_d2 % SKETCH_W1)])],
                     {"from_hw": FROM_HW})
             data_d2, _ = next(resp_l1_d2)
             data_d2_dict = data_d2.to_dict()
             val_d2 = data_d2_dict["FcmEgress.fcmsketch.sketch_reg_l1_d2.f1"][0]
 
-            fcm_table[1][0][hash_d2_w1] = val_d2
+            fcm_table[1][0][hash_d2 % SKETCH_W1] = val_d2
 
             # overflow to level 2?
             if (val_d2 == ADD_LEVEL1):
@@ -405,7 +409,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
                 data_d2_dict = data_d2.to_dict()
                 val_d2 = data_d2_dict["FcmEgress.fcmsketch.sketch_reg_l2_d2.f1"][0] + ADD_LEVEL1 - 1
 
-                fcm_table[1][1][hash_d2_w1 % SKETCH_W2] = val_d2
+                fcm_table[1][1][hash_d2 % SKETCH_W2] = val_d2
 
                 # overflow to level 3?
                 if (val_d2 == ADD_LEVEL2):
@@ -417,8 +421,9 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
                     data_d2_dict = data_d2.to_dict()
                     val_d2 = data_d2_dict["FcmEgress.fcmsketch.sketch_reg_l3_d2.f1"][0] + ADD_LEVEL2 - 1
 
-                    fcm_table[1][2][hash_d2_w1 % SKETCH_W3] = val_d2
+                    fcm_table[1][2][hash_d2 % SKETCH_W3] = val_d2
 
+            logger.info(f"Store value {val_d2} in {hash_d2 % SKETCH_W1}")
 
             if DEBUGGING:
                 logger.info("[INFO-FCM] Flow %d - True : %d, Est of FCM : %d", key, value, min(val_d1, val_d2))
@@ -430,7 +435,8 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         logger.info(bcolors.OKBLUE + "[INFO-FCM] Flow Size - AAE = %2.8f" + bcolors.ENDC, (AAE / NUM_FLOWS))
 
         logger.info("[WaterfallFcm] Start EM FSD...")
-        em_fsd = EM_FSD([fcm_table[0][0], fcm_table[1][0]], [fcm_table[0][1], fcm_table[1][1]], [fcm_table[0][2], fcm_table[1][2]], tuples.values())
+        s1 = [fcm_table[0][0], fcm_table[1][0]]
+        em_fsd = EM_FSD(s1, [fcm_table[0][1], fcm_table[1][1]], [fcm_table[0][2], fcm_table[1][2]], tuples.values())
         ns = em_fsd.run_em(1)
         
         logger.info("[WaterfallFcm] Start EM FSD...")

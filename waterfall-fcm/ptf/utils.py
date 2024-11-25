@@ -29,6 +29,7 @@ def crc32(src_addr, dst_addr, src_port, dst_port, protocol, init_val):
     n = zlib.crc32(bytes_string, init_val)
     return n + (1<<32) if n < 0 else n
 
+# Use the reversed init_val specified in the P4 Hash definition
 def crc32_rehash(ip_hash, init_val):
     hash_bytes = ip_hash.to_bytes(4, byteorder='little')
     # Hash(idx + remain) + emtpy dst addr + emtpy srcp + emtpry dstp + empty protocol

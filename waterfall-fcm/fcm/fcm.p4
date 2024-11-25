@@ -149,8 +149,8 @@ control FCMSketch (
                            true, 
                            false, 
                            false, 
-                           32w0xFFFFFFFF,
-                           32w0x00000000
+                           32w0xFFFFFFF0, // initial shift register value
+                           32w0xFFFFFFFF  // result xor
                            ) CRC32_MPEG;
     Hash<bit<32>>(HashAlgorithm_t.CUSTOM, CRC32_MPEG) hash_d2;
 
@@ -260,7 +260,7 @@ control FCMSketch (
 	}
 	// action for level 2, depth 2
 	action fcm_action_l2_d2() {
-    bit<32> res = increment_l2_d2.execute(fcm_mdata.hash_meta_d2[18:0][18:3]);
+    bit<32> res = increment_l2_d2.execute(fcm_mdata.hash_meta_d2[18:3]);
     fcm_mdata.result_d2 = res + ADD_LEVEL1;
 	}
 	// action for level 3, depth 2

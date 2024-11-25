@@ -65,10 +65,11 @@ public:
   bool inited = false;
   EMFSD(array<uint32_t, NUM_STAGES> szes,
         vector<vector<vector<uint32_t>>> stages, vector<FIVE_TUPLE> tuples)
-      : stage_szes(szes), stages(stages) {
+      : stage_szes(szes) {
 
     /*this->tuples.resize(tuples.size());*/
     this->tuples = tuples;
+    this->stages = stages;
     std::cout << "Init EM_FSD" << std::endl;
     // Get inital degree guesses
     for (auto &tuple : this->tuples) {
@@ -85,6 +86,7 @@ public:
       for (size_t i = 0; i < init_degree[d].size(); i++) {
         if (init_degree[d][i] > 0) {
           std::cout << i << ":" << init_degree[d][i] << " ";
+          std::cout << ":" << this->stages[d][0][i] << " ";
         }
       }
       std::cout << std::endl;
