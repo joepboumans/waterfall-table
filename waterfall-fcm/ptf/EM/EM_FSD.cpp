@@ -83,6 +83,7 @@ public:
     std::cout << "[WaterfallFcm] Colleted all initial degrees from Waterfall"
               << std::endl;
     for (size_t d = 0; d < DEPTH; d++) {
+      std::cout << "[WaterfallFcm] Depth " << d << ":" << std::endl;
       for (size_t i = 0; i < init_degree[d].size(); i++) {
         if (init_degree[d][i] > 0) {
           std::cout << i << ":" << init_degree[d][i] << " ";
@@ -694,21 +695,10 @@ public:
     uint32_t crc = 0;
     if (depth == 0) {
       crc = crc32(0L, Z_NULL, 0);
-      for (int i = 0; i < 13; ++i) {
-        crc = crc32(crc, tuple.num_array + i, 1);
-      }
+      crc = crc32(crc, tuple.num_array, 13);
     } else {
-      uint32_t msb;
-      crc = 0xFFFFFFFF;
-      for (size_t i = 0; i < 13; i++) {
-        // xor next byte to upper bits of crc
-        crc ^= (((uint32_t)tuple.num_array[i]) << 24);
-        for (size_t j = 0; j < 8; j++) { // Do eight times.
-          msb = crc >> 31;
-          crc <<= 1;
-          crc ^= (0 - msb) & 0x04C11DB7;
-        }
-      }
+      crc = 0xF0000000;
+      crc = crc32(crc, tuple.num_array, 13);
     }
     return crc % W1;
   }
