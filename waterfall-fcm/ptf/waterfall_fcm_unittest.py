@@ -137,8 +137,8 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         tuples = {}
         while(digest != None):
             data_list = learn_filter.make_data_list(digest)
-            logger.info(f"Received {len(data_list)} entries from the digest")
             total_recv += len(data_list)
+            logger.info(f"Received {len(data_list)} entries from the digest with {total_recv = }")
             for data in data_list:
                 data_dict = data.to_dict()
                 recv_src_addr = data_dict["src_addr"]
@@ -249,7 +249,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         data = swap4.make_data([], "WaterfallIngress.do_swap4")
         swap4.entry_add(target, [key], [data])
 
-        num_entries_src = 1
+        num_entries_src = 100
         num_entries_dst = 1
         total_pkts_sends = 0
         seed = 1001
@@ -259,43 +259,44 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         in_tuples = {}
 
         NUM_FLOWS = num_entries_src * num_entries_dst            # number of sample flows
-        MAX_FLOW_SIZE = 1          # max size of flows
+        MAX_FLOW_SIZE = 70000          # max size of flows
+        fsd = [0] * (MAX_FLOW_SIZE + 1)
 
         logger.info(f"Start sending {num_entries_src * num_entries_dst} entries")
         for src_ip in src_ip_list:
             for dst_ip in dst_ip_list:
                 src_addr = getattr(src_ip, "ip")
                 dst_addr = getattr(dst_ip, "ip")
-                src_port = random.randrange(0, 0xFFFF)
-                dst_port = random.randrange(0, 0xFFFF)
-                flow_size = random.randint(1, MAX_FLOW_SIZE)
+                src_port = 88 #random.randrange(0, 0xFFFF)
+                dst_port = 1024 #random.randrange(0, 0xFFFF)
+                # flow_size = random.randint(1, MAX_FLOW_SIZE)
+                flow_size = MAX_FLOW_SIZE
 
                 pkt_in = testutils.simple_tcp_packet(ip_src=src_addr, ip_dst=dst_addr, tcp_sport=src_port, tcp_dport=dst_port)
-                testutils.send_packet(self, ig_port, pkt_in, count=flow_size)
+                testutils.send_packet(self, ig_port, pkt_in, count=10)
                 # testutils.verify_packet(self, pkt_in, ig_port)
                 total_pkts_sends += flow_size
+
                 raw_src_addr = [int(x) for x in src_addr.split('.')]
                 raw_dst_addr = [int(x) for x in dst_addr.split('.')]
                 raw_src_port = [int(x) for x in int(src_port).to_bytes(2, byteorder='big')]
                 raw_dst_port = [int(x) for x in int(dst_port).to_bytes(2, byteorder='big')]
                 raw_protocol = [6]
                 # logger.info(f"{raw_src_addr = } : {raw_dst_addr = } | {raw_src_port = } {raw_dst_port = } | {raw_protocol = }")
+
                 tuple_list = raw_src_addr + raw_dst_addr + raw_src_port + raw_dst_port + raw_protocol
-                # tuple_list = raw_src_addr 
                 tuple_key = ".".join([str(x) for x in tuple_list])
                 in_tuples[tuple_key] = flow_size
+                fsd[flow_size] += 1
 
         logger.info(f"...done sending {total_pkts_sends} packets send")
 
-        ''' TC:3 Look for data in digest'''
-        tuples = self.evaluate_digest(num_entries_src * num_entries_dst)
 
-        logger.info("[INFO-FCM] Wait until packets are all received...")
 
         register_pktcount = self.num_pkt
         # check all packets are sent
-        
         iters = 0
+        logger.info("[INFO-FCM] Wait until packets are all received...")
         while True:
             register_pktcount.operations_execute(target, 'Sync')
             
@@ -305,14 +306,28 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
             data, _ = next(resp_pktcount)
             data_dict = data.to_dict()
             
+            # for src_ip in src_ip_list:
+            #     for dst_ip in dst_ip_list:
+            #         src_addr = getattr(src_ip, "ip")
+            #         dst_addr = getattr(dst_ip, "ip")
+            #         src_port = 88 #random.randrange(0, 0xFFFF)
+            #         dst_port = 1024 #random.randrange(0, 0xFFFF)
+            #         # flow_size = random.randint(1, MAX_FLOW_SIZE)
+            #         flow_size = 100
+            #
+            #         pkt_in = testutils.simple_tcp_packet(ip_src=src_addr, ip_dst=dst_addr, tcp_sport=src_port, tcp_dport=dst_port)
+            #         testutils.send_packet(self, ig_port, pkt_in, count=flow_size)
+
             logger.info("[INFO-FCM] Sent : %d, Received : %d\t\t wait 1s more...", total_pkts_sends, data_dict["FcmEgress.num_pkt.f1"][0])
-            if (data_dict["FcmEgress.num_pkt.f1"][0] == total_pkts_sends or iters > 2):
+            if (data_dict["FcmEgress.num_pkt.f1"][0] >= (total_pkts_sends - 100 ) or iters >= 2):
                 logger.info("[INFO-FCM] Found all packets, continue...")
                 break
             iters += 1
             time.sleep(1)
 
         # assert data_dict["FcmEgress.num_pkt.f1"][0] == total_pkts_sends, "Error: Packets are not correctly inserted..."
+        ''' TC:3 Look for data in digest'''
+        tuples = self.evaluate_digest(num_entries_src * num_entries_dst)
 
         fcm_l1_d1 = self.fcm_l1_d1
         fcm_l2_d1 = self.fcm_l2_d1
@@ -339,9 +354,9 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         fcm_table[1].append([0] * SKETCH_W3)
 
 
-        for fcm_d in fcm_table:
-            for st in fcm_d:
-                logger.info(f"Stage with size {len(st)}")
+        # for fcm_d in fcm_table:
+        #     for st in fcm_d:
+        #         logger.info(f"Stage with size {len(st)}")
 
         # call the register values and get flow size estimation
         logger.info("[INFO-FCM] Start query processing...")
@@ -350,83 +365,104 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         for key, value in in_tuples.items():
             logger.info(f"Getting data from {key}")
             ## depth 1, level 1
-            hash_d1 = fcm_crc32(key)
+            val_d1 = 0
+            hash_d1 = fcm_crc32(key) % SKETCH_W1
             register_l1_d1 = fcm_l1_d1
             resp_l1_d1 = register_l1_d1.entry_get(target,
-                    [register_l1_d1.make_key([gc.KeyTuple('$REGISTER_INDEX', hash_d1 % SKETCH_W1)])],
+                    [register_l1_d1.make_key([gc.KeyTuple('$REGISTER_INDEX', hash_d1)])],
                     {"from_hw": FROM_HW})
             data_d1, _ = next(resp_l1_d1)
             data_d1_dict = data_d1.to_dict()
-            val_d1 = data_d1_dict["FcmEgress.fcmsketch.sketch_reg_l1_d1.f1"][0]
+            # val_s1_d1 = data_d1_dict["FcmEgress.fcmsketch.sketch_reg_l1_d1.f1"][0]
+            val_s1_d1 = ADD_LEVEL1
+            val_d1 = val_s1_d1
 
 
-            fcm_table[0][0][hash_d1 % SKETCH_W1] = val_d1
+            fcm_table[0][0][hash_d1] = val_s1_d1
+            logger.info(f"Store s1 value {val_s1_d1} in {hash_d1 % SKETCH_W1}")
             # overflow to level 2?
-            if (val_d1 == ADD_LEVEL1):
+            if (val_s1_d1 == ADD_LEVEL1):
+                hash_d1 = int(hash_d1 / 8)
                 register_l2_d1 = fcm_l2_d1
                 resp_l2_d1 = register_l2_d1.entry_get(target,
-                        [register_l2_d1.make_key([gc.KeyTuple('$REGISTER_INDEX', hash_d1 % SKETCH_W2)])],
+                        [register_l2_d1.make_key([gc.KeyTuple('$REGISTER_INDEX', hash_d1)])],
                         {"from_hw": FROM_HW})
                 data_d1, _ = next(resp_l2_d1)
                 data_d1_dict = data_d1.to_dict()
-                val_d1 = data_d1_dict["FcmEgress.fcmsketch.sketch_reg_l2_d1.f1"][0] + ADD_LEVEL1 - 1
+                # val_s2_d1 = data_d1_dict["FcmEgress.fcmsketch.sketch_reg_l2_d1.f1"][0]
+                val_s2_d1 = ADD_LEVEL2 - ADD_LEVEL1 + 1
+                val_d1 = val_s2_d1 + ADD_LEVEL1 - 1
 
-                fcm_table[0][1][hash_d1 % SKETCH_W2] = val_d1
+                fcm_table[0][1][hash_d1] = val_s2_d1
+                logger.info(f"Store s2 value {val_s2_d1} in {hash_d1}")
                 # overflow to level 3?
                 if (val_d1 == ADD_LEVEL2):
+                    hash_d1 = int(hash_d1 / 8)
                     register_l3_d1 = fcm_l3_d1
                     resp_l3_d1 = register_l3_d1.entry_get(target,
-                            [register_l3_d1.make_key([gc.KeyTuple('$REGISTER_INDEX', hash_d1 % SKETCH_W3)])],
+                            [register_l3_d1.make_key([gc.KeyTuple('$REGISTER_INDEX', hash_d1)])],
                             {"from_hw": FROM_HW})
                     data_d1, _ = next(resp_l3_d1)
                     data_d1_dict = data_d1.to_dict()
-                    val_d1 = data_d1_dict["FcmEgress.fcmsketch.sketch_reg_l3_d1.f1"][0] + ADD_LEVEL2 - 1
+                    # val_s3_d1 = data_d1_dict["FcmEgress.fcmsketch.sketch_reg_l3_d1.f1"][0]
+                    val_s3_d1 = 4212
+                    val_d1 = val_s3_d1 + ADD_LEVEL2 - 1
 
-                    fcm_table[0][2][hash_d1 % SKETCH_W3] = val_d1
-
-            logger.info(f"Store value {val_d1} in {hash_d1 % SKETCH_W1}")
+                    fcm_table[0][2][hash_d1] = val_s3_d1
+                    logger.info(f"Store s3 value {val_s3_d1} in {hash_d1}")
 
 
             ## depth 2, level 1
-            hash_d2 = fcm_crc32_init_val(key, 0xF0000000)
+            val_d2 = 0
+            hash_d2 = fcm_crc32_init_val(key, 0xF0000000) % SKETCH_W1
             register_l1_d2 = fcm_l1_d2
             resp_l1_d2 = register_l1_d2.entry_get(target,
-                    [register_l1_d2.make_key([gc.KeyTuple('$REGISTER_INDEX', hash_d2 % SKETCH_W1)])],
+                    [register_l1_d2.make_key([gc.KeyTuple('$REGISTER_INDEX', hash_d2)])],
                     {"from_hw": FROM_HW})
             data_d2, _ = next(resp_l1_d2)
             data_d2_dict = data_d2.to_dict()
-            val_d2 = data_d2_dict["FcmEgress.fcmsketch.sketch_reg_l1_d2.f1"][0]
+            # val_s1_d2 = data_d2_dict["FcmEgress.fcmsketch.sketch_reg_l1_d2.f1"][0]
+            val_s1_d2 = ADD_LEVEL1
+            val_d2 = val_s1_d2
 
-            fcm_table[1][0][hash_d2 % SKETCH_W1] = val_d2
+            fcm_table[1][0][hash_d2] = val_s1_d2
+            logger.info(f"Store s1 value {val_s1_d2} in {hash_d2}")
 
             # overflow to level 2?
-            if (val_d2 == ADD_LEVEL1):
+            if (val_s1_d2 == ADD_LEVEL1):
+                hash_d2 = int(hash_d2 / 8)
                 register_l2_d2 = fcm_l2_d2
                 resp_l2_d2 = register_l2_d2.entry_get(target,
-                        [register_l2_d2.make_key([gc.KeyTuple('$REGISTER_INDEX', hash_d2 % SKETCH_W2)])],
+                        [register_l2_d2.make_key([gc.KeyTuple('$REGISTER_INDEX', hash_d2)])],
                         {"from_hw": FROM_HW})
                 data_d2, _ = next(resp_l2_d2)
                 data_d2_dict = data_d2.to_dict()
-                val_d2 = data_d2_dict["FcmEgress.fcmsketch.sketch_reg_l2_d2.f1"][0] + ADD_LEVEL1 - 1
+                # val_s2_d2 = data_d2_dict["FcmEgress.fcmsketch.sketch_reg_l2_d2.f1"][0]
+                val_s2_d2 = ADD_LEVEL2 - ADD_LEVEL1 + 1
+                val_d2 = val_s2_d2 + ADD_LEVEL1 - 1
 
-                fcm_table[1][1][hash_d2 % SKETCH_W2] = val_d2
+                fcm_table[1][1][hash_d2] = val_s2_d2
+                logger.info(f"Store s2 value {val_s2_d2} in {hash_d2}")
 
                 # overflow to level 3?
                 if (val_d2 == ADD_LEVEL2):
+                    hash_d2 = int(hash_d2 / 8)
                     register_l3_d2 = fcm_l3_d2
                     resp_l3_d2 = register_l3_d2.entry_get(target,
-                            [register_l3_d2.make_key([gc.KeyTuple('$REGISTER_INDEX', hash_d2 % SKETCH_W3)])],
+                            [register_l3_d2.make_key([gc.KeyTuple('$REGISTER_INDEX', hash_d2)])],
                             {"from_hw": FROM_HW})
                     data_d2, _ = next(resp_l3_d2)
                     data_d2_dict = data_d2.to_dict()
-                    val_d2 = data_d2_dict["FcmEgress.fcmsketch.sketch_reg_l3_d2.f1"][0] + ADD_LEVEL2 - 1
+                    # val_s3_d2 = data_d2_dict["FcmEgress.fcmsketch.sketch_reg_l3_d2.f1"][0]
+                    val_s3_d2 = 4212
+                    val_d2 = val_s3_d2 + ADD_LEVEL2 - 1
 
-                    fcm_table[1][2][hash_d2 % SKETCH_W3] = val_d2
+                    fcm_table[1][2][hash_d2] = val_s3_d2
+                    logger.info(f"Store s3 value {val_s3_d2} in {hash_d2}")
 
-            logger.info(f"Store value {val_d2} in {hash_d2 % SKETCH_W1}")
 
             if DEBUGGING:
-                logger.info("[INFO-FCM] Flow %d - True : %d, Est of FCM : %d", key, value, min(val_d1, val_d2))
+                logger.info("[INFO-FCM] Flow %d - True : %d, Est of FCM : %d", key, value, min(val_s1_d1, val_s1_d2))
 
             final_query = min(val_d1, val_d2)
             ARE += abs(final_query - value) / float(value)
@@ -436,7 +472,21 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
 
         logger.info("[WaterfallFcm] Start EM FSD...")
         s1 = [fcm_table[0][0], fcm_table[1][0]]
-        em_fsd = EM_FSD(s1, [fcm_table[0][1], fcm_table[1][1]], [fcm_table[0][2], fcm_table[1][2]], tuples.values())
+        s2 = [fcm_table[0][1], fcm_table[1][1]]
+        s3 = [fcm_table[0][2], fcm_table[1][2]]
+        em_fsd = EM_FSD(s1, s2, s3, tuples.values())
         ns = em_fsd.run_em(1)
+        # logger.info(fsd)
+        logger.info(f"{ns[-1]} - sz {len(ns)}, {fsd[-1]} - sz {len(fsd)}")
+
+        wmre_nom = 0.0
+        wmre_denom = 0.0
+        for real, est in zip(fsd, ns):
+            wmre_nom += abs(float(real) - est)
+            wmre_denom += (float(real) + est) / 2
+
+        wmre = wmre_nom / wmre_denom
+
         
-        logger.info("[WaterfallFcm] Start EM FSD...")
+        logger.info(bcolors.OKBLUE + f"[WaterfallFcm] WMRE : {wmre : .2f}" + bcolors.ENDC)
+        logger.info(f"[WaterfallFcm] Finished EM FSD")

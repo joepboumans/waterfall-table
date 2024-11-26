@@ -12,6 +12,7 @@
 #include <cstdlib>
 #include <functional>
 #include <iostream>
+#include <iterator>
 #include <numeric>
 #include <ostream>
 #include <sstream>
@@ -49,8 +50,8 @@ public:
                   // colll, min_value >
 
   array<uint32_t, NUM_STAGES> stage_szes;
-  vector<vector<vector<uint32_t>>> stages;
-  vector<FIVE_TUPLE> tuples; // Found tuples by Waterfall Filter
+  vector<vector<vector<uint32_t>>> stages; // depth, stage, counter
+  vector<FIVE_TUPLE> tuples;               // Found tuples by Waterfall Filter
 
   array<array<uint32_t, W1>, DEPTH> init_degree;
   array<uint32_t, DEPTH> init_max_degree = {
@@ -92,7 +93,9 @@ public:
       for (size_t i = 0; i < init_degree[d].size(); i++) {
         if (init_degree[d][i] > 0) {
           std::cout << i << ":" << init_degree[d][i] << " ";
-          std::cout << ":" << this->stages[d][0][i] << " ";
+          std::cout << ":" << this->stages[d][0][i];
+          std::cout << ":" << this->stages[d][1][i / 8];
+          std::cout << ":" << this->stages[d][2][i / 8 / 8] << " ";
         }
       }
       std::cout << std::endl;
@@ -117,28 +120,28 @@ public:
     array<vector<vector<vector<array<uint32_t, 4>>>>, DEPTH>
         init_thresholds; // depth, degree, i, < stage, total coll, local
                          // colll, min_value >
-    // Create virtual counters based on depth, degree and count
-    // depth, degree, count value, n
-    /*array<vector<vector<vector<array<uint32_t, 4>>>>, DEPTH> thresholds;*/
     // Resize to fill all possible degrees
     for (size_t d = 0; d < DEPTH; d++) {
       counters[d].resize(init_max_degree[d] + 1);
       init_thresholds[d].resize(init_max_degree[d] + 1);
     }
-    std::cout << "Created virtual counters and thresholds" << std::endl;
+    std::cout << "[WaterfallFcm] Created virtual counters and thresholds"
+              << std::endl;
 
     for (size_t d = 0; d < DEPTH; d++) {
+      std::cout << "[WaterfallFcm] Look at depth " << d << std::endl;
       for (size_t s = 0; s < NUM_STAGES; s++) {
         for (size_t i = 0; i < this->stage_szes[s]; i++) {
           summary[d][s][i][0] = this->stages[d][s][i];
           // If overflown increase the minimal value for the collisions
-          if (s == 0 && this->stages[d][s][i] >= OVERFLOW_LEVEL1) {
+          if (s == 0 && summary[d][s][i][0] >= OVERFLOW_LEVEL1) {
+            summary[d][s][i][0] = OVERFLOW_LEVEL1 - 1;
             summary[d][s][i][2] = 1;
-            std::cout << "Overflown in " << s << " " << i << std::endl;
+            std::cout << "Overflown in " << s << ":" << i << std::endl;
           } else if (s == 1 && this->stages[d][s][i] >= OVERFLOW_LEVEL2) {
-            summary[d][s][i][0] = ADD_LEVEL2;
+            summary[d][s][i][0] = OVERFLOW_LEVEL2 - 1;
             summary[d][s][i][2] = 1;
-            std::cout << "Overflown in " << s << " " << i << std::endl;
+            std::cout << "Overflown in " << s << ":" << i << std::endl;
           }
 
           if (s == 0) {
@@ -147,6 +150,10 @@ public:
                 {(uint32_t)s, init_degree[d][i], 1, summary[d][s][i][0]});
 
           } else {
+            if (summary[d][s][i][0] == 0) {
+              continue;
+            }
+            std::cout << "Second stage" << s << " : " << i << std::endl;
             uint32_t overflown = 0;
             // Loop over all childeren
             for (size_t k = 0; k < K; k++) {
@@ -154,15 +161,16 @@ public:
               // Add childs count and degree to current counter if they have
               // overflown
               if (summary[d][s - 1][child_idx][2] > 0) {
+                std::cout << "Child " << k << std::endl;
                 summary[d][s][i][0] += summary[d][s - 1][child_idx][0];
                 summary[d][s][i][1] += summary[d][s - 1][child_idx][1];
                 // If any of my predecessors have overflown, add them to my
                 // overflown paths
                 overflown++;
-                for (size_t j = 0; j < overflow_paths[s - 1][child_idx].size();
-                     j++) {
-                  overflow_paths[s][i].push_back(
-                      overflow_paths[s - 1][child_idx][j]);
+                for (size_t j = 0;
+                     j < overflow_paths[d][s - 1][child_idx].size(); j++) {
+                  overflow_paths[d][s][i].push_back(
+                      overflow_paths[d][s - 1][child_idx][j]);
                 }
               }
             }
@@ -173,10 +181,10 @@ public:
               if (s == 1) {
                 max_count = ADD_LEVEL1;
               } else {
-
                 max_count = ADD_LEVEL2;
               }
-              std::cout << "Overflown childeren " << s << " " << i << std::endl;
+              std::cout << "Overflown childeren " << overflown << " at s" << s
+                        << " " << i << std::endl;
               array<uint32_t, 4> imm_overflow = {
                   (uint32_t)s, summary[d][s][i][1], overflown, max_count};
 
@@ -311,7 +319,9 @@ public:
     std::cout << "[EM_WATERFALL_FCM] Initial Flow Size Distribution guess"
               << std::endl;
     for (auto &x : this->dist_new) {
-      std::cout << x << " ";
+      if (x != 0) {
+        std::cout << x << " ";
+      }
     }
     std::cout << std::endl;
 
@@ -330,7 +340,9 @@ public:
     std::cout << "[EM_WATERFALL_FCM] Summed Flow Size Distribution"
               << std::endl;
     for (auto &x : this->dist_new) {
-      std::cout << x << " ";
+      if (x != 0) {
+        std::cout << x << " ";
+      }
     }
     std::cout << std::endl;
 
@@ -341,7 +353,10 @@ public:
       this->ns[i] /= double(DEPTH);
     }
     for (auto &x : this->dist_new) {
-      std::cout << x << " ";
+
+      if (x != 0) {
+        std::cout << x << " ";
+      }
     }
     std::cout << std::endl;
 
@@ -609,7 +624,7 @@ private:
 public:
   void next_epoch() {
     auto start = std::chrono::high_resolution_clock::now();
-    std::cout << "Start next epoch" << std::endl;
+    std::cout << "[EM_WATERFALL_FCM] Start next epoch" << std::endl;
 
     n_old = n_new;
     dist_old = dist_new;
@@ -617,26 +632,24 @@ public:
     array<vector<vector<double>>, DEPTH> nt;
     std::fill(ns.begin(), ns.end(), 0);
 
+    std::cout << "[EM_WATERFALL_FCM] Copy first degree distribution"
+              << std::endl;
     // Always copy first degree as this is can be considered a perfect
     // estimation. qWaterfall is not perfect, but assumed to be
     for (size_t d = 0; d < DEPTH; d++) {
       nt[d].resize(this->max_degree[d] + 1);
-      nt[d][0].resize(counter_dist[d][0].size());
       nt[d][1].resize(counter_dist[d][1].size());
       for (size_t i = 0; i < counter_dist[d][1].size(); i++) {
-        nt[d][1][i] = counter_dist[d][1][i];
-      }
-      for (size_t i = 0; i < counter_dist[d][0].size(); i++) {
-        nt[d][0][i] = counter_dist[d][0][i];
+        nt[d][1][i] += counter_dist[d][1][i];
       }
     }
 
     std::cout << "[EM_WATERFALL_FCM] Init first degree" << std::endl;
     // Simple Multi thread
     uint32_t total_degree = this->max_degree[0] + this->max_degree[1];
-    std::thread threads[total_degree + 1];
+    std::thread threads[total_degree];
 
-    std::cout << "[EM_WATERFALL_FCM] Created " << total_degree + 1 << " threads"
+    std::cout << "[EM_WATERFALL_FCM] Created " << total_degree << " threads"
               << std::endl;
     for (size_t d = 0; d < DEPTH; d++) {
       for (size_t t = 2; t <= this->max_degree[d]; t++) {
@@ -707,6 +720,7 @@ public:
     } else {
       crc = 0xF0000000;
       crc = crc32(crc, tuple.num_array, 13);
+      std::cout << "crc " << crc % W1 << std::endl;
     }
     return crc % W1;
   }
@@ -717,7 +731,7 @@ void *EMFSD_new(uint32_t *szes, uint32_t *s1_1, uint32_t *s1_2, uint32_t *s2_1,
                 uint32_t *s2_2, uint32_t *s3_1, uint32_t *s3_2,
                 FIVE_TUPLE *tuples, uint32_t tuples_sz) {
 
-  std::cout << "Start parsing python to c" << std::endl;
+  std::cout << "[WaterfallFcm CTypes] Start parsing python to c" << std::endl;
   array<uint32_t, NUM_STAGES> stage_szes;
   std::copy_n(szes, NUM_STAGES, stage_szes.begin());
 
@@ -739,13 +753,15 @@ void *EMFSD_new(uint32_t *szes, uint32_t *s1_1, uint32_t *s1_2, uint32_t *s2_1,
   std::cout << "\tdone stages" << std::endl;
 
   // Setup tuple list
-  std::cout << "Setup FiveTuple vector with size " << tuples_sz << std::endl;
+  std::cout << "[WaterfallFcm CTypes] Setup FiveTuple vector with size "
+            << tuples_sz << std::endl;
   std::vector<FIVE_TUPLE> tuples_vec(tuples_sz);
   for (size_t i = 0; i < tuples_sz; i++) {
     tuples_vec.at(i) = tuples[i];
   }
 
-  std::cout << "Checking vector with " << tuples_vec.size() << std::endl;
+  std::cout << "[WaterfallFcm CTypes] Checking vector with "
+            << tuples_vec.size() << std::endl;
   for (size_t i = 0; i < tuples_vec.size(); i++) {
     std::cout << i << " : " << tuples_vec.at(i) << std::endl;
   }

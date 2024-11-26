@@ -104,7 +104,7 @@ class EM_FSD(object):
         stage_sz = Stage_szes(SKETCH_W1, SKETCH_W2, SKETCH_W3)
         print("stage szes done")
 
-        self.obj = c_void_p(EM_FSD.lib.EMFSD_new(stage_sz, stage1_1, stage1_2, stage2_1, stage2_2, stage3_1, stage3_1, tuples, len(tuples)))
+        self.obj = c_void_p(EM_FSD.lib.EMFSD_new(stage_sz, stage1_1, stage1_2, stage2_1, stage2_2, stage3_1, stage3_2, tuples, len(tuples)))
 
     def next_epoch(self):
         EM_FSD.lib.EMFSD_next_epoch(self.obj)
@@ -123,8 +123,8 @@ class EM_FSD(object):
 
         print(f"Finished estimation")
         ns = self.get_ns([])
-        print(f"FSD is : ")
-        print(ns)
+        # print(f"FSD is : ")
+        # print(ns)
         return ns
 
 if __name__ == "__main__":

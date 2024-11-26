@@ -126,7 +126,6 @@ parser FcmEgressParser(
 control FCMSketch (
 	inout header_t hdr,
 	out fcm_metadata_t fcm_mdata,
-	out bit<19> num_occupied_reg, 
 	out bit<32> flow_size) {
 
 	// +++++++++++++++++++ 
@@ -268,21 +267,6 @@ control FCMSketch (
 		fcm_mdata.result_d2 = increment_l3_d2.execute(fcm_mdata.hash_meta_d2[18:6]);
 	}
 
-
-	// increment reg of occupied leaf number
-	/*action fcm_action_increment_cardreg() {*/
-	/*	num_occupied_reg = (increment_occupied_reg.execute(0))[19:1];*/
-	/*}*/
-
-	action fcm_action_check_occupied(bit<32> increment_val) {
-		fcm_mdata.increment_occupied = increment_val;
-	}
-
-
-	/*action fcm_action_set_cardinality(bit<32> card_match) {*/
-	/*	cardinality = card_match;*/
-	/*}*/
-
 	// +++++++++++++++++++ 
 	//	tables
 	// +++++++++++++++++++
@@ -351,40 +335,6 @@ control FCMSketch (
 		size = 2;
 	}
 
-	// Update the number of occupied leaf nodes
-	table tb_fcm_increment_occupied {
-		key = {
-			fcm_mdata.result_d1 : ternary;
-			fcm_mdata.result_d2 : ternary;
-		}
-		actions = {
-			fcm_action_check_occupied;
-		}
-		const default_action = fcm_action_check_occupied(0);
-		const entries = {
-			(32w1, 32w1) : fcm_action_check_occupied(2);
-			(32w1, _) : fcm_action_check_occupied(1);
-			(_, 32w1) : fcm_action_check_occupied(1);
-		}
-		size = 4;
-	}
-
-
-	// look up LC cardinality using number of empty counters at level 1
-	// [30:12] : divide by 2 ("average" empty_reg number). 
-	// Each array size is 2 ** 19, so slice 19 bits
-	/*table tb_fcm_cardinality {*/
-	/*	key = {*/
-	/*		num_occupied_reg : range; // 19 bits*/
-	/*	}*/
-	/*	actions = {*/
-	/*		fcm_action_set_cardinality;*/
-	/*	}*/
-	/*	const default_action = fcm_action_set_cardinality(0);*/
-	/*	size = 4096;*/
-	/*}*/
-
-
 	// +++++++++++++++++++ 
 	//	apply
 	// +++++++++++++++++++
@@ -395,7 +345,7 @@ control FCMSketch (
 		fcm_action_l1_d1();			// increment level 1, depth 1
 		fcm_action_l1_d2();			// increment level 1, depth 2
 		/* increment the number of occupied leaf nodes */
-		tb_fcm_increment_occupied.apply(); 
+		/*tb_fcm_increment_occupied.apply(); */
 		/*fcm_action_increment_cardreg(); */
 		/*tb_fcm_cardinality.apply(); // calculate cardinality estimate*/
 		tb_fcm_l1_to_l2_d1.apply(); // conditional increment level 2, depth 1
@@ -436,14 +386,10 @@ control FcmEgress(
 
 		FCMSketch() fcmsketch;
 		apply {
-			bit<19> num_occupied_reg; // local variable for cardinality
 			bit<32> flow_size; // local variable for final query
-		    /*bit<32> cardinality; // local variable for final query*/
-			
 			count_pkt(); // temp
 			fcmsketch.apply(hdr, 
 							eg_md, 
-							num_occupied_reg, 
 							flow_size);
 		}
 }
