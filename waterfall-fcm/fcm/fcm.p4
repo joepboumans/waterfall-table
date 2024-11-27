@@ -391,6 +391,7 @@ control FcmEgress(
 			fcmsketch.apply(hdr, 
 							eg_md, 
 							flow_size);
+      eg_dprsr_md.drop_ctl = 0x0;
 		}
 }
 
@@ -405,9 +406,6 @@ control FcmEgressDeparser(
 
     apply {
         pkt.emit(hdr);
-        pkt.emit(hdr.ipv4);
-        pkt.emit(hdr.tcp);
-        pkt.emit(hdr.udp);
     }
 }
 
