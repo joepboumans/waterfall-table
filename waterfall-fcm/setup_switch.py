@@ -4,15 +4,15 @@ import time
 p4 = bfrt.waterfall_fcm.pipe
 forward_tbl = p4.WaterfallIngress.forward
 
-#def get_pg_info(dev_port, queue_id):
-#    pipe_num = dev_port >> 7
-#    entry = bfrt.tf1.tm.port.cfg.get(dev_port, print_ents=False)
-#    pg_id = entry.data[b'pg_id']
-#    pg_queue = entry.data[b'egress_qid_queues'][queue_id]
+def get_pg_info(dev_port, queue_id):
+   pipe_num = dev_port >> 7
+   entry = bfrt.tf1.tm.port.cfg.get(dev_port, print_ents=False)
+   pg_id = entry.data[b'pg_id']
+   pg_queue = entry.data[b'egress_qid_queues'][queue_id]
 
-#    print('DEV_PORT: {} QueueID: {} --> Pipe: {}, PG_ID: {}, PG_QUEUE: {}'.format(dev_port, queue_id, pipe_num, pg_id, pg_queue))
+   print('DEV_PORT: {} QueueID: {} --> Pipe: {}, PG_ID: {}, PG_QUEUE: {}'.format(dev_port, queue_id, pipe_num, pg_id, pg_queue))
 
-#    return pipe_num, pg_id, pg_queue
+   return pipe_num, pg_id, pg_queue
 
 # Clear All tables
 def clear_all():
@@ -47,7 +47,7 @@ def clear_all():
             print("Clearing Regitser {}".format(table['full_name']))
             table['node'].clear()
 
-#clear_all()
+clear_all()
 
 #bfrt.tf1.tm.port.sched_shaping.mod(dev_port=132, unit='BPS', provisioning='MIN_ERROR', max_rate=150000000, max_burst_size=160)
 #bfrt.tf1.tm.port.sched_shaping.mod(dev_port=140, unit='BPS', provisioning='MIN_ERROR', max_rate=15000000, max_burst_size=160)
@@ -66,10 +66,10 @@ def clear_all():
 # bfrt.tf1.tm.port.sched_shaping.mod(dev_port=3, unit='PPS', provisioning='MIN_ERROR', max_rate=1, max_burst_size=1)
 # bfrt.tf1.tm.port.sched_shaping.mod(dev_port=5, unit='PPS', provisioning='MIN_ERROR', max_rate=1, max_burst_size=1)
 
-# for port_number in myPorts:
-#     for queue_id in range(8):
-#         pipe_num, pg_id, pg_queue=get_pg_info(port_number, queue_id)
-#         bfrt.tf1.tm.queue.sched_cfg.mod(pipe=pipe_num, pg_id=pg_id, pg_queue=pg_queue, min_priority=queue_id,max_priority=queue_id)
+for port_number in myPorts:
+    for queue_id in range(8):
+        pipe_num, pg_id, pg_queue=get_pg_info(port_number, queue_id)
+        bfrt.tf1.tm.queue.sched_cfg.mod(pipe=pipe_num, pg_id=pg_id, pg_queue=pg_queue, min_priority=queue_id,max_priority=queue_id)
 
 print("populating forward table...")
 forward_tbl.add_with_hit(ingress_port=132, dst_port=148)
