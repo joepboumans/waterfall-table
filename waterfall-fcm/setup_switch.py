@@ -89,15 +89,15 @@ swap1.add_with_do_swap1(resubmit_flag=0x1)
 
 swap2 = p4.WaterfallIngress.swap2
 swap2.add_with_lookup2(resubmit_flag=0x0)
-swap2.add_with_do_swap2(resubmit_flag=0x1, out_remain_start=0x1, out_remain_end=0xFFFF)
+swap2.add_with_do_swap2(resubmit_flag=0x1, out_remain1_start=0x1, out_remain1_end=0xFFFF)
 
 swap3 = p4.WaterfallIngress.swap3
 swap3.add_with_lookup3(resubmit_flag=0x0)
-swap3.add_with_do_swap3(resubmit_flag=0x1, out_remain_start=0x1, out_remain_end=0xFFFF)
+swap3.add_with_do_swap3(resubmit_flag=0x1, out_remain2_start=0x1, out_remain2_end=0xFFFF)
 
 swap4 = p4.WaterfallIngress.swap4
 swap4.add_with_lookup4(resubmit_flag=0x0)
-swap4.add_with_do_swap4(resubmit_flag=0x1, out_remain_start=0x1, out_remain_end=0xFFFF)
+swap4.add_with_do_swap4(resubmit_flag=0x1, out_remain3_start=0x1, out_remain3_end=0xFFFF)
 
 # prt = bfrt.port.port
 print("activating ports...")
