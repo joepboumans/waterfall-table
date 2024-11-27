@@ -66,7 +66,7 @@ clear_all()
 # bfrt.tf1.tm.port.sched_shaping.mod(dev_port=3, unit='PPS', provisioning='MIN_ERROR', max_rate=1, max_burst_size=1)
 # bfrt.tf1.tm.port.sched_shaping.mod(dev_port=5, unit='PPS', provisioning='MIN_ERROR', max_rate=1, max_burst_size=1)
 
-for port_number in myPorts:
+for port_number in [132, 140, 148, 156]:
     for queue_id in range(8):
         pipe_num, pg_id, pg_queue=get_pg_info(port_number, queue_id)
         bfrt.tf1.tm.queue.sched_cfg.mod(pipe=pipe_num, pg_id=pg_id, pg_queue=pg_queue, min_priority=queue_id,max_priority=queue_id)
