@@ -81,8 +81,11 @@ forward_tbl.add_with_hit(ingress_port=156, dst_port=140)
 print("setting mirror cfg...")
 bfrt.mirror.cfg.add_with_normal(session_enable=True, sid=42, direction="EGRESS", ucast_egress_port=68, ucast_egress_port_valid=True)
 
+print("setting up learn/digest...")
+bfrt.digest.info.add_data_field_annotation("src_addr", "ipv4")
+bfrt.digest.info.add_data_field_annotation("dst_addr", "ipv4")
 
-print("populating mirror table...")
+# print("populating mirror table...")
 # p4.WaterfallIngress.check_mirror_session.add_with_set_mirror_session(mirror_type=2, egr_mir_ses=42)
 
 
