@@ -695,7 +695,8 @@ public:
       dist_new[i] = ns[i] / n_new;
     }
     auto stop = std::chrono::high_resolution_clock::now();
-    auto time = duration_cast<std::chrono::milliseconds>(stop - start);
+    auto time =
+        std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
 
     printf("[EM_WATERFALL_FCM - iter %2d] Compute time : %li\n", iter,
            time.count());

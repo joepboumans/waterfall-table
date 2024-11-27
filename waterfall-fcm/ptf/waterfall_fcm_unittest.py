@@ -249,8 +249,8 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         data = swap4.make_data([], "WaterfallIngress.do_swap4")
         swap4.entry_add(target, [key], [data])
 
-        num_entries_src = 100
-        num_entries_dst = 1
+        num_entries_src = 1000
+        num_entries_dst = 10
         total_pkts_sends = 0
         seed = 1001
         random.seed(seed)
@@ -259,7 +259,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         in_tuples = {}
 
         NUM_FLOWS = num_entries_src * num_entries_dst            # number of sample flows
-        MAX_FLOW_SIZE = 70000          # max size of flows
+        MAX_FLOW_SIZE = 100_000          # max size of flows
         fsd = [0] * (MAX_FLOW_SIZE + 1)
 
         logger.info(f"Start sending {num_entries_src * num_entries_dst} entries")
@@ -267,13 +267,13 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
             for dst_ip in dst_ip_list:
                 src_addr = getattr(src_ip, "ip")
                 dst_addr = getattr(dst_ip, "ip")
-                src_port = 88 #random.randrange(0, 0xFFFF)
-                dst_port = 1024 #random.randrange(0, 0xFFFF)
+                src_port = random.randrange(0, 0xFFFF)
+                dst_port = random.randrange(0, 0xFFFF)
                 # flow_size = random.randint(1, MAX_FLOW_SIZE)
-                flow_size = MAX_FLOW_SIZE
+                flow_size = int(min(MAX_FLOW_SIZE, max(MAX_FLOW_SIZE * abs(random.gauss(mu=0, sigma=0.0001)), 1.0)))
 
                 pkt_in = testutils.simple_tcp_packet(ip_src=src_addr, ip_dst=dst_addr, tcp_sport=src_port, tcp_dport=dst_port)
-                testutils.send_packet(self, ig_port, pkt_in, count=10)
+                testutils.send_packet(self, ig_port, pkt_in, count=flow_size)
                 # testutils.verify_packet(self, pkt_in, ig_port)
                 total_pkts_sends += flow_size
 
@@ -289,7 +289,12 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
                 in_tuples[tuple_key] = flow_size
                 fsd[flow_size] += 1
 
+                print(f"Sent {flow_size} pkts with total {total_pkts_sends}", flush=True)
+                # time.sleep(0.5)
+
         logger.info(f"...done sending {total_pkts_sends} packets send")
+        ''' TC:3 Look for data in digest'''
+        tuples = self.evaluate_digest(num_entries_src * num_entries_dst)
 
 
 
@@ -319,15 +324,13 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
             #         testutils.send_packet(self, ig_port, pkt_in, count=flow_size)
 
             logger.info("[INFO-FCM] Sent : %d, Received : %d\t\t wait 1s more...", total_pkts_sends, data_dict["FcmEgress.num_pkt.f1"][0])
-            if (data_dict["FcmEgress.num_pkt.f1"][0] >= (total_pkts_sends - 100 ) or iters >= 2):
+            if (data_dict["FcmEgress.num_pkt.f1"][0] >= (total_pkts_sends - 100 ) or iters >= 100):
                 logger.info("[INFO-FCM] Found all packets, continue...")
                 break
             iters += 1
             time.sleep(1)
 
         # assert data_dict["FcmEgress.num_pkt.f1"][0] == total_pkts_sends, "Error: Packets are not correctly inserted..."
-        ''' TC:3 Look for data in digest'''
-        tuples = self.evaluate_digest(num_entries_src * num_entries_dst)
 
         fcm_l1_d1 = self.fcm_l1_d1
         fcm_l2_d1 = self.fcm_l2_d1
@@ -373,8 +376,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
                     {"from_hw": FROM_HW})
             data_d1, _ = next(resp_l1_d1)
             data_d1_dict = data_d1.to_dict()
-            # val_s1_d1 = data_d1_dict["FcmEgress.fcmsketch.sketch_reg_l1_d1.f1"][0]
-            val_s1_d1 = ADD_LEVEL1
+            val_s1_d1 = data_d1_dict["FcmEgress.fcmsketch.sketch_reg_l1_d1.f1"][0]
             val_d1 = val_s1_d1
 
 
@@ -389,8 +391,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
                         {"from_hw": FROM_HW})
                 data_d1, _ = next(resp_l2_d1)
                 data_d1_dict = data_d1.to_dict()
-                # val_s2_d1 = data_d1_dict["FcmEgress.fcmsketch.sketch_reg_l2_d1.f1"][0]
-                val_s2_d1 = ADD_LEVEL2 - ADD_LEVEL1 + 1
+                val_s2_d1 = data_d1_dict["FcmEgress.fcmsketch.sketch_reg_l2_d1.f1"][0]
                 val_d1 = val_s2_d1 + ADD_LEVEL1 - 1
 
                 fcm_table[0][1][hash_d1] = val_s2_d1
@@ -404,8 +405,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
                             {"from_hw": FROM_HW})
                     data_d1, _ = next(resp_l3_d1)
                     data_d1_dict = data_d1.to_dict()
-                    # val_s3_d1 = data_d1_dict["FcmEgress.fcmsketch.sketch_reg_l3_d1.f1"][0]
-                    val_s3_d1 = 4212
+                    val_s3_d1 = data_d1_dict["FcmEgress.fcmsketch.sketch_reg_l3_d1.f1"][0]
                     val_d1 = val_s3_d1 + ADD_LEVEL2 - 1
 
                     fcm_table[0][2][hash_d1] = val_s3_d1
@@ -421,8 +421,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
                     {"from_hw": FROM_HW})
             data_d2, _ = next(resp_l1_d2)
             data_d2_dict = data_d2.to_dict()
-            # val_s1_d2 = data_d2_dict["FcmEgress.fcmsketch.sketch_reg_l1_d2.f1"][0]
-            val_s1_d2 = ADD_LEVEL1
+            val_s1_d2 = data_d2_dict["FcmEgress.fcmsketch.sketch_reg_l1_d2.f1"][0]
             val_d2 = val_s1_d2
 
             fcm_table[1][0][hash_d2] = val_s1_d2
@@ -437,8 +436,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
                         {"from_hw": FROM_HW})
                 data_d2, _ = next(resp_l2_d2)
                 data_d2_dict = data_d2.to_dict()
-                # val_s2_d2 = data_d2_dict["FcmEgress.fcmsketch.sketch_reg_l2_d2.f1"][0]
-                val_s2_d2 = ADD_LEVEL2 - ADD_LEVEL1 + 1
+                val_s2_d2 = data_d2_dict["FcmEgress.fcmsketch.sketch_reg_l2_d2.f1"][0]
                 val_d2 = val_s2_d2 + ADD_LEVEL1 - 1
 
                 fcm_table[1][1][hash_d2] = val_s2_d2
@@ -453,8 +451,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
                             {"from_hw": FROM_HW})
                     data_d2, _ = next(resp_l3_d2)
                     data_d2_dict = data_d2.to_dict()
-                    # val_s3_d2 = data_d2_dict["FcmEgress.fcmsketch.sketch_reg_l3_d2.f1"][0]
-                    val_s3_d2 = 4212
+                    val_s3_d2 = data_d2_dict["FcmEgress.fcmsketch.sketch_reg_l3_d2.f1"][0]
                     val_d2 = val_s3_d2 + ADD_LEVEL2 - 1
 
                     fcm_table[1][2][hash_d2] = val_s3_d2

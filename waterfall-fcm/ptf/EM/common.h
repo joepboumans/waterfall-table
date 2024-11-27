@@ -97,15 +97,15 @@ struct FIVE_TUPLE {
     return *this;
   }
 
-  auto operator<=>(const FIVE_TUPLE &) const = default;
-  bool operator==(const FIVE_TUPLE &rhs) const {
-    for (size_t i = 0; i < 13; i++) {
-      if (this->num_array[i] != rhs.num_array[i]) {
-        return false;
-      }
-    }
-    return true;
-  }
+  /*auto operator<=>(const FIVE_TUPLE &) const = default;*/
+  /*bool operator==(const FIVE_TUPLE &rhs) const {*/
+  /*  for (size_t i = 0; i < 13; i++) {*/
+  /*    if (this->num_array[i] != rhs.num_array[i]) {*/
+  /*      return false;*/
+  /*    }*/
+  /*  }*/
+  /*  return true;*/
+  /*}*/
 };
 
 /*struct tupleHash {*/
