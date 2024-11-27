@@ -358,7 +358,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
 
   action do_swap4() {
     ig_md.out_remain4 = table_4_swap.execute(ig_md.idx4);
-  }
+  } 
 
   action no_swap4() {
     ig_md.out_remain4 = 0x0;
@@ -382,6 +382,23 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     size = 2;
   }
 
+  action forward_to_egress(PortId_t port) {
+    ig_intr_tm_md.ucast_egress_port = port;
+  }
+
+  table forward {
+    key = {
+      ig_intr_md.ingress_port: exact;
+    }
+    actions = {
+      forward_to_egress;
+      drop;
+      NoAction;
+    }
+    size = 512;
+    default_action = drop;
+  }
+
   apply { 
     ig_md.idx1 = ig_md.resubmit_md.idx;
 
@@ -398,7 +415,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     swap4.apply();
 
     resub.apply();
-    ig_intr_tm_md.ucast_egress_port = ig_intr_md.ingress_port;
+    forward.apply();
   }
 }
 
