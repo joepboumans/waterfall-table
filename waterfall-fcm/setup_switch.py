@@ -83,7 +83,7 @@ bfrt.mirror.cfg.add_with_normal(session_enable=True, sid=42, direction="EGRESS",
 
 
 print("populating mirror table...")
-p4.WaterfallIngress.check_mirror_session.add_with_set_mirror_session(mirror_type=2, egr_mir_ses=42)
+# p4.WaterfallIngress.check_mirror_session.add_with_set_mirror_session(mirror_type=2, egr_mir_ses=42)
 
 
 # prt = bfrt.port.port

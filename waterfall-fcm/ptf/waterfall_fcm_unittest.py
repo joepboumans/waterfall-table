@@ -26,6 +26,7 @@ ADD_LEVEL1 = 255                # 2^8 -2 + 1 (actual count is 254)
 ADD_LEVEL2 = 65789              # (2^8 - 2) + (2^16 - 2) + 1 (actual count is 65788)
 
 swports = get_sw_ports()
+hwports = { 132:148, 148:132, 140:156, 156:140}
 project_name = 'waterfall_fcm'
 logger = logging.getLogger(project_name)
 
@@ -195,7 +196,8 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
 
 
     def testWaterfallFcm(self):
-        ig_port = swports[0]
+        # ig_port = swports[0]
+        ig_port = 132 # hwports can be 132, 140, 148, 156
         target = self.target
         resub = self.resub
 
@@ -272,8 +274,8 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
                 flow_size = int(min(MAX_FLOW_SIZE, max(MAX_FLOW_SIZE * abs(random.gauss(mu=0, sigma=0.0001)), 1.0)))
 
                 pkt_in = testutils.simple_tcp_packet(ip_src=src_addr, ip_dst=dst_addr, tcp_sport=src_port, tcp_dport=dst_port)
-                testutils.send_packet(self, ig_port, pkt_in, count=flow_size)
-                # testutils.verify_packet(self, pkt_in, ig_port)
+                testutils.send_packet(self, ig_port, pkt_in)
+                testutils.verify_packet(self, pkt_in, hwports[ig_port])
                 total_pkts_sends += flow_size
 
                 raw_src_addr = [int(x) for x in src_addr.split('.')]
@@ -288,7 +290,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
                 in_tuples[tuple_key] = flow_size
                 fsd[flow_size] += 1
 
-                print(f"Sent {flow_size} pkts with total {total_pkts_sends}", flush=True)
+                # print(f"Sent {flow_size} pkts with total {total_pkts_sends}", flush=True)
                 # time.sleep(0.5)
 
         logger.info(f"...done sending {total_pkts_sends} packets send")
