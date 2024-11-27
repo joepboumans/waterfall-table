@@ -1,4 +1,4 @@
-import numpy as np
+# import numpy as math
 import math
 import zlib
 import struct
@@ -18,24 +18,24 @@ class bcolors:
 # Cardinality with adaptive spacing for saving TCAM, using the sensitivity of LC estimator. 
 # This technique makes an additional error at most 0.3 %
 def lc_cardinality(m_occupied, m):
-    return m * np.log(m / float(m-m_occupied))
+    return m * math.log(m / float(m-m_occupied))
 
 def lc_delta_m0(m_occupied, m, epsilon):
-    return (m - m_occupied) * np.log(m / float(m - m_occupied)) * epsilon
+    return (m - m_occupied) * math.log(m / float(m - m_occupied)) * epsilon
 
 
 def fcm_crc32_mpeg2(msg="192.168.1.1"):
-    crc = np.uint32(0xFFFFFFFF)
-    msb = np.uint32(0)
+    crc = int(0xFFFFFFFF)
+    msb = int(0)
     msg_arr = msg.split(".") # convert IP address to 8-bit values
     
     for i in range(len(msg_arr)):
         # xor next byte to upper bits of crc
-        crc ^= np.uint32(np.uint32(msg_arr[i]) << 24)
+        crc ^= int(int(msg_arr[i]) << 24)
         for j in range(8):
-            msb = np.uint32(crc >> 31)
-            crc = np.uint32(crc << 1)
-            crc = np.uint32(crc ^ (np.uint32(0 - msb) & np.uint32(0x04C11DB7)));
+            msb = int(crc >> 31)
+            crc = int(crc << 1)
+            crc = int(crc ^ (int(0 - msb) & int(0x04C11DB7)));
     return crc
 
 def do_crc(s):
