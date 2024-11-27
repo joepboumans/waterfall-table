@@ -382,8 +382,8 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     size = 2;
   }
 
-  action hit(PortId_t port) {
-    ig_intr_tm_md.ucast_egress_port = port;
+  action hit(PortId_t dst_port) {
+    ig_intr_tm_md.ucast_egress_port = dst_port;
   }
 
   table forward {
