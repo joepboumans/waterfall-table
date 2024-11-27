@@ -1,7 +1,7 @@
 from ipaddress import ip_address
 import time
 
-p4 = bfrt.riz_stragflow.pipe
+p4 = bfrt.waterfall_fcm.pipe
 forward_tbl = p4.SwitchIngress.forward
 
 #def get_pg_info(dev_port, queue_id):
