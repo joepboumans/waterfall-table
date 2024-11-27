@@ -2,7 +2,6 @@ from ipaddress import ip_address
 import time
 
 p4 = bfrt.waterfall_fcm.pipe
-forward_tbl = p4.WaterfallIngress.forward
 
 def get_pg_info(dev_port, queue_id):
    pipe_num = dev_port >> 7
@@ -72,22 +71,33 @@ for port_number in [132, 140, 148, 156]:
         bfrt.tf1.tm.queue.sched_cfg.mod(pipe=pipe_num, pg_id=pg_id, pg_queue=pg_queue, min_priority=queue_id,max_priority=queue_id)
 
 print("populating forward table...")
+forward_tbl = p4.WaterfallIngress.forward
 forward_tbl.add_with_hit(ingress_port=132, dst_port=148)
 forward_tbl.add_with_hit(ingress_port=148, dst_port=132)
 forward_tbl.add_with_hit(ingress_port=140, dst_port=156)
 forward_tbl.add_with_hit(ingress_port=156, dst_port=140)
 
+print("populating resub table...")
+resub = p4.WaterfallIngress.resub
+resub.add_with_resubmit_hdr(found=True)
+resub.add_with_no_action(found=False)
 
-# print("setting mirror cfg...")
-# bfrt.mirror.cfg.add_with_normal(session_enable=True, sid=42, direction="EGRESS", ucast_egress_port=68, ucast_egress_port_valid=True)
-#
-# print("setting up learn/digest...")
-# bfrt.digest.info.add_data_field_annotation("src_addr", "ipv4")
-# bfrt.digest.info.add_data_field_annotation("dst_addr", "ipv4")
+print("populating swaps table...")
+swap1 = p4.WaterfallIngress.swap1
+swap1.add_with_lookup1(resumbit_flag=0x0)
+swap1.add_with_swap1(resumbit_flag=0x1)
 
-# print("populating mirror table...")
-# p4.WaterfallIngress.check_mirror_session.add_with_set_mirror_session(mirror_type=2, egr_mir_ses=42)
+swap2 = p4.WaterfallIngress.swap2
+swap2.add_with_lookup2(resumbit_flag=0x0)
+swap2.add_with_swap2(resumbit_flag=0x1, out_remain_start=0x1, out_remain_end=0xFFFF)
 
+swap3 = p4.WaterfallIngress.swap3
+swap3.add_with_lookup3(resumbit_flag=0x0)
+swap3.add_with_swap3(resumbit_flag=0x1, out_remain_start=0x1, out_remain_end=0xFFFF)
+
+swap4 = p4.WaterfallIngress.swap4
+swap4.add_with_lookup4(resumbit_flag=0x0)
+swap4.add_with_swap4(resumbit_flag=0x1, out_remain_start=0x1, out_remain_end=0xFFFF)
 
 # prt = bfrt.port.port
 print("activating ports...")

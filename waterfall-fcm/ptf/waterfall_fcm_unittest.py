@@ -203,13 +203,11 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
     def testWaterfallFcm(self):
         ig_port = swports[0]
         eg_port = swports[1]
-        logger.info(f"{ig_port = } and {eg_port = }")
         # ig_port = 132 # hwports can be 132, 140, 148, 156
         # eg_port = hwports[ig_port]
         target = self.target
-        forward = self.forward
-        resub = self.resub
 
+        forward = self.forward
         key = forward.make_key([gc.KeyTuple('ig_intr_md.ingress_port', ig_port)])
         data = forward.make_data([gc.DataTuple('dst_port', eg_port)], "WaterfallIngress.hit")
         forward.entry_add(target, [key], [data])
@@ -218,11 +216,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         logger.info("Populating resub table...")
         logger.debug(f"\tresub - inserting table entry with port {ig_port}")
 
-        swap1 = self.swap1
-        swap2 = self.swap2
-        swap3 = self.swap3
-        swap4 = self.swap4
-
+        resub = self.resub
         key = resub.make_key([gc.KeyTuple('ig_md.found', True)])
         data = resub.make_data([], "WaterfallIngress.no_action")
         resub.entry_add(target, [key], [data])
@@ -230,6 +224,13 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         key = resub.make_key([gc.KeyTuple('ig_md.found', False)])
         data = resub.make_data([], "WaterfallIngress.resubmit_hdr")
         resub.entry_add(target, [key], [data])
+
+
+        swap1 = self.swap1
+        swap2 = self.swap2
+        swap3 = self.swap3
+        swap4 = self.swap4
+
 
         key = swap1.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0)])
         data = swap1.make_data([], "WaterfallIngress.lookup1")
@@ -243,7 +244,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         data = swap2.make_data([], "WaterfallIngress.lookup2")
         swap2.entry_add(target, [key], [data])
 
-        key = swap2.make_key([gc.KeyTuple('ig_md.out_remain1', low=0x1, high=0xFFFF), gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
+        key = swap2.make_key([gc.KeyTuple('ig_md.out_remain1', low=0x1, high=0xFFFF), gc.KeyTuple('ig_intr_md.resubmit_flag', swap1
         data = swap2.make_data([], "WaterfallIngress.do_swap2")
         swap2.entry_add(target, [key], [data])
 
