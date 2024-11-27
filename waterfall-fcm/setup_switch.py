@@ -2,7 +2,7 @@ from ipaddress import ip_address
 import time
 
 p4 = bfrt.waterfall_fcm.pipe
-forward_tbl = p4.SwitchIngress.forward
+forward_tbl = p4.WaterfallIngress.forward
 
 #def get_pg_info(dev_port, queue_id):
 #    pipe_num = dev_port >> 7
@@ -83,7 +83,7 @@ bfrt.mirror.cfg.add_with_normal(session_enable=True, sid=42, direction="EGRESS",
 
 
 print("populating mirror table...")
-p4.SwitchEgress.check_mirror_session.add_with_set_mirror_session(mirror_type=2, egr_mir_ses=42)
+p4.WaterfallIngress.check_mirror_session.add_with_set_mirror_session(mirror_type=2, egr_mir_ses=42)
 
 
 # prt = bfrt.port.port
