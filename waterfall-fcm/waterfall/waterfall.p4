@@ -382,7 +382,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     size = 2;
   }
 
-  action forward_to_egress(PortId_t port) {
+  action hit(PortId_t port) {
     ig_intr_tm_md.ucast_egress_port = port;
   }
 
@@ -391,7 +391,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
       ig_intr_md.ingress_port: exact;
     }
     actions = {
-      forward_to_egress;
+      hit;
       drop;
       NoAction;
     }
