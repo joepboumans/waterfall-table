@@ -11,7 +11,6 @@ from bfruntime_client_base_tests import BfRuntimeTest
 import bfrt_grpc.bfruntime_pb2 as bfruntime_pb2
 import bfrt_grpc.client as gc
 from utils import *
-import numpy as np
 
 swports = get_sw_ports()
 project_name = 'waterfall_fcm'
