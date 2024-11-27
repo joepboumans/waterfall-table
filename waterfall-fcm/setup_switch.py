@@ -78,9 +78,9 @@ forward_tbl.add_with_hit(ingress_port=140, dst_port=156)
 forward_tbl.add_with_hit(ingress_port=156, dst_port=140)
 
 
-print("setting mirror cfg...")
-bfrt.mirror.cfg.add_with_normal(session_enable=True, sid=42, direction="EGRESS", ucast_egress_port=68, ucast_egress_port_valid=True)
-
+# print("setting mirror cfg...")
+# bfrt.mirror.cfg.add_with_normal(session_enable=True, sid=42, direction="EGRESS", ucast_egress_port=68, ucast_egress_port_valid=True)
+#
 # print("setting up learn/digest...")
 # bfrt.digest.info.add_data_field_annotation("src_addr", "ipv4")
 # bfrt.digest.info.add_data_field_annotation("dst_addr", "ipv4")

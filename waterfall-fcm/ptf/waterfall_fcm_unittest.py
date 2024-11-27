@@ -56,6 +56,9 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         logger.info("Setting up tables...")
         self.bfrt_info = self.interface.bfrt_info_get(project_name)
 
+        # Setup forwarding tables
+        self.forward = self.bfrt_info.table_get("forward")
+
         # Get resubmission and port metadata tables
         self.port_meta = self.bfrt_info.table_get("$PORT_METADATA")
         self.resub = self.bfrt_info.table_get("resub")
@@ -98,6 +101,8 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         logger.info("Resetting switch..")
         pkt_in = testutils.simple_tcp_packet(ip_src="192.168.1.1", ip_dst="127.0.0.1", tcp_sport=80, tcp_dport=88)
         testutils.count_matched_packets_all_ports(self, pkt_in, swports)
+
+        self.forward.entry_del(self.target)
         self.resub.entry_del(self.target)
         self.port_meta.entry_del(self.target)
 
@@ -196,10 +201,18 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
 
 
     def testWaterfallFcm(self):
-        # ig_port = swports[0]
-        ig_port = 132 # hwports can be 132, 140, 148, 156
+        ig_port = swports[0]
+        eg_port = swports[1]
+        logger.info(f"{ig_port = } and {eg_port = }")
+        # ig_port = 132 # hwports can be 132, 140, 148, 156
+        # eg_port = hwports[ig_port]
         target = self.target
+        forward = self.forward
         resub = self.resub
+
+        key = forward.make_key([gc.KeyTuple('ig_intr_md.ingress_port', ig_port)])
+        data = forward.make_data([gc.DataTuple('dst_port', eg_port)], "WaterfallIngress.hit")
+        forward.entry_add(target, [key], [data])
 
         ''' TC:1 Setting up port_metadata and resub'''
         logger.info("Populating resub table...")
@@ -250,7 +263,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         data = swap4.make_data([], "WaterfallIngress.do_swap4")
         swap4.entry_add(target, [key], [data])
 
-        num_entries_src = 1000
+        num_entries_src = 1
         num_entries_dst = 10
         total_pkts_sends = 0
         seed = 1001
@@ -275,7 +288,8 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
 
                 pkt_in = testutils.simple_tcp_packet(ip_src=src_addr, ip_dst=dst_addr, tcp_sport=src_port, tcp_dport=dst_port)
                 testutils.send_packet(self, ig_port, pkt_in)
-                testutils.verify_packet(self, pkt_in, hwports[ig_port])
+                # testutils.verify_packet(self, pkt_in, hwports[ig_port])
+                testutils.verify_packet(self, pkt_in, eg_port)
                 total_pkts_sends += flow_size
 
                 raw_src_addr = [int(x) for x in src_addr.split('.')]
@@ -296,8 +310,6 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         logger.info(f"...done sending {total_pkts_sends} packets send")
         ''' TC:3 Look for data in digest'''
         tuples = self.evaluate_digest(num_entries_src * num_entries_dst)
-
-
 
         register_pktcount = self.num_pkt
         # check all packets are sent

@@ -32,6 +32,9 @@ class WaterfallUnitTests(BfRuntimeTest):
         logger.info("\tfinished BfRuntimeSetup")
         self.bfrt_info = self.interface.bfrt_info_get(project_name)
 
+        # Setup forwarding tables
+        self.forward = self.bfrt_info.table_get("forward")
+
         # Get resubmission and port metadata tables
         self.port_meta = self.bfrt_info.table_get("$PORT_METADATA")
         self.resub = self.bfrt_info.table_get("resub")
@@ -60,6 +63,7 @@ class WaterfallUnitTests(BfRuntimeTest):
 
     def resetWaterfall(self):
         logger.info("Resetting switch..")
+        self.forward.entry_del(self.target)
         self.resub.entry_del(self.target)
         self.port_meta.entry_del(self.target)
 
@@ -72,6 +76,9 @@ class WaterfallUnitTests(BfRuntimeTest):
 
         logger.info("Setting up tables...")
         self.bfrt_info = self.interface.bfrt_info_get(project_name)
+
+        # Setup forwarding tables
+        self.forward = self.bfrt_info.table_get("forward")
 
         # Get resubmission and port metadata tables
         self.port_meta = self.bfrt_info.table_get("$PORT_METADATA")
@@ -101,6 +108,7 @@ class WaterfallUnitTests(BfRuntimeTest):
 
     def tearDown(self):
         logger.info("Tearing down test")
+        self.forward.entry_del(self.target)
         self.resub.entry_del(self.target)
         self.port_meta.entry_del(self.target)
 
@@ -162,8 +170,16 @@ class WaterfallUnitTests(BfRuntimeTest):
 
     def testDigest(self):
         ig_port = swports[0]
+        eg_port = swports[1]
+        # ig_port = 132 # hwports can be 132, 140, 148, 156
+        # eg_port = hwports[ig_port]
         target = self.target
+        forward = self.forward
         resub = self.resub
+
+        key = forward.make_key([gc.KeyTuple('ig_intr_md.ingress_port', ig_port)])
+        data = forward.make_data([gc.DataTuple('dst_port', eg_port)], "WaterfallIngress.hit")
+        forward.entry_add(target, [key], [data])
 
         swap1 = self.swap1
         swap2 = self.swap2
@@ -223,13 +239,12 @@ class WaterfallUnitTests(BfRuntimeTest):
 
         for ip_entry in ip_list:
             src_addr = getattr(ip_entry, "ip")
-            ig_port = swports[2]
 
             ''' TC:2 Send, receive and verify packets'''
             pkt_in = testutils.simple_tcp_packet(ip_src=src_addr)
             logger.info("Sending simple packet to switch")
             testutils.send_packet(self, ig_port, pkt_in)
-            testutils.verify_packet(self, pkt_in, ig_port)
+            testutils.verify_packet(self, pkt_in, eg_port)
             logger.info("..packet received correctly")
 
         ''' TC:3 Get data from the digest'''
@@ -242,8 +257,16 @@ class WaterfallUnitTests(BfRuntimeTest):
     
     def testPassAllTables(self):
         ig_port = swports[0]
+        eg_port = swports[1]
+        # ig_port = 132 # hwports can be 132, 140, 148, 156
+        # eg_port = hwports[ig_port]
         target = self.target
+        forward = self.forward
         resub = self.resub
+
+        key = forward.make_key([gc.KeyTuple('ig_intr_md.ingress_port', ig_port)])
+        data = forward.make_data([gc.DataTuple('dst_port', eg_port)], "WaterfallIngress.hit")
+        forward.entry_add(target, [key], [data])
 
         swap1 = self.swap1
         swap2 = self.swap2
@@ -302,17 +325,16 @@ class WaterfallUnitTests(BfRuntimeTest):
 
         for ip_entry in ip_list:
             src_addr = getattr(ip_entry, "ip")
-            ig_port = swports[2]
 
             ''' TC:2 Send, receive and verify packets'''
             pkt_in = testutils.simple_tcp_packet(ip_src=src_addr)
             logger.info("Sending 5 idenitcal packets to flow through all the tables")
             testutils.send_packet(self, ig_port, pkt_in)
-            testutils.verify_packet(self, pkt_in, ig_port)
+            testutils.verify_packet(self, pkt_in, eg_port)
 
             for _ in range(len(self.table_dict.items())):
                 testutils.send_packet(self, ig_port, pkt_in)
-                testutils.verify_packet(self, pkt_in, ig_port)
+                testutils.verify_packet(self, pkt_in, eg_port)
 
             logger.info("..all packets sent and received")
 
@@ -326,8 +348,16 @@ class WaterfallUnitTests(BfRuntimeTest):
 
     def testLargeInserts(self):
         ig_port = swports[0]
+        eg_port = swports[1]
+        # ig_port = 132 # hwports can be 132, 140, 148, 156
+        # eg_port = hwports[ig_port]
         target = self.target
+        forward = self.forward
         resub = self.resub
+
+        key = forward.make_key([gc.KeyTuple('ig_intr_md.ingress_port', ig_port)])
+        data = forward.make_data([gc.DataTuple('dst_port', eg_port)], "WaterfallIngress.hit")
+        forward.entry_add(target, [key], [data])
 
         num_entries_src = 1000
         num_entries_dst = 100
@@ -395,7 +425,7 @@ class WaterfallUnitTests(BfRuntimeTest):
 
                 pkt_in = testutils.simple_tcp_packet(ip_src=src_addr, ip_dst=dst_addr, tcp_sport=src_port, tcp_dport=dst_port)
                 testutils.send_packet(self, ig_port, pkt_in)
-                testutils.verify_packet(self, pkt_in, ig_port)
+                testutils.verify_packet(self, pkt_in, eg_port)
         logger.info(f"...done sending")
 
         ''' TC:3 Look for data in digest'''
