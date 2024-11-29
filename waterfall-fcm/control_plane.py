@@ -80,9 +80,10 @@ class BfRt_interface():
         dump = t.entry_get(self.dev_tgt, [])
         for data, key in dump:
             data_dict = data.to_dict()
-            entry_val = data_dict[f"FcmEgress.sketch_reg_l1_d1.f1"][0]
+            print(data_dict)
+            entry_val = data_dict[f"FcmEgress.sketch_reg.sketch_reg_l1_d1.f1"][0]
 
-            print(data[f"FcmEgress.sketch_reg_l1_d1.f1"].int_arr_val)
+            print(data[f"FcmEgress.sketch_reg.sketch_reg_l1_d1.f1"].int_arr_val)
             print(f"got value {entry_val}")
             print(data)
             print(key)
