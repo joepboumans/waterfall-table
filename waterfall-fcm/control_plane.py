@@ -81,9 +81,9 @@ class BfRt_interface():
         for data, key in dump:
             data_dict = data.to_dict()
             print(data_dict)
-            entry_val = data_dict[f"FcmEgress.fcm_sketch.sketch_reg_l1_d1.f1"][0]
+            entry_val = data_dict[f"FcmEgress.fcmsketch.sketch_reg_l1_d1.f1"][0]
 
-            print(data[f"FcmEgress.fcm_sketch.sketch_reg_l1_d1.f1"].int_arr_val)
+            print(data[f"FcmEgress.fcmsketch.sketch_reg_l1_d1.f1"].int_arr_val)
             print(f"got value {entry_val}")
             print(data)
             print(key)
