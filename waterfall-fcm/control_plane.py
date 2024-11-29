@@ -77,7 +77,15 @@ class BfRt_interface():
         self._read_digest()
         # self.print_table_info("sketch_reg_l3_d1")
         t = self.bfrt_info.table_get("sketch_reg_l1_d1")
-        t.entry_get(self.dev_tgt, [])
+        dump = t.entry_get(self.dev_tgt, [])
+        for data, key in dump:
+            data_dict = data.to_dict()
+            entry_val = data_dict[f"FcmEgress.sketch_reg_l1_d1.f1"][0]
+
+            print(data[f"FcmEgress.sketch_reg_l1_d1.f1"].int_arr_val)
+            print(f"got value {entry_val}")
+            print(data)
+            print(key)
 
 
 def main():
