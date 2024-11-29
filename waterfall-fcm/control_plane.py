@@ -108,7 +108,7 @@ class BfRt_interface():
             print(f"[FCM] Load in all data from {control_name}.{name}")
             summed = 0
             nonzero_entries = 0
-            data_table = table.entry_get(self.dev_tgt, [], {"from_hw" : True})
+            data_table = table.entry_get(self.dev_tgt, [])
             entries = []
             for data, key in data_table:
                 data_dict = data.to_dict()
@@ -117,6 +117,7 @@ class BfRt_interface():
                 if entry_val != 0:
                     summed += entry_val
                     nonzero_entries += 1
+                    print(entry_val)
 
             print(f"{name} has {summed} total remainders and {nonzero_entries} entries")
             fcm_tables.append(entries)
