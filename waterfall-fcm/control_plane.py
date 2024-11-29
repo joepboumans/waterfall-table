@@ -63,7 +63,11 @@ class BfRt_interface():
             data_dict = data_list[0].to_dict()
             src_addr = data_dict["src_addr"]
             dst_addr = data_dict["dst_addr"]
-            print(f"{src_addr} {dst_addr}")
+            src_port = data_dict["src_port"]
+            dst_port = data_dict["dst_port"]
+            protocol = data_dict["protocol"]
+            remain4 = data_dict["remain4"]
+            print(f"{src_addr = } : {dst_addr = } | {src_port = } {dst_port = } | {protocol = } | {remain4}")
                 # print(flow_id, flush=True)
         except:
             print("error reading digest", end="", flush=True)
