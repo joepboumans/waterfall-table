@@ -1,15 +1,15 @@
 #! /usr/bin/env python3
 import os, sys  
-import logging
-
-project_name = 'waterfall_fcm'
-logger = logging.getLogger(project_name)
-if not len(logger.handlers):
-    sh = logging.StreamHandler()
-    formatter = logging.Formatter('[%(levelname)s - %(name)s - %(funcName)s]: %(message)s')
-    sh.setFormatter(formatter)
-    sh.setLevel(logging.INFO)
-    logger.addHandler(sh)
+# import logging
+#
+# project_name = 'waterfall_fcm'
+# logger = logging.getLogger(project_name)
+# if not len(logger.handlers):
+#     sh = logging.StreamHandler()
+#     formatter = logging.Formatter('[%(levelname)s - %(name)s - %(funcName)s]: %(message)s')
+#     sh.setFormatter(formatter)
+#     sh.setLevel(logging.INFO)
+#     logger.addHandler(sh)
 
 sys.path.append('/home/onie/sde/bf-sde-9.11.0/install/lib/python3.8/site-packages/tofino/')
 sys.path.append('/home/onie/sde/bf-sde-9.11.0/install/lib/python3.8/site-packages/tofino/bfrt_grpc/')
@@ -105,7 +105,7 @@ class BfRt_interface():
             else:
                 control_name = "WaterfallIngress"
 
-            logger.info(f"[FCM] Load in all data from {control_name}.{name}")
+            print(f"[FCM] Load in all data from {control_name}.{name}")
             summed = 0
             nonzero_entries = 0
             data_table = table.entry_get(self.dev_tgt, [], {"from_hw" : True})
@@ -118,7 +118,7 @@ class BfRt_interface():
                     summed += entry_val
                     nonzero_entries += 1
 
-            logger.info(f"{name} has {summed} total remainders and {nonzero_entries} entries")
+            print(f"{name} has {summed} total remainders and {nonzero_entries} entries")
             fcm_tables.append(entries)
         return fcm_tables
             
