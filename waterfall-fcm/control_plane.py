@@ -133,7 +133,7 @@ def main():
     bfrt_interface = BfRt_interface(0, 'localhost:50052', 0)
     # bfrt_interface.list_tables()
     fcm_tables = bfrt_interface._get_FCM_counters()
-    print(fcm_tables)
+    print(fcm_tables[0])
 
     while True:
         bfrt_interface.run()
