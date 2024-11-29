@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 import os, sys  
 
-sys.path.append('/home/onies/de/bf-sde-9.11.0/install/lib/python3.8/site-packages/tofino/')
+sys.path.append('/home/onie/sde/bf-sde-9.11.0/install/lib/python3.8/site-packages/tofino/')
 sys.path.append('/home/onie/sde/bf-sde-9.11.0/install/lib/python3.8/site-packages/tofino/bfrt_grpc/')
 
 os.environ["GRPC_ENABLE_FORK_SUPPORT"] = "1"
