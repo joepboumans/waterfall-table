@@ -1,5 +1,15 @@
 #! /usr/bin/env python3
 import os, sys  
+import logging
+
+project_name = 'waterfall_fcm'
+logger = logging.getLogger(project_name)
+if not len(logger.handlers):
+    sh = logging.StreamHandler()
+    formatter = logging.Formatter('[%(levelname)s - %(name)s - %(funcName)s]: %(message)s')
+    sh.setFormatter(formatter)
+    sh.setLevel(logging.INFO)
+    logger.addHandler(sh)
 
 sys.path.append('/home/onie/sde/bf-sde-9.11.0/install/lib/python3.8/site-packages/tofino/')
 sys.path.append('/home/onie/sde/bf-sde-9.11.0/install/lib/python3.8/site-packages/tofino/bfrt_grpc/')
@@ -28,6 +38,18 @@ class BfRt_interface():
         self.learn_filter = self.bfrt_info.learn_get("digest")
         self.learn_filter.info.data_field_annotation_add("src_addr", "ipv4")
         self.learn_filter.info.data_field_annotation_add("dst_addr", "ipv4")
+
+        # Get FCM counters
+        self.fcm_l1_d1 = self.bfrt_info.table_get("sketch_reg_l1_d1")
+        self.fcm_l2_d1 = self.bfrt_info.table_get("sketch_reg_l2_d1")
+        self.fcm_l3_d1 = self.bfrt_info.table_get("sketch_reg_l3_d1")
+        self.fcm_l1_d2 = self.bfrt_info.table_get("sketch_reg_l1_d2")
+        self.fcm_l2_d2 = self.bfrt_info.table_get("sketch_reg_l2_d2")
+        self.fcm_l3_d2 = self.bfrt_info.table_get("sketch_reg_l3_d2")
+        self.fcm_tables = {"fcm_l1_d1" : self.fcm_l1_d1, "fcm_l2_d1" : self.fcm_l2_d1, "fcm_l3_d1" : self.fcm_l3_d1, "fcm_l1_d2" : self.fcm_l1_d2, "fcm_l2_d2" : self.fcm_l2_d2, "fcm_l3_d2" : self.fcm_l3_d2}
+
+        # Get Pkt count register of FCM
+        self.num_pkt = self.bfrt_info.table_get("num_pkt")
 
         print("Connected to Device: {}, Program: {}, ClientId: {}".format(
                 dev, self.p4_name, client_id))
@@ -73,26 +95,45 @@ class BfRt_interface():
             print("error reading digest", end="", flush=True)
 
 
+    def _get_FCM_counters(self):
+        fcm_tables = []
+        for name, table in self.fcm_tables.items():
+            control_name = ""
+            if "fcm" in name:
+                control_name = "FcmEgress.fcmsketch"
+                name = name.replace("fcm", "sketch_reg")
+            else:
+                control_name = "WaterfallIngress"
+
+            logger.info(f"[FCM] Load in all data from {control_name}.{name}")
+            summed = 0
+            nonzero_entries = 0
+            data_table = table.entry_get(self.dev_tgt, [], {"from_hw" : True})
+            entries = []
+            for data, key in data_table:
+                data_dict = data.to_dict()
+                entry_val = data_dict[f"{control_name}.{name}.f1"][0]
+                entries.append(entry_val)
+                if entry_val != 0:
+                    summed += entry_val
+                    nonzero_entries += 1
+
+            logger.info(f"{name} has {summed} total remainders and {nonzero_entries} entries")
+            fcm_tables.append(entries)
+        return fcm_tables
+            
+
+
+
     def run(self):
         self._read_digest()
-        # self.print_table_info("sketch_reg_l3_d1")
-        t = self.bfrt_info.table_get("sketch_reg_l1_d1")
-        dump = t.entry_get(self.dev_tgt, [])
-        for data, key in dump:
-            data_dict = data.to_dict()
-            print(data_dict)
-            entry_val = data_dict[f"FcmEgress.fcmsketch.sketch_reg_l1_d1.f1"][0]
-
-            print(data[f"FcmEgress.fcmsketch.sketch_reg_l1_d1.f1"].int_arr_val)
-            print(f"got value {entry_val}")
-            print(data)
-            print(key)
 
 
 def main():
     bfrt_interface = BfRt_interface(0, 'localhost:50052', 0)
-    bfrt_interface.list_tables()
-
+    # bfrt_interface.list_tables()
+    fcm_tables = bfrt_interface._get_FCM_counters()
+    print(fcm_tables)
 
     while True:
         bfrt_interface.run()
