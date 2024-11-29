@@ -55,7 +55,6 @@ class BfRt_interface():
                     t.info.data_field_size_get(field),
                     ))
             print("================")
-            t.dump_get()
 
     def _read_digest(self):
         try:
@@ -76,7 +75,9 @@ class BfRt_interface():
 
     def run(self):
         self._read_digest()
-        self.print_table_info("sketch_reg_l3_d1")
+        # self.print_table_info("sketch_reg_l3_d1")
+        t = self.bfrt_info.table_get("sketch_reg_l1_d1")
+        t.entry_get(self.dev_tgt, [])
 
 
 def main():
