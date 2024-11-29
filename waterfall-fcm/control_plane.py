@@ -132,11 +132,13 @@ class BfRt_interface():
 def main():
     bfrt_interface = BfRt_interface(0, 'localhost:50052', 0)
     # bfrt_interface.list_tables()
-    fcm_tables = bfrt_interface._get_FCM_counters()
-    print(fcm_tables[0])
 
-    while True:
+    for _ in range(60):
         bfrt_interface.run()
+    # while True:
+    #     bfrt_interface.run()
+
+    fcm_tables = bfrt_interface._get_FCM_counters()
 
 if __name__ == "__main__":
     main()
