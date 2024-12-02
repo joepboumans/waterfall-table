@@ -583,6 +583,8 @@ private:
           beta(i, xi, this->thresholds[d][xi][i]);
       double sum_p = 0.0;
       uint32_t it = 0;
+
+      std::cout << "Get alpha combinations" << std::endl;
       // Sum over first combinations
       while (alpha.get_next()) {
         double p = get_p_from_beta(alpha, lambda, dist_old, n_old, xi);
@@ -590,9 +592,11 @@ private:
         it++;
       }
 
+      std::cout << "Finished alpha" << std::endl;
       // If no results, but I did have combinations, spread out the value
       if (sum_p == 0.0) {
         if (it > 0) {
+          std::cout << "Sum was 0 so spread out" << std::endl;
           uint32_t temp_val = i;
           vector<array<uint32_t, 4>> temp_thresh = this->thresholds[d][xi][i];
           // Start from lowest layer to highest layer
@@ -608,6 +612,7 @@ private:
           }
         }
       } else {
+        std::cout << "Get beta combinations" << std::endl;
         while (beta.get_next()) {
           double p = get_p_from_beta(beta, lambda, dist_old, n_old, xi);
           for (size_t j = 0; j < beta.now_flow_num; ++j) {
