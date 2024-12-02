@@ -154,7 +154,7 @@ class BfRt_interface():
         wmre = wmre_nom / wmre_denom
 
         
-        print(f"[WaterfallFcm] WMRE : {wmre : .2f}"C)
+        print(f"[WaterfallFcm] WMRE : {wmre : .2f}")
         print(f"[WaterfallFcm] Finished EM FSD")
 
 
