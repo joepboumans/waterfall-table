@@ -112,12 +112,12 @@ class BfRt_interface():
             entries = []
             for data, key in data_table:
                 data_dict = data.to_dict()
+                print(data_dict[f"{control_name}.{name}.f1"])
                 entry_val = data_dict[f"{control_name}.{name}.f1"][0]
                 entries.append(entry_val)
                 if entry_val != 0:
                     summed += entry_val
                     nonzero_entries += 1
-                    print(entry_val)
 
             print(f"{name} has {summed} total remainders and {nonzero_entries} entries")
             fcm_tables.append(entries)
