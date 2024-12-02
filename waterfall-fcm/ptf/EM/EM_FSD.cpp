@@ -131,9 +131,6 @@ public:
       std::cout << "[WaterfallFcm] Look at depth " << d << std::endl;
       for (size_t s = 0; s < NUM_STAGES; s++) {
         for (size_t i = 0; i < this->stage_szes[s]; i++) {
-          if (summary[d][s][i][0] == 0) {
-            continue;
-          }
           summary[d][s][i][0] = this->stages[d][s][i];
 
           if (s == 0) {
@@ -148,6 +145,9 @@ public:
                 {(uint32_t)s, init_degree[d][i], 1, summary[d][s][i][0]});
 
           } else {
+            if (summary[d][s][i][0] == 0) {
+              continue;
+            }
             // If overflown increase the minimal value for the collisions
             if (s == 1 && this->stages[d][s][i] >= OVERFLOW_LEVEL2) {
               summary[d][s][i][0] = OVERFLOW_LEVEL2 - 1;
