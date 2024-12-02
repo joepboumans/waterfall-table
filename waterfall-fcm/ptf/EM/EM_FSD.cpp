@@ -67,7 +67,6 @@ public:
   EMFSD(array<uint32_t, NUM_STAGES> szes,
         vector<vector<vector<uint32_t>>> stages, vector<FIVE_TUPLE> tuples) {
 
-    /*this->tuples.resize(tuples.size());*/
     this->tuples = tuples;
     this->stages = stages;
     this->stage_szes = szes;
@@ -740,7 +739,6 @@ public:
     } else {
       crc = 0xF0000000;
       crc = crc32(crc, tuple.num_array, 13);
-      std::cout << "crc " << crc % W1 << std::endl;
     }
     return crc % W1;
   }
