@@ -183,19 +183,20 @@ public:
               } else {
                 max_count = ADD_LEVEL2;
               }
-              std::cout << "Overflown childeren " << overflown << " at s" << s
-                        << " " << i << std::endl;
               array<uint32_t, 4> imm_overflow = {
                   (uint32_t)s, summary[d][s][i][1], overflown, max_count};
 
               overflow_paths[d][s][i].insert(overflow_paths[d][s][i].begin(),
                                              imm_overflow);
+              std::cout << "Overflown childeren " << overflown << " at s" << s
+                        << " " << i << std::endl;
             }
           }
 
           // If not overflown and non-zero, we are at the end of the path
           // End of finding path of VC, add it to virtual counter and thresholds
           if (summary[d][s][i][2] == 0 && summary[d][s][i][0] > 0) {
+            std::cout << "End of counter, add to VC" << std::endl;
             uint32_t count = summary[d][s][i][0];
             uint32_t degree = summary[d][s][i][1];
             // Add entry to VC with its degree [1] and count [0]
@@ -203,6 +204,7 @@ public:
             max_counter_value = std::max(max_counter_value, count);
             this->max_degree[d] = std::max(this->max_degree[d], degree);
 
+            std::cout << "Remove single collsions" << std::endl;
             // Remove single collsions
             if (overflow_paths[d][s][i].size() != 0) {
               for (int j = overflow_paths[d][s][i].size() - 1; j > 0; --j) {
@@ -213,6 +215,7 @@ public:
               }
             }
 
+            std::cout << "Add overflow to thresholds" << std::endl;
             init_thresholds[d][degree].push_back(overflow_paths[d][s][i]);
           }
         }
