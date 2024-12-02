@@ -1,15 +1,6 @@
 #! /usr/bin/env python3
 import os, sys  
-# import logging
-#
-# project_name = 'waterfall_fcm'
-# logger = logging.getLogger(project_name)
-# if not len(logger.handlers):
-#     sh = logging.StreamHandler()
-#     formatter = logging.Formatter('[%(levelname)s - %(name)s - %(funcName)s]: %(message)s')
-#     sh.setFormatter(formatter)
-#     sh.setLevel(logging.INFO)
-#     logger.addHandler(sh)
+from EM_ctypes import EM_FSD
 
 sys.path.append('/home/onie/sde/bf-sde-9.11.0/install/lib/python3.8/site-packages/tofino/')
 sys.path.append('/home/onie/sde/bf-sde-9.11.0/install/lib/python3.8/site-packages/tofino/bfrt_grpc/')
@@ -25,6 +16,10 @@ import bfrt_grpc.client as gc
 class BfRt_interface():
 
     def __init__(self, dev, grpc_addr, client_id):
+        self.isRunning = False
+        self.missedDigest = 0
+        self.tuples = {}
+
         self.dev_tgt = gc.Target(dev, pipe_id=0xFFFF)
         self.bfrt_info = None
 
@@ -90,9 +85,22 @@ class BfRt_interface():
             protocol = data_dict["protocol"]
             remain4 = data_dict["remain4"]
             print(f"{src_addr = } : {dst_addr = } | {src_port = } {dst_port = } | {protocol = } | {remain4}")
-                # print(flow_id, flush=True)
+            self.missedDigest = 0
+
+            raw_src_addr = [int(x) for x in src_addr.split('.')]
+            raw_dst_addr = [int(x) for x in dst_addr.split('.')]
+            raw_src_port = [int(x) for x in int(src_port).to_bytes(2, byteorder='big')]
+            raw_dst_port = [int(x) for x in int(dst_port).to_bytes(2, byteorder='big')]
+            raw_protocol = [int(protocol)]
+            # print(f"{raw_src_addr = } : {raw_dst_addr = } | {raw_src_port = } {raw_dst_port = } | {raw_protocol = }")
+            tuple_list = raw_src_addr + raw_dst_addr + raw_src_port + raw_dst_port + raw_protocol
+            tuple_key = ".".join([str(x) for x in tuple_list])
+            self.tuples[tuple_key] = tuple_list
         except:
             print("error reading digest", end="", flush=True)
+            self.missedDigest += 0
+        if self.missedDigest > 10:
+            self.isRunning = False
 
 
     def _get_FCM_counters(self):
@@ -123,22 +131,37 @@ class BfRt_interface():
         return fcm_tables
             
 
-
-
     def run(self):
-        self._read_digest()
+        while self.isRunning:
+            self._read_digest()
+        fcm_tables = self._get_FCM_counters()
+
+        print("[WaterfallFcm] Start EM FSD...")
+        s1 = [fcm_tables[0], fcm_tables[3]]
+        s2 = [fcm_tables[1], fcm_tables[4]]
+        s3 = [fcm_tables[2], fcm_tables[5]]
+        em_fsd = EM_FSD(s1, s2, s3, self.tuples.values())
+        ns = em_fsd.run_em(1)
+        # print(fsd)
+        # print(f"{ns[-1]} - sz {len(ns)}, {fsd[-1]} - sz {len(fsd)}")
+
+        wmre_nom = 0.0
+        wmre_denom = 0.0
+        # for real, est in zip(fsd, ns):
+        #     wmre_nom += abs(float(real) - est)
+        #     wmre_denom += (float(real) + est) / 2
+
+        wmre = wmre_nom / wmre_denom
+
+        
+        print(f"[WaterfallFcm] WMRE : {wmre : .2f}")
+        print(f"[WaterfallFcm] Finished EM FSD")
 
 
 def main():
     bfrt_interface = BfRt_interface(0, 'localhost:50052', 0)
     # bfrt_interface.list_tables()
-
-    for _ in range(60):
-        bfrt_interface.run()
-    # while True:
-    #     bfrt_interface.run()
-
-    fcm_tables = bfrt_interface._get_FCM_counters()
+    bfrt_interface.run()
 
 if __name__ == "__main__":
     main()
