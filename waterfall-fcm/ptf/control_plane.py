@@ -132,6 +132,7 @@ class BfRt_interface():
             
 
     def run(self):
+        self.isRunning = True
         while self.isRunning:
             self._read_digest()
         fcm_tables = self._get_FCM_counters()
