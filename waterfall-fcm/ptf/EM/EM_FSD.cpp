@@ -137,11 +137,11 @@ public:
           if (s == 0 && summary[d][s][i][0] >= OVERFLOW_LEVEL1) {
             summary[d][s][i][0] = OVERFLOW_LEVEL1 - 1;
             summary[d][s][i][2] = 1;
-            std::cout << "Overflown in " << s << ":" << i << std::endl;
+            /*std::cout << "Overflown in " << s << ":" << i << std::endl;*/
           } else if (s == 1 && this->stages[d][s][i] >= OVERFLOW_LEVEL2) {
             summary[d][s][i][0] = OVERFLOW_LEVEL2 - 1;
             summary[d][s][i][2] = 1;
-            std::cout << "Overflown in " << s << ":" << i << std::endl;
+            /*std::cout << "Overflown in " << s << ":" << i << std::endl;*/
           }
 
           if (s == 0) {
@@ -153,7 +153,7 @@ public:
             if (summary[d][s][i][0] == 0) {
               continue;
             }
-            std::cout << "Second stage" << s << " : " << i << std::endl;
+            /*std::cout << "Second stage" << s << " : " << i << std::endl;*/
             uint32_t overflown = 0;
             // Loop over all childeren
             for (size_t k = 0; k < K; k++) {
@@ -161,7 +161,7 @@ public:
               // Add childs count and degree to current counter if they have
               // overflown
               if (summary[d][s - 1][child_idx][2] > 0) {
-                std::cout << "Child " << k << std::endl;
+                /*std::cout << "Child " << k << std::endl;*/
                 summary[d][s][i][0] += summary[d][s - 1][child_idx][0];
                 summary[d][s][i][1] += summary[d][s - 1][child_idx][1];
                 // If any of my predecessors have overflown, add them to my
@@ -188,20 +188,20 @@ public:
 
               overflow_paths[d][s][i].insert(overflow_paths[d][s][i].begin(),
                                              imm_overflow);
-              std::cout << "Overflown childeren " << overflown << " at s" << s
-                        << " " << i << std::endl;
+              /*std::cout << "Overflown childeren " << overflown << " at s" << s
+               * << " " << i << std::endl;*/
             }
           }
 
           // If not overflown and non-zero, we are at the end of the path
           // End of finding path of VC, add it to virtual counter and thresholds
           if (summary[d][s][i][2] == 0 && summary[d][s][i][0] > 0) {
-            std::cout << "End of counter, add to VC" << std::endl;
+            /*std::cout << "End of counter, add to VC" << std::endl;*/
             uint32_t count = summary[d][s][i][0];
             uint32_t degree = summary[d][s][i][1];
             // Add entry to VC with its degree [1] and count [0]
             if (degree >= this->counters.size()) {
-              std::cout << "Degree large than counters" << std::endl;
+              /*std::cout << "Degree large than counters" << std::endl;*/
               this->counters[d].resize(degree + 1);
               init_thresholds[d].resize(degree + 1);
             }
@@ -209,7 +209,7 @@ public:
             max_counter_value = std::max(max_counter_value, count);
             this->max_degree[d] = std::max(this->max_degree[d], degree);
 
-            std::cout << "Remove single collsions" << std::endl;
+            /*std::cout << "Remove single collsions" << std::endl;*/
             // Remove single collsions
             if (overflow_paths[d][s][i].size() != 0) {
               for (int j = overflow_paths[d][s][i].size() - 1; j > 0; --j) {
@@ -220,7 +220,7 @@ public:
               }
             }
 
-            std::cout << "Add overflow to thresholds" << std::endl;
+            /*std::cout << "Add overflow to thresholds" << std::endl;*/
             init_thresholds[d][degree].push_back(overflow_paths[d][s][i]);
           }
         }
@@ -324,14 +324,14 @@ public:
         }
       }
     }
-    std::cout << "[EM_WATERFALL_FCM] Initial Flow Size Distribution guess"
-              << std::endl;
-    for (auto &x : this->dist_new) {
-      if (x != 0) {
-        std::cout << x << " ";
-      }
-    }
-    std::cout << std::endl;
+    /*std::cout << "[EM_WATERFALL_FCM] Initial Flow Size Distribution guess"*/
+    /*          << std::endl;*/
+    /*for (auto &x : this->dist_new) {*/
+    /*  if (x != 0) {*/
+    /*    std::cout << x << " ";*/
+    /*  }*/
+    /*}*/
+    /*std::cout << std::endl;*/
 
     this->ns.resize(this->max_counter_value + 1);
     for (size_t d = 0; d < DEPTH; d++) {
@@ -345,28 +345,28 @@ public:
         }
       }
     }
-    std::cout << "[EM_WATERFALL_FCM] Summed Flow Size Distribution"
-              << std::endl;
-    for (auto &x : this->dist_new) {
-      if (x != 0) {
-        std::cout << x << " ";
-      }
-    }
-    std::cout << std::endl;
+    /*std::cout << "[EM_WATERFALL_FCM] Summed Flow Size Distribution"*/
+    /*          << std::endl;*/
+    /*for (auto &x : this->dist_new) {*/
+    /*  if (x != 0) {*/
+    /*    std::cout << x << " ";*/
+    /*  }*/
+    /*}*/
+    /*std::cout << std::endl;*/
 
-    std::cout << "[EM_WATERFALL_FCM] Normalize guesses" << std::endl;
-    // Normalize over inital cardinality
-    for (size_t i = 0; i < this->dist_new.size(); i++) {
-      this->dist_new[i] /= (static_cast<double>(DEPTH) * this->n_new);
-      this->ns[i] /= double(DEPTH);
-    }
-    for (auto &x : this->dist_new) {
-
-      if (x != 0) {
-        std::cout << x << " ";
-      }
-    }
-    std::cout << std::endl;
+    /*std::cout << "[EM_WATERFALL_FCM] Normalize guesses" << std::endl;*/
+    /*// Normalize over inital cardinality*/
+    /*for (size_t i = 0; i < this->dist_new.size(); i++) {*/
+    /*  this->dist_new[i] /= (static_cast<double>(DEPTH) * this->n_new);*/
+    /*  this->ns[i] /= double(DEPTH);*/
+    /*}*/
+    /*for (auto &x : this->dist_new) {*/
+    /**/
+    /*  if (x != 0) {*/
+    /*    std::cout << x << " ";*/
+    /*  }*/
+    /*}*/
+    /*std::cout << std::endl;*/
 
     printf("[EM_WATERFALL_FCM] Initial Cardinality : %9.1f\n", this->n_new);
     printf("[EM_WATERFALL_FCM] Max Counter value : %d\n",
@@ -395,6 +395,8 @@ private:
       for (size_t i = 0; i < _in_degree - 1; i++) {
         now_result[i] = 1;
       }
+
+      std::cout << "Set generator - now_result complete" << std::endl;
 
       if (sum > 600) {
         flow_num_limit = 2;
@@ -434,12 +436,12 @@ private:
         now_result.resize(now_flow_num);
         if (get_new_comb()) {
           if (check_condition()) {
-            /*std::ostringstream oss;*/
-            /*oss << "Current combi : ";*/
-            /*for (auto &x : now_result) {*/
-            /*  oss << x << " ";*/
-            /*}*/
-            /*std::cout << oss.str().c_str() << std::endl;*/
+            std::ostringstream oss;
+            oss << "Current combi : ";
+            for (auto &x : now_result) {
+              oss << x << " ";
+            }
+            std::cout << oss.str().c_str() << std::endl;
             return true;
           }
         } else {
