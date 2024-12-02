@@ -85,7 +85,6 @@ class BfRt_interface():
             protocol = data_dict["protocol"]
             remain4 = data_dict["remain4"]
             print(f"{src_addr = } : {dst_addr = } | {src_port = } {dst_port = } | {protocol = } | {remain4}")
-            self.missedDigest = 0
 
             raw_src_addr = [int(x) for x in src_addr.split('.')]
             raw_dst_addr = [int(x) for x in dst_addr.split('.')]
@@ -148,9 +147,9 @@ class BfRt_interface():
 
         wmre_nom = 0.0
         wmre_denom = 0.0
-        for real, est in zip(fsd, ns):
-            wmre_nom += abs(float(real) - est)
-            wmre_denom += (float(real) + est) / 2
+        # for real, est in zip(fsd, ns):
+        #     wmre_nom += abs(float(real) - est)
+        #     wmre_denom += (float(real) + est) / 2
 
         wmre = wmre_nom / wmre_denom
 
