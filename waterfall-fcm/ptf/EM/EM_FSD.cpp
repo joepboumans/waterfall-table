@@ -203,6 +203,7 @@ public:
             if (degree >= this->counters.size()) {
               std::cout << "Degree large than counters" << std::endl;
               this->counters[d].resize(degree + 1);
+              init_thresholds[d].resize(degree + 1);
             }
             this->counters[d][degree].push_back(count);
             max_counter_value = std::max(max_counter_value, count);
