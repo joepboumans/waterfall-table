@@ -147,14 +147,14 @@ class BfRt_interface():
 
         wmre_nom = 0.0
         wmre_denom = 0.0
-        # for real, est in zip(fsd, ns):
-        #     wmre_nom += abs(float(real) - est)
-        #     wmre_denom += (float(real) + est) / 2
+        for real, est in zip(fsd, ns):
+            wmre_nom += abs(float(real) - est)
+            wmre_denom += (float(real) + est) / 2
 
         wmre = wmre_nom / wmre_denom
 
         
-        print(f"[WaterfallFcm] WMRE : {wmre : .2f}")
+        print(f"[WaterfallFcm] WMRE : {wmre : .2f}"C)
         print(f"[WaterfallFcm] Finished EM FSD")
 
 
