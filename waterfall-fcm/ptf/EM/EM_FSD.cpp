@@ -437,12 +437,12 @@ private:
         now_result.resize(now_flow_num);
         if (get_new_comb()) {
           if (check_condition()) {
-            std::ostringstream oss;
-            oss << "Current combi : ";
-            for (auto &x : now_result) {
-              oss << x << " ";
-            }
-            std::cout << oss.str().c_str() << std::endl;
+            /*std::ostringstream oss;*/
+            /*oss << "Current combi : ";*/
+            /*for (auto &x : now_result) {*/
+            /*  oss << x << " ";*/
+            /*}*/
+            /*std::cout << oss.str().c_str() << std::endl;*/
             return true;
           }
         } else {
