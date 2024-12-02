@@ -96,8 +96,8 @@ class BfRt_interface():
             tuple_key = ".".join([str(x) for x in tuple_list])
             self.tuples[tuple_key] = tuple_list
         except:
-            print("error reading digest", end="", flush=True)
-            self.missedDigest += 0
+            self.missedDigest += 1
+            print(f"error reading digest {self.missedDigest}", end="", flush=True)
         if self.missedDigest > 10:
             self.isRunning = False
 
