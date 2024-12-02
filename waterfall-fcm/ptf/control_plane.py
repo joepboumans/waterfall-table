@@ -97,9 +97,10 @@ class BfRt_interface():
             self.tuples[tuple_key] = tuple_list
         except:
             self.missedDigest += 1
-            print(f"error reading digest {self.missedDigest}", end="", flush=True)
+            print(f"error reading digest {self.missedDigest} ", end="", flush=True)
         if self.missedDigest > 10:
             self.isRunning = False
+            print("")
 
 
     def _get_FCM_counters(self):
@@ -145,13 +146,15 @@ class BfRt_interface():
         # print(fsd)
         # print(f"{ns[-1]} - sz {len(ns)}, {fsd[-1]} - sz {len(fsd)}")
 
+        wmre = 0.0
         wmre_nom = 0.0
         wmre_denom = 0.0
         # for real, est in zip(fsd, ns):
         #     wmre_nom += abs(float(real) - est)
         #     wmre_denom += (float(real) + est) / 2
 
-        wmre = wmre_nom / wmre_denom
+        if wmre_denom != 0:
+            wmre = wmre_nom / wmre_denom
 
         
         print(f"[WaterfallFcm] WMRE : {wmre : .2f}")
