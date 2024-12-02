@@ -88,18 +88,18 @@ public:
     }
     std::cout << "[WaterfallFcm] Colleted all initial degrees from Waterfall"
               << std::endl;
-    for (size_t d = 0; d < DEPTH; d++) {
-      std::cout << "[WaterfallFcm] Depth " << d << ":" << std::endl;
-      for (size_t i = 0; i < init_degree[d].size(); i++) {
-        if (init_degree[d][i] > 0) {
-          std::cout << i << ":" << init_degree[d][i] << " ";
-          std::cout << ":" << this->stages[d][0][i];
-          std::cout << ":" << this->stages[d][1][i / 8];
-          std::cout << ":" << this->stages[d][2][i / 8 / 8] << " ";
-        }
-      }
-      std::cout << std::endl;
-    }
+    /*for (size_t d = 0; d < DEPTH; d++) {*/
+    /*  std::cout << "[WaterfallFcm] Depth " << d << ":" << std::endl;*/
+    /*  for (size_t i = 0; i < init_degree[d].size(); i++) {*/
+    /*    if (init_degree[d][i] > 0) {*/
+    /*      std::cout << i << ":" << init_degree[d][i] << " ";*/
+    /*      std::cout << ":" << this->stages[d][0][i];*/
+    /*      std::cout << ":" << this->stages[d][1][i / 8];*/
+    /*      std::cout << ":" << this->stages[d][2][i / 8 / 8] << " ";*/
+    /*    }*/
+    /*  }*/
+    /*  std::cout << std::endl;*/
+    /*}*/
     // Calculate Virtual Counters and thresholds
     // depth, stage, idx, (count, degree, overflown)
     array<array<vector<array<uint32_t, 3>>, NUM_STAGES>, DEPTH> summary;
@@ -132,30 +132,32 @@ public:
       std::cout << "[WaterfallFcm] Look at depth " << d << std::endl;
       for (size_t s = 0; s < NUM_STAGES; s++) {
         for (size_t i = 0; i < this->stage_szes[s]; i++) {
-          summary[d][s][i][0] = this->stages[d][s][i];
-          // If overflown increase the minimal value for the collisions
-          if (s == 0 && summary[d][s][i][0] >= OVERFLOW_LEVEL1) {
-            summary[d][s][i][0] = OVERFLOW_LEVEL1 - 1;
-            summary[d][s][i][2] = 1;
-            /*std::cout << "Overflown in " << s << ":" << i << std::endl;*/
-          } else if (s == 1 && this->stages[d][s][i] >= OVERFLOW_LEVEL2) {
-            summary[d][s][i][0] = OVERFLOW_LEVEL2 - 1;
-            summary[d][s][i][2] = 1;
-            /*std::cout << "Overflown in " << s << ":" << i << std::endl;*/
+          if (summary[d][s][i][0] == 0) {
+            continue;
           }
+          summary[d][s][i][0] = this->stages[d][s][i];
 
           if (s == 0) {
+            // If overflown increase the minimal value for the collisions
+            if (summary[d][s][i][0] >= OVERFLOW_LEVEL1) {
+              summary[d][s][i][0] = OVERFLOW_LEVEL1 - 1;
+              summary[d][s][i][2] = 1;
+              /*std::cout << "Overflown in " << s << ":" << i << std::endl;*/
+            }
             summary[d][s][i][1] = init_degree[d][i];
             overflow_paths[d][s][i].push_back(
                 {(uint32_t)s, init_degree[d][i], 1, summary[d][s][i][0]});
 
           } else {
-            if (summary[d][s][i][0] == 0) {
-              continue;
+            // If overflown increase the minimal value for the collisions
+            if (s == 1 && this->stages[d][s][i] >= OVERFLOW_LEVEL2) {
+              summary[d][s][i][0] = OVERFLOW_LEVEL2 - 1;
+              summary[d][s][i][2] = 1;
+              /*std::cout << "Overflown in " << s << ":" << i << std::endl;*/
             }
             /*std::cout << "Second stage" << s << " : " << i << std::endl;*/
-            uint32_t overflown = 0;
             // Loop over all childeren
+            uint32_t overflown = 0;
             for (size_t k = 0; k < K; k++) {
               uint32_t child_idx = i * K + k;
               // Add childs count and degree to current counter if they have
@@ -211,14 +213,14 @@ public:
 
             /*std::cout << "Remove single collsions" << std::endl;*/
             // Remove single collsions
-            if (overflow_paths[d][s][i].size() != 0) {
-              for (int j = overflow_paths[d][s][i].size() - 1; j > 0; --j) {
-                if (overflow_paths[d][s][i][j][2] <= 1) {
-                  overflow_paths[d][s][i].erase(
-                      overflow_paths[d][s][i].begin() + j);
-                }
-              }
-            }
+            /*if (overflow_paths[d][s][i].size() != 0) {*/
+            /*  for (int j = overflow_paths[d][s][i].size() - 1; j > 0; --j) {*/
+            /*    if (overflow_paths[d][s][i][j][2] <= 1) {*/
+            /*      overflow_paths[d][s][i].erase(*/
+            /*          overflow_paths[d][s][i].begin() + j);*/
+            /*    }*/
+            /*  }*/
+            /*}*/
 
             /*std::cout << "Add overflow to thresholds" << std::endl;*/
             init_thresholds[d][degree].push_back(overflow_paths[d][s][i]);
