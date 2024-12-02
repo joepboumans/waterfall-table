@@ -200,7 +200,11 @@ public:
             uint32_t count = summary[d][s][i][0];
             uint32_t degree = summary[d][s][i][1];
             // Add entry to VC with its degree [1] and count [0]
-            counters[d][degree].push_back(count);
+            if (degree >= this->counters.size()) {
+              std::cout << "Degree large than counters" << std::endl;
+              this->counters[d].resize(degree + 1);
+            }
+            this->counters[d][degree].push_back(count);
             max_counter_value = std::max(max_counter_value, count);
             this->max_degree[d] = std::max(this->max_degree[d], degree);
 
