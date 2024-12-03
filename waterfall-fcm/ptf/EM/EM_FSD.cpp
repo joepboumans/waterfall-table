@@ -118,7 +118,7 @@ public:
 
     array<vector<vector<vector<array<uint32_t, 4>>>>, DEPTH>
         init_thresholds; // depth, degree, i, < stage, total coll, local
-                         // colll, min_value >
+                         // coll, min_value >
     // Resize to fill all possible degrees
     for (size_t d = 0; d < DEPTH; d++) {
       counters[d].resize(init_max_degree[d] + 1);
