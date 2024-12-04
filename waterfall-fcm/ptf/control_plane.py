@@ -171,7 +171,7 @@ class BfRt_interface():
             precision = true_neg / (true_neg + false_neg)
         f1 = 2 * ((recall * precision) / (precision + recall))
 
-        print(f"[WaterfallFcm - verify] {recall = :.3f} {precision = :3.f} | {f1 = :3.f}")
+        print(f"[WaterfallFcm - verify] {recall = :.3f} {precision = :.3f} | {f1 = :.3f}")
 
         print(f"[WaterfallFcm - verify] Calculate Flow Size Distribution...")
         wmre = 0.0
