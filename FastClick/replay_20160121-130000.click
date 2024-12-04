@@ -1,4 +1,4 @@
-define($trace /home/jboumans/PDS-Simulator/data/equinix-chichago.20160121-130000.UTC.pcap)
+define($trace /data-1/users/jboumans/equinix-chichago.20160121-130000.UTC.pcap)
 
 define($txport 0)
 
