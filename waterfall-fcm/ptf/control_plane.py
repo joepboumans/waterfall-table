@@ -1,5 +1,5 @@
 #! /usr/bin/env python3
-import os, sys  
+import os, sys, subprocess
 from EM_ctypes import EM_FSD
 
 sys.path.append('/home/onie/sde/bf-sde-9.11.0/install/lib/python3.8/site-packages/tofino/')
@@ -160,8 +160,15 @@ class BfRt_interface():
         print(f"[WaterfallFcm] WMRE : {wmre : .2f}")
         print(f"[WaterfallFcm] Finished EM FSD")
 
+def read_data_set(data_name):
+    with open(data_name, "r") as f:
+        lines = f.readlines()
+        print(lines[0])
+    exit(0)
+
 
 def main():
+    read_data_set("/data-1/users/jboumans/equinix-chicago.20160121-130000.UTC.dat")
     bfrt_interface = BfRt_interface(0, 'localhost:50052', 0)
     # bfrt_interface.list_tables()
     bfrt_interface.run()
