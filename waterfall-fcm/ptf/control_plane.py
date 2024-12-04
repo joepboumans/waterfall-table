@@ -182,7 +182,7 @@ class BfRt_interface():
         max_count_em = max(self.tuples.values())
         print(f"[WaterfallFcm - verify] {max_count_in = } {max_count_em = }")
 
-        max_count = max(max_count_in, max_count_em)
+        max_count = max(max_count_in, max_count_em) + 1
         fsd = [0] * max_count
 
         print(f"[WaterfallFcm - verify] Setup real EM...")
