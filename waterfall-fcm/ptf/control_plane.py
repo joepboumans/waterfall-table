@@ -168,7 +168,7 @@ def read_data_set(data_name):
 
 
 def main():
-    read_data_set("/data-1/users/jboumans/equinix-chicago.20160121-130000.UTC.dat")
+    read_data_set("/home/onie/jboumans/equinix-chicago.20160121-130000.UTC.dat")
     bfrt_interface = BfRt_interface(0, 'localhost:50052', 0)
     # bfrt_interface.list_tables()
     bfrt_interface.run()
