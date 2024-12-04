@@ -163,14 +163,17 @@ class BfRt_interface():
 
 def read_data_set(data_name):
     with open(data_name, "rb") as f:
-        fivetuple = f.read(13)
-        src_addr = ".".join([str(x) for x in fivetuple[0:4]])
-        dst_addr = ".".join([str(x) for x in fivetuple[4:7]])
-        src_port = int.from_bytes(fivetuple[8:9], byteorder="big")
-        dst_port = int.from_bytes(fivetuple[10:11], byteorder="big")
-        protocol = int(fivetuple[12])
-        print(fivetuple)
-        print(f"{src_addr = } : {dst_addr = } | {src_port = } {dst_port = } | {protocol = }")
+        while True:
+            fivetuple = f.read(13)
+            if not fivetuple:
+                break
+            src_addr = ".".join([str(x) for x in fivetuple[0:4]])
+            dst_addr = ".".join([str(x) for x in fivetuple[4:7]])
+            src_port = int.from_bytes(fivetuple[8:9], byteorder="big")
+            dst_port = int.from_bytes(fivetuple[10:11], byteorder="big")
+            protocol = int(fivetuple[12])
+            print(fivetuple)
+            print(f"{src_addr = } : {dst_addr = } | {src_port = } {dst_port = } | {protocol = }")
     exit(0)
 
 
