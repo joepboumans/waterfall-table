@@ -1,6 +1,8 @@
 #! /usr/bin/env python3
 import os, sys, subprocess
 import mmap
+import time
+
 from typing import Protocol
 from EM_ctypes import EM_FSD
 
@@ -202,6 +204,7 @@ class BfRt_interface():
 
 def read_data_set(data_name):
     tuples = {}
+    print(f"[Dataset Loader] Get data from {data_name}")
     with open(data_name, "r+b") as f:
         mm = mmap.mmap(f.fileno(), 0)
         while True:
@@ -221,6 +224,10 @@ def read_data_set(data_name):
                 # print(f"{src_addr = } : {dst_addr = } | {src_port = } {dst_port = } | {protocol = }")
                 tuples[tuples_key] += 1
         mm.close()
+    delay = 10
+    print(f"[Dataset Loader] ...done! Waiting for {delay}s before starting test...")
+    time.sleep(delay)
+    print(f"[Dataset Loader] Waiting done!")
     return tuples
 
 
