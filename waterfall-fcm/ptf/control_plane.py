@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
 import os, sys, subprocess
+import mmap
 from typing import Protocol
 from EM_ctypes import EM_FSD
 
@@ -164,8 +165,9 @@ class BfRt_interface():
 def read_data_set(data_name):
     tuples = {}
     with open(data_name, "rb") as f:
+        mm = mmap.mmap(f.fileno(), 0)
         while True:
-            fivetuple = f.read(13)
+            fivetuple = mm.read(13)
             if not fivetuple:
                 break
             src_addr = ".".join([str(x) for x in fivetuple[0:4]])
@@ -179,6 +181,7 @@ def read_data_set(data_name):
             #     tuples[tuples_key] = 1 
             # else:
             tuples[tuples_key] += 1
+        mm.close()
     return tuples
 
 
