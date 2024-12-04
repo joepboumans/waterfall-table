@@ -164,7 +164,7 @@ class BfRt_interface():
 
 def read_data_set(data_name):
     tuples = {}
-    with open(data_name, "rb") as f:
+    with open(data_name, "r+b") as f:
         mm = mmap.mmap(f.fileno(), 0)
         while True:
             fivetuple = mm.read(13)
