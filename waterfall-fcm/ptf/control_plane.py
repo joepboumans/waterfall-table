@@ -175,10 +175,10 @@ def read_data_set(data_name):
             protocol = int(fivetuple[12])
             # print(f"{src_addr = } : {dst_addr = } | {src_port = } {dst_port = } | {protocol = }")
             tuples_key = ".".join([src_addr, dst_addr, str(src_port), str(dst_port), str(protocol)])
-            if not tuples_key in tuples.keys():
-                tuples[tuples_key] = 1 
-            else:
-                tuples[tuples_key] += 1
+            # if not tuples_key in tuples.keys():
+            #     tuples[tuples_key] = 1 
+            # else:
+            tuples[tuples_key] += 1
     return tuples
 
 
