@@ -162,6 +162,7 @@ class BfRt_interface():
         print(f"[WaterfallFcm] Finished EM FSD")
 
 def read_data_set(data_name):
+    tuples = {}
     with open(data_name, "rb") as f:
         while True:
             fivetuple = f.read(13)
@@ -172,13 +173,19 @@ def read_data_set(data_name):
             src_port = int.from_bytes(fivetuple[8:9], byteorder="big")
             dst_port = int.from_bytes(fivetuple[10:11], byteorder="big")
             protocol = int(fivetuple[12])
-            print(fivetuple)
-            print(f"{src_addr = } : {dst_addr = } | {src_port = } {dst_port = } | {protocol = }")
-    exit(0)
+            # print(f"{src_addr = } : {dst_addr = } | {src_port = } {dst_port = } | {protocol = }")
+            tuples_key = ".".join([src_addr, dst_addr, str(src_port), str(dst_port), str(protocol)])
+            if not tuples_key in tuples.keys():
+                tuples[tuples_key] = 1 
+            else:
+                tuples[tuples_key] += 1
+    return tuples
 
 
 def main():
-    read_data_set("/home/onie/jboumans/equinix-chicago.20160121-130000.UTC.dat")
+    input_tuples = read_data_set("/home/onie/jboumans/equinix-chicago.20160121-130000.UTC.dat")
+    print(input_tuples)
+    exit(0)
     bfrt_interface = BfRt_interface(0, 'localhost:50052', 0)
     # bfrt_interface.list_tables()
     bfrt_interface.run()
