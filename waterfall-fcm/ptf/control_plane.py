@@ -180,7 +180,7 @@ def read_data_set(data_name):
             if not tuples_key in tuples.keys():
                 tuples[tuples_key] = 1 
             else:
-                print(f"{src_addr = } : {dst_addr = } | {src_port = } {dst_port = } | {protocol = }")
+                # print(f"{src_addr = } : {dst_addr = } | {src_port = } {dst_port = } | {protocol = }")
                 tuples[tuples_key] += 1
         mm.close()
     return tuples
