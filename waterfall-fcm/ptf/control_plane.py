@@ -81,24 +81,25 @@ class BfRt_interface():
         try:
             digest = self.interface.digest_get(1)
             data_list = self.learn_filter.make_data_list(digest)
-            data_dict = data_list[0].to_dict()
-            src_addr = data_dict["src_addr"]
-            dst_addr = data_dict["dst_addr"]
-            src_port = data_dict["src_port"]
-            dst_port = data_dict["dst_port"]
-            protocol = data_dict["protocol"]
-            remain4 = data_dict["remain4"]
-            print(f"{src_addr = } : {dst_addr = } | {src_port = } {dst_port = } | {protocol = } | {remain4}")
+            for data in data_list:
+                data_dict = data.to_dict()
+                src_addr = data_dict["src_addr"]
+                dst_addr = data_dict["dst_addr"]
+                src_port = data_dict["src_port"]
+                dst_port = data_dict["dst_port"]
+                protocol = data_dict["protocol"]
+                remain4 = data_dict["remain4"]
+                # print(f"{src_addr = } : {dst_addr = } | {src_port = } {dst_port = } | {protocol = } | {remain4}")
 
-            raw_src_addr = [int(x) for x in src_addr.split('.')]
-            raw_dst_addr = [int(x) for x in dst_addr.split('.')]
-            raw_src_port = [int(x) for x in int(src_port).to_bytes(2, byteorder='big')]
-            raw_dst_port = [int(x) for x in int(dst_port).to_bytes(2, byteorder='big')]
-            raw_protocol = [int(protocol)]
-            # print(f"{raw_src_addr = } : {raw_dst_addr = } | {raw_src_port = } {raw_dst_port = } | {raw_protocol = }")
-            tuple_list = raw_src_addr + raw_dst_addr + raw_src_port + raw_dst_port + raw_protocol
-            tuple_key = ".".join([str(x) for x in tuple_list])
-            self.tuples[tuple_key] = tuple_list
+                raw_src_addr = [int(x) for x in src_addr.split('.')]
+                raw_dst_addr = [int(x) for x in dst_addr.split('.')]
+                raw_src_port = [int(x) for x in int(src_port).to_bytes(2, byteorder='big')]
+                raw_dst_port = [int(x) for x in int(dst_port).to_bytes(2, byteorder='big')]
+                raw_protocol = [int(protocol)]
+                # print(f"{raw_src_addr = } : {raw_dst_addr = } | {raw_src_port = } {raw_dst_port = } | {raw_protocol = }")
+                tuple_list = raw_src_addr + raw_dst_addr + raw_src_port + raw_dst_port + raw_protocol
+                tuple_key = ".".join([str(x) for x in tuple_list])
+                self.tuples[tuple_key] = tuple_list
         except:
             self.missedDigest += 1
             print(f"error reading digest {self.missedDigest} ", end="", flush=True)
@@ -179,7 +180,7 @@ class BfRt_interface():
         wmre_denom = 0.0
 
         max_count_in = max(in_tuples.values())
-        max_count_em = max(self.tuples.values())
+        max_count_em = len(self.ns)
         print(f"[WaterfallFcm - verify] {max_count_in = } {max_count_em = }")
 
         max_count = max(max_count_in, max_count_em) + 1
