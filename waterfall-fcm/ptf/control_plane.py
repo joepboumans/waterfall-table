@@ -208,27 +208,27 @@ def read_data_set(data_name):
     print(f"[Dataset Loader] Get data from {data_name}")
     with open(data_name, "r+b") as of:
         with mmap.mmap(of.fileno(), length=0, access=mmap.ACCESS_READ) as f:
-            while True:
-                fivetuple = f.read(13)
-                if not fivetuple:
-                    break
+            data = f.read()
+        for i in range(0, len(data), 13):
+            if i + 12 >= len(data):
+                break
 
-                raw_src_addr = [int(x) for x in fivetuple[0:4]]
-                raw_dst_addr = [int(x) for x in fivetuple[4:7]]
-                raw_src_port = [int(x) for x in fivetuple[8:9]]
-                raw_dst_port = [int(x) for x in fivetuple[10:12]]
-                raw_protocol = [int(fivetuple[12])]
-                tuple_list = raw_src_addr + raw_dst_addr + raw_src_port + raw_dst_port + raw_protocol
-                tuple_key = ".".join([str(x) for x in tuple_list])
-                if not tuple_key in tuples.keys():
-                    tuples[tuple_key] = 1 
-                else:
-                    tuples[tuple_key] += 1
+            raw_src_addr = [int(x) for x in data[i + 0:i + 4]]
+            raw_dst_addr = [int(x) for x in data[i + 4:i + 7]]
+            raw_src_port = [int(x) for x in data[i + 8:i + 9]]
+            raw_dst_port = [int(x) for x in data[i + 10:i + 12]]
+            raw_protocol = [int(data[i + 12])]
+            tuple_list = raw_src_addr + raw_dst_addr + raw_src_port + raw_dst_port + raw_protocol
+            tuple_key = ".".join([str(x) for x in tuple_list])
+            if not tuple_key in tuples.keys():
+                tuples[tuple_key] = 1 
+            else:
+                tuples[tuple_key] += 1
 
-    delay = 10
-    print(f"[Dataset Loader] ...done! Waiting for {delay}s before starting test...")
-    time.sleep(delay)
-    print(f"[Dataset Loader] Waiting done!")
+    # delay = 10
+    # print(f"[Dataset Loader] ...done! Waiting for {delay}s before starting test...")
+    # time.sleep(delay)
+    print(f"[Dataset Loader] Data loaded!")
     return tuples
 
 
@@ -236,8 +236,14 @@ def main():
     input_tuples = read_data_set("/home/onie/jboumans/equinix-chicago.20160121-130000.UTC.dat")
     bfrt_interface = BfRt_interface(0, 'localhost:50052', 0)
     # bfrt_interface.list_tables()
-    bfrt_interface.run()
-    bfrt_interface.verify(input_tuples)
+    process_id = os.fork()
+    if process_id > 0:
+        print(f"Parent running bfrt interface")
+        bfrt_interface.run()
+        bfrt_interface.verify(input_tuples)
+    else:
+        print(f"Child starting dataset after 1 second of sleep")
+        time.sleep(1)
 
 if __name__ == "__main__":
     main()
