@@ -216,13 +216,20 @@ def read_data_set(data_name):
             src_port = int.from_bytes(fivetuple[8:9], byteorder="big")
             dst_port = int.from_bytes(fivetuple[10:11], byteorder="big")
             protocol = int(fivetuple[12])
+
             # print(f"{src_addr = } : {dst_addr = } | {src_port = } {dst_port = } | {protocol = }")
-            tuples_key = ".".join([src_addr, dst_addr, str(src_port), str(dst_port), str(protocol)])
-            if not tuples_key in tuples.keys():
-                tuples[tuples_key] = 1 
+            raw_src_addr = [int(x) for x in src_addr.split('.')]
+            raw_dst_addr = [int(x) for x in dst_addr.split('.')]
+            raw_src_port = [int(x) for x in int(src_port).to_bytes(2, byteorder='big')]
+            raw_dst_port = [int(x) for x in int(dst_port).to_bytes(2, byteorder='big')]
+            raw_protocol = [int(protocol)]
+            tuple_list = raw_src_addr + raw_dst_addr + raw_src_port + raw_dst_port + raw_protocol
+            tuple_key = ".".join([str(x) for x in tuple_list])
+            if not tuple_key in tuples.keys():
+                tuples[tuple_key] = 1 
             else:
                 # print(f"{src_addr = } : {dst_addr = } | {src_port = } {dst_port = } | {protocol = }")
-                tuples[tuples_key] += 1
+                tuples[tuple_key] += 1
         mm.close()
     delay = 10
     print(f"[Dataset Loader] ...done! Waiting for {delay}s before starting test...")
