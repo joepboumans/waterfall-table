@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
 import os, sys, subprocess
+from typing import Protocol
 from EM_ctypes import EM_FSD
 
 sys.path.append('/home/onie/sde/bf-sde-9.11.0/install/lib/python3.8/site-packages/tofino/')
@@ -164,8 +165,12 @@ def read_data_set(data_name):
     with open(data_name, "rb") as f:
         fivetuple = f.read(13)
         src_addr = ".".join([str(x) for x in fivetuple[0:4]])
+        dst_addr = ".".join([str(x) for x in fivetuple[4:7]])
+        src_port = int.from_bytes(fivetuple[8:9], byteorder="big")
+        dst_port = int.from_bytes(fivetuple[10:11], byteorder="big")
+        protocol = int(fivetuple[12])
         print(fivetuple)
-        print(src_addr)
+        print(f"{src_addr = } : {dst_addr = } | {src_port = } {dst_port = } | {protocol = }")
     exit(0)
 
 
