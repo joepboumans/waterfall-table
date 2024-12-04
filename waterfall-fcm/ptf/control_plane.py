@@ -162,8 +162,8 @@ class BfRt_interface():
 
 def read_data_set(data_name):
     with open(data_name, "rb") as f:
-        lines = f.readlines()
-        print(lines[0])
+        fivetuple = f.read(13)
+        print(fivetuple)
     exit(0)
 
 
