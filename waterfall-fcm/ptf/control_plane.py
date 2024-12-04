@@ -163,7 +163,7 @@ class BfRt_interface():
 def read_data_set(data_name):
     with open(data_name, "rb") as f:
         fivetuple = f.read(13)
-        src_addr = ".".join([str(int(x)) for x in fivetuple[0:3]])
+        src_addr = ".".join([str(int(x)) for x in fivetuple[0:4]])
         print(fivetuple)
         print(src_addr)
     exit(0)
