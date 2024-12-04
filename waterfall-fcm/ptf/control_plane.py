@@ -161,7 +161,7 @@ class BfRt_interface():
         print(f"[WaterfallFcm] Finished EM FSD")
 
 def read_data_set(data_name):
-    with open(data_name, "r") as f:
+    with open(data_name, "rb") as f:
         lines = f.readlines()
         print(lines[0])
     exit(0)
