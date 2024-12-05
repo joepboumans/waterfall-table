@@ -85,6 +85,7 @@ class BfRt_interface():
             isFirstData = True
         except:
             print("Cannot read digest, start data set")
+            return
 
         try:
             if not isFirstData:
