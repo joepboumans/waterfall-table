@@ -78,9 +78,19 @@ class BfRt_interface():
             print("================")
 
     def _read_digest(self):
+        isFirstData = False
         try:
             digest = self.interface.digest_get(1)
             data_list = self.learn_filter.make_data_list(digest)
+            isFirstData = True
+        except:
+            print("Cannot read digest, start data set")
+
+        try:
+            if not isFirstData:
+                digest = self.interface.digest_get(1)
+                data_list = self.learn_filter.make_data_list(digest)
+
             for data in data_list:
                 data_dict = data.to_dict()
                 src_addr = data_dict["src_addr"]
@@ -236,14 +246,8 @@ def main():
     input_tuples = read_data_set("/home/onie/jboumans/equinix-chicago.20160121-130000.UTC.dat")
     bfrt_interface = BfRt_interface(0, 'localhost:50052', 0)
     # bfrt_interface.list_tables()
-    process_id = os.fork()
-    if process_id > 0:
-        print(f"Parent running bfrt interface")
-        bfrt_interface.run()
-        bfrt_interface.verify(input_tuples)
-    else:
-        print(f"Child starting dataset after 1 second of sleep")
-        time.sleep(1)
+    bfrt_interface.run()
+    bfrt_interface.verify(input_tuples)
 
 if __name__ == "__main__":
     main()
