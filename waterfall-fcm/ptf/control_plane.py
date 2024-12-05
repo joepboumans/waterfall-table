@@ -78,19 +78,18 @@ class BfRt_interface():
             print("================")
 
     def _read_digest(self):
-        isFirstData = False
+        # isFirstData = False
+        # try:
+        #     digest = self.interface.digest_get(1)
+        #     data_list = self.learn_filter.make_data_list(digest)
+        #     isFirstData = True
+        # except:
+        #     print("Cannot read digest, start data set")
+        #     return
+
         try:
             digest = self.interface.digest_get(1)
             data_list = self.learn_filter.make_data_list(digest)
-            isFirstData = True
-        except:
-            print("Cannot read digest, start data set")
-            return
-
-        try:
-            if not isFirstData:
-                digest = self.interface.digest_get(1)
-                data_list = self.learn_filter.make_data_list(digest)
 
             for data in data_list:
                 data_dict = data.to_dict()
