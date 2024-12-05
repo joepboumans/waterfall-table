@@ -436,13 +436,13 @@ private:
       while (now_flow_num <= flow_num_limit) {
         now_result.resize(now_flow_num);
         if (get_new_comb()) {
+          std::ostringstream oss;
+          oss << "Current combi : ";
+          for (auto &x : now_result) {
+            oss << x << " ";
+          }
+          std::cout << oss.str().c_str() << std::endl;
           if (check_condition()) {
-            std::ostringstream oss;
-            oss << "Current combi : ";
-            for (auto &x : now_result) {
-              oss << x << " ";
-            }
-            std::cout << oss.str().c_str() << std::endl;
             return true;
           }
         } else {
