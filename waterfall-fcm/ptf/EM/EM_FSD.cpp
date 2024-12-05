@@ -469,8 +469,17 @@ private:
     }
 
     bool check_condition() {
+      std::cout << "Checking condition" << std::endl;
       // return true;
       for (auto &t : thresh) {
+        std::cout << " <";
+        for (auto &x : t) {
+          std::cout << x << ", ";
+          if (&x != &t.back()) {
+            std::cout << ", ";
+          }
+        }
+        std::cout << "> ";
         uint32_t colls = t[2];
         if (colls <= 1) {
           continue;
@@ -487,6 +496,7 @@ private:
         // Remainder is larger then minimal value thus 1 pass
         if (last_group_val >= min_val) {
           passes++;
+          std::cout << "pre if for loop" << std::endl;
           for (size_t i = 0; i < tot_curr_colls - 1; i++) {
             uint32_t accum =
                 std::accumulate(now_result.begin() + i * group_sz,

@@ -21,6 +21,7 @@ class BfRt_interface():
 
     def __init__(self, dev, grpc_addr, client_id):
         self.isRunning = False
+        self.hasFirstData = False
         self.missedDigest = 0
         self.tuples = {}
 
@@ -78,15 +79,6 @@ class BfRt_interface():
             print("================")
 
     def _read_digest(self):
-        # isFirstData = False
-        # try:
-        #     digest = self.interface.digest_get(1)
-        #     data_list = self.learn_filter.make_data_list(digest)
-        #     isFirstData = True
-        # except:
-        #     print("Cannot read digest, start data set")
-        #     return
-
         try:
             digest = self.interface.digest_get(1)
             data_list = self.learn_filter.make_data_list(digest)
@@ -110,10 +102,12 @@ class BfRt_interface():
                 tuple_list = raw_src_addr + raw_dst_addr + raw_src_port + raw_dst_port + raw_protocol
                 tuple_key = ".".join([str(x) for x in tuple_list])
                 self.tuples[tuple_key] = tuple_list
+
+            self.hasFirstData = True
         except:
             self.missedDigest += 1
             print(f"error reading digest {self.missedDigest} ", end="", flush=True)
-        if self.missedDigest > 10:
+        if self.missedDigest > 10 and self.hasFirstData:
             self.isRunning = False
             print("")
 
