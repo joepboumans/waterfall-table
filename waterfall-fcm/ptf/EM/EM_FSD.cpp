@@ -477,11 +477,13 @@ private:
         std::cout << " <";
         for (auto &x : t) {
           std::cout << x << ", ";
-          if (&x != &t.back()) {
+          if (x != t.back()) {
             std::cout << ", ";
           }
         }
         std::cout << "> ";
+      }
+      for (auto &t : thresh) {
         uint32_t colls = t[2];
         if (colls <= 1) {
           continue;
