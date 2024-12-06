@@ -213,6 +213,7 @@ def read_data_set(data_name):
     with open(data_name, "r+b") as of:
         with mmap.mmap(of.fileno(), length=0, access=mmap.ACCESS_READ) as f:
             data = f.read()
+        print(f"[Dataset Loader] Loaded in dataset into memory")
         for i in range(0, len(data), 13):
             if i + 12 >= len(data):
                 break
@@ -232,7 +233,7 @@ def read_data_set(data_name):
     # delay = 10
     # print(f"[Dataset Loader] ...done! Waiting for {delay}s before starting test...")
     # time.sleep(delay)
-    print(f"[Dataset Loader] Data loaded!")
+    print(f"[Dataset Loader] Parse data into tuples, done!")
     return tuples
 
 
