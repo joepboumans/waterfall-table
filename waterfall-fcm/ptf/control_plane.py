@@ -82,7 +82,7 @@ class BfRt_interface():
 
     def _read_digest(self):
         try:
-            digest = self.interface.digest_get(0.1)
+            digest = self.interface.digest_get()
             data_list = self.learn_filter.make_data_list(digest)
             self.recievedDigest += len(data_list)
 
@@ -114,6 +114,7 @@ class BfRt_interface():
             if self.missedDigest > 10 and self.hasFirstData:
                 self.isRunning = False
                 print("")
+            time.sleep(0.1)
 
 
     def _get_FCM_counters(self):
@@ -223,13 +224,13 @@ def read_data_set(data_name):
             if i + 12 >= len(data):
                 break
 
-            raw_src_addr = [int(x) for x in data[i + 0:i + 4]]
-            raw_dst_addr = [int(x) for x in data[i + 4:i + 8]]
-            raw_src_port = [int(x) for x in data[i + 8:i + 10]]
-            raw_dst_port = [int(x) for x in data[i + 10:i + 12]]
-            raw_protocol = [int(data[i + 12])]
-            tuple_list = raw_src_addr + raw_dst_addr + raw_src_port + raw_dst_port + raw_protocol
-            tuple_key = ".".join([str(x) for x in tuple_list])
+            # raw_src_addr = [int(x) for x in data[i + 0:i + 4]]
+            # raw_dst_addr = [int(x) for x in data[i + 4:i + 8]]
+            # raw_src_port = [int(x) for x in data[i + 8:i + 10]]
+            # raw_dst_port = [int(x) for x in data[i + 10:i + 12]]
+            # raw_protocol = [int(data[i + 12])]
+            # tuple_list = raw_src_addr + raw_dst_addr + raw_src_port + raw_dst_port + raw_protocol
+            tuple_key = ".".join([str(x) for x in data[i + 0:i + 13]])
             tuples[tuple_key] += 1
 
     # delay = 10
