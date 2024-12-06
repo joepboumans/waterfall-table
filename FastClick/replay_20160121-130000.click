@@ -5,7 +5,7 @@ define($txport 0)
 define($bout 32)
 define($txverbose 99)
 //define($RATE 1000000000)
-define($RATE 10Gbps)
+define($RATE 1Gbps)
 
 define($max_packets_in_queue 500000)
 define($replay_count -1)
