@@ -134,15 +134,16 @@ public:
           summary[d][s][i][0] = this->stages[d][s][i];
 
           if (s == 0) {
+
+            summary[d][s][i][1] = init_degree[d][i];
             if (summary[d][s][i][0] > 0 && init_degree[d][i] < 1) {
-              std::cout
-                  << "Counter with value, but not a single flow mapped to it"
-                  << std::endl;
+              std::cout << "Counter with value, but not a single flow mapped "
+                           "to it. Set it to 1"
+                        << std::endl;
               std::cout << "Counter " << i << " with value "
                         << summary[d][s][i][0] << std::endl;
-              exit(1);
+              summary[d][s][i][1] = 1;
             }
-            summary[d][s][i][1] = init_degree[d][i];
             // If overflown increase the minimal value for the collisions
             if (summary[d][s][i][0] >= OVERFLOW_LEVEL1) {
               summary[d][s][i][0] = OVERFLOW_LEVEL1 - 1;
@@ -805,9 +806,9 @@ void *EMFSD_new(uint32_t *szes, uint32_t *s1_1, uint32_t *s1_2, uint32_t *s2_1,
 
   std::cout << "[WaterfallFcm CTypes] Checking vector with "
             << tuples_vec.size() << std::endl;
-  for (size_t i = 0; i < tuples_vec.size(); i++) {
-    std::cout << i << " : " << tuples_vec.at(i) << std::endl;
-  }
+  /*for (size_t i = 0; i < tuples_vec.size(); i++) {*/
+  /*  std::cout << i << " : " << tuples_vec.at(i) << std::endl;*/
+  /*}*/
   return new EMFSD(stage_szes, stages, tuples_vec);
 }
 
