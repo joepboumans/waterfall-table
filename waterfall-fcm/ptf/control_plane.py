@@ -85,7 +85,7 @@ class BfRt_interface():
         try:
             digest = self.interface.digest_get()
             data_list = self.learn_filter.make_data_list(digest)
-            self.recieved_datalist.append(data_list)
+            self.recieved_datalist.extend(data_list)
             self.recievedDigest += len(data_list)
 
             # for data in data_list:
