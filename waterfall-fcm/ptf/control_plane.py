@@ -218,7 +218,7 @@ def read_data_set(data_name):
             data = f.read()
         print(f"[Dataset Loader] Loaded in dataset into memory")
         for i in range(0, len(data), 13):
-            if i + 12 >= len(data):
+            if i + 12 >= len(data) / 1000:
                 break
 
             raw_src_addr = [int(x) for x in data[i + 0:i + 4]]
