@@ -13,7 +13,6 @@ os.environ["GRPC_ENABLE_FORK_SUPPORT"] = "1"
 os.environ["GRPC_POLL_STRATEGY"] = "poll"
 os.environ["GRPC_VERBOSITY"] = "debug"
 
-
 import bfrt_grpc.client as gc
 
 
@@ -157,8 +156,7 @@ class BfRt_interface():
         print(f"[WaterfallFcm - verify] Calculate Waterfall F1-score...")
         true_pos = false_pos = true_neg =  false_neg = 0
 
-        print([*self.tuples.keys()][0])
-        print([*in_tuples.keys()][0])
+        # Compare dataset tuples with Waterfall Tuples
         for tup in in_tuples.keys():
             if tup in [*self.tuples.keys()]:
                 true_pos += 1
@@ -206,7 +204,6 @@ class BfRt_interface():
         if wmre_denom != 0:
             wmre = wmre_nom / wmre_denom
 
-        
         print(f"[WaterfallFcm] WMRE : {wmre : .2f}")
         print(f"[WaterfallFcm] Finished EM FSD")
 
@@ -218,7 +215,7 @@ def read_data_set(data_name):
             data = f.read()
         print(f"[Dataset Loader] Loaded in dataset into memory")
         for i in range(0, len(data), 13):
-            if i + 12 >= len(data) / 1000:
+            if i + 12 >= len(data):
                 break
 
             raw_src_addr = [int(x) for x in data[i + 0:i + 4]]
