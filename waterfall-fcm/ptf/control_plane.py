@@ -107,9 +107,9 @@ class BfRt_interface():
         except:
             self.missedDigest += 1
             print(f"error reading digest {self.missedDigest} ", end="", flush=True)
-        if self.missedDigest > 10 and self.hasFirstData:
-            self.isRunning = False
-            print("")
+            if self.missedDigest > 10 and self.hasFirstData:
+                self.isRunning = False
+                print("")
 
 
     def _get_FCM_counters(self):
