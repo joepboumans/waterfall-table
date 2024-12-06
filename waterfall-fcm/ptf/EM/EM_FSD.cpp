@@ -472,6 +472,8 @@ private:
       std::cout << "Checking condition" << std::endl;
       std::cout << "Thresh len " << thresh.size() << std::endl;
       std::cout << "Show thresh[0][0] " << thresh[0][0] << std::endl;
+      std::cout << "Show thresh[len][0] " << thresh[thresh.size() - 1][0]
+                << std::endl;
       // return true;
       for (auto &t : thresh) {
         std::cout << " <";
@@ -483,6 +485,7 @@ private:
         }
         std::cout << "> ";
       }
+      std::cout << std::endl;
       for (auto &t : thresh) {
         uint32_t colls = t[2];
         if (colls <= 1) {
