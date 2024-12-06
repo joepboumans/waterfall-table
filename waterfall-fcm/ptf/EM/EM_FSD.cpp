@@ -470,6 +470,8 @@ private:
 
     bool check_condition() {
       std::cout << "Checking condition" << std::endl;
+      std::cout << "Thresh len " << thresh.size() << std::endl;
+      std::cout << "Show thresh[0][0] " << thresh[0][0] << std::endl;
       // return true;
       for (auto &t : thresh) {
         std::cout << " <";
