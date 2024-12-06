@@ -135,13 +135,9 @@ public:
 
           if (s == 0) {
 
+            // If qWaterfall missed the flow, give it a least a degree of 1
             summary[d][s][i][1] = init_degree[d][i];
             if (summary[d][s][i][0] > 0 && init_degree[d][i] < 1) {
-              std::cout << "Counter with value, but not a single flow mapped "
-                           "to it. Set it to 1"
-                        << std::endl;
-              std::cout << "Counter " << i << " with value "
-                        << summary[d][s][i][0] << std::endl;
               summary[d][s][i][1] = 1;
             }
             // If overflown increase the minimal value for the collisions
@@ -406,7 +402,7 @@ private:
         now_result[i] = 1;
       }
 
-      std::cout << "Set generator - now_result complete" << std::endl;
+      /*std::cout << "Set generator - now_result complete" << std::endl;*/
 
       if (sum > 600) {
         flow_num_limit = 2;
@@ -445,12 +441,12 @@ private:
       while (now_flow_num <= flow_num_limit) {
         now_result.resize(now_flow_num);
         if (get_new_comb()) {
-          std::ostringstream oss;
-          oss << "Current combi : ";
-          for (auto &x : now_result) {
-            oss << x << " ";
-          }
-          std::cout << oss.str().c_str() << std::endl;
+          /*std::ostringstream oss;*/
+          /*oss << "Current combi : ";*/
+          /*for (auto &x : now_result) {*/
+          /*  oss << x << " ";*/
+          /*}*/
+          /*std::cout << oss.str().c_str() << std::endl;*/
           if (check_condition()) {
             return true;
           }
@@ -467,34 +463,34 @@ private:
         }
       }
 
-      std::cout << "Done with get_next()" << std::endl;
-      std::ostringstream oss;
-      oss << "Ending now_result : ";
-      for (auto &x : now_result) {
-        oss << x << " ";
-      }
-      std::cout << oss.str().c_str() << std::endl;
+      /*std::cout << "Done with get_next()" << std::endl;*/
+      /*std::ostringstream oss;*/
+      /*oss << "Ending now_result : ";*/
+      /*for (auto &x : now_result) {*/
+      /*  oss << x << " ";*/
+      /*}*/
+      /*std::cout << oss.str().c_str() << std::endl;*/
       return false;
     }
 
     bool check_condition() {
-      std::cout << "Checking condition" << std::endl;
-      std::cout << "Thresh len " << thresh.size() << std::endl;
-      std::cout << "Show thresh[0][0] " << thresh[0][0] << std::endl;
-      std::cout << "Show thresh[len][0] " << thresh[thresh.size() - 1][0]
-                << std::endl;
-      // return true;
-      for (auto t : thresh) {
-        std::cout << " <";
-        for (auto x : t) {
-          std::cout << x;
-          if (&x != &t.back()) {
-            std::cout << ", ";
-          }
-        }
-        std::cout << "> ";
-      }
-      std::cout << std::endl;
+      /*std::cout << "Checking condition" << std::endl;*/
+      /*std::cout << "Thresh len " << thresh.size() << std::endl;*/
+      /*std::cout << "Show thresh[0][0] " << thresh[0][0] << std::endl;*/
+      /*std::cout << "Show thresh[len][0] " << thresh[thresh.size() - 1][0]*/
+      /*          << std::endl;*/
+      /*// return true;*/
+      /*for (auto t : thresh) {*/
+      /*  std::cout << " <";*/
+      /*  for (auto x : t) {*/
+      /*    std::cout << x;*/
+      /*    if (&x != &t.back()) {*/
+      /*      std::cout << ", ";*/
+      /*    }*/
+      /*  }*/
+      /*  std::cout << "> ";*/
+      /*}*/
+      /*std::cout << std::endl;*/
       for (auto &t : thresh) {
         uint32_t colls = t[1];
         if (colls <= 1) {
@@ -512,7 +508,7 @@ private:
         // Remainder is larger then minimal value thus 1 pass
         if (last_group_val >= min_val) {
           passes++;
-          std::cout << "pre if for loop" << std::endl;
+          /*std::cout << "pre if for loop" << std::endl;*/
           for (size_t i = 0; i < tot_curr_colls - 1; i++) {
             uint32_t accum =
                 std::accumulate(now_result.begin() + i * group_sz,
@@ -532,7 +528,7 @@ private:
             return false;
           }
           passes++;
-          std::cout << "pre else for loop" << std::endl;
+          /*std::cout << "pre else for loop" << std::endl;*/
           for (size_t i = 0; i < tot_curr_colls - 1; i++) {
             uint32_t accum =
                 std::accumulate(now_result.begin() + 1 + i * group_sz,
@@ -605,15 +601,15 @@ private:
       if (counter_dist[d][xi][i] == 0) {
         continue;
       }
-      std::cout << "Found value " << i << " with count of "
-                << counter_dist[d][xi][i] << std::endl;
+      /*std::cout << "Found value " << i << " with count of "*/
+      /*          << counter_dist[d][xi][i] << std::endl;*/
 
       BetaGenerator alpha(i, xi, this->thresholds[d][xi][i]),
           beta(i, xi, this->thresholds[d][xi][i]);
       double sum_p = 0.0;
       uint32_t it = 0;
 
-      std::cout << "Get alpha combinations" << std::endl;
+      /*std::cout << "Get alpha combinations" << std::endl;*/
       // Sum over first combinations
       while (alpha.get_next()) {
         double p = get_p_from_beta(alpha, lambda, dist_old, n_old, xi);
@@ -621,11 +617,11 @@ private:
         it++;
       }
 
-      std::cout << "Finished alpha" << std::endl;
+      /*std::cout << "Finished alpha" << std::endl;*/
       // If no results, but I did have combinations, spread out the value
       if (sum_p == 0.0) {
         if (it > 0) {
-          std::cout << "Sum was 0 so spread out" << std::endl;
+          /*std::cout << "Sum was 0 so spread out" << std::endl;*/
           uint32_t temp_val = i;
           vector<array<uint32_t, 4>> temp_thresh = this->thresholds[d][xi][i];
           // Start from lowest layer to highest layer
@@ -641,7 +637,7 @@ private:
           }
         }
       } else {
-        std::cout << "Get beta combinations" << std::endl;
+        /*std::cout << "Get beta combinations" << std::endl;*/
         while (beta.get_next()) {
           double p = get_p_from_beta(beta, lambda, dist_old, n_old, xi);
           for (size_t j = 0; j < beta.now_flow_num; ++j) {

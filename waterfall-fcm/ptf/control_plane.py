@@ -157,6 +157,7 @@ class BfRt_interface():
         print(f"[WaterfallFcm - verify] Calculate Waterfall F1-score...")
         true_pos = false_pos = true_neg =  false_neg = 0
 
+        print(self.tuples.keys())
         for tup in in_tuples.keys():
             if tup in self.tuples.keys():
                 true_pos += 1
@@ -178,6 +179,7 @@ class BfRt_interface():
 
         print(f"[WaterfallFcm - verify] {recall = :.3f} {precision = :.3f} | {f1 = :.3f}")
 
+        return
         print(f"[WaterfallFcm - verify] Calculate Flow Size Distribution...")
         wmre = 0.0
         wmre_nom = 0.0
