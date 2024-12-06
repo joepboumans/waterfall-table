@@ -11,7 +11,7 @@ define($trace /data-1/users/jboumans/equinix-chicago.20160121-130000.UTC.pcap)
 define($max_packets_in_queue 500000)
 define($replay_count -1)
 
-//d :: DPDKInfo(NB_SOCKET_MBUF  2040960) //Should be a bit more than 4 times the limit
+d :: DPDKInfo(NB_SOCKET_MBUF  524288) //Should be a bit more than 4 times the limit
 
 /* Can be whatever */
 define($INsrcmac b8:3f:d2:9f:2e:9b)
