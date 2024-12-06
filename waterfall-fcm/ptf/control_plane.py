@@ -157,7 +157,8 @@ class BfRt_interface():
         print(f"[WaterfallFcm - verify] Calculate Waterfall F1-score...")
         true_pos = false_pos = true_neg =  false_neg = 0
 
-        print(self.tuples.keys())
+        print(self.tuples.keys()[0])
+        print(in_tuples.keys()[0])
         for tup in in_tuples.keys():
             if tup in self.tuples.keys():
                 true_pos += 1
