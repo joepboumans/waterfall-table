@@ -134,13 +134,21 @@ public:
           summary[d][s][i][0] = this->stages[d][s][i];
 
           if (s == 0) {
+            if (summary[d][s][i][0] > 0 && init_degree[d][i] < 1) {
+              std::cout
+                  << "Counter with value, but not a single flow mapped to it"
+                  << std::endl;
+              std::cout << "Counter " << i << " with value "
+                        << summary[d][s][i][0] << std::endl;
+              exit(1);
+            }
+            summary[d][s][i][1] = init_degree[d][i];
             // If overflown increase the minimal value for the collisions
             if (summary[d][s][i][0] >= OVERFLOW_LEVEL1) {
               summary[d][s][i][0] = OVERFLOW_LEVEL1 - 1;
               summary[d][s][i][2] = 1;
               /*std::cout << "Overflown in " << s << ":" << i << std::endl;*/
             }
-            summary[d][s][i][1] = init_degree[d][i];
             overflow_paths[d][s][i].push_back(
                 {(uint32_t)s, init_degree[d][i], 1, summary[d][s][i][0]});
 
@@ -487,7 +495,7 @@ private:
       }
       std::cout << std::endl;
       for (auto &t : thresh) {
-        uint32_t colls = t[2];
+        uint32_t colls = t[1];
         if (colls <= 1) {
           continue;
         }
