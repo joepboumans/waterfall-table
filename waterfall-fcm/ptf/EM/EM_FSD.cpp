@@ -483,11 +483,11 @@ private:
       std::cout << "Show thresh[len][0] " << thresh[thresh.size() - 1][0]
                 << std::endl;
       // return true;
-      for (auto &t : thresh) {
+      for (auto t : thresh) {
         std::cout << " <";
-        for (auto &x : t) {
-          std::cout << x << ", ";
-          if (x != t.back()) {
+        for (auto x : t) {
+          std::cout << x;
+          if (&x != &t.back()) {
             std::cout << ", ";
           }
         }
