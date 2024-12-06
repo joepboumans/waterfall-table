@@ -160,7 +160,7 @@ class BfRt_interface():
         print([*self.tuples.keys()][0])
         print([*in_tuples.keys()][0])
         for tup in in_tuples.keys():
-            if tup in self.tuples.keys():
+            if tup in [*self.tuples.keys()]:
                 true_pos += 1
             else:
                 false_pos += 1
@@ -222,8 +222,8 @@ def read_data_set(data_name):
                 break
 
             raw_src_addr = [int(x) for x in data[i + 0:i + 4]]
-            raw_dst_addr = [int(x) for x in data[i + 4:i + 7]]
-            raw_src_port = [int(x) for x in data[i + 8:i + 9]]
+            raw_dst_addr = [int(x) for x in data[i + 4:i + 8]]
+            raw_src_port = [int(x) for x in data[i + 8:i + 10]]
             raw_dst_port = [int(x) for x in data[i + 10:i + 12]]
             raw_protocol = [int(data[i + 12])]
             tuple_list = raw_src_addr + raw_dst_addr + raw_src_port + raw_dst_port + raw_protocol
