@@ -3,6 +3,8 @@ import os, sys, subprocess
 import mmap
 import time
 
+from collections import defaultdict
+
 from typing import Protocol
 from EM_ctypes import EM_FSD
 
@@ -158,7 +160,7 @@ class BfRt_interface():
 
         # Compare dataset tuples with Waterfall Tuples
         for tup in in_tuples.keys():
-            if tup in [*self.tuples.keys()]:
+            if tup in self.tuples:
                 true_pos += 1
             else:
                 false_pos += 1
@@ -208,7 +210,7 @@ class BfRt_interface():
         print(f"[WaterfallFcm] Finished EM FSD")
 
 def read_data_set(data_name):
-    tuples = {}
+    tuples = defaultdict(int)
     print(f"[Dataset Loader] Get data from {data_name}")
     with open(data_name, "r+b") as of:
         with mmap.mmap(of.fileno(), length=0, access=mmap.ACCESS_READ) as f:
@@ -225,10 +227,7 @@ def read_data_set(data_name):
             raw_protocol = [int(data[i + 12])]
             tuple_list = raw_src_addr + raw_dst_addr + raw_src_port + raw_dst_port + raw_protocol
             tuple_key = ".".join([str(x) for x in tuple_list])
-            if not tuple_key in tuples.keys():
-                tuples[tuple_key] = 1 
-            else:
-                tuples[tuple_key] += 1
+            tuples[tuple_key] += 1
 
     # delay = 10
     # print(f"[Dataset Loader] ...done! Waiting for {delay}s before starting test...")
