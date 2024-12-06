@@ -24,6 +24,7 @@ class BfRt_interface():
         self.isRunning = False
         self.hasFirstData = False
         self.missedDigest = 0
+        self.recievedDigest = 0
         self.tuples = {}
 
         self.dev_tgt = gc.Target(dev, pipe_id=0xFFFF)
@@ -83,6 +84,7 @@ class BfRt_interface():
         try:
             digest = self.interface.digest_get(1)
             data_list = self.learn_filter.make_data_list(digest)
+            self.recievedDigest += len(data_list)
 
             for data in data_list:
                 data_dict = data.to_dict()
@@ -104,6 +106,7 @@ class BfRt_interface():
                 tuple_key = ".".join([str(x) for x in tuple_list])
                 self.tuples[tuple_key] = tuple_list
 
+            print(f"Received {self.recievedDigest} flows via digest", flush=True)
             self.hasFirstData = True
         except:
             self.missedDigest += 1
