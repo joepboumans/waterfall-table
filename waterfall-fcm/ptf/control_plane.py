@@ -169,7 +169,6 @@ class BfRt_interface():
             src_port = data_dict["src_port"]
             dst_port = data_dict["dst_port"]
             protocol = data_dict["protocol"]
-            remain4 = data_dict["remain4"]
             # print(f"{src_addr = } : {dst_addr = } | {src_port = } {dst_port = } | {protocol = } | {remain4}")
 
             raw_src_addr = [int(x) for x in src_addr.split('.')]
