@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/workspace/P4-code/waterfall-table/waterfall-fcm/ptf/EM/build",
+  "command": "/usr/bin/c++ -DEM_FSD_EXPORTS -I/workspace/P4-code/waterfall-table/waterfall-fcm/ptf/EM -fPIC -std=gnu++23 -o CMakeFiles/EM_FSD.dir/EM_FSD.cpp.o -c /workspace/P4-code/waterfall-table/waterfall-fcm/ptf/EM/EM_FSD.cpp",
+  "file": "/workspace/P4-code/waterfall-table/waterfall-fcm/ptf/EM/EM_FSD.cpp"
+}
+]
