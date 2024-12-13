@@ -208,8 +208,10 @@ class BfRt_interface():
         print(f"[WaterfallFcm] Finished EM FSD")
 
 def read_data_set(data_name):
-    tuples = defaultdict(int)
     print(f"[Dataset Loader] Get data from {data_name}")
+    first = True
+
+    tuples = defaultdict(int)
     with open(data_name, "r+b") as of:
         with mmap.mmap(of.fileno(), length=0, access=mmap.ACCESS_READ) as f:
             data = f.read()
@@ -220,9 +222,11 @@ def read_data_set(data_name):
 
             # Read src and dst addr
             tuple_key = ".".join([str(x) for x in data[i + 0:i + 8]])
-            print(tuple_key)
-            exit(0)
             tuples[tuple_key] += 1
+            
+            if first:
+                print(tuple_key)
+                first = False
 
     # delay = 10
     # print(f"[Dataset Loader] ...done! Waiting for {delay}s before starting test...")
