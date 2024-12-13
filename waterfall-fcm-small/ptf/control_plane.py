@@ -89,6 +89,7 @@ class BfRt_interface():
             self.recievedDigest += len(data_list)
 
             self.hasFirstData = True
+            self.isRunning = False
         except:
             self.missedDigest += 1
             print(f"error reading digest {self.missedDigest} ", end="", flush=True)
@@ -151,6 +152,7 @@ class BfRt_interface():
             tuple_list = raw_src_addr + raw_dst_addr 
             tuple_key = ".".join([str(x) for x in tuple_list])
             self.tuples[tuple_key] = tuple_list
+            print(tuple_key)
         print(f"[WaterfallFcm - verify] Calculate Waterfall F1-score...")
         true_pos = false_pos = true_neg =  false_neg = 0
 
