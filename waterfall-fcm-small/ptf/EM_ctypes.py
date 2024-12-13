@@ -24,7 +24,7 @@ Stage_szes = c_uint32 * NUM_STAGES
 Stage1 = c_uint32 * SKETCH_W1
 Stage2 = c_uint32 * SKETCH_W2
 Stage3 = c_uint32 * SKETCH_W3
-FiveTuple = c_uint8 * 13
+FlowTuple = c_uint8 * 8 # src_addr + dst_addr
 
 class EM_FSD(object):
     lib = cdll.LoadLibrary(f"{os.path.dirname(__file__)}/EM/lib/libEM_FSD.so")
@@ -39,11 +39,11 @@ class EM_FSD(object):
 
     def __init__(self, s1, s2, s3, in_tuples):
         # logger.info(in_tuples)
-        Tuples = FiveTuple * len(in_tuples)
+        Tuples = FlowTuple * len(in_tuples)
         tuples = Tuples()
         in2Tuples = []
         for val in in_tuples:
-            in2Tuples.append(FiveTuple(*val))
+            in2Tuples.append(FlowTuple(*val))
         for i in range(len(in2Tuples)):
             tuples[i] = in2Tuples[i]
 
@@ -135,10 +135,10 @@ if __name__ == "__main__":
     test_tuple = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
     test_tuple2 = [ 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
     test_tuple3 = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    tuples = [FiveTuple(*[i for i in range(1,14)]) for _ in range(1, 4)]
-    t1 = FiveTuple(*test_tuple)
-    t2 = FiveTuple(*test_tuple2)
-    t3 = FiveTuple(*test_tuple3)
+    tuples = [FlowTuple(*[i for i in range(1,14)]) for _ in range(1, 4)]
+    t1 = FlowTuple(*test_tuple)
+    t2 = FlowTuple(*test_tuple2)
+    t3 = FlowTuple(*test_tuple3)
     tuples = [ t1, t2, t3]
     f = EM_FSD(s1, s2, s3, tuples)
     f.run_em(5)

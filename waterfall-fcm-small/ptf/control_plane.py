@@ -88,27 +88,6 @@ class BfRt_interface():
             self.recieved_datalist.extend(data_list)
             self.recievedDigest += len(data_list)
 
-            # for data in data_list:
-            #     data_dict = data.to_dict()
-            #     src_addr = data_dict["src_addr"]
-            #     dst_addr = data_dict["dst_addr"]
-            #     src_port = data_dict["src_port"]
-            #     dst_port = data_dict["dst_port"]
-            #     protocol = data_dict["protocol"]
-            #     remain4 = data_dict["remain4"]
-            #     # print(f"{src_addr = } : {dst_addr = } | {src_port = } {dst_port = } | {protocol = } | {remain4}")
-            #
-            #     raw_src_addr = [int(x) for x in src_addr.split('.')]
-            #     raw_dst_addr = [int(x) for x in dst_addr.split('.')]
-            #     raw_src_port = [int(x) for x in int(src_port).to_bytes(2, byteorder='big')]
-            #     raw_dst_port = [int(x) for x in int(dst_port).to_bytes(2, byteorder='big')]
-            #     raw_protocol = [int(protocol)]
-            #     # print(f"{raw_src_addr = } : {raw_dst_addr = } | {raw_src_port = } {raw_dst_port = } | {raw_protocol = }")
-            #     tuple_list = raw_src_addr + raw_dst_addr + raw_src_port + raw_dst_port + raw_protocol
-            #     tuple_key = ".".join([str(x) for x in tuple_list])
-            #     self.tuples[tuple_key] = tuple_list
-
-            # print(f"Received {self.recievedDigest} flows via digest", flush=True)
             self.hasFirstData = True
         except:
             self.missedDigest += 1
@@ -166,18 +145,10 @@ class BfRt_interface():
             data_dict = data.to_dict()
             src_addr = data_dict["src_addr"]
             dst_addr = data_dict["dst_addr"]
-            src_port = data_dict["src_port"]
-            dst_port = data_dict["dst_port"]
-            protocol = data_dict["protocol"]
-            # print(f"{src_addr = } : {dst_addr = } | {src_port = } {dst_port = } | {protocol = } | {remain4}")
 
             raw_src_addr = [int(x) for x in src_addr.split('.')]
             raw_dst_addr = [int(x) for x in dst_addr.split('.')]
-            raw_src_port = [int(x) for x in int(src_port).to_bytes(2, byteorder='big')]
-            raw_dst_port = [int(x) for x in int(dst_port).to_bytes(2, byteorder='big')]
-            raw_protocol = [int(protocol)]
-            # print(f"{raw_src_addr = } : {raw_dst_addr = } | {raw_src_port = } {raw_dst_port = } | {raw_protocol = }")
-            tuple_list = raw_src_addr + raw_dst_addr + raw_src_port + raw_dst_port + raw_protocol
+            tuple_list = raw_src_addr + raw_dst_addr 
             tuple_key = ".".join([str(x) for x in tuple_list])
             self.tuples[tuple_key] = tuple_list
         print(f"[WaterfallFcm - verify] Calculate Waterfall F1-score...")

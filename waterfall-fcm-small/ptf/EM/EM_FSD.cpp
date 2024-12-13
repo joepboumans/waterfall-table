@@ -51,7 +51,7 @@ public:
 
   array<uint32_t, NUM_STAGES> stage_szes;
   vector<vector<vector<uint32_t>>> stages; // depth, stage, counter
-  vector<FIVE_TUPLE> tuples;               // Found tuples by Waterfall Filter
+  vector<FLOW_TUPLE> tuples;               // Found tuples by Waterfall Filter
 
   array<array<uint32_t, W1>, DEPTH> init_degree;
   array<uint32_t, DEPTH> init_max_degree = {
@@ -65,7 +65,7 @@ public:
   uint32_t iter = 0;
   bool inited = false;
   EMFSD(array<uint32_t, NUM_STAGES> szes,
-        vector<vector<vector<uint32_t>>> stages, vector<FIVE_TUPLE> tuples) {
+        vector<vector<vector<uint32_t>>> stages, vector<FLOW_TUPLE> tuples) {
 
     this->tuples = tuples;
     this->stages = stages;
@@ -753,7 +753,7 @@ public:
     // std::cout << std::endl;
   }
 
-  uint32_t hashing(FIVE_TUPLE tuple, uint32_t depth) {
+  uint32_t hashing(FLOW_TUPLE tuple, uint32_t depth) {
     uint32_t crc = 0;
     if (depth == 0) {
       crc = crc32(0L, Z_NULL, 0);
@@ -769,7 +769,7 @@ public:
 extern "C" {
 void *EMFSD_new(uint32_t *szes, uint32_t *s1_1, uint32_t *s1_2, uint32_t *s2_1,
                 uint32_t *s2_2, uint32_t *s3_1, uint32_t *s3_2,
-                FIVE_TUPLE *tuples, uint32_t tuples_sz) {
+                FLOW_TUPLE *tuples, uint32_t tuples_sz) {
 
   std::cout << "[WaterfallFcm CTypes] Start parsing python to c" << std::endl;
   array<uint32_t, NUM_STAGES> stage_szes;
@@ -795,7 +795,7 @@ void *EMFSD_new(uint32_t *szes, uint32_t *s1_1, uint32_t *s1_2, uint32_t *s2_1,
   // Setup tuple list
   std::cout << "[WaterfallFcm CTypes] Setup FiveTuple vector with size "
             << tuples_sz << std::endl;
-  std::vector<FIVE_TUPLE> tuples_vec(tuples_sz);
+  std::vector<FLOW_TUPLE> tuples_vec(tuples_sz);
   for (size_t i = 0; i < tuples_sz; i++) {
     tuples_vec.at(i) = tuples[i];
   }

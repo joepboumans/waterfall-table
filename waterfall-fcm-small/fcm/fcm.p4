@@ -49,12 +49,8 @@
 
 // metadata fields for fcm
 struct fcm_metadata_t {
-    bit<16> src_port;
-    bit<16> dst_port;
-
     bit<32> hash_meta_d1;
     bit<32> hash_meta_d2;
-
 
     bit<32> result_d1;
     bit<32> result_d2;
@@ -102,8 +98,6 @@ parser FcmEgressParser(
     
     state parse_tcp {
         pkt.extract(hdr.tcp);
-        eg_md.src_port = hdr.tcp.src_port;
-        eg_md.dst_port = hdr.tcp.dst_port;
         transition select(hdr.ipv4.total_len) {
             default : accept;
         }
@@ -111,8 +105,6 @@ parser FcmEgressParser(
     
     state parse_udp {
         pkt.extract(hdr.udp);
-        eg_md.src_port = hdr.udp.src_port;
-        eg_md.dst_port = hdr.udp.dst_port;
         transition select(hdr.udp.dst_port) {
             default: accept;
         }
@@ -232,11 +224,11 @@ control FCMSketch (
 	//	actions
 	// +++++++++++++++++++
   action fcm_hash_d1() {
-    fcm_mdata.hash_meta_d1 = hash_d1.get({ hdr.ipv4.src_addr, hdr.ipv4.dst_addr, fcm_mdata.src_port, fcm_mdata.dst_port, hdr.ipv4.protocol});
+    fcm_mdata.hash_meta_d1 = hash_d1.get({ hdr.ipv4.src_addr, hdr.ipv4.dst_addr});
   }
 
   action fcm_hash_d2() {
-    fcm_mdata.hash_meta_d2 = hash_d2.get({ hdr.ipv4.src_addr, hdr.ipv4.dst_addr, fcm_mdata.src_port, fcm_mdata.dst_port, hdr.ipv4.protocol});
+    fcm_mdata.hash_meta_d2 = hash_d2.get({ hdr.ipv4.src_addr, hdr.ipv4.dst_addr});
   }
 
 	// action for level 1, depth 1, you can re-define the flow key identification
