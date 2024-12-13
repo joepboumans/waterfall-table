@@ -1,7 +1,7 @@
 #ifndef _COMMON_H
 #define _COMMON_H
 
-#include "xxhash.h"
+/*#include "xxhash.h"*/
 #include <algorithm>
 #include <cstddef>
 #include <cstdint>
@@ -110,13 +110,13 @@ struct FIVE_TUPLE {
   /*}*/
 };
 
-struct fiveTupleHash {
-  std::size_t operator()(const FIVE_TUPLE &k) const {
-    // static BOBHash32 hasher(750);
-    return XXH32(k.num_array, sizeof(FIVE_TUPLE), 0);
-    // return hasher.run((const char *)k.num_array, sizeof(FIVE_TUPLE));
-  }
-};
+/*struct fiveTupleHash {*/
+/*  std::size_t operator()(const FIVE_TUPLE &k) const {*/
+/*    // static BOBHash32 hasher(750);*/
+/*    return XXH32(k.num_array, sizeof(FIVE_TUPLE), 0);*/
+/*    // return hasher.run((const char *)k.num_array, sizeof(FIVE_TUPLE));*/
+/*  }*/
+/*};*/
 typedef vector<FIVE_TUPLE> TRACE;
 
 #define FLOW_TUPLE_SZ 8
@@ -212,12 +212,12 @@ struct FLOW_TUPLE {
   /*}*/
 };
 
-struct flowTupleHash {
-  std::size_t operator()(const FLOW_TUPLE &k) const {
-    // static BOBHash32 hasher(750);
-    return XXH32(k.num_array, sizeof(FLOW_TUPLE), 0);
-    // return hasher.run((const char *)k.num_array, sizeof(FIVE_TUPLE));
-  }
-};
+/*struct flowTupleHash {*/
+/*  std::size_t operator()(const FLOW_TUPLE &k) const {*/
+/*    // static BOBHash32 hasher(750);*/
+/*    return XXH32(k.num_array, sizeof(FLOW_TUPLE), 0);*/
+/*    // return hasher.run((const char *)k.num_array, sizeof(FIVE_TUPLE));*/
+/*  }*/
+/*};*/
 typedef vector<FLOW_TUPLE> TRACE_FLOW;
 #endif
