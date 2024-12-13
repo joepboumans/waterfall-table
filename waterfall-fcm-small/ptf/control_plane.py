@@ -216,13 +216,10 @@ def read_data_set(data_name):
             if i + 12 >= len(data):
                 break
 
-            # raw_src_addr = [int(x) for x in data[i + 0:i + 4]]
-            # raw_dst_addr = [int(x) for x in data[i + 4:i + 8]]
-            # raw_src_port = [int(x) for x in data[i + 8:i + 10]]
-            # raw_dst_port = [int(x) for x in data[i + 10:i + 12]]
-            # raw_protocol = [int(data[i + 12])]
-            # tuple_list = raw_src_addr + raw_dst_addr + raw_src_port + raw_dst_port + raw_protocol
-            tuple_key = ".".join([str(x) for x in data[i + 0:i + 13]])
+            # Read src and dst addr
+            tuple_key = ".".join([str(x) for x in data[i + 0:i + 8]])
+            print(tuple_key)
+            exit(0)
             tuples[tuple_key] += 1
 
     # delay = 10
