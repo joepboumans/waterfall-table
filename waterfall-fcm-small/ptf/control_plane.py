@@ -139,6 +139,7 @@ class BfRt_interface():
         # self.ns = em_fsd.run_em(1)
 
     def verify(self, in_tuples):
+        print(f"Received {len(self.recieved_digests)} digest from switch")
         for digest in self.recieved_digests:
             data_list = self.learn_filter.make_data_list(digest)
             self.recievedDigest += len(data_list)
@@ -152,7 +153,7 @@ class BfRt_interface():
                 tuple_list = raw_src_addr + raw_dst_addr 
                 tuple_key = ".".join([str(x) for x in tuple_list])
                 self.tuples[tuple_key] = tuple_list
-        print(f"Received {self.recievedDigest} flows via digest", flush=True)
+        print(f"Received {self.recievedDigest} flows via digest")
         print(f"[WaterfallFcm - verify] Calculate Waterfall F1-score...")
         true_pos = false_pos = true_neg =  false_neg = 0
 
@@ -176,7 +177,7 @@ class BfRt_interface():
             precision = true_neg / (true_neg + false_neg)
         f1 = 2 * ((recall * precision) / (precision + recall))
 
-        print(f"[WaterfallFcm - verify] {recall = :.3f} {precision = :.3f} | {f1 = :.3f}")
+        print(f"[WaterfallFcm - verify] {recall = :.5f} {precision = :.5f} | {f1 = :.5f}")
 
         return
         print(f"[WaterfallFcm - verify] Calculate Flow Size Distribution...")
