@@ -130,14 +130,14 @@ class BfRt_interface():
         self.isRunning = True
         while self.isRunning:
             self._read_digest()
-        # fcm_tables = self._get_FCM_counters()
-        #
-        # print("[WaterfallFcm] Start EM FSD...")
-        # s1 = [fcm_tables[0], fcm_tables[3]]
-        # s2 = [fcm_tables[1], fcm_tables[4]]
-        # s3 = [fcm_tables[2], fcm_tables[5]]
-        # em_fsd = EM_FSD(s1, s2, s3, self.tuples.values())
-        # self.ns = em_fsd.run_em(1)
+        fcm_tables = self._get_FCM_counters()
+
+        print("[WaterfallFcm] Start EM FSD...")
+        s1 = [fcm_tables[0], fcm_tables[3]]
+        s2 = [fcm_tables[1], fcm_tables[4]]
+        s3 = [fcm_tables[2], fcm_tables[5]]
+        em_fsd = EM_FSD(s1, s2, s3, self.tuples.values())
+        self.ns = em_fsd.run_em(1)
 
     def verify(self, in_tuples):
         print(f"Received {len(self.recieved_digests)} digest from switch")
@@ -180,7 +180,6 @@ class BfRt_interface():
 
         print(f"[WaterfallFcm - verify] {recall = :.5f} {precision = :.5f} | {f1 = :.5f}")
 
-        return
         print(f"[WaterfallFcm - verify] Calculate Flow Size Distribution...")
         wmre = 0.0
         wmre_nom = 0.0
