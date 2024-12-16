@@ -161,7 +161,7 @@ class BfRt_interface():
                 # raw_dst_addr = [int(x) for x in dst_addr.split('.')]
                 # tuple_key = ".".join([str(x) for x in tuple_list])
                 self.tuples[tuple_list] = tuple_list
-            break
+
         print(f"[WaterfallFcm - verify] Calculate Waterfall F1-score...")
         true_pos = false_pos = true_neg =  false_neg = 0
 
