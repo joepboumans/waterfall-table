@@ -88,9 +88,9 @@ class BfRt_interface():
             self.recieved_digests.extend(digest)
 
             self.hasFirstData = True
-        except:
+        except Exception as err:
             self.missedDigest += 1
-            print(f"error reading digest {self.missedDigest} ", end="", flush=True)
+            print(f"error reading digest {self.missedDigest}, {err} ", end="", flush=True)
             if self.missedDigest > 10 and self.hasFirstData:
                 self.isRunning = False
                 print("")
