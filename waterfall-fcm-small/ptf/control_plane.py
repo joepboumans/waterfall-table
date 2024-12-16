@@ -174,15 +174,8 @@ class BfRt_interface():
 
         # F1 Score
         recall = precision = f1 = 0.0
-        if true_pos == 0 and false_pos == 0:
-            recall = 1.0;
-        else:
-            recall = true_pos / (true_pos + false_pos)
-        
-        if true_neg == 0 and false_neg == 0:
-            precision = 1.0;
-        else:
-            precision = true_neg / (true_neg + false_neg)
+        recall = true_pos / (true_pos + false_pos)
+        precision = 1.0;
         f1 = 2 * ((recall * precision) / (precision + recall))
 
         print(f"[WaterfallFcm - verify] {recall = :.5f} {precision = :.5f} | {f1 = :.5f}")
