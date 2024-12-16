@@ -85,7 +85,7 @@ class BfRt_interface():
     def _read_digest(self):
         try:
             digest = self.interface.digest_get()
-            self.recieved_digests.extend(digest)
+            self.recieved_digests.append(digest)
 
             self.hasFirstData = True
         except Exception as err:
