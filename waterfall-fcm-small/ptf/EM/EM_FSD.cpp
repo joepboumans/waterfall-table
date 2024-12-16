@@ -759,10 +759,10 @@ public:
     uint32_t crc = 0;
     if (depth == 0) {
       crc = crc32(0L, Z_NULL, 0);
-      crc = crc32(crc, tuple.num_array, 13);
+      crc = crc32(crc, tuple.num_array, sizeof(tuple));
     } else {
       crc = 0xF0000000;
-      crc = crc32(crc, tuple.num_array, 13);
+      crc = crc32(crc, tuple.num_array, sizeof(tuple));
     }
     return crc % W1;
   }
