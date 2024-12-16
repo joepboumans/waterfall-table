@@ -2,6 +2,7 @@
 import os, sys, subprocess
 import mmap
 import time
+import struct
 
 from collections import defaultdict
 
@@ -149,11 +150,16 @@ class BfRt_interface():
                 src_addr = data_dict["src_addr"]
                 dst_addr = data_dict["dst_addr"]
 
+                tuple_list = b''
+                src_addr.split(".")
+                for val in src_addr:
+                    tuple_list += struct.pack("B", int(val))
+
+                dst_addr.split(".")
+                for val in dst_addr:
+                    tuple_list += struct.pack("B", int(val))
                 # raw_src_addr = [int(x) for x in src_addr.split('.')]
                 # raw_dst_addr = [int(x) for x in dst_addr.split('.')]
-                raw_src_addr = bytes(src_addr.split("."), encoding="utf-8")
-                raw_dst_addr = bytes(dst_addr.split("."), encoding="utf-8")
-                tuple_list = raw_src_addr + raw_dst_addr 
                 print(tuple_list)
                 # tuple_key = ".".join([str(x) for x in tuple_list])
                 self.tuples[tuple_list] = tuple_list
