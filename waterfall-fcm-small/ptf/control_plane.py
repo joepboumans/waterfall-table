@@ -26,6 +26,7 @@ class BfRt_interface():
         self.missedDigest = 0
         self.recievedDigest = 0
         self.recieved_datalist = []
+        self.recieved_digests = []
         self.tuples = {}
 
         self.dev_tgt = gc.Target(dev, pipe_id=0xFFFF)
@@ -84,9 +85,7 @@ class BfRt_interface():
     def _read_digest(self):
         try:
             digest = self.interface.digest_get()
-            data_list = self.learn_filter.make_data_list(digest)
-            self.recieved_datalist.extend(data_list)
-            self.recievedDigest += len(data_list)
+            self.recieved_digests.extend(digest)
 
             self.hasFirstData = True
         except:
@@ -140,17 +139,20 @@ class BfRt_interface():
         # self.ns = em_fsd.run_em(1)
 
     def verify(self, in_tuples):
-        print(f"Received {self.recievedDigest} flows via digest", flush=True)
-        for data in self.recieved_datalist:
-            data_dict = data.to_dict()
-            src_addr = data_dict["src_addr"]
-            dst_addr = data_dict["dst_addr"]
+        for digest in self.recieved_digests:
+            data_list = self.learn_filter.make_data_list(digest)
+            self.recievedDigest += len(data_list)
+            for data in data_list:
+                data_dict = data.to_dict()
+                src_addr = data_dict["src_addr"]
+                dst_addr = data_dict["dst_addr"]
 
-            raw_src_addr = [int(x) for x in src_addr.split('.')]
-            raw_dst_addr = [int(x) for x in dst_addr.split('.')]
-            tuple_list = raw_src_addr + raw_dst_addr 
-            tuple_key = ".".join([str(x) for x in tuple_list])
-            self.tuples[tuple_key] = tuple_list
+                raw_src_addr = [int(x) for x in src_addr.split('.')]
+                raw_dst_addr = [int(x) for x in dst_addr.split('.')]
+                tuple_list = raw_src_addr + raw_dst_addr 
+                tuple_key = ".".join([str(x) for x in tuple_list])
+                self.tuples[tuple_key] = tuple_list
+        print(f"Received {self.recievedDigest} flows via digest", flush=True)
         print(f"[WaterfallFcm - verify] Calculate Waterfall F1-score...")
         true_pos = false_pos = true_neg =  false_neg = 0
 
