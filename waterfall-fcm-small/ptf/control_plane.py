@@ -143,7 +143,7 @@ class BfRt_interface():
         for digest in self.recieved_digests:
             data_list = self.learn_filter.make_data_list(digest)
             self.recievedDigest += len(data_list)
-            print(f"Received {len(data_list)} flows via digest, total {self.recievedDigest}")
+            # print(f"Received {len(data_list)} flows via digest, total {self.recievedDigest}")
             for data in data_list:
                 data_dict = data.to_dict()
                 src_addr = data_dict["src_addr"]
