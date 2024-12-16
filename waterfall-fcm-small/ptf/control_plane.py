@@ -145,9 +145,7 @@ class BfRt_interface():
             self.recievedDigest += len(data_list)
             # print(f"Received {len(data_list)} flows via digest, total {self.recievedDigest}")
             for data in data_list:
-                print(data)
                 data_dict = data.to_dict()
-                print(data_dict)
                 src_addr = data_dict["src_addr"]
                 dst_addr = data_dict["dst_addr"]
 
