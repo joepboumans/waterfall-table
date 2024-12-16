@@ -152,8 +152,8 @@ class BfRt_interface():
                 raw_src_addr = [int(x) for x in src_addr.split('.')]
                 raw_dst_addr = [int(x) for x in dst_addr.split('.')]
                 tuple_list = raw_src_addr + raw_dst_addr 
-                tuple_key = ".".join([str(x) for x in tuple_list])
-                self.tuples[tuple_key] = tuple_list
+                # tuple_key = ".".join([str(x) for x in tuple_list])
+                self.tuples[tuple_list] = tuple_list
         print(f"[WaterfallFcm - verify] Calculate Waterfall F1-score...")
         true_pos = false_pos = true_neg =  false_neg = 0
 
@@ -222,11 +222,13 @@ def read_data_set(data_name):
                 break
 
             # Read src and dst addr
-            tuple_key = ".".join([str(x) for x in data[i + 0:i + 8]])
-            tuples[tuple_key] += 1
-            
+            start_fstring = time.perf_counter_ns()
+            tuples[data[0:8]] += 1
+            stop_fstring = time.perf_counter_ns()
+                
             if first:
-                print(tuple_key)
+                print(data[0:8])
+                print(f"f string speed {stop_fstring - start_fstring}")
                 first = False
 
     # delay = 10
