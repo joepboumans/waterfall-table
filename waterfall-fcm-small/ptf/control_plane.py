@@ -84,7 +84,7 @@ class BfRt_interface():
 
     def _read_digest(self):
         try:
-            digest = self.interface.digest_get()
+            digest = self.interface.digest_get(1)
             self.recieved_digests.append(digest)
 
             self.hasFirstData = True
@@ -140,7 +140,6 @@ class BfRt_interface():
 
     def verify(self, in_tuples):
         print(f"Received {len(self.recieved_digests)} digest from switch")
-        count = 0
         for digest in self.recieved_digests:
             data_list = self.learn_filter.make_data_list(digest)
             self.recievedDigest += len(data_list)
@@ -155,9 +154,6 @@ class BfRt_interface():
                 tuple_list = raw_src_addr + raw_dst_addr 
                 tuple_key = ".".join([str(x) for x in tuple_list])
                 self.tuples[tuple_key] = tuple_list
-            count += 1
-            if count > 500:
-                break
         print(f"[WaterfallFcm - verify] Calculate Waterfall F1-score...")
         true_pos = false_pos = true_neg =  false_neg = 0
 
