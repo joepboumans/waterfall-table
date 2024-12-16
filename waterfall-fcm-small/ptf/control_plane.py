@@ -156,9 +156,9 @@ class BfRt_interface():
 
                 for val in dst_addr.split("."):
                     tuple_list += struct.pack("B", int(val))
+
                 # raw_src_addr = [int(x) for x in src_addr.split('.')]
                 # raw_dst_addr = [int(x) for x in dst_addr.split('.')]
-                print(tuple_list)
                 # tuple_key = ".".join([str(x) for x in tuple_list])
                 self.tuples[tuple_list] = tuple_list
             break
@@ -230,19 +230,16 @@ def read_data_set(data_name):
                 break
 
             # Read src and dst addr
-            start_fstring = time.perf_counter_ns()
             tuples[data[0:8]] += 1
-            stop_fstring = time.perf_counter_ns()
                 
             if first:
-                print(data[0:8])
-                print(f"f string speed {stop_fstring - start_fstring}")
                 first = False
 
     # delay = 10
     # print(f"[Dataset Loader] ...done! Waiting for {delay}s before starting test...")
     # time.sleep(delay)
-    print(f"[Dataset Loader] Parse data into tuples, done!")
+    print(f"[Dataset Loader] Parse data into tuples, found {len(tuples)} tuples!")
+    print("[Dataset Loader] Done!")
     return tuples
 
 
