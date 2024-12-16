@@ -151,8 +151,8 @@ class BfRt_interface():
 
                 # raw_src_addr = [int(x) for x in src_addr.split('.')]
                 # raw_dst_addr = [int(x) for x in dst_addr.split('.')]
-                raw_src_addr = src_addr.replace(".", "").encode()
-                raw_dst_addr = dst_addr.replace(".", "").encode()
+                raw_src_addr = src_addr.replace(".", "").encode().hex()
+                raw_dst_addr = dst_addr.replace(".", "").encode().hex()
                 tuple_list = raw_src_addr + raw_dst_addr 
                 print(tuple_list)
                 # tuple_key = ".".join([str(x) for x in tuple_list])
