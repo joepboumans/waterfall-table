@@ -151,12 +151,10 @@ class BfRt_interface():
                 dst_addr = data_dict["dst_addr"]
 
                 tuple_list = b''
-                src_addr.split(".")
-                for val in src_addr:
+                for val in src_addr.split("."):
                     tuple_list += struct.pack("B", int(val))
 
-                dst_addr.split(".")
-                for val in dst_addr:
+                for val in dst_addr.split("."):
                     tuple_list += struct.pack("B", int(val))
                 # raw_src_addr = [int(x) for x in src_addr.split('.')]
                 # raw_dst_addr = [int(x) for x in dst_addr.split('.')]
