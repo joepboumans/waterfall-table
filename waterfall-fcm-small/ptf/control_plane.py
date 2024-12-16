@@ -223,7 +223,7 @@ def read_data_set(data_name):
                 break
 
             # Read src and dst addr
-            tuples[data[0:8]] += 1
+            tuples[data[i + 0:i + 8]] += 1
                 
             if first:
                 print(*tuples.keys())
