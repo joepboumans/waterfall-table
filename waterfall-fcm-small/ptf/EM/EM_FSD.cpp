@@ -85,7 +85,9 @@ public:
             std::max(init_max_degree[d], init_degree[d][hash_idx]);
       }
     }
-    std::cout << "[WaterfallFcm] Colleted all initial degrees from Waterfall"
+    std::cout << "[WaterfallFcm] Colleted all initial degrees from Waterfall "
+                 "with max degree "
+              << init_max_degree[0] << " and " << init_max_degree[1]
               << std::endl;
     /*for (size_t d = 0; d < DEPTH; d++) {*/
     /*  std::cout << "[WaterfallFcm] Depth " << d << ":" << std::endl;*/
@@ -802,9 +804,10 @@ void *EMFSD_new(uint32_t *szes, uint32_t *s1_1, uint32_t *s1_2, uint32_t *s2_1,
 
   std::cout << "[WaterfallFcm CTypes] Checking vector with "
             << tuples_vec.size() << std::endl;
-  /*for (size_t i = 0; i < tuples_vec.size(); i++) {*/
-  /*  std::cout << i << " : " << tuples_vec.at(i) << std::endl;*/
-  /*}*/
+  for (size_t i = 0; i < tuples_vec.size(); i++) {
+    std::cout << i << " : " << tuples_vec.at(i) << " ";
+  }
+  std::cout << std::endl;
   return new EMFSD(stage_szes, stages, tuples_vec);
 }
 
