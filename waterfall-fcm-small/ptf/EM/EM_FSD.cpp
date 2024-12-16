@@ -89,18 +89,18 @@ public:
                  "with max degree "
               << init_max_degree[0] << " and " << init_max_degree[1]
               << std::endl;
-    /*for (size_t d = 0; d < DEPTH; d++) {*/
-    /*  std::cout << "[WaterfallFcm] Depth " << d << ":" << std::endl;*/
-    /*  for (size_t i = 0; i < init_degree[d].size(); i++) {*/
-    /*    if (init_degree[d][i] > 2) {*/
-    /*      std::cout << i << ":" << init_degree[d][i] << " ";*/
-    /*      std::cout << ":" << this->stages[d][0][i];*/
-    /*      std::cout << ":" << this->stages[d][1][i / 8];*/
-    /*      std::cout << ":" << this->stages[d][2][i / 8 / 8] << " ";*/
-    /*    }*/
-    /*  }*/
-    /*  std::cout << std::endl;*/
-    /*}*/
+    for (size_t d = 0; d < DEPTH; d++) {
+      std::cout << "[WaterfallFcm] Depth " << d << ":" << std::endl;
+      for (size_t i = 0; i < init_degree[d].size(); i++) {
+        if (init_degree[d][i] > 2) {
+          std::cout << i << ":" << init_degree[d][i] << " ";
+          std::cout << ":" << this->stages[d][0][i];
+          std::cout << ":" << this->stages[d][1][i / 8];
+          std::cout << ":" << this->stages[d][2][i / 8 / 8] << " ";
+        }
+      }
+      std::cout << std::endl;
+    }
     // Calculate Virtual Counters and thresholds
     // depth, stage, idx, (count, degree, overflown)
     array<array<vector<array<uint32_t, 3>>, NUM_STAGES>, DEPTH> summary;
