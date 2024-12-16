@@ -233,6 +233,7 @@ def read_data_set(data_name):
             tuples[data[0:8]] += 1
                 
             if first:
+                print(*tuples.keys())
                 first = False
 
     # delay = 10
