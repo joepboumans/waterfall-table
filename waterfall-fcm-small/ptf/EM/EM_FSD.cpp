@@ -49,21 +49,22 @@ public:
       thresholds; // depth, degree, count, < stage, total coll, local
                   // colll, min_value >
 
-  array<uint32_t, NUM_STAGES> stage_szes;
-  vector<vector<vector<uint32_t>>> stages; // depth, stage, counter
-  vector<FLOW_TUPLE> tuples;               // Found tuples by Waterfall Filter
-
   array<array<uint32_t, W1>, DEPTH> init_degree;
   array<uint32_t, DEPTH> init_max_degree = {
       0, 0}; // Maximum degree from Waterfall Tables
   array<uint32_t, DEPTH> max_degree = {
       0, 0}; // Maximum degree from FCM Sketch with inital degree from Waterfall
 
+  array<uint32_t, NUM_STAGES> stage_szes;
+  vector<vector<vector<uint32_t>>> stages; // depth, stage, counter
+  vector<FLOW_TUPLE> tuples;               // Found tuples by Waterfall Filter
+
   vector<double> ns; // for integer n
   double n_sum;
   double card_init; // initial cardinality by MLE
   uint32_t iter = 0;
   bool inited = false;
+
   EMFSD(array<uint32_t, NUM_STAGES> szes,
         vector<vector<vector<uint32_t>>> stages, vector<FLOW_TUPLE> tuples,
         size_t tuples_sz) {
@@ -77,6 +78,11 @@ public:
     }
     std::cout << std::endl;
     std::cout << "Init EM_FSD" << std::endl;
+    for (auto &init_d : this->init_degree) {
+      for (auto &degree : init_d) {
+        degree = 0;
+      }
+    }
     // Get inital degree guesses
     for (size_t i = 0; i < tuples_sz; i++) {
       for (size_t d = 0; d < DEPTH; d++) {
@@ -92,18 +98,18 @@ public:
                  "with max degree "
               << init_max_degree[0] << " and " << init_max_degree[1]
               << std::endl;
-    /*for (size_t d = 0; d < DEPTH; d++) {*/
-    /*  std::cout << "[WaterfallFcm] Depth " << d << ":" << std::endl;*/
-    /*  for (size_t i = 0; i < init_degree[d].size(); i++) {*/
-    /*    if (init_degree[d][i] > 2) {*/
-    /*      std::cout << i << ":" << init_degree[d][i] << " ";*/
-    /*      std::cout << ":" << this->stages[d][0][i];*/
-    /*      std::cout << ":" << this->stages[d][1][i / 8];*/
-    /*      std::cout << ":" << this->stages[d][2][i / 8 / 8] << " ";*/
-    /*    }*/
-    /*  }*/
-    /*  std::cout << std::endl;*/
-    /*}*/
+    for (size_t d = 0; d < DEPTH; d++) {
+      std::cout << "[WaterfallFcm] Depth " << d << ":" << std::endl;
+      for (size_t i = 0; i < init_degree[d].size(); i++) {
+        if (init_degree[d][i] > 2) {
+          std::cout << i << ":" << init_degree[d][i] << " ";
+          std::cout << ":" << this->stages[d][0][i];
+          /*std::cout << ":" << this->stages[d][1][i / 8];*/
+          /*std::cout << ":" << this->stages[d][2][i / 8 / 8] << " ";*/
+        }
+      }
+      std::cout << std::endl;
+    }
     // Calculate Virtual Counters and thresholds
     // depth, stage, idx, (count, degree, overflown)
     array<array<vector<array<uint32_t, 3>>, NUM_STAGES>, DEPTH> summary;

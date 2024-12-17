@@ -43,7 +43,6 @@ class EM_FSD(object):
         tuples = Tuples()
         in2Tuples = []
         for val in in_tuples:
-            print(list(val))
             in2Tuples.append(FlowTuple(*list(val)))
         for i in range(len(in2Tuples)):
             tuples[i] = in2Tuples[i]
