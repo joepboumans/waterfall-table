@@ -2,6 +2,7 @@
 import os, sys, subprocess
 import mmap
 import time
+import struct
 
 from collections import defaultdict
 
@@ -26,6 +27,7 @@ class BfRt_interface():
         self.missedDigest = 0
         self.recievedDigest = 0
         self.recieved_datalist = []
+        self.recieved_digests = []
         self.tuples = {}
 
         self.dev_tgt = gc.Target(dev, pipe_id=0xFFFF)
@@ -83,40 +85,18 @@ class BfRt_interface():
 
     def _read_digest(self):
         try:
-            digest = self.interface.digest_get()
-            data_list = self.learn_filter.make_data_list(digest)
-            self.recieved_datalist.extend(data_list)
-            self.recievedDigest += len(data_list)
+            digest = self.interface.digest_get(1)
+            self.recieved_digests.append(digest)
 
-            # for data in data_list:
-            #     data_dict = data.to_dict()
-            #     src_addr = data_dict["src_addr"]
-            #     dst_addr = data_dict["dst_addr"]
-            #     src_port = data_dict["src_port"]
-            #     dst_port = data_dict["dst_port"]
-            #     protocol = data_dict["protocol"]
-            #     remain4 = data_dict["remain4"]
-            #     # print(f"{src_addr = } : {dst_addr = } | {src_port = } {dst_port = } | {protocol = } | {remain4}")
-            #
-            #     raw_src_addr = [int(x) for x in src_addr.split('.')]
-            #     raw_dst_addr = [int(x) for x in dst_addr.split('.')]
-            #     raw_src_port = [int(x) for x in int(src_port).to_bytes(2, byteorder='big')]
-            #     raw_dst_port = [int(x) for x in int(dst_port).to_bytes(2, byteorder='big')]
-            #     raw_protocol = [int(protocol)]
-            #     # print(f"{raw_src_addr = } : {raw_dst_addr = } | {raw_src_port = } {raw_dst_port = } | {raw_protocol = }")
-            #     tuple_list = raw_src_addr + raw_dst_addr + raw_src_port + raw_dst_port + raw_protocol
-            #     tuple_key = ".".join([str(x) for x in tuple_list])
-            #     self.tuples[tuple_key] = tuple_list
-
-            # print(f"Received {self.recievedDigest} flows via digest", flush=True)
             self.hasFirstData = True
-        except:
+        except Exception as err:
             self.missedDigest += 1
-            print(f"error reading digest {self.missedDigest} ", end="", flush=True)
+            print(f"error reading digest {self.missedDigest}, {err} ", end="", flush=True)
             if self.missedDigest > 10 and self.hasFirstData:
                 self.isRunning = False
                 print("")
             time.sleep(0.1)
+
 
 
     def _get_FCM_counters(self):
@@ -151,35 +131,38 @@ class BfRt_interface():
         self.isRunning = True
         while self.isRunning:
             self._read_digest()
-        # fcm_tables = self._get_FCM_counters()
-        #
-        # print("[WaterfallFcm] Start EM FSD...")
-        # s1 = [fcm_tables[0], fcm_tables[3]]
-        # s2 = [fcm_tables[1], fcm_tables[4]]
-        # s3 = [fcm_tables[2], fcm_tables[5]]
-        # em_fsd = EM_FSD(s1, s2, s3, self.tuples.values())
-        # self.ns = em_fsd.run_em(1)
+        fcm_tables = self._get_FCM_counters()
+
+        print(f"Received {len(self.recieved_digests)} digest from switch")
+        for digest in self.recieved_digests:
+            data_list = self.learn_filter.make_data_list(digest)
+            self.recievedDigest += len(data_list)
+            # print(f"Received {len(data_list)} flows via digest, total {self.recievedDigest}")
+            for data in data_list:
+                data_dict = data.to_dict()
+                src_addr = data_dict["src_addr"]
+                dst_addr = data_dict["dst_addr"]
+
+                tuple_list = b''
+                for val in src_addr.split("."):
+                    tuple_list += struct.pack("B", int(val))
+
+                for val in dst_addr.split("."):
+                    tuple_list += struct.pack("B", int(val))
+
+                tuple_list += data_dict["src_port"]
+                tuple_list += data_dict["dst_port"]
+                tuple_list += data_dict["protocol"]
+                self.tuples[tuple_list] = tuple_list
+
+        print("[WaterfallFcm] Start EM FSD...")
+        s1 = [fcm_tables[0], fcm_tables[3]]
+        s2 = [fcm_tables[1], fcm_tables[4]]
+        s3 = [fcm_tables[2], fcm_tables[5]]
+        em_fsd = EM_FSD(s1, s2, s3, self.tuples.values())
+        self.ns = em_fsd.run_em(1)
 
     def verify(self, in_tuples):
-        print(f"Received {self.recievedDigest} flows via digest", flush=True)
-        for data in self.recieved_datalist:
-            data_dict = data.to_dict()
-            src_addr = data_dict["src_addr"]
-            dst_addr = data_dict["dst_addr"]
-            src_port = data_dict["src_port"]
-            dst_port = data_dict["dst_port"]
-            protocol = data_dict["protocol"]
-            # print(f"{src_addr = } : {dst_addr = } | {src_port = } {dst_port = } | {protocol = } | {remain4}")
-
-            raw_src_addr = [int(x) for x in src_addr.split('.')]
-            raw_dst_addr = [int(x) for x in dst_addr.split('.')]
-            raw_src_port = [int(x) for x in int(src_port).to_bytes(2, byteorder='big')]
-            raw_dst_port = [int(x) for x in int(dst_port).to_bytes(2, byteorder='big')]
-            raw_protocol = [int(protocol)]
-            # print(f"{raw_src_addr = } : {raw_dst_addr = } | {raw_src_port = } {raw_dst_port = } | {raw_protocol = }")
-            tuple_list = raw_src_addr + raw_dst_addr + raw_src_port + raw_dst_port + raw_protocol
-            tuple_key = ".".join([str(x) for x in tuple_list])
-            self.tuples[tuple_key] = tuple_list
         print(f"[WaterfallFcm - verify] Calculate Waterfall F1-score...")
         true_pos = false_pos = true_neg =  false_neg = 0
 
@@ -235,8 +218,10 @@ class BfRt_interface():
         print(f"[WaterfallFcm] Finished EM FSD")
 
 def read_data_set(data_name):
-    tuples = defaultdict(int)
     print(f"[Dataset Loader] Get data from {data_name}")
+    first = True
+
+    tuples = defaultdict(int)
     with open(data_name, "r+b") as of:
         with mmap.mmap(of.fileno(), length=0, access=mmap.ACCESS_READ) as f:
             data = f.read()
@@ -245,14 +230,12 @@ def read_data_set(data_name):
             if i + 12 >= len(data):
                 break
 
-            # raw_src_addr = [int(x) for x in data[i + 0:i + 4]]
-            # raw_dst_addr = [int(x) for x in data[i + 4:i + 8]]
-            # raw_src_port = [int(x) for x in data[i + 8:i + 10]]
-            # raw_dst_port = [int(x) for x in data[i + 10:i + 12]]
-            # raw_protocol = [int(data[i + 12])]
-            # tuple_list = raw_src_addr + raw_dst_addr + raw_src_port + raw_dst_port + raw_protocol
-            tuple_key = ".".join([str(x) for x in data[i + 0:i + 13]])
-            tuples[tuple_key] += 1
+            # Read src and dst addr
+            tuples[data[i + 0:i + 8]] += 1
+                
+            if first:
+                print(*tuples.keys())
+                first = False
 
     # delay = 10
     # print(f"[Dataset Loader] ...done! Waiting for {delay}s before starting test...")
