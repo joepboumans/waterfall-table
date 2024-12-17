@@ -65,7 +65,8 @@ public:
   uint32_t iter = 0;
   bool inited = false;
   EMFSD(array<uint32_t, NUM_STAGES> szes,
-        vector<vector<vector<uint32_t>>> stages, vector<FLOW_TUPLE> tuples) {
+        vector<vector<vector<uint32_t>>> stages, vector<FLOW_TUPLE> tuples,
+        size_t tuples_sz) {
 
     this->tuples = tuples;
     this->stages = stages;
@@ -77,12 +78,12 @@ public:
     std::cout << std::endl;
     std::cout << "Init EM_FSD" << std::endl;
     // Get inital degree guesses
-    for (auto &tuple : this->tuples) {
+    for (size_t i = 0; i < tuples_sz; i++) {
       for (size_t d = 0; d < DEPTH; d++) {
-        uint32_t hash_idx = this->hashing(tuple, d);
+        uint32_t hash_idx = this->hashing(this->tuples[i], d);
+        std::cout << "Hashing at " << hash_idx << " : "
+                  << init_degree[d][hash_idx] << " ";
         init_degree[d][hash_idx]++;
-        std::cout << "Hashing at " << hash_idx << " with value "
-                  << init_degree[d][hash_idx]++ << std::endl;
         init_max_degree[d] =
             std::max(init_max_degree[d], init_degree[d][hash_idx]);
       }
@@ -810,7 +811,7 @@ void *EMFSD_new(uint32_t *szes, uint32_t *s1_1, uint32_t *s1_2, uint32_t *s2_1,
   /*  std::cout << i << " : " << tuples_vec.at(i) << " ";*/
   /*}*/
   std::cout << std::endl;
-  return new EMFSD(stage_szes, stages, tuples_vec);
+  return new EMFSD(stage_szes, stages, tuples_vec, tuples_sz);
 }
 
 void EMFSD_next_epoch(void *ptr) {
