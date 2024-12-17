@@ -81,8 +81,8 @@ public:
     for (size_t i = 0; i < tuples_sz; i++) {
       for (size_t d = 0; d < DEPTH; d++) {
         uint32_t hash_idx = this->hashing(this->tuples[i], d);
-        std::cout << "Hashing at " << hash_idx << " : "
-                  << init_degree[d][hash_idx] << " ";
+        /*std::cout << "Hashing at " << hash_idx << " : "*/
+        /*          << init_degree[d][hash_idx] << " ";*/
         init_degree[d][hash_idx]++;
         init_max_degree[d] =
             std::max(init_max_degree[d], init_degree[d][hash_idx]);
