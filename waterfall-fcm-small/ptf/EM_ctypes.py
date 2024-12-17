@@ -43,6 +43,7 @@ class EM_FSD(object):
         tuples = Tuples()
         in2Tuples = []
         for val in in_tuples:
+            print(val)
             in2Tuples.append(FlowTuple(*val))
         for i in range(len(in2Tuples)):
             tuples[i] = in2Tuples[i]
@@ -132,10 +133,10 @@ if __name__ == "__main__":
     s1 = [ [ 255,2,3 ], [ 255,12,13 ] ]
     s2 = [ [ 12,13,14 ], [ 12,13,14 ] ]
     s3 = [ [ 103,104,105 ], [ 13,14,15 ] ]
-    test_tuple = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    test_tuple2 = [ 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
-    test_tuple3 = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    tuples = [FlowTuple(*[i for i in range(1,14)]) for _ in range(1, 4)]
+    test_tuple = [ 1, 2, 3, 4, 5, 6, 7, 8]
+    test_tuple2 = [ 12, 13, 14, 15, 16, 17, 18, 19]
+    test_tuple3 = [ 1, 2, 3, 4, 5, 6, 7, 8]
+    tuples = [FlowTuple(*[i for i in range(1,9)]) for _ in range(1, 4)]
     t1 = FlowTuple(*test_tuple)
     t2 = FlowTuple(*test_tuple2)
     t3 = FlowTuple(*test_tuple3)
