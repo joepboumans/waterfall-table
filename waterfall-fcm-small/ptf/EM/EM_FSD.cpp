@@ -40,17 +40,18 @@ using std::vector;
 
 class EMFSD {
 public:
-  uint32_t w; // width of counters
-  array<vector<vector<uint32_t>>, DEPTH>
-      counters;                      // Counters as depth, degree, value
+  uint32_t w;                        // width of counters
   vector<double> dist_old, dist_new; // for ratio \phi
+  array<vector<vector<uint32_t>>, DEPTH>
+      counters; // Counters as depth, degree, value
   array<vector<vector<uint32_t>>, DEPTH> counter_dist; // initial counter values
   array<vector<vector<vector<array<uint32_t, 4>>>>, DEPTH>
       thresholds; // depth, degree, count, < stage, total coll, local
                   // colll, min_value >
 
   array<array<uint32_t, W1>, DEPTH> init_degree;
-  vector<vector<vector<uint32_t>>> stages; // depth, stage, counter
+  array<array<array<uint32_t, W1>, NUM_STAGES>, DEPTH>
+      stages; // depth, stage, counter
   array<uint32_t, DEPTH> init_max_degree = {
       0, 0}; // Maximum degree from Waterfall Tables
   array<uint32_t, DEPTH> max_degree = {
@@ -66,10 +67,9 @@ public:
   bool inited = false;
 
   EMFSD(array<uint32_t, NUM_STAGES> szes,
-        vector<vector<vector<uint32_t>>> stages, vector<FLOW_TUPLE> tuples,
-        size_t tuples_sz) {
+        array<array<array<uint32_t, W1>, NUM_STAGES>, DEPTH> stages,
+        vector<FLOW_TUPLE> tuples, size_t tuples_sz) {
 
-    this->tuples.resize(tuples_sz);
     this->tuples = tuples;
     this->stage_szes = szes;
     std::cout << "[WaterfallFcm] Stage szes:" << std::endl;
@@ -789,26 +789,22 @@ void *EMFSD_new(uint32_t *szes, uint32_t *s1_1, uint32_t *s1_2, uint32_t *s2_1,
   std::copy_n(szes, NUM_STAGES, stage_szes.begin());
 
   std::cout << "\tdone stage sizes" << std::endl;
-  vector<vector<vector<uint32_t>>> stages(DEPTH,
-                                          vector<vector<uint32_t>>(NUM_STAGES));
+  array<array<array<uint32_t, W1>, NUM_STAGES>, DEPTH> stages;
+
   std::cout << "\tcopy stages" << std::endl;
-  for (size_t d = 0; d < DEPTH; d++) {
-    stages[d][0].resize(W1);
-    stages[d][1].resize(W2);
-    stages[d][2].resize(W3);
-  }
   std::copy_n(s1_1, W1, stages[0][0].begin());
   std::copy_n(s2_1, W2, stages[0][1].begin());
   std::copy_n(s3_1, W3, stages[0][2].begin());
   std::copy_n(s1_2, W1, stages[1][0].begin());
   std::copy_n(s2_2, W2, stages[1][1].begin());
   std::copy_n(s3_2, W3, stages[1][2].begin());
+
   std::cout << "\tdone stages" << std::endl;
 
   // Setup tuple list
   std::cout << "[WaterfallFcm CTypes] Setup FiveTuple vector with size "
             << tuples_sz << std::endl;
-  std::vector<FLOW_TUPLE> tuples_vec(tuples_sz);
+  std::vector<FLOW_TUPLE> tuples_vec;
   for (size_t i = 0; i < tuples_sz; i++) {
     tuples_vec.at(i) = tuples[i];
   }
