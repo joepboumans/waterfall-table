@@ -89,18 +89,18 @@ public:
                  "with max degree "
               << init_max_degree[0] << " and " << init_max_degree[1]
               << std::endl;
-    for (size_t d = 0; d < DEPTH; d++) {
-      std::cout << "[WaterfallFcm] Depth " << d << ":" << std::endl;
-      for (size_t i = 0; i < init_degree[d].size(); i++) {
-        if (init_degree[d][i] > 2) {
-          std::cout << i << ":" << init_degree[d][i] << " ";
-          std::cout << ":" << this->stages[d][0][i];
-          std::cout << ":" << this->stages[d][1][i / 8];
-          std::cout << ":" << this->stages[d][2][i / 8 / 8] << " ";
-        }
-      }
-      std::cout << std::endl;
-    }
+    /*for (size_t d = 0; d < DEPTH; d++) {*/
+    /*  std::cout << "[WaterfallFcm] Depth " << d << ":" << std::endl;*/
+    /*  for (size_t i = 0; i < init_degree[d].size(); i++) {*/
+    /*    if (init_degree[d][i] > 2) {*/
+    /*      std::cout << i << ":" << init_degree[d][i] << " ";*/
+    /*      std::cout << ":" << this->stages[d][0][i];*/
+    /*      std::cout << ":" << this->stages[d][1][i / 8];*/
+    /*      std::cout << ":" << this->stages[d][2][i / 8 / 8] << " ";*/
+    /*    }*/
+    /*  }*/
+    /*  std::cout << std::endl;*/
+    /*}*/
     // Calculate Virtual Counters and thresholds
     // depth, stage, idx, (count, degree, overflown)
     array<array<vector<array<uint32_t, 3>>, NUM_STAGES>, DEPTH> summary;
@@ -804,9 +804,9 @@ void *EMFSD_new(uint32_t *szes, uint32_t *s1_1, uint32_t *s1_2, uint32_t *s2_1,
 
   std::cout << "[WaterfallFcm CTypes] Checking vector with "
             << tuples_vec.size() << std::endl;
-  for (size_t i = 0; i < tuples_vec.size(); i++) {
-    std::cout << i << " : " << tuples_vec.at(i) << " ";
-  }
+  /*for (size_t i = 0; i < tuples_vec.size(); i++) {*/
+  /*  std::cout << i << " : " << tuples_vec.at(i) << " ";*/
+  /*}*/
   std::cout << std::endl;
   return new EMFSD(stage_szes, stages, tuples_vec);
 }
