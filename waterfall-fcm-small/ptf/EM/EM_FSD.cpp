@@ -81,6 +81,8 @@ public:
       for (size_t d = 0; d < DEPTH; d++) {
         uint32_t hash_idx = this->hashing(tuple, d);
         init_degree[d][hash_idx]++;
+        std::cout << "Hashing at " << hash_idx << " with value "
+                  << init_degree[d][hash_idx]++ << std::endl;
         init_max_degree[d] =
             std::max(init_max_degree[d], init_degree[d][hash_idx]);
       }
