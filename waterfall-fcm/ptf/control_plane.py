@@ -89,6 +89,7 @@ class BfRt_interface():
         lock = Lock()
         for digest in self.interface.digest_get_iterator(1):
             t = Thread(target=self._parse_data_list(digest, lock))
+            t.start()
             self.threads.append(t)
             self.hasFirstData = True
 
