@@ -150,9 +150,9 @@ class BfRt_interface():
                 for val in dst_addr.split("."):
                     tuple_list += struct.pack("B", int(val))
 
-                tuple_list += struct.pack("B", data_dict["src_port"])
-                tuple_list += struct.pack("B", data_dict["dst_port"])
-                tuple_list += struct.pack("B", data_dict["protocol"])
+                tuple_list += data_dict["src_port"].to_bytes(2, 'big')
+                tuple_list += data_dict["dst_port"].to_bytes(2, 'big')
+                tuple_list += data_dict["protocol"].to_bytes(1, 'big')
                 self.tuples[tuple_list] = tuple_list
 
         print("[WaterfallFcm] Start EM FSD...")
@@ -188,6 +188,7 @@ class BfRt_interface():
 
         print(f"[WaterfallFcm - verify] {recall = :.3f} {precision = :.3f} | {f1 = :.3f}")
 
+        return
         print(f"[WaterfallFcm - verify] Calculate Flow Size Distribution...")
         wmre = 0.0
         wmre_nom = 0.0
