@@ -157,7 +157,7 @@ class BfRt_interface():
                 if not self.tuples:
                     self.tuples = {tuple_list}
                 else:
-                    self.tuples += tuple_list
+                    self.tuples &= {tuple_list}
 
         print("[WaterfallFcm] Start EM FSD...")
         s1 = [fcm_tables[0], fcm_tables[3]]
@@ -191,8 +191,7 @@ class BfRt_interface():
         f1 = 2 * ((recall * precision) / (precision + recall))
 
         print(f"[WaterfallFcm - verify] {recall = :.3f} {precision = :.3f} | {f1 = :.3f}")
-
-        print(f"[WaterfallFcm - verify] Calculate Flow Size Distribution...")
+print(f"[WaterfallFcm - verify] Calculate Flow Size Distribution...")
         wmre = 0.0
         wmre_nom = 0.0
         wmre_denom = 0.0
