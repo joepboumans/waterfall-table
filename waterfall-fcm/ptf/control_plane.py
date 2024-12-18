@@ -3,6 +3,7 @@ import os, sys, subprocess
 import mmap
 import time
 import struct
+from threading import Thread, Lock
 
 from collections import defaultdict
 
@@ -28,6 +29,7 @@ class BfRt_interface():
         self.recievedDigest = 0
         self.recieved_datalist = []
         self.recieved_digests = []
+        self.threads = []
         self.tuples = None
 
         self.dev_tgt = gc.Target(dev, pipe_id=0xFFFF)
@@ -84,30 +86,10 @@ class BfRt_interface():
             print("================")
 
     def _read_digest(self):
+        lock = Lock()
         for digest in self.interface.digest_get_iterator(1):
-            data_list = self.learn_filter.make_data_list(digest)
-            self.recievedDigest += len(data_list)
-            for data in data_list:
-                data_dict = data.to_dict()
-                src_addr = data_dict["src_addr"]
-                dst_addr = data_dict["dst_addr"]
-
-                tuple_list = b''
-                for val in src_addr.split("."):
-                    tuple_list += struct.pack("B", int(val))
-
-                for val in dst_addr.split("."):
-                    tuple_list += struct.pack("B", int(val))
-
-                tuple_list += data_dict["src_port"].to_bytes(2, 'big')
-                tuple_list += data_dict["dst_port"].to_bytes(2, 'big')
-                tuple_list += data_dict["protocol"].to_bytes(1, 'big')
-
-                if not self.tuples:
-                    self.tuples = {tuple_list}
-                else:
-                    self.tuples.add(tuple_list)
-
+            t = Thread(target=self._parse_data_list(digest, lock))
+            self.threads.append(t)
             self.hasFirstData = True
 
         self.missedDigest += 1
@@ -115,9 +97,35 @@ class BfRt_interface():
         print(f"error reading digest {self.missedDigest}, total received {self.recievedDigest}", end=" ", flush=True)
         if self.missedDigest > 10 and self.hasFirstData:
             self.isRunning = False
+            for t in self.threads:
+                t.join()
             print("")
 
+    def _parse_data_list(self, digest, lock):
+        data_list = self.learn_filter.make_data_list(digest)
+        self.recievedDigest += len(data_list)
+        for data in data_list:
+            data_dict = data.to_dict()
+            src_addr = data_dict["src_addr"]
+            dst_addr = data_dict["dst_addr"]
 
+            tuple_list = b''
+            for val in src_addr.split("."):
+                tuple_list += struct.pack("B", int(val))
+
+            for val in dst_addr.split("."):
+                tuple_list += struct.pack("B", int(val))
+
+            tuple_list += data_dict["src_port"].to_bytes(2, 'big')
+            tuple_list += data_dict["dst_port"].to_bytes(2, 'big')
+            tuple_list += data_dict["protocol"].to_bytes(1, 'big')
+
+            lock.aquire()
+            if not self.tuples:
+                self.tuples = {tuple_list}
+            else:
+                self.tuples.add(tuple_list)
+            lock.release()
 
     def _get_FCM_counters(self):
         fcm_tables = []
