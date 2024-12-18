@@ -58,9 +58,6 @@ class BfRt_interface():
         # Get Pkt count register of FCM
         self.num_pkt = self.bfrt_info.table_get("num_pkt")
 
-        self.reader_t = Thread(target=self._parse_data_list())
-        self.reader_t.start()
-
         print("Connected to Device: {}, Program: {}, ClientId: {}".format(
                 dev, self.p4_name, client_id))
 
@@ -101,8 +98,6 @@ class BfRt_interface():
             if self.missedDigest > 10 and self.hasFirstData:
                 self.isRunning = False
                 print("")
-                print("Received all digest, closing reading thread")
-                self.reader_t.join()
 
     def _parse_data_list(self):
         print(f"Start reading thread, wait for first data...")
@@ -276,8 +271,13 @@ def main():
     input_tuples = read_data_set("/home/onie/jboumans/equinix-chicago.20160121-130000.UTC.dat")
     bfrt_interface = BfRt_interface(0, 'localhost:50052', 0)
     # bfrt_interface.list_tables()
-    stages = bfrt_interface.run()
-    bfrt_interface.verify(input_tuples, stages)
+
+    val = os.fork()
+    if val == 0:
+        bfrt_interface._read_digest()
+    else:
+        stages = bfrt_interface.run()
+        bfrt_interface.verify(input_tuples, stages)
 
 if __name__ == "__main__":
     main()
