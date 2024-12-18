@@ -697,11 +697,13 @@ public:
         threads[t] = std::thread(&EMFSD::calculate_degree, *this,
                                  std::ref(nt[d][t]), d, t);
       }
+    }
+
+    for (size_t d = 0; d < DEPTH; d++) {
       for (size_t t = 2; t <= this->max_degree[d]; t++) {
         threads[t].join();
       }
     }
-
     // Single threaded
     // for (size_t d = 0; d < DEPTH; d++) {
     //  for (size_t xi = 2; xi <= this->max_degree[d]; xi++) {
