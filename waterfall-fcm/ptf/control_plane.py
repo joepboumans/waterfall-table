@@ -188,7 +188,6 @@ class BfRt_interface():
 
         print(f"[WaterfallFcm - verify] {recall = :.3f} {precision = :.3f} | {f1 = :.3f}")
 
-        return
         print(f"[WaterfallFcm - verify] Calculate Flow Size Distribution...")
         wmre = 0.0
         wmre_nom = 0.0
