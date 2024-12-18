@@ -105,6 +105,7 @@ class BfRt_interface():
     def _parse_data_list(self, digest, lock):
         data_list = self.learn_filter.make_data_list(digest)
         self.recievedDigest += len(data_list)
+        print(f"Starting thread {os.getpid()}")
         for data in data_list:
             data_dict = data.to_dict()
             src_addr = data_dict["src_addr"]
@@ -127,6 +128,8 @@ class BfRt_interface():
             else:
                 self.tuples.add(tuple_list)
             lock.release()
+
+        print(f"Closing thread {os.getpid()}")
 
     def _get_FCM_counters(self):
         fcm_tables = []
@@ -162,7 +165,7 @@ class BfRt_interface():
             self._read_digest()
         fcm_tables = self._get_FCM_counters()
 
-        print(f"Received {len(self.recieved_digests)} digest from switch")
+        print(f"Received {len(self.tuples)} unique tuples from the switch")
 
         s1 = [fcm_tables[0], fcm_tables[3]]
         s2 = [fcm_tables[1], fcm_tables[4]]
