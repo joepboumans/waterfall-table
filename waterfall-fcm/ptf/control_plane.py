@@ -85,7 +85,7 @@ class BfRt_interface():
 
     def _read_digest(self):
         try:
-            for digest in self.interface.digest_get_iterator(10):
+            for digest in self.interface.digest_get_iterator(1):
                 data_list = self.learn_filter.make_data_list(digest)
                 self.recievedDigest += len(data_list)
                 print(f"Received {len(data_list)} flows via digest, total {self.recievedDigest}")
