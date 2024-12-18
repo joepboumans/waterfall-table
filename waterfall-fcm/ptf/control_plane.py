@@ -204,12 +204,8 @@ class BfRt_interface():
         max_count = max(max_count_in, max_count_em) + 1
         fsd = [0] * max_count
 
-        if not self.tuples:
-            print("[WaterfallFcm - verify] Tuples is none, cannot get real FSD")
-            exit(1)
-
         print(f"[WaterfallFcm - verify] Setup real EM...")
-        for val in self.tuples:
+        for val in in_tuples:
             fsd[val] += 1
         print(f"[WaterfallFcm - verify] ...done")
 
