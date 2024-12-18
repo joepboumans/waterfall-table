@@ -120,7 +120,7 @@ class BfRt_interface():
             tuple_list += data_dict["dst_port"].to_bytes(2, 'big')
             tuple_list += data_dict["protocol"].to_bytes(1, 'big')
 
-            lock.aquire()
+            lock.acquire()
             if not self.tuples:
                 self.tuples = {tuple_list}
             else:
