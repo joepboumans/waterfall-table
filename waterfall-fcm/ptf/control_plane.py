@@ -85,8 +85,30 @@ class BfRt_interface():
 
     def _read_digest(self):
         try:
-            digest = self.interface.digest_get(1)
-            self.recieved_digests.append(digest)
+            for digest in self.interface.digest_get_iterator(10):
+                data_list = self.learn_filter.make_data_list(digest)
+                self.recievedDigest += len(data_list)
+                # print(f"Received {len(data_list)} flows via digest, total {self.recievedDigest}")
+                for data in data_list:
+                    data_dict = data.to_dict()
+                    src_addr = data_dict["src_addr"]
+                    dst_addr = data_dict["dst_addr"]
+
+                    tuple_list = b''
+                    for val in src_addr.split("."):
+                        tuple_list += struct.pack("B", int(val))
+
+                    for val in dst_addr.split("."):
+                        tuple_list += struct.pack("B", int(val))
+
+                    tuple_list += data_dict["src_port"].to_bytes(2, 'big')
+                    tuple_list += data_dict["dst_port"].to_bytes(2, 'big')
+                    tuple_list += data_dict["protocol"].to_bytes(1, 'big')
+
+                    if not self.tuples:
+                        self.tuples = {tuple_list}
+                    else:
+                        self.tuples &= {tuple_list}
 
             self.hasFirstData = True
         except Exception as err:
@@ -134,30 +156,6 @@ class BfRt_interface():
         fcm_tables = self._get_FCM_counters()
 
         print(f"Received {len(self.recieved_digests)} digest from switch")
-        for digest in self.recieved_digests:
-            data_list = self.learn_filter.make_data_list(digest)
-            self.recievedDigest += len(data_list)
-            # print(f"Received {len(data_list)} flows via digest, total {self.recievedDigest}")
-            for data in data_list:
-                data_dict = data.to_dict()
-                src_addr = data_dict["src_addr"]
-                dst_addr = data_dict["dst_addr"]
-
-                tuple_list = b''
-                for val in src_addr.split("."):
-                    tuple_list += struct.pack("B", int(val))
-
-                for val in dst_addr.split("."):
-                    tuple_list += struct.pack("B", int(val))
-
-                tuple_list += data_dict["src_port"].to_bytes(2, 'big')
-                tuple_list += data_dict["dst_port"].to_bytes(2, 'big')
-                tuple_list += data_dict["protocol"].to_bytes(1, 'big')
-
-                if not self.tuples:
-                    self.tuples = {tuple_list}
-                else:
-                    self.tuples &= {tuple_list}
 
         print("[WaterfallFcm] Start EM FSD...")
         s1 = [fcm_tables[0], fcm_tables[3]]
@@ -222,7 +220,6 @@ class BfRt_interface():
 
 def read_data_set(data_name):
     print(f"[Dataset Loader] Get data from {data_name}")
-    first = True
 
     tuples = defaultdict(int)
     with open(data_name, "r+b") as of:
@@ -232,13 +229,8 @@ def read_data_set(data_name):
         for i in range(0, len(data), 13):
             if i + 12 >= len(data):
                 break
-
             # Read src and dst addr
             tuples[data[i + 0:i + 13]] += 1
-                
-            if first:
-                print(*tuples.keys())
-                first = False
 
     # delay = 10
     # print(f"[Dataset Loader] ...done! Waiting for {delay}s before starting test...")
