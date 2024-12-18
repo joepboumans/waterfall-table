@@ -87,7 +87,6 @@ class BfRt_interface():
         for digest in self.interface.digest_get_iterator(1):
             data_list = self.learn_filter.make_data_list(digest)
             self.recievedDigest += len(data_list)
-            print(f"Received {len(data_list)} flows via digest, total {self.recievedDigest}")
             for data in data_list:
                 data_dict = data.to_dict()
                 src_addr = data_dict["src_addr"]
@@ -112,7 +111,8 @@ class BfRt_interface():
             self.hasFirstData = True
 
         self.missedDigest += 1
-        print(f"error reading digest {self.missedDigest}, {err} ", end="", flush=True)
+        # print(f"Received {len(data_list)} flows via digest, total {self.recievedDigest}")
+        print(f"error reading digest {self.missedDigest}, total received {self.recievedDigest}", end=" ", flush=True)
         if self.missedDigest > 10 and self.hasFirstData:
             self.isRunning = False
             print("")
