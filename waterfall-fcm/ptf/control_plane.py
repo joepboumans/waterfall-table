@@ -165,8 +165,10 @@ class BfRt_interface():
         print(f"[WaterfallFcm - verify] Calculate Waterfall F1-score...")
         true_pos = false_pos = true_neg =  false_neg = 0
 
+        print(self.tuples)
         # Compare dataset tuples with Waterfall Tuples
         for tup in in_tuples.keys():
+            print(tup)
             if tup in self.tuples:
                 true_pos += 1
             else:
@@ -222,6 +224,7 @@ def read_data_set(data_name):
     print(f"[Dataset Loader] Get data from {data_name}")
 
     tuples = defaultdict(int)
+    firstData = True
     with open(data_name, "r+b") as of:
         with mmap.mmap(of.fileno(), length=0, access=mmap.ACCESS_READ) as f:
             data = f.read()
@@ -231,6 +234,10 @@ def read_data_set(data_name):
                 break
             # Read src and dst addr
             tuples[data[i + 0:i + 13]] += 1
+
+            if firstData:
+                firstData = False
+                print(*data[i + 0: i + 13])
 
     # delay = 10
     # print(f"[Dataset Loader] ...done! Waiting for {delay}s before starting test...")
