@@ -13,8 +13,8 @@ from EM_ctypes import EM_FSD
 sys.path.append('/home/onie/sde/bf-sde-9.11.0/install/lib/python3.8/site-packages/tofino/')
 sys.path.append('/home/onie/sde/bf-sde-9.11.0/install/lib/python3.8/site-packages/tofino/bfrt_grpc/')
 
-# os.environ["GRPC_ENABLE_FORK_SUPPORT"] = "1"
-# os.environ["GRPC_POLL_STRATEGY"] = "poll"
+os.environ["GRPC_ENABLE_FORK_SUPPORT"] = "1"
+os.environ["GRPC_POLL_STRATEGY"] = "poll"
 # os.environ["GRPC_VERBOSITY"] = "debug"
 
 import bfrt_grpc.client as gc
