@@ -156,14 +156,12 @@ class BfRt_interface():
 
         print(f"Received {len(self.recieved_digests)} digest from switch")
 
-        print("[WaterfallFcm] Start EM FSD...")
         s1 = [fcm_tables[0], fcm_tables[3]]
         s2 = [fcm_tables[1], fcm_tables[4]]
         s3 = [fcm_tables[2], fcm_tables[5]]
-        em_fsd = EM_FSD(s1, s2, s3, self.tuples)
-        self.ns = em_fsd.run_em(1)
+        return [s1, s2, s3]
 
-    def verify(self, in_tuples):
+    def verify(self, in_tuples, stages):
         print(f"[WaterfallFcm - verify] Calculate Waterfall F1-score...")
         true_pos = false_pos = true_neg =  false_neg = 0
 
@@ -188,6 +186,9 @@ class BfRt_interface():
         f1 = 2 * ((recall * precision) / (precision + recall))
 
         print(f"[WaterfallFcm - verify] {recall = :.3f} {precision = :.3f} | {f1 = :.3f}")
+        print("[WaterfallFcm] Start EM FSD...")
+        em_fsd = EM_FSD(stages[0], stages[1], stages[2], self.tuples)
+        self.ns = em_fsd.run_em(1)
 
         print(f"[WaterfallFcm - verify] Calculate Flow Size Distribution...")
         wmre = 0.0
@@ -242,8 +243,8 @@ def main():
     input_tuples = read_data_set("/home/onie/jboumans/equinix-chicago.20160121-130000.UTC.dat")
     bfrt_interface = BfRt_interface(0, 'localhost:50052', 0)
     # bfrt_interface.list_tables()
-    bfrt_interface.run()
-    bfrt_interface.verify(input_tuples)
+    stages = bfrt_interface.run()
+    bfrt_interface.verify(input_tuples, stages)
 
 if __name__ == "__main__":
     main()
