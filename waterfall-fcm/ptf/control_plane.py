@@ -116,7 +116,6 @@ class BfRt_interface():
         if self.missedDigest > 10 and self.hasFirstData:
             self.isRunning = False
             print("")
-        time.sleep(0.1)
 
 
 
@@ -162,12 +161,9 @@ class BfRt_interface():
         return [s1, s2, s3]
 
     def verify(self, in_tuples, stages):
-        load_factor = len(self.tuples) / len(in_tuples)
-        print(f"[WaterfallFcm - verify] Load factor is {load_factor}")
         print(f"[WaterfallFcm - verify] Calculate Waterfall F1-score...")
         true_pos = false_pos = true_neg =  false_neg = 0
 
-        print(self.tuples)
         # Compare dataset tuples with Waterfall Tuples
         for tup in in_tuples.keys():
             if tup in self.tuples:
@@ -189,6 +185,10 @@ class BfRt_interface():
         f1 = 2 * ((recall * precision) / (precision + recall))
 
         print(f"[WaterfallFcm - verify] {recall = :.3f} {precision = :.3f} | {f1 = :.3f}")
+
+        load_factor = len(self.tuples) / len(in_tuples)
+        print(f"[WaterfallFcm - verify] Load factor is {load_factor}")
+
         print("[WaterfallFcm] Start EM FSD...")
         em_fsd = EM_FSD(stages[0], stages[1], stages[2], self.tuples)
         self.ns = em_fsd.run_em(1)
