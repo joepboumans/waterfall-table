@@ -58,6 +58,9 @@ class BfRt_interface():
         # Get Pkt count register of FCM
         self.num_pkt = self.bfrt_info.table_get("num_pkt")
 
+        self.reader_t = Thread(target=self._parse_data_list())
+        self.reader_t.start()
+
         print("Connected to Device: {}, Program: {}, ClientId: {}".format(
                 dev, self.p4_name, client_id))
 
@@ -86,50 +89,60 @@ class BfRt_interface():
             print("================")
 
     def _read_digest(self):
-        lock = Lock()
-        for digest in self.interface.digest_get_iterator(1):
-            t = Thread(target=self._parse_data_list(digest, lock))
-            t.start()
-            self.threads.append(t)
+        try:
+            digest = self.interface.digest_get(1)
+            self.recieved_digests.append(digest)
+            self.recievedDigest += 1
             self.hasFirstData = True
+        except:
+            self.missedDigest += 1
+            # print(f"Received {len(data_list)} flows via digest, total {self.recievedDigest}")
+            print(f"error reading digest {self.missedDigest}, total received {self.recievedDigest}", end=" ", flush=True)
+            if self.missedDigest > 10 and self.hasFirstData:
+                self.isRunning = False
+                print("")
+                print("Received all digest, closing reading thread")
+                self.reader_t.join()
 
-        self.missedDigest += 1
-        # print(f"Received {len(data_list)} flows via digest, total {self.recievedDigest}")
-        print(f"error reading digest {self.missedDigest}, total received {self.recievedDigest}", end=" ", flush=True)
-        if self.missedDigest > 10 and self.hasFirstData:
-            self.isRunning = False
-            for t in self.threads:
-                t.join()
-            print("")
+    def _parse_data_list(self):
+        print(f"Start reading thread, wait for first data...")
 
-    def _parse_data_list(self, digest, lock):
-        data_list = self.learn_filter.make_data_list(digest)
-        self.recievedDigest += len(data_list)
-        print(f"Starting thread {os.getpid()}")
-        for data in data_list:
-            data_dict = data.to_dict()
-            src_addr = data_dict["src_addr"]
-            dst_addr = data_dict["dst_addr"]
+        while not self.hasFirstData:
+            time.sleep(0.5)
 
-            tuple_list = b''
-            for val in src_addr.split("."):
-                tuple_list += struct.pack("B", int(val))
+        prev_n_digest = 0
+        print(f"Found first data, start parsing digest")
 
-            for val in dst_addr.split("."):
-                tuple_list += struct.pack("B", int(val))
 
-            tuple_list += data_dict["src_port"].to_bytes(2, 'big')
-            tuple_list += data_dict["dst_port"].to_bytes(2, 'big')
-            tuple_list += data_dict["protocol"].to_bytes(1, 'big')
+        while True:
+            data_list = self.learn_filter.make_data_list(self.recieved_digests[prev_n_digest])
+            for data in data_list:
+                data_dict = data.to_dict()
+                src_addr = data_dict["src_addr"]
+                dst_addr = data_dict["dst_addr"]
 
-            lock.acquire()
-            if not self.tuples:
-                self.tuples = {tuple_list}
-            else:
-                self.tuples.add(tuple_list)
-            lock.release()
+                tuple_list = b''
+                for val in src_addr.split("."):
+                    tuple_list += struct.pack("B", int(val))
 
-        print(f"Closing thread {os.getpid()}")
+                for val in dst_addr.split("."):
+                    tuple_list += struct.pack("B", int(val))
+
+                tuple_list += data_dict["src_port"].to_bytes(2, 'big')
+                tuple_list += data_dict["dst_port"].to_bytes(2, 'big')
+                tuple_list += data_dict["protocol"].to_bytes(1, 'big')
+
+                if not self.tuples:
+                    self.tuples = {tuple_list}
+                else:
+                    self.tuples.add(tuple_list)
+            
+            if prev_n_digest == self.recievedDigest:
+                break
+
+            prev_n_digest += 1
+
+        print(f"Done with reading thread")
 
     def _get_FCM_counters(self):
         fcm_tables = []
