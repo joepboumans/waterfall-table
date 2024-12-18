@@ -106,7 +106,7 @@ class BfRt_interface():
                 if not self.tuples:
                     self.tuples = {tuple_list}
                 else:
-                    self.tuples &= {tuple_list}
+                    self.tuples.add(tuple_list)
 
             self.hasFirstData = True
 
