@@ -171,7 +171,6 @@ class BfRt_interface():
         # Compare dataset tuples with Waterfall Tuples
         for tup in in_tuples.keys():
             if tup in self.tuples:
-                print(tup)
                 true_pos += 1
             else:
                 false_pos += 1
