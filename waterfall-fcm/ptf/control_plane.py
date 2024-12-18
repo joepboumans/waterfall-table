@@ -84,42 +84,39 @@ class BfRt_interface():
             print("================")
 
     def _read_digest(self):
-        try:
-            print("Start getting digest")
-            for digest in self.interface.digest_get_iterator(1):
-                print("Got digest")
-                data_list = self.learn_filter.make_data_list(digest)
-                self.recievedDigest += len(data_list)
-                print(f"Received {len(data_list)} flows via digest, total {self.recievedDigest}")
-                for data in data_list:
-                    data_dict = data.to_dict()
-                    src_addr = data_dict["src_addr"]
-                    dst_addr = data_dict["dst_addr"]
+        for digest in self.interface.digest_get_iterator(1):
+            data_list = self.learn_filter.make_data_list(digest)
+            self.recievedDigest += len(data_list)
+            print(f"Received {len(data_list)} flows via digest, total {self.recievedDigest}")
+            for data in data_list:
+                data_dict = data.to_dict()
+                src_addr = data_dict["src_addr"]
+                dst_addr = data_dict["dst_addr"]
 
-                    tuple_list = b''
-                    for val in src_addr.split("."):
-                        tuple_list += struct.pack("B", int(val))
+                tuple_list = b''
+                for val in src_addr.split("."):
+                    tuple_list += struct.pack("B", int(val))
 
-                    for val in dst_addr.split("."):
-                        tuple_list += struct.pack("B", int(val))
+                for val in dst_addr.split("."):
+                    tuple_list += struct.pack("B", int(val))
 
-                    tuple_list += data_dict["src_port"].to_bytes(2, 'big')
-                    tuple_list += data_dict["dst_port"].to_bytes(2, 'big')
-                    tuple_list += data_dict["protocol"].to_bytes(1, 'big')
+                tuple_list += data_dict["src_port"].to_bytes(2, 'big')
+                tuple_list += data_dict["dst_port"].to_bytes(2, 'big')
+                tuple_list += data_dict["protocol"].to_bytes(1, 'big')
 
-                    if not self.tuples:
-                        self.tuples = {tuple_list}
-                    else:
-                        self.tuples &= {tuple_list}
+                if not self.tuples:
+                    self.tuples = {tuple_list}
+                else:
+                    self.tuples &= {tuple_list}
 
             self.hasFirstData = True
-        except Exception as err:
-            self.missedDigest += 1
-            print(f"error reading digest {self.missedDigest}, {err} ", end="", flush=True)
-            if self.missedDigest > 10 and self.hasFirstData:
-                self.isRunning = False
-                print("")
-            time.sleep(0.1)
+
+        self.missedDigest += 1
+        print(f"error reading digest {self.missedDigest}, {err} ", end="", flush=True)
+        if self.missedDigest > 10 and self.hasFirstData:
+            self.isRunning = False
+            print("")
+        time.sleep(0.1)
 
 
 
