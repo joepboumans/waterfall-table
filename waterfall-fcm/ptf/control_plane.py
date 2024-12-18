@@ -85,7 +85,9 @@ class BfRt_interface():
 
     def _read_digest(self):
         try:
+            print("Start getting digest")
             for digest in self.interface.digest_get_iterator(1):
+                print("Got digest")
                 data_list = self.learn_filter.make_data_list(digest)
                 self.recievedDigest += len(data_list)
                 print(f"Received {len(data_list)} flows via digest, total {self.recievedDigest}")
