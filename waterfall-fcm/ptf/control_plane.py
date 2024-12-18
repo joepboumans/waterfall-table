@@ -162,14 +162,16 @@ class BfRt_interface():
         return [s1, s2, s3]
 
     def verify(self, in_tuples, stages):
+        load_factor = len(self.tuples) / len(in_tuples)
+        print(f"[WaterfallFcm - verify] Load factor is {load_factor}")
         print(f"[WaterfallFcm - verify] Calculate Waterfall F1-score...")
         true_pos = false_pos = true_neg =  false_neg = 0
 
         print(self.tuples)
         # Compare dataset tuples with Waterfall Tuples
         for tup in in_tuples.keys():
-            print(tup)
             if tup in self.tuples:
+                print(tup)
                 true_pos += 1
             else:
                 false_pos += 1
@@ -237,7 +239,7 @@ def read_data_set(data_name):
 
             if firstData:
                 firstData = False
-                print(*data[i + 0: i + 13])
+                print(data[i + 0: i + 13])
 
     # delay = 10
     # print(f"[Dataset Loader] ...done! Waiting for {delay}s before starting test...")
