@@ -131,11 +131,12 @@ class BfRt_interface():
                 else:
                     self.tuples.add(tuple_list)
 
-                if prev_n_digest % 100 == 0:
-                    print(tuple_list)
             
-            if prev_n_digest == self.recievedDigest and prev_n_digest > 0:
+            if prev_n_digest >= self.recievedDigest and prev_n_digest > 0:
                 break
+
+            if prev_n_digest % 1000 == 0:
+                print(f"{prev_n_digest = } / {self.recievedDigest = }")
 
 
             prev_n_digest += 1
@@ -178,10 +179,12 @@ class BfRt_interface():
         while self.isRunning:
             self._read_digest()
 
+        print(f"Received {len(self.tuples)} unique tuples from the switch")
         p.join()
+
+        print(f"Closed process, start getting FCM counters")
         fcm_tables = self._get_FCM_counters()
 
-        print(f"Received {len(self.tuples)} unique tuples from the switch")
 
         s1 = [fcm_tables[0], fcm_tables[3]]
         s2 = [fcm_tables[1], fcm_tables[4]]
