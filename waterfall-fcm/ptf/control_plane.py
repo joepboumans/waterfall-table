@@ -107,7 +107,6 @@ class BfRt_interface():
 
         while True:
             digest = pipe.recv()
-            print(digest)
             data_list = self.learn_filter.make_data_list(digest)
             for data in data_list:
                 data_dict = data.to_dict()
@@ -126,6 +125,7 @@ class BfRt_interface():
                 tuple_list += data_dict["protocol"].to_bytes(1, 'big')
 
                 if not self.tuples:
+                    print(f"First tuple : {tuple_list}")
                     self.tuples = {tuple_list}
                 else:
                     self.tuples.add(tuple_list)
