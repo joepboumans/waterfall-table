@@ -12,8 +12,8 @@ from EM_ctypes import EM_FSD
 sys.path.append('/home/onie/sde/bf-sde-9.11.0/install/lib/python3.8/site-packages/tofino/')
 sys.path.append('/home/onie/sde/bf-sde-9.11.0/install/lib/python3.8/site-packages/tofino/bfrt_grpc/')
 
-os.environ["GRPC_ENABLE_FORK_SUPPORT"] = "1"
-os.environ["GRPC_POLL_STRATEGY"] = "poll"
+# os.environ["GRPC_ENABLE_FORK_SUPPORT"] = "1"
+# os.environ["GRPC_POLL_STRATEGY"] = "poll"
 os.environ["GRPC_VERBOSITY"] = "debug"
 
 import bfrt_grpc.client as gc
@@ -86,20 +86,10 @@ class BfRt_interface():
     def _read_digest(self):
         try:
             digest = self.interface.digest_get(1)
-
-            data_list = self.learn_filter.make_data_list(digest)
-            self.total_received += len(data_list)
-            for data in data_list:
-                tuple_list = bytes(data["src_addr"].val + data["dst_addr"].val)
-
-                if not self.tuples:
-                    self.tuples = {tuple_list}
-                else:
-                    self.tuples.add(tuple_list)
-
+            self.recieved_digests.append(digest)
             self.recievedDigest += 1
             if self.recievedDigest % 1000 == 0:
-                print(f"Received {self.recievedDigest} digests; Current tuples {len(self.tuples)}")
+                print(f"Received {self.recievedDigest} digests")
 
             self.hasFirstData = True
         except Exception as err:
@@ -144,8 +134,22 @@ class BfRt_interface():
         while self.isRunning:
             self._read_digest()
 
-        print(f"Received a total of {self.recievedDigest} digests; Total tuples {len(self.tuples)}")
+        print(f"Received {len(self.recieved_digests)} digest from switch")
+        parsed_digest = 0
+        for digest in self.recieved_digests:
+            data_list = self.learn_filter.make_data_list(digest)
+            self.total_received += len(data_list)
+            for data in data_list:
+                tuple_list = bytes(data["src_addr"].val + data["dst_addr"].val)
 
+                if not self.tuples:
+                    self.tuples = {tuple_list}
+                else:
+                    self.tuples.add(tuple_list)
+
+            parsed_digest += 1
+            if parsed_digest % 1000 == 0:
+                print(f"Parsed {parsed_digest} of {self.recievedDigest} digests; Current tuples {len(self.tuples)}")
 
         fcm_tables = self._get_FCM_counters()
         s1 = [fcm_tables[0], fcm_tables[3]]
