@@ -86,10 +86,21 @@ class BfRt_interface():
     def _read_digest(self):
         try:
             digest = self.interface.digest_get(1)
-            self.recieved_digests.append(digest)
+
+            for digest in self.recieved_digests:
+                data_list = self.learn_filter.make_data_list(digest)
+                self.total_received += len(data_list)
+                for data in data_list:
+                    tuple_list = data["src_addr"].val + data["dst_addr"].val
+
+                    if not self.tuples:
+                        self.tuples = {tuple_list}
+                    else:
+                        self.tuples.add(tuple_list)
+
             self.recievedDigest += 1
             if self.recievedDigest % 1000 == 0:
-                print(f"Received {self.recievedDigest} digests")
+                print(f"Received {self.recievedDigest} digests; Current tuples {len(self.tuples)}")
 
             self.hasFirstData = True
         except Exception as err:
@@ -134,27 +145,8 @@ class BfRt_interface():
         while self.isRunning:
             self._read_digest()
 
-        print(f"Received {len(self.recieved_digests)} digest from switch")
-        parsed_digest = 0
-        for digest in self.recieved_digests:
-            data_list = self.learn_filter.make_data_list(digest)
-            self.total_received += len(data_list)
-            for data in data_list:
-                tuple_list = b''
-                tuple_list += data["src_addr"].val
-                tuple_list += data["dst_addr"].val
+        print(f"Received a total of {self.recievedDigest} digests; Total tuples {len(self.tuples)}")
 
-                if not self.tuples:
-                    print(data["src_addr"].val + data["dst_addr"].val)
-                    print(tuple_list)
-                    self.tuples = {tuple_list}
-                else:
-                    self.tuples.add(tuple_list)
-
-            parsed_digest += 1
-            if parsed_digest % 1000 == 0:
-                print(f"Parsed {parsed_digest} of {self.recievedDigest} digests; Current tuples {len(self.tuples)}")
-        exit(0)
 
         fcm_tables = self._get_FCM_counters()
         s1 = [fcm_tables[0], fcm_tables[3]]
