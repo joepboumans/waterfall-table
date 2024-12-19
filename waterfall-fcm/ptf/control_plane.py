@@ -98,7 +98,6 @@ class BfRt_interface():
             # print(f"Received {len(data_list)} flows via digest, total {self.recievedDigest}")
             print(f"error reading digest {self.missedDigest}, total received {self.recievedDigest}", end=" ", flush=True)
             if self.missedDigest > 10 and self.hasFirstData:
-                self.get_pipe.close()
                 self.isRunning = False
                 print("")
 
