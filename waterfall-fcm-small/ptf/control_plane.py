@@ -87,6 +87,9 @@ class BfRt_interface():
         try:
             digest = self.interface.digest_get(1)
             self.recieved_digests.append(digest)
+            self.recievedDigest += 1
+            if self.recievedDigest % 1000 == 0:
+                print(f"Received {self.recievedDigest} digests")
 
             self.hasFirstData = True
         except Exception as err:
@@ -133,10 +136,9 @@ class BfRt_interface():
         fcm_tables = self._get_FCM_counters()
 
         print(f"Received {len(self.recieved_digests)} digest from switch")
+        parsed_digest = 0
         for digest in self.recieved_digests:
             data_list = self.learn_filter.make_data_list(digest)
-            self.recievedDigest += len(data_list)
-            # print(f"Received {len(data_list)} flows via digest, total {self.recievedDigest}")
             for data in data_list:
                 data_dict = data.to_dict()
                 src_addr = data_dict["src_addr"]
@@ -156,6 +158,10 @@ class BfRt_interface():
                     self.tuples = {tuple_list}
                 else:
                     self.tuples.add(tuple_list)
+
+            parsed_digest += 1
+            if parsed_digest % 1000 == 0:
+                print(f"Parsed {parsed_digest} of {self.recievedDigest} digests; Current tuples {len(self.tuples)}")
 
         print("[WaterfallFcm] Start EM FSD...")
         s1 = [fcm_tables[0], fcm_tables[3]]
@@ -182,6 +188,9 @@ class BfRt_interface():
         f1 = 2 * ((recall * precision) / (precision + recall))
 
         print(f"[WaterfallFcm - verify] {recall = :.5f} {precision = :.5f} | {f1 = :.5f}")
+
+        load_factor = len(self.tuples) / len(in_tuples)
+        print(f"[WaterfallFcm - verify] Load factor is {load_factor}")
 
         print(f"[WaterfallFcm - verify] Calculate Flow Size Distribution...")
         wmre = 0.0
