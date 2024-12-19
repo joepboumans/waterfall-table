@@ -98,6 +98,7 @@ class BfRt_interface():
             # print(f"Received {len(data_list)} flows via digest, total {self.recievedDigest}")
             print(f"error reading digest {self.missedDigest}, total received {self.recievedDigest}", end=" ", flush=True)
             if self.missedDigest > 10 and self.hasFirstData:
+                self.get_pipe.close()
                 self.isRunning = False
                 print("")
 
@@ -129,9 +130,13 @@ class BfRt_interface():
                     self.tuples = {tuple_list}
                 else:
                     self.tuples.add(tuple_list)
+
+                if prev_n_digest % 100 == 0:
+                    print(tuple_list)
             
             if prev_n_digest == self.recievedDigest and prev_n_digest > 0:
                 break
+
 
             prev_n_digest += 1
 
