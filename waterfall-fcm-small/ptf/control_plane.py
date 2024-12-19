@@ -28,7 +28,7 @@ class BfRt_interface():
         self.recievedDigest = 0
         self.recieved_datalist = []
         self.recieved_digests = []
-        self.tuples = {}
+        self.tuples = None
 
         self.dev_tgt = gc.Target(dev, pipe_id=0xFFFF)
         self.bfrt_info = None
@@ -152,13 +152,16 @@ class BfRt_interface():
                 # raw_src_addr = [int(x) for x in src_addr.split('.')]
                 # raw_dst_addr = [int(x) for x in dst_addr.split('.')]
                 # tuple_key = ".".join([str(x) for x in tuple_list])
-                self.tuples[tuple_list] = tuple_list
+                if not self.tuples:
+                    self.tuples = {tuple_list}
+                else:
+                    self.tuples.add(tuple_list)
 
         print("[WaterfallFcm] Start EM FSD...")
         s1 = [fcm_tables[0], fcm_tables[3]]
         s2 = [fcm_tables[1], fcm_tables[4]]
         s3 = [fcm_tables[2], fcm_tables[5]]
-        em_fsd = EM_FSD(s1, s2, s3, self.tuples.values())
+        em_fsd = EM_FSD(s1, s2, s3, self.tuples)
         self.ns = em_fsd.run_em(1)
 
     def verify(self, in_tuples):
@@ -193,7 +196,7 @@ class BfRt_interface():
         fsd = [0] * max_count
 
         print(f"[WaterfallFcm - verify] Setup real EM...")
-        for val in self.tuples.values():
+        for val in in_tuples:
             fsd[val] += 1
         print(f"[WaterfallFcm - verify] ...done")
 
