@@ -3,7 +3,7 @@ import os, sys, subprocess
 import mmap
 import time
 import struct
-from multiprocessing import Process, Pipe
+import multiprocessing as mp
 
 from collections import defaultdict
 
@@ -58,8 +58,6 @@ class BfRt_interface():
         # Get Pkt count register of FCM
         self.num_pkt = self.bfrt_info.table_get("num_pkt")
 
-        self.parser_pipe, self.get_pipe = Pipe()
-
         print("Connected to Device: {}, Program: {}, ClientId: {}".format(
                 dev, self.p4_name, client_id))
 
@@ -90,7 +88,7 @@ class BfRt_interface():
     def _read_digest(self):
         try:
             digest = self.interface.digest_get(1)
-            self.get_pipe.send(digest)
+            self.recieved_digests.append(digest)
             self.recievedDigest += 1
             self.hasFirstData = True
             if self.recievedDigest % 1000 == 0:
@@ -104,46 +102,32 @@ class BfRt_interface():
                 self.isRunning = False
                 print("")
 
-    def _parse_data_list(self, pipe, recv_digest):
-        print(f"Start reading thread, wait for first data...")
-        prev_n_digest = 0
+    def _parse_data_list(self, digest):
+        data_list = self.learn_filter.make_data_list(digest)
+        tuples = None
+        for data in data_list:
+            data_dict = data.to_dict()
+            src_addr = data_dict["src_addr"]
+            dst_addr = data_dict["dst_addr"]
 
-        while True:
-            digest = pipe.recv()
-            data_list = self.learn_filter.make_data_list(digest)
-            for data in data_list:
-                data_dict = data.to_dict()
-                src_addr = data_dict["src_addr"]
-                dst_addr = data_dict["dst_addr"]
+            tuple_list = b''
+            for val in src_addr.split("."):
+                tuple_list += struct.pack("B", int(val))
 
-                tuple_list = b''
-                for val in src_addr.split("."):
-                    tuple_list += struct.pack("B", int(val))
+            for val in dst_addr.split("."):
+                tuple_list += struct.pack("B", int(val))
 
-                for val in dst_addr.split("."):
-                    tuple_list += struct.pack("B", int(val))
+            tuple_list += data_dict["src_port"].to_bytes(2, 'big')
+            tuple_list += data_dict["dst_port"].to_bytes(2, 'big')
+            tuple_list += data_dict["protocol"].to_bytes(1, 'big')
 
-                tuple_list += data_dict["src_port"].to_bytes(2, 'big')
-                tuple_list += data_dict["dst_port"].to_bytes(2, 'big')
-                tuple_list += data_dict["protocol"].to_bytes(1, 'big')
+            if not tuples:
+                print(f"First tuple : {tuple_list}")
+                tuples = {tuple_list}
+            else:
+                tuples.add(tuple_list)
 
-                if not self.tuples:
-                    print(f"First tuple : {tuple_list}")
-                    self.tuples = {tuple_list}
-                else:
-                    self.tuples.add(tuple_list)
-
-            
-            if prev_n_digest == recv_digest and prev_n_digest > 0:
-                break
-
-            if prev_n_digest % 1000 == 0:
-                print(f"{prev_n_digest = } / {recv_digest = }")
-
-
-            prev_n_digest += 1
-
-        print(f"Done with reading thread")
+        return tuples
 
     def _get_FCM_counters(self):
         fcm_tables = []
@@ -174,16 +158,18 @@ class BfRt_interface():
             
 
     def run(self):
-        # Start digest parsing thread
-        p = Process(target=self._parse_data_list, args=[self.parser_pipe, self.recievedDigest])
-        p.start()
         self.isRunning = True
         while self.isRunning:
             self._read_digest()
 
-        print(f"Received {len(self.tuples)} unique tuples from the switch")
-        p.join()
+        print(f"Received {self.recievedDigest} digests")
+        print(f"Parallizing over 8 processes")
+        with mp.Pool(processes=8) as pool:
+            res = pool.map(self._parse_data_list, self.recieved_digests)
+        print(res)
+        self.tuples = res
 
+        print(f"Received {len(self.tuples)} unique tuples from the switch")
         print(f"Closed process, start getting FCM counters")
         fcm_tables = self._get_FCM_counters()
 
