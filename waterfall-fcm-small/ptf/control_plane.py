@@ -87,20 +87,19 @@ class BfRt_interface():
         try:
             digest = self.interface.digest_get(1)
 
-            for digest in self.recieved_digests:
-                data_list = self.learn_filter.make_data_list(digest)
-                self.total_received += len(data_list)
-                for data in data_list:
-                    tuple_list = data["src_addr"].val + data["dst_addr"].val
+            data_list = self.learn_filter.make_data_list(digest)
+            self.total_received += len(data_list)
+            for data in data_list:
+                tuple_list = data["src_addr"].val + data["dst_addr"].val
 
-                    if not self.tuples:
-                        self.tuples = {tuple_list}
-                    else:
-                        self.tuples.add(tuple_list)
+                if not self.tuples:
+                    self.tuples = {tuple_list}
+                else:
+                    self.tuples.add(tuple_list)
 
-                self.recievedDigest += 1
-                if self.recievedDigest % 1000 == 0:
-                    print(f"Received {self.recievedDigest} digests; Current tuples {len(self.tuples)}")
+            self.recievedDigest += 1
+            if self.recievedDigest % 1000 == 0:
+                print(f"Received {self.recievedDigest} digests; Current tuples {len(self.tuples)}")
 
             self.hasFirstData = True
         except Exception as err:
