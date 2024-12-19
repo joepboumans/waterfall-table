@@ -143,11 +143,8 @@ class BfRt_interface():
                 print(data)
                 print(data["src_addr"])
                 tuple_list = b''
-                for val in data["src_addr"].split("."):
-                    tuple_list += struct.pack("B", int(val))
-
-                for val in data["dst_addr"].split("."):
-                    tuple_list += struct.pack("B", int(val))
+                tuple_list += data["src_addr"]
+                tuple_list += data["dst_addr"]
 
                 if not self.tuples:
                     self.tuples = {tuple_list}
