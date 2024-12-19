@@ -93,6 +93,8 @@ class BfRt_interface():
             self.get_pipe.send(digest)
             self.recievedDigest += 1
             self.hasFirstData = True
+            if self.recievedDigest % 1000 == 0:
+                print(f"{self.recievedDigest = }")
         except:
             self.missedDigest += 1
             # print(f"Received {len(data_list)} flows via digest, total {self.recievedDigest}")
