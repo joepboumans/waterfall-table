@@ -250,7 +250,9 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     ig_md.resubmit_md.remain = ig_md.remain1;
   }
 
-  action no_action() {}
+  action no_action() {
+    ig_intr_dprsr_md.resubmit_type = 0;
+  }
 
   table resub {
     key = {
@@ -266,7 +268,6 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
   }
 
   action do_swap1() {
-    ig_intr_dprsr_md.digest_type = 1;
     ig_md.out_remain1 = table_1_swap.execute(ig_md.idx1);
   }
 
