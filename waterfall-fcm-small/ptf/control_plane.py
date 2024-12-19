@@ -26,7 +26,7 @@ class BfRt_interface():
         self.hasFirstData = False
         self.missedDigest = 0
         self.recievedDigest = 0
-        self.recieved_datalist = []
+        self.total_received = 0
         self.recieved_digests = []
         self.tuples = None
 
@@ -134,11 +134,16 @@ class BfRt_interface():
         while self.isRunning:
             self._read_digest()
         fcm_tables = self._get_FCM_counters()
+        s1 = [fcm_tables[0], fcm_tables[3]]
+        s2 = [fcm_tables[1], fcm_tables[4]]
+        s3 = [fcm_tables[2], fcm_tables[5]]
+        self.stages = [s1, s2, s3]
 
         print(f"Received {len(self.recieved_digests)} digest from switch")
         parsed_digest = 0
         for digest in self.recieved_digests:
             data_list = self.learn_filter.make_data_list(digest)
+            self.total_received += len(data_list)
             for data in data_list:
                 data_dict = data.to_dict()
                 src_addr = data_dict["src_addr"]
@@ -151,9 +156,6 @@ class BfRt_interface():
                 for val in dst_addr.split("."):
                     tuple_list += struct.pack("B", int(val))
 
-                # raw_src_addr = [int(x) for x in src_addr.split('.')]
-                # raw_dst_addr = [int(x) for x in dst_addr.split('.')]
-                # tuple_key = ".".join([str(x) for x in tuple_list])
                 if not self.tuples:
                     self.tuples = {tuple_list}
                 else:
@@ -163,12 +165,6 @@ class BfRt_interface():
             if parsed_digest % 1000 == 0:
                 print(f"Parsed {parsed_digest} of {self.recievedDigest} digests; Current tuples {len(self.tuples)}")
 
-        print("[WaterfallFcm] Start EM FSD...")
-        s1 = [fcm_tables[0], fcm_tables[3]]
-        s2 = [fcm_tables[1], fcm_tables[4]]
-        s3 = [fcm_tables[2], fcm_tables[5]]
-        em_fsd = EM_FSD(s1, s2, s3, self.tuples)
-        self.ns = em_fsd.run_em(1)
 
     def verify(self, in_tuples):
         print(f"[WaterfallFcm - verify] Calculate Waterfall F1-score...")
@@ -192,6 +188,12 @@ class BfRt_interface():
         load_factor = len(self.tuples) / len(in_tuples)
         print(f"[WaterfallFcm - verify] Load factor is {load_factor}")
 
+        total_lf = len(self.total_received) / len(in_tuples)
+        print(f"[WaterfallFcm - verify] Total Load factor is {total_lf}")
+
+        print(f"[WaterfallFcm - verify] Estimate Flow Size Distribution")
+        em_fsd = EM_FSD(self.stages[0], self.stages[1], self.stages[2], self.tuples)
+        self.ns = em_fsd.run_em(1)
         print(f"[WaterfallFcm - verify] Calculate Flow Size Distribution...")
         wmre = 0.0
         wmre_nom = 0.0
