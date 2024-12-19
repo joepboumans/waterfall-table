@@ -145,7 +145,7 @@ class BfRt_interface():
                 tuple_list += data["dst_addr"].val
 
                 if not self.tuples:
-                    print(data)
+                    print(data["src_addr"].val + data["dst_addr"].val)
                     print(tuple_list)
                     self.tuples = {tuple_list}
                 else:
@@ -154,6 +154,7 @@ class BfRt_interface():
             parsed_digest += 1
             if parsed_digest % 1000 == 0:
                 print(f"Parsed {parsed_digest} of {self.recievedDigest} digests; Current tuples {len(self.tuples)}")
+        exit(0)
 
         fcm_tables = self._get_FCM_counters()
         s1 = [fcm_tables[0], fcm_tables[3]]
