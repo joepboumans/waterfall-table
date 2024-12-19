@@ -98,9 +98,9 @@ class BfRt_interface():
                     else:
                         self.tuples.add(tuple_list)
 
-            self.recievedDigest += 1
-            if self.recievedDigest % 1000 == 0:
-                print(f"Received {self.recievedDigest} digests; Current tuples {len(self.tuples)}")
+                self.recievedDigest += 1
+                if self.recievedDigest % 1000 == 0:
+                    print(f"Received {self.recievedDigest} digests; Current tuples {len(self.tuples)}")
 
             self.hasFirstData = True
         except Exception as err:
