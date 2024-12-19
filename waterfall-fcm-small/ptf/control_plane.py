@@ -95,7 +95,7 @@ class BfRt_interface():
         except Exception as err:
             self.missedDigest += 1
             print(f"error reading digest {self.missedDigest}, {err} ", end="", flush=True)
-            if self.missedDigest > 10 and self.hasFirstData:
+            if self.hasFirstData:
                 self.isRunning = False
                 print("")
             time.sleep(0.1)
@@ -143,8 +143,8 @@ class BfRt_interface():
                 print(data)
                 print(data["src_addr"])
                 tuple_list = b''
-                tuple_list += data["src_addr"]
-                tuple_list += data["dst_addr"]
+                tuple_list += data["src_addr"].val
+                tuple_list += data["dst_addr"].val
 
                 if not self.tuples:
                     self.tuples = {tuple_list}
