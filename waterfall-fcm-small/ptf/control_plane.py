@@ -90,7 +90,7 @@ class BfRt_interface():
             data_list = self.learn_filter.make_data_list(digest)
             self.total_received += len(data_list)
             for data in data_list:
-                tuple_list = data["src_addr"].val + data["dst_addr"].val
+                tuple_list = bytes(data["src_addr"].val + data["dst_addr"].val)
 
                 if not self.tuples:
                     self.tuples = {tuple_list}
