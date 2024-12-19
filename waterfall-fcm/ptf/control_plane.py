@@ -103,13 +103,7 @@ class BfRt_interface():
 
     def _parse_data_list(self, pipe):
         print(f"Start reading thread, wait for first data...")
-
-        while not self.hasFirstData:
-            time.sleep(0.5)
-
         prev_n_digest = 0
-        print(f"Found first data, start parsing digest")
-
 
         while True:
             digest = pipe.recv()
@@ -136,7 +130,7 @@ class BfRt_interface():
                 else:
                     self.tuples.add(tuple_list)
             
-            if prev_n_digest == self.recievedDigest:
+            if prev_n_digest == self.recievedDigest and prev_n_digest > 0:
                 break
 
             prev_n_digest += 1
