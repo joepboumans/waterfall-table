@@ -141,7 +141,7 @@ class BfRt_interface():
             self.total_received += len(data_list)
             for data in data_list:
                 print(data)
-                print(data[0])
+                print(data["src_addr"])
                 tuple_list = b''
                 for val in data["src_addr"].split("."):
                     tuple_list += struct.pack("B", int(val))
