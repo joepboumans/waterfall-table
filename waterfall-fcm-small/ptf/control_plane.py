@@ -133,11 +133,6 @@ class BfRt_interface():
         self.isRunning = True
         while self.isRunning:
             self._read_digest()
-        fcm_tables = self._get_FCM_counters()
-        s1 = [fcm_tables[0], fcm_tables[3]]
-        s2 = [fcm_tables[1], fcm_tables[4]]
-        s3 = [fcm_tables[2], fcm_tables[5]]
-        self.stages = [s1, s2, s3]
 
         print(f"Received {len(self.recieved_digests)} digest from switch")
         parsed_digest = 0
@@ -161,6 +156,11 @@ class BfRt_interface():
             if parsed_digest % 1000 == 0:
                 print(f"Parsed {parsed_digest} of {self.recievedDigest} digests; Current tuples {len(self.tuples)}")
 
+        fcm_tables = self._get_FCM_counters()
+        s1 = [fcm_tables[0], fcm_tables[3]]
+        s2 = [fcm_tables[1], fcm_tables[4]]
+        s3 = [fcm_tables[2], fcm_tables[5]]
+        self.stages = [s1, s2, s3]
 
     def verify(self, in_tuples):
         print(f"[WaterfallFcm - verify] Calculate Waterfall F1-score...")
