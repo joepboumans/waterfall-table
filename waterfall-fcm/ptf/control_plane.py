@@ -104,7 +104,7 @@ class BfRt_interface():
                 self.isRunning = False
                 print("")
 
-    def _parse_data_list(self, pipe):
+    def _parse_data_list(self, pipe, recv_digest):
         print(f"Start reading thread, wait for first data...")
         prev_n_digest = 0
 
@@ -134,11 +134,11 @@ class BfRt_interface():
                     self.tuples.add(tuple_list)
 
             
-            if prev_n_digest >= self.recievedDigest and prev_n_digest > 0:
+            if prev_n_digest == recv_digest and prev_n_digest > 0:
                 break
 
             if prev_n_digest % 1000 == 0:
-                print(f"{prev_n_digest = } / {self.recievedDigest = }")
+                print(f"{prev_n_digest = } / {recv_digest = }")
 
 
             prev_n_digest += 1
@@ -175,7 +175,7 @@ class BfRt_interface():
 
     def run(self):
         # Start digest parsing thread
-        p = Process(target=self._parse_data_list, args=[self.parser_pipe])
+        p = Process(target=self._parse_data_list, args=[self.parser_pipe, self.recievedDigest])
         p.start()
         self.isRunning = True
         while self.isRunning:
