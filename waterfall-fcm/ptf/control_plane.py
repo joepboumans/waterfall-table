@@ -3,7 +3,7 @@ import os, sys, subprocess
 import mmap
 import time
 import struct
-from threading import Thread, Lock
+from multiprocessing import Process, Pipe
 
 from collections import defaultdict
 
@@ -13,7 +13,7 @@ from EM_ctypes import EM_FSD
 sys.path.append('/home/onie/sde/bf-sde-9.11.0/install/lib/python3.8/site-packages/tofino/')
 sys.path.append('/home/onie/sde/bf-sde-9.11.0/install/lib/python3.8/site-packages/tofino/bfrt_grpc/')
 
-os.environ["GRPC_ENABLE_FORK_SUPPORT"] = "1"
+# os.environ["GRPC_ENABLE_FORK_SUPPORT"] = "1"
 os.environ["GRPC_POLL_STRATEGY"] = "poll"
 # os.environ["GRPC_VERBOSITY"] = "debug"
 
@@ -58,6 +58,8 @@ class BfRt_interface():
         # Get Pkt count register of FCM
         self.num_pkt = self.bfrt_info.table_get("num_pkt")
 
+        self.parser_pipe, self.get_pipe = Pipe()
+
         print("Connected to Device: {}, Program: {}, ClientId: {}".format(
                 dev, self.p4_name, client_id))
 
@@ -88,7 +90,7 @@ class BfRt_interface():
     def _read_digest(self):
         try:
             digest = self.interface.digest_get(1)
-            self.recieved_digests.append(digest)
+            self.get_pipe.send(digest)
             self.recievedDigest += 1
             self.hasFirstData = True
         except:
@@ -99,7 +101,7 @@ class BfRt_interface():
                 self.isRunning = False
                 print("")
 
-    def _parse_data_list(self):
+    def _parse_data_list(self, pipe):
         print(f"Start reading thread, wait for first data...")
 
         while not self.hasFirstData:
@@ -110,7 +112,9 @@ class BfRt_interface():
 
 
         while True:
-            data_list = self.learn_filter.make_data_list(self.recieved_digests[prev_n_digest])
+            digest = pipe.recv()
+            print(digest)
+            data_list = self.learn_filter.make_data_list(digest)
             for data in data_list:
                 data_dict = data.to_dict()
                 src_addr = data_dict["src_addr"]
@@ -168,9 +172,14 @@ class BfRt_interface():
             
 
     def run(self):
+        # Start digest parsing thread
+        p = Process(target=self._parse_data_list, args=[self.parser_pipe])
+        p.start()
         self.isRunning = True
         while self.isRunning:
             self._read_digest()
+
+        p.join()
         fcm_tables = self._get_FCM_counters()
 
         print(f"Received {len(self.tuples)} unique tuples from the switch")
