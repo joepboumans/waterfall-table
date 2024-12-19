@@ -146,18 +146,18 @@ class BfRt_interface():
             self.total_received += len(data_list)
             for data in data_list:
                 data_dict = data.to_dict()
-                src_addr = data_dict["src_addr"]
-                dst_addr = data_dict["dst_addr"]
 
                 tuple_list = b''
-                for val in src_addr.split("."):
+                for val in data_dict["src_addr"].split("."):
                     tuple_list += struct.pack("B", int(val))
 
-                for val in dst_addr.split("."):
+                for val in data_dict["dst_addr"].split("."):
                     tuple_list += struct.pack("B", int(val))
 
                 if not self.tuples:
                     self.tuples = {tuple_list}
+                    print(data)
+                    print(data[0])
                 else:
                     self.tuples.add(tuple_list)
 
@@ -188,7 +188,7 @@ class BfRt_interface():
         load_factor = len(self.tuples) / len(in_tuples)
         print(f"[WaterfallFcm - verify] Load factor is {load_factor}")
 
-        total_lf = len(self.total_received) / len(in_tuples)
+        total_lf = self.total_received / len(in_tuples)
         print(f"[WaterfallFcm - verify] Total Load factor is {total_lf}")
 
         print(f"[WaterfallFcm - verify] Estimate Flow Size Distribution")
