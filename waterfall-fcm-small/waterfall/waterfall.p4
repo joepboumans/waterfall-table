@@ -246,12 +246,14 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
 
   action resubmit_hdr() {
     ig_intr_dprsr_md.resubmit_type = DPRSR_RESUB;
+    ig_intr_dprsr_md.digest_type = 1;
     ig_md.resubmit_md.idx = ig_md.idx1;
     ig_md.resubmit_md.remain = ig_md.remain1;
   }
 
   action no_action() {
     ig_intr_dprsr_md.resubmit_type = 0;
+    ig_intr_dprsr_md.digest_type = 0;
   }
 
   table resub {
