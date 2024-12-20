@@ -118,7 +118,7 @@ class BfRt_interface():
                 summed += entry_val
                 nonzero_entries += 1
                 # print(data_dict)
-                # print(entry_val.to_bytes(2,'big'))
+                print(f"{len(entries)} : {entry_val.to_bytes(2,'big')}")
         print(f"{name} has {nonzero_entries} entries")
 
         return entries
