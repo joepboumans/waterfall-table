@@ -1,10 +1,10 @@
-define($trace /data-1/users/jboumans/smaller_test.pcap)
+define($trace /data-1/users/jboumans/small_test.pcap)
 
 define($txport 0)
 
 define($bout 32)
 define($txverbose 99)
-define($RATE 100Mbps)
+define($RATE 1Mbps)
 
 define($max_packets_in_queue 500000)
 define($replay_count -1)
