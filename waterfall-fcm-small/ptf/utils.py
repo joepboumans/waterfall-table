@@ -32,7 +32,6 @@ def crc32_rehash(ip_hash, init_val):
     hash_bytes = ip_hash.to_bytes(4, byteorder='little')
     # Hash(idx + remain) + emtpy dst addr + emtpy srcp + emtpry dstp + empty protocol
     bytes_string = hash_bytes + (0).to_bytes(9, 'big')
-    print(bytes_string.hex())
     
     init_val = 0xFFFFFFFF - init_val
     n = zlib.crc32(bytes_string, init_val)
