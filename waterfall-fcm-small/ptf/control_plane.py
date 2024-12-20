@@ -197,6 +197,14 @@ class BfRt_interface():
                 hash4 = utils.crc32_rehash(hash3, 0x000FFFFF)
                 print(hash4.to_bytes(4, byteorder='big'))
 
+                hash_switch = b'\xdb\xbc^y'
+                hash2 = utils.crc32_rehash(hash_switch, 0x0FFFFFFF)
+                print(hash2.to_bytes(4, byteorder='big'))
+                hash3 = utils.crc32_rehash(hash2, 0x00FFFFFF)
+                print(hash3.to_bytes(4, byteorder='big'))
+                hash4 = utils.crc32_rehash(hash3, 0x000FFFFF)
+                print(hash4.to_bytes(4, byteorder='big'))
+
                 if not self.tuples:
                     self.tuples = {tuple_list}
                 else:
