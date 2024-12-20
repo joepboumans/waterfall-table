@@ -108,7 +108,7 @@ class BfRt_interface():
 
         summed = 0
         nonzero_entries = 0
-        data_table = table.entry_get(self.dev_tgt, [], {"from_hw" : True})
+        data_table = table.entry_get(self.dev_tgt, [])
         entries = []
         for data, key in data_table:
             data_dict = data.to_dict()
@@ -119,6 +119,7 @@ class BfRt_interface():
                 nonzero_entries += 1
                 # print(data_dict)
                 print(entry_val.to_bytes(2,'big'))
+        print(f"{name} has {summed} total remainders and {nonzero_entries} entries")
 
         return entries
 
