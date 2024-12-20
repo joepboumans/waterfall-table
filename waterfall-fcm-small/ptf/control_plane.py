@@ -87,6 +87,21 @@ class BfRt_interface():
         try:
             digest = self.interface.digest_get(1)
             self.recieved_digests.append(digest)
+            data_list = self.learn_filter.make_data_list(digest)
+            self.total_received += len(data_list)
+            for data in data_list:
+                tuple_list = bytes(data["src_addr"].val + data["dst_addr"].val)
+                print(tuple_list, end=" ")
+
+                if not self.tuples:
+                    self.tuples = {tuple_list}
+                else:
+                    self.tuples.add(tuple_list)
+            print("")
+            if len(self.recieved_digests) >= 2:
+                exit(0)
+
+
             self.recievedDigest += 1
             if self.recievedDigest % 1000 == 0:
                 print(f"Received {self.recievedDigest} digests")
