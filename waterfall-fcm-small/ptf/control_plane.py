@@ -298,7 +298,8 @@ def read_data_set(data_name):
 
 
 def main():
-    input_tuples = read_data_set("/home/onie/jboumans/equinix-chicago.20160121-130000.UTC.dat")
+    # input_tuples = read_data_set("/home/onie/jboumans/equinix-chicago.20160121-130000.UTC.dat")
+    input_tuples = read_data_set("/home/onie/jboumans/small_test.dat")
     bfrt_interface = BfRt_interface(0, 'localhost:50052', 0)
     # bfrt_interface.list_tables()
     bfrt_interface.run()
