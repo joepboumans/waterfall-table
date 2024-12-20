@@ -145,11 +145,14 @@ class BfRt_interface():
             self.total_received += len(data_list)
             for data in data_list:
                 tuple_list = bytes(data["src_addr"].val + data["dst_addr"].val)
+                print(tuple_list, end=" ")
 
                 if not self.tuples:
                     self.tuples = {tuple_list}
                 else:
                     self.tuples.add(tuple_list)
+            print()
+            print()
 
             parsed_digest += 1
             if parsed_digest % 1000 == 0:
