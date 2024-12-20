@@ -219,7 +219,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
   RegisterAction<bit<WATERFALL_REMAIN_BIT_WIDTH>, _, bit<WATERFALL_REMAIN_BIT_WIDTH>>(table_1) table_1_swap = {
     void apply(inout bit<WATERFALL_REMAIN_BIT_WIDTH> val, out bit<WATERFALL_REMAIN_BIT_WIDTH> read_value) {
       read_value = val;
-      val = ig_md.resubmit_hdr.remain;
+      val = ig_md.resubmit_md.remain;
     }
   };
 
@@ -270,7 +270,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
   }
 
   action do_swap1() {
-    ig_md.out_remain1 = table_1_swap.execute(ig_md.resubmit_hdr.idx);
+    ig_md.out_remain1 = table_1_swap.execute(ig_md.resubmit_md.idx);
   }
 
   action lookup1(){
