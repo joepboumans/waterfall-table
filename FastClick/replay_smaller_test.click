@@ -1,4 +1,4 @@
-define($trace /data-1/users/jboumans/smaller_test.pcap)
+define($trace /data-1/users/jboumans/small_test.pcap)
 
 define($txport 0)
 
