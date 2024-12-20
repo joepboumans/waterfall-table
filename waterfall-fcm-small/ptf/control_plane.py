@@ -118,8 +118,8 @@ class BfRt_interface():
                 summed += entry_val
                 nonzero_entries += 1
                 # print(data_dict)
-                print(entry_val.to_bytes(2,'big'))
-        print(f"{name} has {summed} total remainders and {nonzero_entries} entries")
+                # print(entry_val.to_bytes(2,'big'))
+        print(f"{name} has {nonzero_entries} entries")
 
         return entries
 
