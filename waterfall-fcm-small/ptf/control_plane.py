@@ -3,6 +3,7 @@ import os, sys, subprocess
 import mmap
 import time
 import struct
+import utils
 
 from collections import defaultdict
 
@@ -118,7 +119,7 @@ class BfRt_interface():
                 summed += entry_val
                 nonzero_entries += 1
                 # print(data_dict)
-                print(f"{len(entries)} : {entry_val.to_bytes(2,'big')}")
+                print(f"{len(entries).to_bytes(2, 'big')} : {entry_val.to_bytes(2,'big')}")
         print(f"{name} has {nonzero_entries} entries")
 
         return entries
@@ -186,7 +187,15 @@ class BfRt_interface():
             self.total_received += len(data_list)
             for data in data_list:
                 tuple_list = bytes(data["src_addr"].val + data["dst_addr"].val)
-                print(tuple_list, end=" ")
+                print(tuple_list)
+                hash1 = utils.crc32_sf(tuple_list, 0xFFFFFFFF)
+                print(hash1)
+                hash2 = utils.crc32_rehash(hash1, 0x0FFFFFF)
+                print(hash2)
+                hash3 = utils.crc32_rehash(hash2, 0x00FFFFF)
+                print(hash3)
+                hash4 = utils.crc32_rehash(hash3, 0x000FFFF)
+                print(hash4)
 
                 if not self.tuples:
                     self.tuples = {tuple_list}

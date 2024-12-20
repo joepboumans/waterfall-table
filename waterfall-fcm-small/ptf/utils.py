@@ -37,3 +37,10 @@ def crc32_rehash(ip_hash, init_val):
     init_val = 0xFFFFFFFF - init_val
     n = zlib.crc32(bytes_string, init_val)
     return n + (1<<32) if n < 0 else n
+
+# Caclulates the hash for CRC32 algorithm of Tofino on small flow ids
+# Inital values is reversed order compared to pipeline init_val
+def crc32_sf(bytes_str, init_val):
+    init_val = 0xFFFFFFFF - init_val
+    n = zlib.crc32(bytes_str, init_val)
+    return n + (1<<32) if n < 0 else n
