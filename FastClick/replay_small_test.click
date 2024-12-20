@@ -1,4 +1,4 @@
-define($trace /data-1/users/jboumans/equinix-chicago.20160121-130000.UTC.pcap)
+define($trace /data-1/users/jboumans/small_test.pcap)
 
 define($txport 0)
 
