@@ -290,7 +290,7 @@ def read_data_set(data_name):
                 first = False
 
     max_count = max(tuples.values())
-    fsd = [0]* max_count
+    fsd = [0] * (max_count + 1)
     print(f"[WaterfallFcm - verify] Setup real EM...")
     for val in tuples.values():
         fsd[val] += 1
