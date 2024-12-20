@@ -189,13 +189,13 @@ class BfRt_interface():
                 tuple_list = bytes(data["src_addr"].val + data["dst_addr"].val)
                 print(tuple_list)
                 hash1 = utils.crc32_sf(tuple_list, 0xFFFFFFFF)
-                print(hash1.to_bytes(8, byteorder='big'))
+                print(hash1.to_bytes(4, byteorder='big'))
                 hash2 = utils.crc32_rehash(hash1, 0x0FFFFFF)
-                print(hash2.to_bytes(8, byteorder='big'))
+                print(hash2.to_bytes(4, byteorder='big'))
                 hash3 = utils.crc32_rehash(hash2, 0x00FFFFF)
-                print(hash3.to_bytes(8, byteorder='big'))
+                print(hash3.to_bytes(4, byteorder='big'))
                 hash4 = utils.crc32_rehash(hash3, 0x000FFFF)
-                print(hash4.to_bytes(8, byteorder='big'))
+                print(hash4.to_bytes(4, byteorder='big'))
 
                 if not self.tuples:
                     self.tuples = {tuple_list}
