@@ -292,7 +292,7 @@ def read_data_set(data_name):
     max_count = max(tuples.values())
     fsd = [0]* max_count
     print(f"[WaterfallFcm - verify] Setup real EM...")
-    for val in tuples:
+    for val in tuples.values():
         fsd[val] += 1
 
     for i, fs in zip(range(max_count), fsd):
