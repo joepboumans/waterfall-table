@@ -274,7 +274,6 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
   }
 
   action lookup1(){
-      ig_md.found = false;
       ig_md.found = table_1_lookup.execute(ig_md.idx1); 
       ig_md.out_remain1 = ig_md.remain1;
   }
@@ -376,6 +375,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
   action hit(PortId_t dst_port) {
     ig_intr_tm_md.ucast_egress_port = dst_port;
     ig_intr_dprsr_md.drop_ctl = 0x0;
+    ig_md.found = false;
   }
   action drop() { ig_intr_dprsr_md.drop_ctl = 0x1; }
 
@@ -383,6 +383,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
   table forward {
     key = {
       ig_intr_md.ingress_port: exact;
+      ig_intr_md.resubmit_flag: exact;
     }
     actions = {
       hit;
@@ -390,7 +391,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
       no_action;
     }
     size = 512;
-    default_action = no_action;
+    default_action = drop;
   }
 
   apply { 

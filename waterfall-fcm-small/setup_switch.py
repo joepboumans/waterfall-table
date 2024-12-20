@@ -76,6 +76,7 @@ forward_tbl.add_with_hit(ingress_port=132, dst_port=132)
 forward_tbl.add_with_hit(ingress_port=140, dst_port=140)
 forward_tbl.add_with_hit(ingress_port=148, dst_port=148)
 forward_tbl.add_with_hit(ingress_port=156, dst_port=156)
+forward_tbl.add_with_no_action(resubmit_flag=0x1)
 
 print("populating resub table...")
 resub = p4.WaterfallIngress.resub
