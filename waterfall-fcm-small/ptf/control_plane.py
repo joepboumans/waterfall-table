@@ -289,6 +289,16 @@ def read_data_set(data_name):
                 print(*tuples.keys())
                 first = False
 
+    max_count = max(tuples.values())
+    fsd = [0]* max_count
+    print(f"[WaterfallFcm - verify] Setup real EM...")
+    for val in tuples:
+        fsd[val] += 1
+
+    for i, fs in zip(range(max_count), fsd):
+        if fs != 0:
+            print(f"{i} : {fs}")
+
     # delay = 10
     # print(f"[Dataset Loader] ...done! Waiting for {delay}s before starting test...")
     # time.sleep(delay)
