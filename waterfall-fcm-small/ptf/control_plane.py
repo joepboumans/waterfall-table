@@ -119,7 +119,7 @@ class BfRt_interface():
                 summed += entry_val
                 nonzero_entries += 1
                 # print(data_dict)
-                print(f"{len(entries).to_bytes(2, 'big')} : {entry_val.to_bytes(2,'big')}")
+                print(f"{len(entries).to_bytes(2, 'big') + entry_val.to_bytes(2,'big')}")
         print(f"{name} has {nonzero_entries} entries")
 
         return entries
@@ -190,11 +190,11 @@ class BfRt_interface():
                 print(tuple_list)
                 hash1 = utils.crc32_sf(tuple_list, 0xFFFFFFFF)
                 print(hash1.to_bytes(4, byteorder='big'))
-                hash2 = utils.crc32_rehash(hash1, 0x0FFFFFF)
+                hash2 = utils.crc32_rehash(hash1, 0x0FFFFFFF)
                 print(hash2.to_bytes(4, byteorder='big'))
-                hash3 = utils.crc32_rehash(hash2, 0x00FFFFF)
+                hash3 = utils.crc32_rehash(hash2, 0x00FFFFFF)
                 print(hash3.to_bytes(4, byteorder='big'))
-                hash4 = utils.crc32_rehash(hash3, 0x000FFFF)
+                hash4 = utils.crc32_rehash(hash3, 0x000FFFFF)
                 print(hash4.to_bytes(4, byteorder='big'))
 
                 if not self.tuples:
