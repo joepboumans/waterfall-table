@@ -143,7 +143,6 @@ class BfRt_interface():
         for digest in self.recieved_digests:
             data_list = self.learn_filter.make_data_list(digest)
             self.total_received += len(data_list)
-            print(data_list)
             for data in data_list:
                 tuple_list = bytes(data["src_addr"].val + data["dst_addr"].val)
                 print(tuple_list, end=" ")
@@ -152,7 +151,7 @@ class BfRt_interface():
                     self.tuples = {tuple_list}
                 else:
                     self.tuples.add(tuple_list)
-            print()
+            print(f"Found {len(data_list)} tuples with {len(self.tuples)} uniques")
             print()
 
             parsed_digest += 1
