@@ -140,9 +140,9 @@ class BfRt_interface():
 
         print(f"Received {len(self.recieved_digests)} digest from switch")
         parsed_digest = 0
+        prev_tuple_len = 0
         for digest in self.recieved_digests:
             data_list = self.learn_filter.make_data_list(digest)
-            prev_tuple_len = len(self.tuples)
             self.total_received += len(data_list)
             for data in data_list:
                 tuple_list = bytes(data["src_addr"].val + data["dst_addr"].val)
@@ -154,6 +154,7 @@ class BfRt_interface():
                     self.tuples.add(tuple_list)
             print(f"Found {len(data_list)} tuples with {len(self.tuples)} uniques")
             print(f"In total received {len(self.tuples) - prev_tuple_len - len(data_list)} tuples to many")
+            prev_tuple_len = len(self.tuples)
 
             parsed_digest += 1
             if parsed_digest % 1000 == 0:
