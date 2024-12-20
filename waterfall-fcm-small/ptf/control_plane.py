@@ -87,7 +87,7 @@ class BfRt_interface():
         try:
             digest = self.interface.digest_get(1)
             self.recieved_digests.append(digest)
-            if len(self.recieved_digests) >= 2:
+            if len(self.recieved_digests) >= 10:
                 self.isRunning = False
 
 
