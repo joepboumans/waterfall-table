@@ -270,7 +270,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
   }
 
   action do_swap1() {
-    ig_md.out_remain1 = table_1_swap.execute(ig_md.resubmit_md.idx);
+    ig_md.out_remain1 = table_1_swap.execute(ig_md.idx1);
   }
 
   action lookup1(){
@@ -395,6 +395,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
 
   apply { 
     forward.apply();
+    ig_md.idx1 = ig_md.resubmit_md.idx;
 
     get_hash1();
     swap1.apply();
