@@ -152,8 +152,9 @@ class BfRt_interface():
                     self.tuples = {tuple_list}
                 else:
                     self.tuples.add(tuple_list)
+
             print(f"Found {len(data_list)} tuples with {len(self.tuples)} uniques")
-            print(f"In total received {len(self.tuples) - prev_tuple_len - len(data_list)} tuples to many")
+            print(f"{prev_tuple_len}; In total received {len(self.tuples) - prev_tuple_len - len(data_list)} tuples to many")
             prev_tuple_len = len(self.tuples)
 
             parsed_digest += 1
