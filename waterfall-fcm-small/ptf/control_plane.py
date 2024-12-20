@@ -87,19 +87,8 @@ class BfRt_interface():
         try:
             digest = self.interface.digest_get(1)
             self.recieved_digests.append(digest)
-            data_list = self.learn_filter.make_data_list(digest)
-            self.total_received += len(data_list)
-            for data in data_list:
-                tuple_list = bytes(data["src_addr"].val + data["dst_addr"].val)
-                print(tuple_list, end=" ")
-
-                if not self.tuples:
-                    self.tuples = {tuple_list}
-                else:
-                    self.tuples.add(tuple_list)
-            print("")
             if len(self.recieved_digests) >= 2:
-                exit(0)
+                self.isRunning = False
 
 
             self.recievedDigest += 1
@@ -165,6 +154,7 @@ class BfRt_interface():
             parsed_digest += 1
             if parsed_digest % 1000 == 0:
                 print(f"Parsed {parsed_digest} of {self.recievedDigest} digests; Current tuples {len(self.tuples)}")
+        exit(0)
 
         fcm_tables = self._get_FCM_counters()
         s1 = [fcm_tables[0], fcm_tables[3]]

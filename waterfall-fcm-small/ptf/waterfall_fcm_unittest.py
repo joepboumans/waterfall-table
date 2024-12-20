@@ -244,7 +244,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         data = swap2.make_data([], "WaterfallIngress.lookup2")
         swap2.entry_add(target, [key], [data])
 
-        key = swap2.make_key([gc.KeyTuple('ig_md.out_remain1', low=0x1, high=0xFFFF), gc.KeyTuple('ig_intr_md.resubmit_flag', swap1
+        key = swap2.make_key([gc.KeyTuple('ig_md.out_remain1', low=0x1, high=0xFFFF), gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
         data = swap2.make_data([], "WaterfallIngress.do_swap2")
         swap2.entry_add(target, [key], [data])
 
