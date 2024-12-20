@@ -44,6 +44,20 @@ class BfRt_interface():
         self.learn_filter.info.data_field_annotation_add("src_addr", "ipv4")
         self.learn_filter.info.data_field_annotation_add("dst_addr", "ipv4")
 
+        # Get Waterfall tables
+        self.table_1 = self.bfrt_info.table_get("table_1") 
+        self.table_2 = self.bfrt_info.table_get("table_2")
+        self.table_3 = self.bfrt_info.table_get("table_3")
+        self.table_4 = self.bfrt_info.table_get("table_4")
+        self.table_dict = {"table_1" : self.table_1, "table_2" : self.table_2, "table_3" : self.table_3, "table_4" : self.table_4}
+
+        # Get swap tables
+        self.swap1 = self.bfrt_info.table_get("swap1")
+        self.swap2 = self.bfrt_info.table_get("swap2")
+        self.swap3 = self.bfrt_info.table_get("swap3")
+        self.swap4 = self.bfrt_info.table_get("swap4")
+        self.swap_dict = {"swap1" : self.swap1, "swap2" : self.swap2, "swap3" : self.swap3, "swap4" : self.swap4}
+
         # Get FCM counters
         self.fcm_l1_d1 = self.bfrt_info.table_get("sketch_reg_l1_d1")
         self.fcm_l2_d1 = self.bfrt_info.table_get("sketch_reg_l2_d1")
@@ -82,6 +96,31 @@ class BfRt_interface():
                     t.info.data_field_size_get(field),
                     ))
             print("================")
+
+    def evaluate_table(self, tables, name):
+        table = tables[name]
+        control_name = ""
+        if "fcm" in name:
+            control_name = "FcmEgress.fcmsketch"
+            name = name.replace("fcm", "sketch_reg")
+        else:
+            control_name = "WaterfallIngress"
+
+        summed = 0
+        nonzero_entries = 0
+        data_table = table.entry_get(self.dev_tgt, [], {"from_hw" : True})
+        entries = []
+        for data, key in data_table:
+            data_dict = data.to_dict()
+            entry_val = data_dict[f"{control_name}.{name}.f1"][0]
+            entries.append(entry_val)
+            if entry_val != 0:
+                summed += entry_val
+                nonzero_entries += 1
+                # print(data_dict)
+                print(entry_val.to_bytes(2,'big'))
+
+        return entries
 
     def _read_digest(self):
         try:
@@ -160,6 +199,11 @@ class BfRt_interface():
             parsed_digest += 1
             if parsed_digest % 1000 == 0:
                 print(f"Parsed {parsed_digest} of {self.recievedDigest} digests; Current tuples {len(self.tuples)}")
+
+        for t in self.table_dict.keys():
+            self.evaluate_table(self.table_dict, t)
+
+
         exit(0)
 
         fcm_tables = self._get_FCM_counters()
