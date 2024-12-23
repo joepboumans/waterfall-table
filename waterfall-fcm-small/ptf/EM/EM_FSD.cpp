@@ -66,12 +66,11 @@ public:
   uint32_t iter = 0;
   bool inited = false;
 
-  EMFSD(array<uint32_t, NUM_STAGES> szes,
-        array<array<array<uint32_t, W1>, NUM_STAGES>, DEPTH> stages,
+  EMFSD(array<array<array<uint32_t, W1>, NUM_STAGES>, DEPTH> stages,
         vector<FLOW_TUPLE> tuples, size_t tuples_sz) {
 
     this->tuples = tuples;
-    this->stage_szes = szes;
+    this->stage_szes = {W1, W2, W3};
     std::cout << "[WaterfallFcm] Stage szes:" << std::endl;
     for (auto &sz : this->stage_szes) {
       std::cout << sz << " ";
@@ -780,15 +779,11 @@ public:
 };
 
 extern "C" {
-void *EMFSD_new(uint32_t *szes, uint32_t *s1_1, uint32_t *s1_2, uint32_t *s2_1,
-                uint32_t *s2_2, uint32_t *s3_1, uint32_t *s3_2,
-                FLOW_TUPLE *tuples, uint32_t tuples_sz) {
+void *EMFSD_new(uint32_t *s1_1, uint32_t *s1_2, uint32_t *s2_1, uint32_t *s2_2,
+                uint32_t *s3_1, uint32_t *s3_2, FLOW_TUPLE *tuples,
+                uint32_t tuples_sz) {
 
   std::cout << "[WaterfallFcm CTypes] Start parsing python to c" << std::endl;
-  array<uint32_t, NUM_STAGES> stage_szes;
-  std::copy_n(szes, NUM_STAGES, stage_szes.begin());
-
-  std::cout << "\tdone stage sizes" << std::endl;
   array<array<array<uint32_t, W1>, NUM_STAGES>, DEPTH> stages;
 
   std::cout << "\tcopy stages" << std::endl;
