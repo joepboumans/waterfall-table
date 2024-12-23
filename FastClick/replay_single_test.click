@@ -59,9 +59,6 @@ fdIN
   //-> gen0 :: Generator(\<5700>) 
   -> tdIN; StaticThreadSched(fdIN 0/1, unqueue0 0/1);
 
-pkt_cnt :: HandlerAggregate(ELEMENT gen0/cnt);
-
-
 ig :: Script(TYPE ACTIVE,
     set s $(now),
     set lastcount 0,
