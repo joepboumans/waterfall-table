@@ -82,6 +82,9 @@ resub = p4.WaterfallIngress.resub
 resub.add_with_resubmit_hdr(found=False)
 resub.add_with_no_action(found=True)
 
+parse_resub = p4.WaterfallIngress.parse_resub_hdr
+parse_resub.add_with_parse_hdr(resubmit_flag=0x1)
+
 print("populating swaps table...")
 swap1 = p4.WaterfallIngress.swap1
 swap1.add_with_lookup1(resubmit_flag=0x0)
