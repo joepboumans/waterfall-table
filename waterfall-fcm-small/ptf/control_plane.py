@@ -14,7 +14,7 @@ sys.path.append('/home/onie/sde/bf-sde-9.11.0/install/lib/python3.8/site-package
 
 # os.environ["GRPC_ENABLE_FORK_SUPPORT"] = "1"
 # os.environ["GRPC_POLL_STRATEGY"] = "poll"
-os.environ["GRPC_VERBOSITY"] = "debug"
+# os.environ["GRPC_VERBOSITY"] = "debug"
 
 import bfrt_grpc.client as gc
 
@@ -132,7 +132,7 @@ class BfRt_interface():
                 summed += entry_val
                 nonzero_entries += 1
                 # print(data_dict)
-                # print(f"{(len(entries) - 1).to_bytes(2, 'big').hex() + entry_val.to_bytes(2,'big').hex()}")
+                print(f"{(len(entries) - 1).to_bytes(2, 'big').hex() + entry_val.to_bytes(2,'big').hex()}")
         print(f"{name} has {nonzero_entries} entries")
 
         return entries

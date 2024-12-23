@@ -74,6 +74,15 @@ public:
 
     std::cout << std::endl;
     std::cout << "[WaterfallFcm] Init EM_FSD" << std::endl;
+    std::cout << "[WaterfallFcm] Copy stages" << std::endl;
+    for (size_t d = 0; d < DEPTH; d++) {
+      for (size_t s = 0; s < NUM_STAGES; s++) {
+        for (size_t i = 0; i < this->stage_szes[s]; i++) {
+          this->stages[d][s][i] = stages[d][s][i];
+        }
+      }
+    }
+    std::cout << "[WaterfallFcm] Setup inital degrees" << std::endl;
     // Get inital degree guesses
     for (size_t i = 0; i < tuples_sz; i++) {
       for (size_t d = 0; d < DEPTH; d++) {
@@ -110,13 +119,6 @@ public:
         overflow_paths;
 
     std::cout << "[WaterfallFcm] Setup Summary and Overflow Paths" << std::endl;
-    for (size_t d = 0; d < DEPTH; d++) {
-      for (size_t s = 0; s < NUM_STAGES; s++) {
-        for (size_t i = 0; i < this->stage_szes[s]; i++) {
-          this->stages[d][s][i] = stages[d][s][i];
-        }
-      }
-    }
     // Setup sizes for summary and overflow_paths
     for (size_t d = 0; d < DEPTH; d++) {
       for (size_t stage = 0; stage < NUM_STAGES; stage++) {
