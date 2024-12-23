@@ -89,15 +89,15 @@ public:
         uint32_t hash_idx = this->hashing(this->tuples[i], d);
         /*std::cout << "Hashing at " << hash_idx << " : "*/
         /*          << init_degree[d][hash_idx] << " ";*/
-        init_degree[d][hash_idx]++;
-        init_max_degree[d] =
-            std::max(init_max_degree[d], init_degree[d][hash_idx]);
+        this->init_degree[d][hash_idx]++;
+        this->init_max_degree[d] =
+            std::max(this->init_max_degree[d], this->init_degree[d][hash_idx]);
       }
     }
     for (size_t d = 0; d < DEPTH; d++) {
       std::cout << "[WaterfallFcm] Depth " << d << ":" << std::endl;
-      for (size_t i = 0; i < init_degree[d].size(); i++) {
-        if (init_degree[d][i] > 0) {
+      for (size_t i = 0; i < W1; i++) {
+        if (this->init_degree[d][i] > 0) {
           std::cout << i << ":" << init_degree[d][i] << " ";
           std::cout << ":" << this->stages[d][0][i];
           std::cout << ":" << this->stages[d][1][i / 8];
