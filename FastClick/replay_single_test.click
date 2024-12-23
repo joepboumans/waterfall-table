@@ -46,7 +46,7 @@ elementclass Generator { $magic |
     -> EtherEncap(0x0800, 1:1:1:1:1:1, 2:2:2:2:2:2) // comment this if you want to use test.pcap
     -> doethRewrite :: { input[0] -> active::Switch(OUTPUT 0)[0] -> rwIN :: EtherRewrite($INsrcmac, $INdstmac) -> [0]output; active[1] -> [0]output }
     -> Pad
-    -> Numberise($magic)
+    //-> Numberise($magic)
     //-> sndavg :: AverageCounter(IGNORE 0)
     -> cnt :: AverageCounter(IGNORE 0)
     -> output;
@@ -54,9 +54,10 @@ elementclass Generator { $magic |
 
 //fdIN -> unqueue0 :: Unqueue() -> gen0 :: Generator(\<5700>) -> tdIN; StaticThreadSched(fdIN 0/1, unqueue0 0/1);
 fdIN
-//-> replay0 :: ReplayUnqueue(STOP -1, ACTIVE true)
- -> unqueue0 :: BandwidthRatedUnqueue($RATE, LINK_RATE true, ACTIVE true)
--> gen0 :: Generator(\<5700>) -> tdIN; StaticThreadSched(fdIN 0/1, unqueue0 0/1);
+  //-> replay0 :: ReplayUnqueue(STOP -1, ACTIVE true)
+  -> unqueue0 :: BandwidthRatedUnqueue($RATE, LINK_RATE true, ACTIVE true)
+  //-> gen0 :: Generator(\<5700>) 
+  -> tdIN; StaticThreadSched(fdIN 0/1, unqueue0 0/1);
 
 pkt_cnt :: HandlerAggregate(ELEMENT gen0/cnt);
 
