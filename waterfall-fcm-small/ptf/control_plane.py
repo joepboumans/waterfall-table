@@ -303,7 +303,7 @@ def read_data_set(data_name):
     for val in tuples.values():
         fsd[val] += 1
 
-    for i, fs in zip(range(max_count), fsd):
+    for i, fs in zip(range(max_count + 1), fsd):
         if fs != 0:
             print(f"{i} : {fs}")
 
