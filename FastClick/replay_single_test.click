@@ -11,7 +11,7 @@ define($INsrcmac b8:3f:d2:9f:2e:9b)
 define($INdstmac b8:3f:d2:b0:d7:79)
 
 define($ignore 0)
-define($bout 32)
+define($bout 1)
 
 /* Melanox grill: 0000:0a:00.1, 0000:0a:00.0 */
 define($txport 0)
