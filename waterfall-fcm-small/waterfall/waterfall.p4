@@ -32,10 +32,8 @@ struct port_metadata_t {
 }
 
 struct digest_t {
-  /*bit<32> src_addr;*/
-  /*bit<32> dst_addr;*/
-  bit<16> idx;
-  bit<16> remain;
+  bit<32> src_addr;
+  bit<32> dst_addr;
 }
 
 struct waterfall_metadata_t {
@@ -448,8 +446,7 @@ control WaterfallIngressDeparser( packet_out pkt, inout header_t hdr, in waterfa
 
   apply {
     if (ig_intr_dprsr_md.digest_type == DIGEST) {
-      /*digest.pack({hdr.ipv4.src_addr, hdr.ipv4.dst_addr});*/
-      digest.pack({ig_md.resubmit_md.idx, ig_md.resubmit_md.remain});
+      digest.pack({hdr.ipv4.src_addr, hdr.ipv4.dst_addr});
     }
     if (ig_intr_dprsr_md.resubmit_type == DPRSR_RESUB) {
       resubmit.emit(ig_md.resubmit_md);

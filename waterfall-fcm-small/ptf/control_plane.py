@@ -119,7 +119,7 @@ class BfRt_interface():
                 summed += entry_val
                 nonzero_entries += 1
                 # print(data_dict)
-                print(f"{(len(entries) - 1).to_bytes(2, 'big').hex() + entry_val.to_bytes(2,'big').hex()}")
+                # print(f"{(len(entries) - 1).to_bytes(2, 'big').hex() + entry_val.to_bytes(2,'big').hex()}")
         print(f"{name} has {nonzero_entries} entries")
 
         return entries
@@ -186,27 +186,7 @@ class BfRt_interface():
             data_list = self.learn_filter.make_data_list(digest)
             self.total_received += len(data_list)
             for data in data_list:
-                # tuple_list = bytes(data["src_addr"].val + data["dst_addr"].val)
-                tuple_list = bytes(data["idx"].val + data["remain"].val)
-                print(tuple_list.hex())
-                hash1 = utils.crc32_sf(tuple_list, 0xFFFFFFFF)
-                print(hash1.to_bytes(4, byteorder='big').hex())
-                hash2 = utils.crc32_rehash(hash1, 0x0FFFFFFF)
-                print(hash2.to_bytes(4, byteorder='big').hex())
-                hash3 = utils.crc32_rehash(hash2, 0x00FFFFFF)
-                print(hash3.to_bytes(4, byteorder='big').hex())
-                hash4 = utils.crc32_rehash(hash3, 0x000FFFFF)
-                print(hash4.to_bytes(4, byteorder='big').hex())
-
-                hash_switch = b'\xdb\xbc^y'
-                print(f"Compare to value from switch {hash_switch.hex()}")
-                hash2 = utils.crc32_rehash(int.from_bytes(hash_switch, 'big'), 0x0FFFFFFF)
-                print(hash2.to_bytes(4, byteorder='big').hex())
-                hash3 = utils.crc32_rehash(hash2, 0x00FFFFFF)
-                print(hash3.to_bytes(4, byteorder='big').hex())
-                hash4 = utils.crc32_rehash(hash3, 0x000FFFFF)
-                print(hash4.to_bytes(4, byteorder='big').hex())
-
+                tuple_list = bytes(data["src_addr"].val + data["dst_addr"].val)
                 if not self.tuples:
                     self.tuples = {tuple_list}
                 else:
@@ -222,9 +202,6 @@ class BfRt_interface():
 
         for t in self.table_dict.keys():
             self.evaluate_table(self.table_dict, t)
-
-
-        exit(0)
 
         fcm_tables = self._get_FCM_counters()
         s1 = [fcm_tables[0], fcm_tables[3]]
