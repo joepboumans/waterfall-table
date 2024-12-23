@@ -43,7 +43,7 @@ def clear_all():
     # Clearing register
     for table in p4.info(return_info=True, print_info=False):
         if table['type'] in ['REGISTER']:
-            print("Clearing Regitser {}".format(table['full_name']))
+            print("Clearing Register {}".format(table['full_name']))
             table['node'].clear()
 
 clear_all()
