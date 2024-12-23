@@ -50,14 +50,14 @@ public:
                   // colll, min_value >
 
   array<array<uint32_t, W1>, DEPTH> init_degree;
-  array<array<array<uint32_t, W1>, NUM_STAGES>, DEPTH>
-      stages; // depth, stage, counter
   array<uint32_t, DEPTH> init_max_degree = {
       0, 0}; // Maximum degree from Waterfall Tables
   array<uint32_t, DEPTH> max_degree = {
       0, 0}; // Maximum degree from FCM Sketch with inital degree from Waterfall
 
   array<uint32_t, NUM_STAGES> stage_szes;
+  array<array<array<uint32_t, W1>, NUM_STAGES>, DEPTH>
+      stages;                // depth, stage, counter
   vector<FLOW_TUPLE> tuples; // Found tuples by Waterfall Filter
 
   vector<double> ns; // for integer n
