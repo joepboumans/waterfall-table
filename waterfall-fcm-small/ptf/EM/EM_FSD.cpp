@@ -94,10 +94,6 @@ public:
             std::max(init_max_degree[d], init_degree[d][hash_idx]);
       }
     }
-    std::cout << "[WaterfallFcm] Colleted all initial degrees from Waterfall "
-                 "with max degree "
-              << init_max_degree[0] << " and " << init_max_degree[1]
-              << std::endl;
     for (size_t d = 0; d < DEPTH; d++) {
       std::cout << "[WaterfallFcm] Depth " << d << ":" << std::endl;
       for (size_t i = 0; i < init_degree[d].size(); i++) {
@@ -110,6 +106,11 @@ public:
       }
       std::cout << std::endl;
     }
+
+    std::cout << "[WaterfallFcm] Colleted all initial degrees from Waterfall "
+                 "with max degree "
+              << init_max_degree[0] << " and " << init_max_degree[1]
+              << std::endl;
     // Calculate Virtual Counters and thresholds
     // depth, stage, idx, (count, degree, overflown)
     array<array<vector<array<uint32_t, 3>>, NUM_STAGES>, DEPTH> summary;
