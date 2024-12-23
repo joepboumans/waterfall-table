@@ -198,6 +198,7 @@ class BfRt_interface():
                 print(hash4.to_bytes(4, byteorder='big'))
 
                 hash_switch = b'\xdb\xbc^y'
+                print(f"Compare to value from switch {hash_switch}")
                 hash2 = utils.crc32_rehash(int.from_bytes(hash_switch, 'big'), 0x0FFFFFFF)
                 print(hash2.to_bytes(4, byteorder='big'))
                 hash3 = utils.crc32_rehash(hash2, 0x00FFFFFF)
