@@ -44,8 +44,10 @@ class EM_FSD(object):
         in2Tuples = []
         for val in in_tuples:
             in2Tuples.append(FlowTuple(*list(val)))
+        print(*list(in_tuples[0]))
         for i in range(len(in2Tuples)):
             tuples[i] = in2Tuples[i]
+        print(tuples[0])
 
 
         # Needs separate list per depth as passing to c++ does not work well with c_uint32** 
