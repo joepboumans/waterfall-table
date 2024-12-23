@@ -1,14 +1,7 @@
 define($trace /data-1/users/jboumans/smaller_test.pcap)
-
-define($txport 0)
-
-define($bout 32)
-define($txverbose 99)
 define($RATE 1Mbps)
-
 define($max_packets_in_queue 500000)
 define($replay_count -1)
-
 
 //d :: DPDKInfo(NB_SOCKET_MBUF  1048575) //Should be a bit more than 4 times the limit
 
@@ -18,9 +11,12 @@ define($INsrcmac b8:3f:d2:9f:2e:9b)
 define($INdstmac b8:3f:d2:b0:d7:79)
 
 define($ignore 0)
+define($bout 1)
 
 /* Melanox grill: 0000:0a:00.1, 0000:0a:00.0 */
+define($txport 0)
 define($quick false)
+define($txverbose 99)
 
 
 //fdIN :: FromDump($trace, STOP false, BURST 100)
@@ -58,13 +54,12 @@ elementclass Generator { $magic |
 
 //fdIN -> unqueue0 :: Unqueue() -> gen0 :: Generator(\<5700>) -> tdIN; StaticThreadSched(fdIN 0/1, unqueue0 0/1);
 fdIN
-//-> replay0 :: ReplayUnqueue(STOP -1, ACTIVE true)
+  //-> replay0 :: ReplayUnqueue(STOP -1, ACTIVE true)
   -> unqueue0 :: BandwidthRatedUnqueue($RATE, LINK_RATE true, ACTIVE true)
-  -> gen0 :: Generator(\<5700>) 
+  //-> gen0 :: Generator(\<5700>) 
   -> tdIN; StaticThreadSched(fdIN 0/1, unqueue0 0/1);
 
-pkt_cnt :: HandlerAggregate(ELEMENT gen0/cnt);
-
+//pkt_cnt :: HandlerAggregate(ELEMENT gen0/cnt);
 
 ig :: Script(TYPE ACTIVE,
     set s $(now),
