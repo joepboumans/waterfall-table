@@ -165,8 +165,9 @@ class BfRt_interface():
                 if entry_val != 0:
                     summed += entry_val
                     nonzero_entries += 1
+                    print(data_dict[f"{control_name}.{name}.f1"])
 
-            print(f"{name} has {summed} total remainders and {nonzero_entries} entries")
+            print(f"{name} has {summed} total count and {nonzero_entries} entries")
             fcm_tables.append(entries)
         return fcm_tables
             
