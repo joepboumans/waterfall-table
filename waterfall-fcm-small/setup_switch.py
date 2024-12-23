@@ -79,8 +79,9 @@ forward_tbl.add_with_hit(ingress_port=156, dst_port=156)
 
 print("populating resub table...")
 resub = p4.WaterfallIngress.resub
-resub.add_with_resubmit_hdr(found=False)
-resub.add_with_no_action(found=True)
+resub.add_with_resubmit_hdr(found=False, resubmit_flag=0x0)
+resub.add_with_no_action(found=True, resubmit_flag=0x1)
+resub.add_with_no_action(found=False, resubmit_flag=0x1)
 
 parse_resub = p4.WaterfallIngress.parse_resub_hdr
 parse_resub.add_with_parse_hdr(resubmit_flag=0x1)
@@ -91,15 +92,18 @@ swap1.add_with_lookup1(resubmit_flag=0x0)
 swap1.add_with_do_swap1(resubmit_flag=0x1)
 
 swap2 = p4.WaterfallIngress.swap2
-swap2.add_with_lookup2(resubmit_flag=0x0)
+swap2.add_with_lookup2(resubmit_flag=0x0, found=False)
+swap2.add_with_no_swap2(resubmit_flag=0x0, found=True)
 swap2.add_with_do_swap2(resubmit_flag=0x1, out_remain1_start=0x1, out_remain1_end=0xFFFF)
 
 swap3 = p4.WaterfallIngress.swap3
-swap3.add_with_lookup3(resubmit_flag=0x0)
+swap3.add_with_lookup3(resubmit_flag=0x0, found=False)
+swap3.add_with_no_swap3(resubmit_flag=0x0, found=True)
 swap3.add_with_do_swap3(resubmit_flag=0x1, out_remain2_start=0x1, out_remain2_end=0xFFFF)
 
 swap4 = p4.WaterfallIngress.swap4
-swap4.add_with_lookup4(resubmit_flag=0x0)
+swap4.add_with_lookup4(resubmit_flag=0x0, found=False)
+swap4.add_with_no_swap4(resubmit_flag=0x0, found=True)
 swap4.add_with_do_swap4(resubmit_flag=0x1, out_remain3_start=0x1, out_remain3_end=0xFFFF)
 
 # prt = bfrt.port.port

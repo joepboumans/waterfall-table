@@ -312,6 +312,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     key = {
       ig_md.out_remain1 : range;
       ig_intr_md.resubmit_flag : exact;
+      ig_md.found : exact;
     }
     actions = {
       do_swap2;
@@ -339,6 +340,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     key = {
       ig_md.out_remain2 : range;
       ig_intr_md.resubmit_flag : exact;
+      ig_md.found : exact;
     }
     actions = {
       do_swap3;
@@ -365,6 +367,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     key = {
       ig_md.out_remain3 : range;
       ig_intr_md.resubmit_flag : exact;
+      ig_md.found : exact;
     }
     actions = {
       do_swap4;
