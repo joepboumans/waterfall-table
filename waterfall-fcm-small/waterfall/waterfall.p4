@@ -14,10 +14,11 @@
 // Waterfall defines
 #define WATERFALL_BIT_WIDTH 16
 #define WATERFALL_REMAIN_BIT_WIDTH 16 // 32 - WATERFALL_BIT_WIDTH
-#define WATERFALL_WIDTH 65535 // 2 ^ WATERFALL_BIT_WIDTH = WATERFALL_WIDTH
+#define WATERFALL_WIDTH 65535 // 2 ^ WATERFALL_BIT_WIDTH - 1 = WATERFALL_WIDTH
 
 const bit<8> RESUB = 3;
 const bit<3> DPRSR_RESUB = 3;
+const bit<3> DIGEST = 5;
 
 header resubmit_md_t {
   bit<8> type;
@@ -272,7 +273,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
   }
 
   action do_swap1() {
-    ig_intr_dprsr_md.digest_type = 1;
+    ig_intr_dprsr_md.digest_type = DIGEST;
     ig_md.out_remain1 = table_1_swap.execute(ig_md.idx1);
   }
 
@@ -443,7 +444,7 @@ control WaterfallIngressDeparser( packet_out pkt, inout header_t hdr, in waterfa
   Resubmit() resubmit;
 
   apply {
-    if (ig_intr_dprsr_md.digest_type == 1) {
+    if (ig_intr_dprsr_md.digest_type == DIGEST) {
       /*digest.pack({hdr.ipv4.src_addr, hdr.ipv4.dst_addr});*/
       digest.pack({ig_md.resubmit_md.idx, ig_md.resubmit_md.remain});
     }
