@@ -374,7 +374,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     size = 2;
   }
 
-  parse_hdr() {
+  action parse_hdr() {
     ig_md.idx1 = ig_md.resubmit_md.idx;
     ig_md.remain1 = ig_md.resubmit_md.remain;
   }
