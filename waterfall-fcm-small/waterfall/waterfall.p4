@@ -382,6 +382,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
   }
   action drop() { ig_intr_dprsr_md.drop_ctl = 0x1; }
 
+  //stage(0)
   table forward {
     key = {
       ig_intr_md.ingress_port: exact;
