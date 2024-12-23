@@ -233,6 +233,7 @@ class BfRt_interface():
         s3 = [fcm_tables[2], fcm_tables[5]]
         em_fsd = EM_FSD(s1, s2, s3, self.tuples)
         self.ns = em_fsd.run_em(1)
+
         print(f"[WaterfallFcm - verify] Calculate Flow Size Distribution...")
         wmre = 0.0
         wmre_nom = 0.0
@@ -243,11 +244,12 @@ class BfRt_interface():
         print(f"[WaterfallFcm - verify] {max_count_in = } {max_count_em = }")
 
         max_count = max(max_count_in, max_count_em) + 1
-        fsd = [0] * max_count
+        fsd = [0] * (max_count + 1)
 
         print(f"[WaterfallFcm - verify] Setup real EM...")
-        for val in in_tuples:
+        for val in in_tuples.values():
             fsd[val] += 1
+
         print(f"[WaterfallFcm - verify] ...done")
 
         print(f"[WaterfallFcm - verify] Calculate WMRE...")
