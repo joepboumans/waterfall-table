@@ -815,7 +815,8 @@ void *EMFSD_new(uint32_t *szes, uint32_t *s1_1, uint32_t *s1_2, uint32_t *s2_1,
   /*  std::cout << i << " : " << tuples_vec.at(i) << " ";*/
   /*}*/
   std::cout << std::endl;
-  return new EMFSD(stage_szes, stages, tuples_vec, tuples_sz);
+  return new int[5];
+  /*return new EMFSD(stage_szes, stages, tuples_vec, tuples_sz);*/
 }
 
 void EMFSD_next_epoch(void *ptr) {
