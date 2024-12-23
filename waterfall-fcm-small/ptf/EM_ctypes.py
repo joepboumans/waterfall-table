@@ -57,7 +57,7 @@ class EM_FSD(object):
                 stage1_1[i] = s1[0][i]
             else:
                 stage1_1[i] = 0
-        print("S1_1 done")
+        print("[Waterfall - py ctypes] S1_1 done")
 
         stage1_2 = Stage1()
         for i in range(len(stage1_2)):
@@ -67,7 +67,7 @@ class EM_FSD(object):
                 stage1_2[i] = s1[1][i]
             else:
                 stage1_2[i] = 0
-        print("S1_2 done")
+        print("[Waterfall - py ctypes] S1_2 done")
 
         stage2_1 = Stage2()
         for i in range(len(stage2_1)):
@@ -75,7 +75,7 @@ class EM_FSD(object):
                 stage2_1[i] = s2[0][i]
             else:
                 stage2_1[i] = 0
-        print("S2_1 done")
+        print("[Waterfall - py ctypes] S2_1 done")
         
         stage2_2 = Stage2()
         for i in range(len(stage2_2)):
@@ -83,7 +83,7 @@ class EM_FSD(object):
                 stage2_2[i] = s2[1][i]
             else:
                 stage2_2[i] = 0
-        print("S2_2 done")
+        print("[Waterfall - py ctypes] S2_2 done")
 
         stage3_1 = Stage3()
         for i in range(len(stage3_1)):
@@ -91,7 +91,7 @@ class EM_FSD(object):
                 stage3_1[i] = s3[0][i]
             else:
                 stage3_1[i] = 0
-        print("S3_1 done")
+        print("[Waterfall - py ctypes] S3_1 done")
         
         stage3_2 = Stage3()
         for i in range(len(stage3_2)):
@@ -99,10 +99,10 @@ class EM_FSD(object):
                 stage3_2[i] = s3[1][i]
             else:
                 stage3_2[i] = 0
-        print("S3_2 done")
+        print("[Waterfall - py ctypes] S3_2 done")
 
         stage_sz = Stage_szes(SKETCH_W1, SKETCH_W2, SKETCH_W3)
-        print("stage szes done")
+        print("[Waterfall - py ctypes] stage szes done")
 
         self.obj = c_void_p(EM_FSD.lib.EMFSD_new(stage_sz, stage1_1, stage1_2, stage2_1, stage2_2, stage3_1, stage3_2, tuples, len(tuples)))
 

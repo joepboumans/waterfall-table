@@ -190,7 +190,7 @@ class BfRt_interface():
                     self.tuples.add(tuple_list)
 
             print(f"Found {len(data_list)} tuples with {len(self.tuples)} uniques")
-            print(f"{prev_tuple_len}; In total received {len(self.tuples) - prev_tuple_len - len(data_list)} tuples to many")
+            print(f"{prev_tuple_len}; In total received {prev_tuple_len + len(data_list) - len(self.tuples)} tuples to many")
             prev_tuple_len = len(self.tuples)
 
             parsed_digest += 1
@@ -200,11 +200,6 @@ class BfRt_interface():
         for t in self.table_dict.keys():
             self.evaluate_table(self.table_dict, t)
 
-        fcm_tables = self._get_FCM_counters()
-        s1 = [fcm_tables[0], fcm_tables[3]]
-        s2 = [fcm_tables[1], fcm_tables[4]]
-        s3 = [fcm_tables[2], fcm_tables[5]]
-        self.stages = [s1, s2, s3]
 
     def verify(self, in_tuples):
         print(f"[WaterfallFcm - verify] Calculate Waterfall F1-score...")
@@ -232,7 +227,11 @@ class BfRt_interface():
         print(f"[WaterfallFcm - verify] Total Load factor is {total_lf}")
 
         print(f"[WaterfallFcm - verify] Estimate Flow Size Distribution")
-        em_fsd = EM_FSD(self.stages[0], self.stages[1], self.stages[2], self.tuples)
+        fcm_tables = self._get_FCM_counters()
+        s1 = [fcm_tables[0], fcm_tables[3]]
+        s2 = [fcm_tables[1], fcm_tables[4]]
+        s3 = [fcm_tables[2], fcm_tables[5]]
+        em_fsd = EM_FSD(s1, s2, s3, self.tuples)
         self.ns = em_fsd.run_em(1)
         print(f"[WaterfallFcm - verify] Calculate Flow Size Distribution...")
         wmre = 0.0
