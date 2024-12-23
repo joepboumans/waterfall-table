@@ -61,7 +61,7 @@ fdIN
 
 //pkt_cnt :: HandlerAggregate(ELEMENT gen0/cnt);
 
-ig :: Script(TYPE ACTIVE,
+//ig :: Script(TYPE ACTIVE,
     set s $(now),
     set lastcount 0,
     set lastbytes 0,
@@ -98,4 +98,4 @@ ig :: Script(TYPE ACTIVE,
     goto loop
 )
 
-StaticThreadSched(ig 15);
+// StaticThreadSched(ig 15);
