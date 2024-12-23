@@ -386,7 +386,6 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
   table forward {
     key = {
       ig_intr_md.ingress_port: exact;
-      ig_intr_md.resubmit_flag: exact;
     }
     actions = {
       hit;
