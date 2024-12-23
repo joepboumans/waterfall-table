@@ -66,8 +66,8 @@ public:
   uint32_t iter = 0;
   bool inited = false;
 
-  EMFSD(array<array<array<uint32_t, W1>, NUM_STAGES>, DEPTH> stages,
-        vector<FLOW_TUPLE> tuples, size_t tuples_sz) {
+  EMFSD(vector<vector<vector<uint32_t>>> stages, vector<FLOW_TUPLE> tuples,
+        size_t tuples_sz) {
 
     this->tuples = tuples;
     this->stage_szes = {W1, W2, W3};
@@ -119,7 +119,13 @@ public:
         overflow_paths;
 
     std::cout << "[WaterfallFcm] Setup Summary and Overflow Paths" << std::endl;
-    this->stages = stages;
+    for (size_t d = 0; d < DEPTH; d++) {
+      for (size_t s = 0; s < NUM_STAGES; s++) {
+        for (size_t i = 0; i < this->stage_szes[s]; i++) {
+          this->stages[d][s][i] = stages[d][s][i];
+        }
+      }
+    }
     // Setup sizes for summary and overflow_paths
     for (size_t d = 0; d < DEPTH; d++) {
       for (size_t stage = 0; stage < NUM_STAGES; stage++) {
@@ -824,8 +830,7 @@ void *EMFSD_new(uint32_t *s1_1, uint32_t *s1_2, uint32_t *s2_1, uint32_t *s2_2,
   /*  std::cout << i << " : " << tuples_vec.at(i) << " ";*/
   /*}*/
   std::cout << std::endl;
-  return new int[5];
-  /*return new EMFSD(stage_szes, stages, tuples_vec, tuples_sz);*/
+  return new EMFSD(stages, tuples_vec, tuples_sz);
 }
 
 void EMFSD_next_epoch(void *ptr) {
