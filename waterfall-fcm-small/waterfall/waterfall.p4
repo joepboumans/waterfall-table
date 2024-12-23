@@ -21,8 +21,8 @@ const bit<3> DPRSR_RESUB = 3;
 
 header resubmit_md_t {
   bit<8> type;
-  bit<16> remain;
   bit<16> idx;
+  bit<16> remain;
 }
 
 struct port_metadata_t {
@@ -256,6 +256,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
   action no_action() {
   }
 
+  // @stage(11)
   table resub {
     key = {
       ig_md.found : exact;
