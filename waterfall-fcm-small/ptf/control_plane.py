@@ -128,19 +128,16 @@ class BfRt_interface():
         try:
             digest = self.interface.digest_get(1)
             self.recieved_digests.append(digest)
-            if len(self.recieved_digests) >= 10:
-                self.isRunning = False
-
 
             self.recievedDigest += 1
-            if self.recievedDigest % 1000 == 0:
+            if self.recievedDigest % 100 == 0:
                 print(f"Received {self.recievedDigest} digests")
 
             self.hasFirstData = True
         except Exception as err:
             self.missedDigest += 1
             print(f"error reading digest {self.missedDigest}, {err} ", end="", flush=True)
-            if self.hasFirstData:
+            if self.hasFirstData and self.missedDigest >= 10:
                 self.isRunning = False
                 print("")
             time.sleep(0.1)
