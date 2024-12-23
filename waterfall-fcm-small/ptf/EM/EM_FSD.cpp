@@ -74,14 +74,6 @@ public:
 
     std::cout << std::endl;
     std::cout << "[WaterfallFcm] Init EM_FSD" << std::endl;
-    std::cout << "[WaterfallFcm] Copy stages" << std::endl;
-    for (size_t d = 0; d < DEPTH; d++) {
-      for (size_t s = 0; s < NUM_STAGES; s++) {
-        for (size_t i = 0; i < this->stage_szes[s]; i++) {
-          this->stages[d][s][i] = stages[d][s][i];
-        }
-      }
-    }
     std::cout << "[WaterfallFcm] Setup inital degrees" << std::endl;
     // Get inital degree guesses
     for (size_t i = 0; i < tuples_sz; i++) {
@@ -99,9 +91,6 @@ public:
       for (size_t i = 0; i < W1; i++) {
         if (this->init_degree[d][i] > 0) {
           std::cout << i << ":" << init_degree[d][i] << " ";
-          std::cout << ":" << this->stages[d][0][i];
-          std::cout << ":" << this->stages[d][1][i / 8];
-          std::cout << ":" << this->stages[d][2][i / 8 / 8] << " ";
         }
       }
       std::cout << std::endl;
@@ -111,6 +100,15 @@ public:
                  "with max degree "
               << init_max_degree[0] << " and " << init_max_degree[1]
               << std::endl;
+
+    std::cout << "[WaterfallFcm] Copy stages" << std::endl;
+    for (size_t d = 0; d < DEPTH; d++) {
+      for (size_t s = 0; s < NUM_STAGES; s++) {
+        for (size_t i = 0; i < this->stage_szes[s]; i++) {
+          this->stages[d][s][i] = stages[d][s][i];
+        }
+      }
+    }
     // Calculate Virtual Counters and thresholds
     // depth, stage, idx, (count, degree, overflown)
     array<array<vector<array<uint32_t, 3>>, NUM_STAGES>, DEPTH> summary;
