@@ -2,12 +2,11 @@
 import os, sys, subprocess
 import mmap
 import time
-import struct
 import utils
+import argparse
 
 from collections import defaultdict
 
-from typing import Protocol
 from EM_ctypes import EM_FSD
 
 sys.path.append('/home/onie/sde/bf-sde-9.11.0/install/lib/python3.8/site-packages/tofino/')
@@ -303,11 +302,12 @@ def read_data_set(data_name):
 
 
 def main():
-    # input_tuples = read_data_set("/home/onie/jboumans/equinix-chicago.20160121-130000.UTC.dat")
-    # input_tuples = read_data_set("/home/onie/jboumans/small_test.dat")
-    input_tuples = read_data_set("/home/onie/jboumans/smaller_test.dat")
-    # input_tuples = read_data_set("/home/onie/jboumans/small_burst_test.dat")
-    # input_tuples = read_data_set("/home/onie/jboumans/single_burst_test.dat")
+    parser = argparse.ArgumentParser(description="Loads in a dataset and connect to the network switch via gRPC. Verifies the results of the Waterfall and FCM sketch against the dataset")
+    parser.add_argument('-i', '--input', type=str, required=True, help="Absolute path to dataset (/home/onie/*)")
+
+    args = parser.parse_args()
+    input_tuples = read_data_set(args.input)
+
     bfrt_interface = BfRt_interface(0, 'localhost:50052', 0)
     # bfrt_interface.list_tables()
     bfrt_interface.run()
