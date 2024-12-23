@@ -188,24 +188,24 @@ class BfRt_interface():
             for data in data_list:
                 # tuple_list = bytes(data["src_addr"].val + data["dst_addr"].val)
                 tuple_list = bytes(data["idx"].val + data["remain"].val)
-                print(tuple_list)
+                print(tuple_list.hex())
                 hash1 = utils.crc32_sf(tuple_list, 0xFFFFFFFF)
-                print(hash1.to_bytes(4, byteorder='big'))
+                print(hash1.to_bytes(4, byteorder='big').hex())
                 hash2 = utils.crc32_rehash(hash1, 0x0FFFFFFF)
-                print(hash2.to_bytes(4, byteorder='big'))
+                print(hash2.to_bytes(4, byteorder='big').hex())
                 hash3 = utils.crc32_rehash(hash2, 0x00FFFFFF)
-                print(hash3.to_bytes(4, byteorder='big'))
+                print(hash3.to_bytes(4, byteorder='big').hex())
                 hash4 = utils.crc32_rehash(hash3, 0x000FFFFF)
-                print(hash4.to_bytes(4, byteorder='big'))
+                print(hash4.to_bytes(4, byteorder='big').hex())
 
                 hash_switch = b'\xdb\xbc^y'
-                print(f"Compare to value from switch {hash_switch}")
+                print(f"Compare to value from switch {hash_switch.hex()}")
                 hash2 = utils.crc32_rehash(int.from_bytes(hash_switch, 'big'), 0x0FFFFFFF)
-                print(hash2.to_bytes(4, byteorder='big'))
+                print(hash2.to_bytes(4, byteorder='big').hex())
                 hash3 = utils.crc32_rehash(hash2, 0x00FFFFFF)
-                print(hash3.to_bytes(4, byteorder='big'))
+                print(hash3.to_bytes(4, byteorder='big').hex())
                 hash4 = utils.crc32_rehash(hash3, 0x000FFFFF)
-                print(hash4.to_bytes(4, byteorder='big'))
+                print(hash4.to_bytes(4, byteorder='big').hex())
 
                 if not self.tuples:
                     self.tuples = {tuple_list}
