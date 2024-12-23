@@ -398,7 +398,6 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
 
   apply { 
     forward.apply();
-    ig_md.idx1 = ig_md.resubmit_md.idx;
 
     get_hash1();
     swap1.apply();
