@@ -393,7 +393,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
       no_action;
     }
     size = 512;
-    default_action = drop;
+    default_action = no_action;
   }
 
   apply { 
