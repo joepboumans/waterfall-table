@@ -784,7 +784,21 @@ void *EMFSD_new(uint32_t *s1_1, uint32_t *s1_2, uint32_t *s2_1, uint32_t *s2_2,
                 uint32_t tuples_sz) {
 
   std::cout << "[WaterfallFcm CTypes] Start parsing python to c" << std::endl;
-  array<array<array<uint32_t, W1>, NUM_STAGES>, DEPTH> stages;
+  /*array<array<array<uint32_t, W1>, NUM_STAGES>, DEPTH> stages;*/
+  vector<vector<vector<uint32_t>>> stages;
+  std::cout << "[WaterfallFcm CTypes] Start resizing stages " << std::endl;
+  stages.resize(DEPTH);
+  stages[0].resize(NUM_STAGES);
+  stages[1].resize(NUM_STAGES);
+
+  std::cout << "[WaterfallFcm CTypes] Start resizing stages[d][s] "
+            << std::endl;
+  stages[0][0].resize(W1);
+  stages[1][0].resize(W1);
+  stages[0][1].resize(W2);
+  stages[1][1].resize(W2);
+  stages[0][2].resize(W3);
+  stages[1][2].resize(W3);
 
   std::cout << "\tcopy stages" << std::endl;
   std::copy_n(s1_1, W1, stages[0][0].begin());
