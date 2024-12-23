@@ -289,9 +289,8 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     actions = {
       do_swap1;
       lookup1;
-      no_action;
     }
-    default_action = no_action;
+    default_action = lookup1;
     size = 2;
   }
 
