@@ -41,15 +41,8 @@ class BfRt_interface():
         self.interface.bind_pipeline_config(self.p4_name)
 
         self.learn_filter = self.bfrt_info.learn_get("digest")
-        # self.learn_filter.info.data_field_annotation_add("src_addr", "ipv4")
-        # self.learn_filter.info.data_field_annotation_add("dst_addr", "ipv4")
-
-        # Get Waterfall tables
-        self.table_1 = self.bfrt_info.table_get("table_1") 
-        self.table_2 = self.bfrt_info.table_get("table_2")
-        self.table_3 = self.bfrt_info.table_get("table_3")
-        self.table_4 = self.bfrt_info.table_get("table_4")
-        self.table_dict = {"table_1" : self.table_1, "table_2" : self.table_2, "table_3" : self.table_3, "table_4" : self.table_4}
+        self.learn_filter.info.data_field_annotation_add("src_addr", "ipv4")
+        self.learn_filter.info.data_field_annotation_add("dst_addr", "ipv4")
 
         # Get swap tables
         self.swap1 = self.bfrt_info.table_get("swap1")
@@ -57,6 +50,25 @@ class BfRt_interface():
         self.swap3 = self.bfrt_info.table_get("swap3")
         self.swap4 = self.bfrt_info.table_get("swap4")
         self.swap_dict = {"swap1" : self.swap1, "swap2" : self.swap2, "swap3" : self.swap3, "swap4" : self.swap4}
+
+        # Get Pkt count register of FCM
+        self.num_pkt = self.bfrt_info.table_get("num_pkt")
+
+        # First clear tables and then setup then up again
+        self.setupTables()
+        self.clearTables()
+        self.setupTables()
+
+        print("Connected to Device: {}, Program: {}, ClientId: {}".format(
+                dev, self.p4_name, client_id))
+
+    def setupTables(self):
+        # Get Waterfall tables
+        self.table_1 = self.bfrt_info.table_get("table_1") 
+        self.table_2 = self.bfrt_info.table_get("table_2")
+        self.table_3 = self.bfrt_info.table_get("table_3")
+        self.table_4 = self.bfrt_info.table_get("table_4")
+        self.table_dict = {"table_1" : self.table_1, "table_2" : self.table_2, "table_3" : self.table_3, "table_4" : self.table_4}
 
         # Get FCM counters
         self.fcm_l1_d1 = self.bfrt_info.table_get("sketch_reg_l1_d1")
@@ -67,11 +79,13 @@ class BfRt_interface():
         self.fcm_l3_d2 = self.bfrt_info.table_get("sketch_reg_l3_d2")
         self.fcm_tables = {"fcm_l1_d1" : self.fcm_l1_d1, "fcm_l2_d1" : self.fcm_l2_d1, "fcm_l3_d1" : self.fcm_l3_d1, "fcm_l1_d2" : self.fcm_l1_d2, "fcm_l2_d2" : self.fcm_l2_d2, "fcm_l3_d2" : self.fcm_l3_d2}
 
-        # Get Pkt count register of FCM
-        self.num_pkt = self.bfrt_info.table_get("num_pkt")
+    def clearTables(self):
+        for _, table in self.table_dict.items():
+            table.entry_del(self.dev_tgt)
 
-        print("Connected to Device: {}, Program: {}, ClientId: {}".format(
-                dev, self.p4_name, client_id))
+        for table in self.fcm_tables.values():
+            table.entry_del(self.dev_tgt)
+
 
 
     def list_tables(self):
@@ -285,7 +299,7 @@ def read_data_set(data_name):
 
     max_count = max(tuples.values())
     fsd = [0] * (max_count + 1)
-    print(f"[WaterfallFcm - verify] Setup real EM...")
+    print(f"[WaterfallFcm - verify] Setup real EM with {max_count = }...")
     for val in tuples.values():
         fsd[val] += 1
 
