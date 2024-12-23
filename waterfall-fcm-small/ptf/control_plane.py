@@ -54,9 +54,6 @@ class BfRt_interface():
         # Get Pkt count register of FCM
         self.num_pkt = self.bfrt_info.table_get("num_pkt")
 
-        # First clear tables and then setup then up again
-        self.setupTables()
-        self.clearTables()
         self.setupTables()
 
         print("Connected to Device: {}, Program: {}, ClientId: {}".format(
