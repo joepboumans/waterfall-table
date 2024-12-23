@@ -349,7 +349,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
       lookup3;
     }
     default_action = no_swap3;
-    size = 2;
+    size = 3;
   }
 
   action do_swap4() {
@@ -376,7 +376,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
       lookup4;
     }
     default_action = no_swap4;
-    size = 2;
+    size = 3;
   }
 
   action parse_hdr() {
