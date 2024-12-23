@@ -445,7 +445,7 @@ control WaterfallIngressDeparser( packet_out pkt, inout header_t hdr, in waterfa
   apply {
     if (ig_intr_dprsr_md.digest_type == 1) {
       /*digest.pack({hdr.ipv4.src_addr, hdr.ipv4.dst_addr});*/
-      digest.pack({ig_md.idx1, ig_md.remain1});
+      digest.pack({ig_md.resubmit_md.idx, ig_md.resubmit_md.remain});
     }
     if (ig_intr_dprsr_md.resubmit_type == DPRSR_RESUB) {
       resubmit.emit(ig_md.resubmit_md);
