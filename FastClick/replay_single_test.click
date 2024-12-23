@@ -25,5 +25,6 @@ tdIN :: ToDPDKDevice($txport, BLOCKING true, BURST $bout, VERBOSE $txverbose, IQ
 fdIN
   -> replay :: ReplayUnqueue(STOP $replay_count, QUICK_CLONE $quick, VERBOSE $txverbose, ACTIVE true, LIMIT $max_packets_in_queue)
   -> unqueue :: BandwidthRatedUnqueue($RATE, LINK_RATE true, ACTIVE true)
-  -> tdIN; StaticThreadSched(fdIN 0/1, unqueue0 0/1);
+  -> tdIN; 
 
+StaticThreadSched(fdIN 0/1, unqueue0 0/1);
