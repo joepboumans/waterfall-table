@@ -811,9 +811,9 @@ void *EMFSD_new(uint32_t *s1_1, uint32_t *s1_2, uint32_t *s2_1, uint32_t *s2_2,
   std::cout << "\tdone stages" << std::endl;
 
   // Setup tuple list
-  std::cout << "[WaterfallFcm CTypes] Setup FiveTuple vector with size "
+  std::cout << "[WaterfallFcm CTypes] Setup FlowTuple vector with size "
             << tuples_sz << std::endl;
-  std::vector<FLOW_TUPLE> tuples_vec;
+  std::vector<FLOW_TUPLE> tuples_vec(tuples_sz);
   for (size_t i = 0; i < tuples_sz; i++) {
     tuples_vec.at(i) = tuples[i];
   }
