@@ -56,6 +56,46 @@ elementclass Generator { $magic |
 fdIN
   //-> replay0 :: ReplayUnqueue(STOP -1, ACTIVE true)
   -> unqueue0 :: BandwidthRatedUnqueue($RATE, LINK_RATE true, ACTIVE true)
-  //-> gen0 :: Generator(\<5700>) 
+  -> gen0 :: Generator(\<5700>) 
   -> tdIN; StaticThreadSched(fdIN 0/1, unqueue0 0/1);
 
+pkt_cnt :: HandlerAggregate(ELEMENT gen0/cnt);
+
+ig :: Script(TYPE ACTIVE,
+    set s $(now),
+    set lastcount 0,
+    set lastbytes 0,
+    set lastbytessent 0,
+    set lastsent 0,
+    set lastdrop 0,
+    set last $s,
+    set indexB 0,
+    set indexC 0,
+    set indexD 0,
+    label loop,
+    wait 0.5s,
+    set n $(now),
+    set t $(sub $n $s),
+    set elapsed $(sub $n $last),
+    set last $n,
+    set count $(pkt_cnt.add count),
+    print "SENT PKTS $count",
+    //set count $(avg.add count),
+    //set sent $(sndavg.add count),
+    //set bytessent $(sndavg.add byte_count),
+    //set bytes $(avg.add byte_count),
+    //print "IG-$t-RESULT-IGCOUNT $(sub $count $lastcount)",
+    //print "IG-$t-RESULT-IGSENT $(sub $sent $lastsent)",
+    //print "IG-$t-RESULT-IGBYTESSENT $(sub $bytessent $lastbytessent)",
+    //set drop $(sub $sent $count),
+    //print "IG-$t-RESULT-IGDROPPED $(sub $drop $lastdrop)",
+    //set lastdrop $drop,
+    //print "IG-$t-RESULT-IGTHROUGHPUT $(div $(mul $(add $(mul $(sub $count $lastcount) 24) $(sub $bytes $lastbytes)) 8) $elapsed)",
+    //set lastcount $count,
+    //set lastsent $sent,
+    //set lastbytes $bytes,
+    //set lastbytessent $bytessent,
+    goto loop
+)
+
+StaticThreadSched(ig 15);
