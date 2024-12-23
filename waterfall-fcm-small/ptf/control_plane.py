@@ -42,8 +42,8 @@ class BfRt_interface():
         self.interface.bind_pipeline_config(self.p4_name)
 
         self.learn_filter = self.bfrt_info.learn_get("digest")
-        self.learn_filter.info.data_field_annotation_add("src_addr", "ipv4")
-        self.learn_filter.info.data_field_annotation_add("dst_addr", "ipv4")
+        # self.learn_filter.info.data_field_annotation_add("src_addr", "ipv4")
+        # self.learn_filter.info.data_field_annotation_add("dst_addr", "ipv4")
 
         # Get Waterfall tables
         self.table_1 = self.bfrt_info.table_get("table_1") 
@@ -186,7 +186,8 @@ class BfRt_interface():
             data_list = self.learn_filter.make_data_list(digest)
             self.total_received += len(data_list)
             for data in data_list:
-                tuple_list = bytes(data["src_addr"].val + data["dst_addr"].val)
+                # tuple_list = bytes(data["src_addr"].val + data["dst_addr"].val)
+                tuple_list = bytes(data["idx"].val + data["remain"].val)
                 print(tuple_list)
                 hash1 = utils.crc32_sf(tuple_list, 0xFFFFFFFF)
                 print(hash1.to_bytes(4, byteorder='big'))
