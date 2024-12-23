@@ -129,7 +129,7 @@ class BfRt_interface():
                 summed += entry_val
                 nonzero_entries += 1
                 # print(data_dict)
-                print(f"{(len(entries) - 1).to_bytes(2, 'big').hex() + entry_val.to_bytes(2,'big').hex()}")
+                # print(f"{(len(entries) - 1).to_bytes(2, 'big').hex() + entry_val.to_bytes(2,'big').hex()}")
         print(f"{name} has {nonzero_entries} entries")
 
         return entries
@@ -140,7 +140,7 @@ class BfRt_interface():
             self.recieved_digests.append(digest)
 
             self.recievedDigest += 1
-            if self.recievedDigest % 100 == 0:
+            if self.recievedDigest % 1000 == 0:
                 print(f"Received {self.recievedDigest} digests")
 
             self.hasFirstData = True
@@ -175,7 +175,7 @@ class BfRt_interface():
                 if entry_val != 0:
                     summed += entry_val
                     nonzero_entries += 1
-                    print(data_dict[f"{control_name}.{name}.f1"])
+                    # print(data_dict[f"{control_name}.{name}.f1"])
 
             print(f"{name} has {summed} total count and {nonzero_entries} entries")
             fcm_tables.append(entries)
@@ -200,9 +200,9 @@ class BfRt_interface():
                 else:
                     self.tuples.add(tuple_list)
 
-            print(f"Found {len(data_list)} tuples with {len(self.tuples)} uniques")
-            print(f"{prev_tuple_len}; In total received {prev_tuple_len + len(data_list) - len(self.tuples)} tuples to many")
-            prev_tuple_len = len(self.tuples)
+            # print(f"Found {len(data_list)} tuples with {len(self.tuples)} uniques")
+            # print(f"{prev_tuple_len}; In total received {prev_tuple_len + len(data_list) - len(self.tuples)} tuples to many")
+            # prev_tuple_len = len(self.tuples)
 
             parsed_digest += 1
             if parsed_digest % 1000 == 0:
