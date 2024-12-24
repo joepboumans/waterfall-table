@@ -414,7 +414,7 @@ private:
         now_result[i] = 1;
       }
 
-      /*std::cout << "Set generator - now_result complete" << std::endl;*/
+      std::cout << "Set generator - now_result complete" << std::endl;
 
       if (sum > 600) {
         flow_num_limit = 2;
@@ -453,12 +453,12 @@ private:
       while (now_flow_num <= flow_num_limit) {
         now_result.resize(now_flow_num);
         if (get_new_comb()) {
-          /*std::ostringstream oss;*/
-          /*oss << "Current combi : ";*/
-          /*for (auto &x : now_result) {*/
-          /*  oss << x << " ";*/
-          /*}*/
-          /*std::cout << oss.str().c_str() << std::endl;*/
+          std::ostringstream oss;
+          oss << "Current combi : ";
+          for (auto &x : now_result) {
+            oss << x << " ";
+          }
+          std::cout << oss.str().c_str() << std::endl;
           if (check_condition()) {
             return true;
           }
