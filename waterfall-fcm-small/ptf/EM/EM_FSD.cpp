@@ -118,7 +118,7 @@ public:
         summary[d][stage].resize(this->stage_szes[stage]);
         overflow_paths[d][stage].resize(this->stage_szes[stage]);
         for (size_t i = 0; i < this->stage_szes[stage]; i++) {
-          summary[d][stage][i].resize(3);
+          summary[d][stage][i].resize(4);
           overflow_paths[d][stage][i].resize(4);
         }
       }
@@ -215,7 +215,7 @@ public:
             uint32_t degree = summary[d][s][i][1];
             // Add entry to VC with its degree [1] and count [0]
             if (degree >= this->counters.size()) {
-              /*std::cout << "Degree large than counters" << std::endl;*/
+              std::cout << "Degree large than counters" << std::endl;
               this->counters[d].resize(degree + 1);
               init_thresholds[d].resize(degree + 1);
             }
