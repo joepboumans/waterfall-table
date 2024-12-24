@@ -392,10 +392,10 @@ private:
     int now_flow_num;
     int flow_num_limit;
     vector<int> now_result;
-    vector<array<uint32_t, 4>> thresh;
+    vector<vector<uint32_t>> thresh;
 
     explicit BetaGenerator(uint32_t _sum, uint32_t _in_degree,
-                           vector<array<uint32_t, 4>> _thresh)
+                           vector<vector<uint32_t>> _thresh)
         : sum(_sum), flow_num_limit(_in_degree), thresh(_thresh) {
 
       now_flow_num = flow_num_limit;
@@ -625,7 +625,7 @@ private:
         if (it > 0) {
           /*std::cout << "Sum was 0 so spread out" << std::endl;*/
           uint32_t temp_val = i;
-          vector<array<uint32_t, 4>> temp_thresh = this->thresholds[d][xi][i];
+          vector<vector<uint32_t>> temp_thresh = this->thresholds[d][xi][i];
           // Start from lowest layer to highest layer
           std::reverse(temp_thresh.begin(), temp_thresh.end());
           for (auto &t : temp_thresh) {
