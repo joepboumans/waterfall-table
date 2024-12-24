@@ -118,7 +118,7 @@ public:
         summary[d][stage].resize(this->stage_szes[stage]);
         overflow_paths[d][stage].resize(this->stage_szes[stage]);
         for (size_t i = 0; i < this->stage_szes[stage]; i++) {
-          summary[d][stage][i].resize(4);
+          summary[d][stage][i].resize(3);
           overflow_paths[d][stage][i].resize(4);
         }
       }
@@ -129,8 +129,8 @@ public:
                 // coll, min_value >
     // Resize to fill all possible degrees
     for (size_t d = 0; d < DEPTH; d++) {
-      this->counters[d].resize(init_max_degree[d] + 1);
-      init_thresholds[d].resize(init_max_degree[d] + 1);
+      this->counters[d].resize(init_max_degree[d] * 2 + 1);
+      init_thresholds[d].resize(init_max_degree[d] * 2 + 1);
     }
     std::cout << "[WaterfallFcm] Created virtual counters and thresholds"
               << std::endl;
@@ -220,8 +220,8 @@ public:
               init_thresholds[d].resize(degree + 1);
             }
             this->counters[d][degree].push_back(count);
-            max_counter_value = std::max(max_counter_value, count);
             this->max_degree[d] = std::max(this->max_degree[d], degree);
+            max_counter_value = std::max(max_counter_value, count);
 
             /*std::cout << "Remove single collsions" << std::endl;*/
             // Remove single collsions
