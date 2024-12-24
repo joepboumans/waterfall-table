@@ -52,9 +52,6 @@ elementclass Generator { $magic |
 rr :: MyNull;
 fdIN
   -> unqueue :: Unqueue()
-  -> [0]rr
-
-rr[0]
   -> gen :: Generator(\<5700>)
   -> tdIn; StaticThreadSched(fdIN 0/1, unqueue 0/1)
 
