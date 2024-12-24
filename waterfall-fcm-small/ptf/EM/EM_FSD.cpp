@@ -675,14 +675,15 @@ public:
 
     std::cout << "[EM_WATERFALL_FCM] Init first degree" << std::endl;
     // Simple Multi thread
-    uint32_t total_degree = this->max_degree[0] + this->max_degree[1];
+    uint32_t total_degree = this->max_degree[0] + this->max_degree[1] + 1;
     std::thread threads[total_degree];
 
     std::cout << "[EM_WATERFALL_FCM] Created " << total_degree << " threads"
               << std::endl;
     for (size_t d = 0; d < DEPTH; d++) {
       for (size_t t = 2; t <= this->max_degree[d]; t++) {
-        std::cout << "[EM_WATERFALL_FCM] Start thread " << t << std::endl;
+        std::cout << "[EM_WATERFALL_FCM] Start thread " << t << " at depth "
+                  << d << std::endl;
         threads[t] = std::thread(&EMFSD::calculate_degree, *this,
                                  std::ref(nt[d][t]), d, t);
       }
