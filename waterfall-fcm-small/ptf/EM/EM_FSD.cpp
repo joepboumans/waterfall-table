@@ -291,11 +291,13 @@ public:
               << this->max_degree[1] << std::endl;
     std::cout << "Maximum counter value is: " << max_counter_value << std::endl;
 
-    // Setup counters and counters_distribution for estimation
+    // Setup counters and counters_distribution for estimation, counter_dist is
+    // Depth, Degree, Count
     for (size_t d = 0; d < DEPTH; d++) {
-      this->counter_dist[d] = vector<vector<uint32_t>>(
-          this->max_degree[d] + 1,
-          vector<uint32_t>(this->max_counter_value + 1, 0));
+      this->counter_dist[d].resize(this->max_degree[d] + 1);
+      for (size_t xi = 0; xi < this->max_degree[d] + 1; xi++) {
+        this->counter_dist[d][xi].resize(this->max_counter_value + 1);
+      }
       this->thresholds[d].resize(this->counters[d].size());
 
       for (size_t xi = 0; xi < this->counters[d].size(); xi++) {
