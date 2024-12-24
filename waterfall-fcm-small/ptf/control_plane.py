@@ -300,11 +300,13 @@ def read_data_set(data_name):
     for val in tuples.values():
         fsd[val] += 1
 
+    count = 0
     for i, fs in zip(range(max_count + 1), fsd):
         if fs != 0:
             print(f"{i} : {fs}", end=" ")
-        if i % 10 == 0:
-            print("")
+            count += 1
+            if count % 10 == 0:
+                print("")
 
     # delay = 10
     # print(f"[Dataset Loader] ...done! Waiting for {delay}s before starting test...")
