@@ -192,14 +192,8 @@ public:
             // If any of my childeren have overflown, add me to the overflow
             // path
             if (overflown > 0) {
-              uint32_t max_count = 0;
-              if (s == 1) {
-                max_count = ADD_LEVEL1;
-              } else {
-                max_count = ADD_LEVEL2;
-              }
               vector<uint32_t> imm_overflow = {(uint32_t)s, summary[d][s][i][1],
-                                               overflown, max_count};
+                                               overflown, summary[d][s][i][0]};
 
               overflow_paths[d][s][i].insert(overflow_paths[d][s][i].begin(),
                                              imm_overflow);
