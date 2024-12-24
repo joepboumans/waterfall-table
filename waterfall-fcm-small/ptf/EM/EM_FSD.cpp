@@ -297,7 +297,7 @@ public:
     // Depth, Degree, Count
     for (size_t d = 0; d < DEPTH; d++) {
       this->counter_dist[d].resize(this->max_degree[d] + 1);
-      for (size_t xi = 0; xi < this->max_degree[d]; xi++) {
+      for (size_t xi = 0; xi < this->counter_dist[d].size(); xi++) {
         this->counter_dist[d][xi].resize(this->max_counter_value + 1);
       }
       this->thresholds[d].resize(this->counters[d].size());
