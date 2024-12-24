@@ -123,7 +123,7 @@ public:
                          // coll, min_value >
     // Resize to fill all possible degrees
     for (size_t d = 0; d < DEPTH; d++) {
-      counters[d].resize(init_max_degree[d] + 1);
+      this->counters[d].resize(init_max_degree[d] + 1);
       init_thresholds[d].resize(init_max_degree[d] + 1);
     }
     std::cout << "[WaterfallFcm] Created virtual counters and thresholds"
@@ -265,19 +265,19 @@ public:
     /*  std::cout << std::endl;*/
     /*}*/
     /*std::cout << std::endl;*/
-    std::cout << "[WaterfallFcm] Counters:" << std::endl;
-    for (auto &vc : counters) {
-      for (size_t st = 0; st < vc.size(); st++) {
-        if (vc[st].size() == 0) {
-          continue;
-        }
-        std::cout << "Degree " << st << " : ";
-        for (auto &val : vc[st]) {
-          std::cout << " " << val;
-        }
-        std::cout << std::endl;
-      }
-    }
+    /*std::cout << "[WaterfallFcm] Counters:" << std::endl;*/
+    /*for (auto &vc : counters) {*/
+    /*  for (size_t st = 0; st < vc.size(); st++) {*/
+    /*    if (vc[st].size() == 0) {*/
+    /*      continue;*/
+    /*    }*/
+    /*    std::cout << "Degree " << st << " : ";*/
+    /*    for (auto &val : vc[st]) {*/
+    /*      std::cout << " " << val;*/
+    /*    }*/
+    /*    std::cout << std::endl;*/
+    /*  }*/
+    /*}*/
 
     std::cout << "CHT maximum degree is: " << init_max_degree[0] << " and "
               << init_max_degree[1] << std::endl;
