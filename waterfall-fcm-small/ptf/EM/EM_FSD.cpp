@@ -121,7 +121,6 @@ public:
         overflow_paths[d][stage].resize(this->stage_szes[stage]);
         for (size_t i = 0; i < this->stage_szes[stage]; i++) {
           summary[d][stage][i].resize(3);
-          overflow_paths[d][stage][i].resize(4);
         }
       }
     }
