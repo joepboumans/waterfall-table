@@ -215,7 +215,7 @@ public:
             uint32_t degree = summary[d][s][i][1];
             // Add entry to VC with its degree [1] and count [0]
             if (degree >= this->counters.size()) {
-              std::cout << "Degree large than counters" << std::endl;
+              /*std::cout << "Degree large than counters" << std::endl;*/
               this->counters[d].resize(degree + 1);
               init_thresholds[d].resize(degree + 1);
             }
@@ -295,7 +295,7 @@ public:
     // Depth, Degree, Count
     for (size_t d = 0; d < DEPTH; d++) {
       this->counter_dist[d].resize(this->max_degree[d] + 1);
-      for (size_t xi = 0; xi < this->max_degree[d] + 1; xi++) {
+      for (size_t xi = 0; xi < this->max_degree[d]; xi++) {
         this->counter_dist[d][xi].resize(this->max_counter_value + 1);
       }
       this->thresholds[d].resize(this->counters[d].size());
