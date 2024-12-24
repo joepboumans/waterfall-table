@@ -53,7 +53,7 @@ public:
   vector<uint32_t> max_degree = {
       0, 0}; // Maximum degree from FCM Sketch with inital degree from Waterfall
 
-  array<uint32_t, NUM_STAGES> stage_szes;
+  vector<uint32_t> stage_szes;
   vector<vector<vector<uint32_t>>> stages; // depth, stage, counter
   vector<FLOW_TUPLE> tuples;               // Found tuples by Waterfall Filter
 
@@ -65,7 +65,8 @@ public:
 
   EMFSD(vector<vector<vector<uint32_t>>> _stages, vector<FLOW_TUPLE> _tuples,
         size_t tuples_sz)
-      : counters(DEPTH), counter_dist(DEPTH), tuples(tuples_sz),
+      : counters(DEPTH), counter_dist(DEPTH), thresholds(DEPTH),
+        tuples(tuples_sz),
         stages(DEPTH,
                vector<vector<uint32_t>>(NUM_STAGES, vector<uint32_t>(W1))),
         init_degree(DEPTH, vector<uint32_t>(W1, 0)) {
@@ -301,12 +302,12 @@ public:
       }
       this->thresholds[d].resize(this->counters[d].size());
 
-      /*for (size_t xi = 0; xi < this->counters[d].size(); xi++) {*/
-      /*  if (this->counters[d][xi].size() == 0) {*/
-      /*    continue;*/
-      /*  }*/
-      /*  this->thresholds[d][xi].resize(this->max_counter_value + 1);*/
-      /*}*/
+      for (size_t xi = 0; xi < this->counters[d].size(); xi++) {
+        if (this->counters[d][xi].size() == 0) {
+          continue;
+        }
+        this->thresholds[d][xi].resize(this->max_counter_value + 1);
+      }
     }
     std::cout << "[EM_WATERFALL_FCM] Finished setting up counter_dist and "
                  "thresholds"
