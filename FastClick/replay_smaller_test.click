@@ -52,7 +52,7 @@ elementclass Generator { $magic |
 fdIN
   -> unqueue :: Unqueue()
   -> gen :: Generator(\<5700>)
-  -> tdIn; StaticThreadSched(fdIN 0/1, unqueue 0/1)
+  -> tdIN; StaticThreadSched(fdIN 0/1, unqueue 0/1)
 
 //fdIN
   //-> replay0 :: ReplayUnqueue(STOP -1, ACTIVE true)
