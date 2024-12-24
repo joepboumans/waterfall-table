@@ -67,10 +67,11 @@ public:
   EMFSD(vector<vector<vector<uint32_t>>> _stages, vector<FLOW_TUPLE> _tuples,
         size_t tuples_sz)
       : counters(DEPTH), counter_dist(DEPTH),
-        init_degree(DEPTH, vector<uint32_t>(W1, 0)), stages(_stages),
-        tuples(_tuples) {
+        init_degree(DEPTH, vector<uint32_t>(W1, 0)) {
 
     this->stage_szes = {W1, W2, W3};
+    this->stages = _stages;
+    this->tuples = _tuples;
 
     std::cout << std::endl;
     std::cout << "[WaterfallFcm] Init EM_FSD" << std::endl;
