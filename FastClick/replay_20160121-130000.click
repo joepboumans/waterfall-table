@@ -1,14 +1,7 @@
 define($trace /data-1/users/jboumans/equinix-chicago.20160121-130000.UTC.pcap)
-
-define($txport 0)
-
-define($bout 32)
-define($txverbose 99)
 define($RATE 5Gbps)
-
 define($max_packets_in_queue 500000)
 define($replay_count -1)
-
 
 //d :: DPDKInfo(NB_SOCKET_MBUF  1048575) //Should be a bit more than 4 times the limit
 
@@ -18,12 +11,12 @@ define($INsrcmac b8:3f:d2:9f:2e:9b)
 define($INdstmac b8:3f:d2:b0:d7:79)
 
 define($ignore 0)
+define($bout 32)
 
 /* Melanox grill: 0000:0a:00.1, 0000:0a:00.0 */
+define($txport 0)
 define($quick false)
-
-
-//fdIN :: FromDump($trace, STOP false, BURST 100)
+define($txverbose 99)
 
 //switcharoo
 fdIN :: FromDump($trace, STOP true, BURST 1, TIMING false, TIMING_FNT "100", ACTIVE true)

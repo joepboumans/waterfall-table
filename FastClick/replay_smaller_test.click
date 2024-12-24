@@ -18,14 +18,11 @@ define($txport 0)
 define($quick false)
 define($txverbose 99)
 
-
-//fdIN :: FromDump($trace, STOP false, BURST 100)
-
 //switcharoo
-fdIN :: FromDump($trace, STOP true, BURST 1, TIMING false, TIMING_FNT "100", ACTIVE true)
+//fdIN :: FromDump($trace, STOP true, BURST 1, TIMING false, TIMING_FNT "100", ACTIVE true)
+fdIN :: FromDump($trace, STOP true, BURST 1, TIMING 1, TIMING_FNT "100", END_AFTER 0, ACTIVE true)
 
 //tdIN :: ToDPDKDevice($txport, BLOCKING true, BURST $bout, VERBOSE $txverbose, IQUEUE $bout, NDESC 0, TCO 1)
-
 //tdIN :: ToDPDKDevice($txport)
 
 //switcharoo
@@ -42,24 +39,32 @@ elementclass Generator { $magic |
     input
     -> MarkMACHeader
     -> EnsureDPDKBuffer
-   // -> shaper :: BandwidthRatedUnqueue($RATE, LINK_RATE true, ACTIVE true) // from Habib
     -> EtherEncap(0x0800, 1:1:1:1:1:1, 2:2:2:2:2:2) // comment this if you want to use test.pcap
     -> doethRewrite :: { input[0] -> active::Switch(OUTPUT 0)[0] -> rwIN :: EtherRewrite($INsrcmac, $INdstmac) -> [0]output; active[1] -> [0]output }
     -> Pad
     -> Numberise($magic)
-    //-> sndavg :: AverageCounter(IGNORE 0)
+    -> sndavg :: AverageCounter(IGNORE 0)
     -> cnt :: AverageCounter(IGNORE 0)
     -> output;
 }
 
 //fdIN -> unqueue0 :: Unqueue() -> gen0 :: Generator(\<5700>) -> tdIN; StaticThreadSched(fdIN 0/1, unqueue0 0/1);
+rr :: MyNull;
 fdIN
-  //-> replay0 :: ReplayUnqueue(STOP -1, ACTIVE true)
-  -> unqueue0 :: BandwidthRatedUnqueue($RATE, LINK_RATE true, ACTIVE true)
-  -> gen0 :: Generator(\<5700>) 
-  -> tdIN; StaticThreadSched(fdIN 0/1, unqueue0 0/1);
+  -> unqueue :: Unqueue()
+  -> [0]rr
 
-pkt_cnt :: HandlerAggregate(ELEMENT gen0/cnt);
+rr[0]
+  -> gen :: Generator(\<5700>)
+  -> tdIn; StaticThreadSched(fdIN 0/1, unqueue 0/1)
+
+//fdIN
+  //-> replay0 :: ReplayUnqueue(STOP -1, ACTIVE true)
+  //-> unqueue0 :: BandwidthRatedUnqueue($RATE, LINK_RATE true, ACTIVE true)
+  //-> gen0 :: Generator(\<5700>) 
+  //-> tdIN; StaticThreadSched(fdIN 0/1, unqueue0 0/1);
+
+pkt_cnt :: HandlerAggregate(ELEMENT gen/cnt);
 
 ig :: Script(TYPE ACTIVE,
     set s $(now),
