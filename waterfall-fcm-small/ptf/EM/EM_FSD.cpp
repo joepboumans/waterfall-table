@@ -106,7 +106,7 @@ public:
     array<array<vector<array<uint32_t, 3>>, NUM_STAGES>, DEPTH> summary;
     // depth, stage, idx, layer, (stage, total degree/collisions, local
     // collisions, min_value)
-    array<array<vector<vector<array<uint32_t, 4>>>, NUM_STAGES>, DEPTH>
+    array<array<vector<vector<vector<uint32_t>>>, NUM_STAGES>, DEPTH>
         overflow_paths;
 
     std::cout << "[WaterfallFcm] Setup Summary and Overflow Paths" << std::endl;
@@ -118,9 +118,9 @@ public:
       }
     }
 
-    array<vector<vector<vector<array<uint32_t, 4>>>>, DEPTH>
-        init_thresholds; // depth, degree, i, < stage, total coll, local
-                         // coll, min_value >
+    vector<vector<vector<vector<vector<uint32_t>>>>> init_thresholds(
+        DEPTH); // depth, degree, i, < stage, total coll, local
+                // coll, min_value >
     // Resize to fill all possible degrees
     for (size_t d = 0; d < DEPTH; d++) {
       this->counters[d].resize(init_max_degree[d] + 1);
@@ -191,8 +191,8 @@ public:
               } else {
                 max_count = ADD_LEVEL2;
               }
-              array<uint32_t, 4> imm_overflow = {
-                  (uint32_t)s, summary[d][s][i][1], overflown, max_count};
+              vector<uint32_t> imm_overflow = {(uint32_t)s, summary[d][s][i][1],
+                                               overflown, max_count};
 
               overflow_paths[d][s][i].insert(overflow_paths[d][s][i].begin(),
                                              imm_overflow);
