@@ -177,7 +177,7 @@ class BfRt_interface():
                     nonzero_entries += 1
                     # print(data_dict[f"{control_name}.{name}.f1"])
 
-            print(f"{name} has {summed} total count and {nonzero_entries} entries")
+            print(f"{name} has {summed} total count and {nonzero_entries} entries with a max of {max(entries)}")
             fcm_tables.append(entries)
         return fcm_tables
             
