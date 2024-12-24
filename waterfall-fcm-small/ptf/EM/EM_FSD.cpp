@@ -413,7 +413,7 @@ private:
         now_result[i] = 1;
       }
 
-      std::cout << "Set generator - now_result complete" << std::endl;
+      /*std::cout << "Set generator - now_result complete" << std::endl;*/
 
       if (sum > 600) {
         flow_num_limit = 2;
@@ -452,12 +452,12 @@ private:
       while (now_flow_num <= flow_num_limit) {
         now_result.resize(now_flow_num);
         if (get_new_comb()) {
-          std::ostringstream oss;
-          oss << "Current combi : ";
-          for (auto &x : now_result) {
-            oss << x << " ";
-          }
-          std::cout << oss.str().c_str() << std::endl;
+          /*std::ostringstream oss;*/
+          /*oss << "Current combi : ";*/
+          /*for (auto &x : now_result) {*/
+          /*  oss << x << " ";*/
+          /*}*/
+          /*std::cout << oss.str().c_str() << std::endl;*/
           if (check_condition()) {
             return true;
           }
@@ -485,23 +485,23 @@ private:
     }
 
     bool check_condition() {
-      std::cout << "Checking condition" << std::endl;
-      std::cout << "Thresh len " << thresh.size() << std::endl;
-      std::cout << "Show thresh[0][0] " << thresh[0][0] << std::endl;
-      std::cout << "Show thresh[len][0] " << thresh[thresh.size() - 1][0]
-                << std::endl;
-      // return true;
-      for (auto t : thresh) {
-        std::cout << " <";
-        for (auto x : t) {
-          std::cout << x;
-          if (&x != &t.back()) {
-            std::cout << ", ";
-          }
-        }
-        std::cout << "> ";
-      }
-      std::cout << std::endl;
+      /*std::cout << "Checking condition" << std::endl;*/
+      /*std::cout << "Thresh len " << thresh.size() << std::endl;*/
+      /*std::cout << "Show thresh[0][0] " << thresh[0][0] << std::endl;*/
+      /*std::cout << "Show thresh[len][0] " << thresh[thresh.size() - 1][0]*/
+      /*          << std::endl;*/
+      /*// return true;*/
+      /*for (auto t : thresh) {*/
+      /*  std::cout << " <";*/
+      /*  for (auto x : t) {*/
+      /*    std::cout << x;*/
+      /*    if (&x != &t.back()) {*/
+      /*      std::cout << ", ";*/
+      /*    }*/
+      /*  }*/
+      /*  std::cout << "> ";*/
+      /*}*/
+      /*std::cout << std::endl;*/
       for (auto &t : thresh) {
         uint32_t colls = t[1];
         if (colls <= 1) {
@@ -612,15 +612,15 @@ private:
       if (counter_dist[d][xi][i] == 0) {
         continue;
       }
-      std::cout << "Found value " << i << " with count of "
-                << counter_dist[d][xi][i] << std::endl;
+      /*std::cout << "Found value " << i << " with count of "*/
+      /*<< counter_dist[d][xi][i] << std::endl;*/
 
       BetaGenerator alpha(i, xi, this->thresholds[d][xi][i]),
           beta(i, xi, this->thresholds[d][xi][i]);
       double sum_p = 0.0;
       uint32_t it = 0;
 
-      std::cout << "Get alpha combinations" << std::endl;
+      /*std::cout << "Get alpha combinations" << std::endl;*/
       // Sum over first combinations
       while (alpha.get_next()) {
         double p = get_p_from_beta(alpha, lambda, dist_old, n_old, xi);
@@ -628,7 +628,7 @@ private:
         it++;
       }
 
-      std::cout << "Finished alpha" << std::endl;
+      /*std::cout << "Finished alpha" << std::endl;*/
       // If no results, but I did have combinations, spread out the value
       if (sum_p == 0.0) {
         if (it > 0) {
