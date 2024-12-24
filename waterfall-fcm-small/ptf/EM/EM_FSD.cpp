@@ -223,7 +223,7 @@ public:
             }
             this->counters[d][degree].push_back(count);
             this->max_degree[d] = std::max(this->max_degree[d], degree);
-            max_counter_value = std::max(max_counter_value, count);
+            this->max_counter_value = std::max(this->max_counter_value, count);
 
             /*std::cout << "Remove single collsions" << std::endl;*/
             // Remove single collsions
@@ -396,7 +396,7 @@ public:
 private:
   double n_old,
       n_new; // cardinality
-  uint32_t max_counter_value;
+  uint32_t max_counter_value = 0;
   struct BetaGenerator {
     int sum;
     int now_flow_num;
