@@ -33,7 +33,6 @@
 #define ADD_LEVEL2 65789 // (2^8 - 2) + (2^16 - 2) + 1 (actual count is 65788)
 #define OVERFLOW_LEVEL1 255   // 2^8 - 1 maximum count is 254
 #define OVERFLOW_LEVEL2 65535 // 2^16 - 1 maximum count is 65536
-
 using std::array;
 using std::unordered_map;
 using std::vector;
@@ -66,11 +65,12 @@ public:
 
   EMFSD(vector<vector<vector<uint32_t>>> _stages, vector<FLOW_TUPLE> _tuples,
         size_t tuples_sz)
-      : counters(DEPTH), counter_dist(DEPTH),
+      : counters(DEPTH), counter_dist(DEPTH), tuples(tuples_sz),
+        stages(DEPTH,
+               vector<vector<uint32_t>>(NUM_STAGES, vector<uint32_t>(W1))),
         init_degree(DEPTH, vector<uint32_t>(W1, 0)) {
 
     this->stage_szes = {W1, W2, W3};
-    this->stages = _stages;
     this->tuples = _tuples;
 
     std::cout << std::endl;
@@ -109,6 +109,7 @@ public:
     // collisions, min_value)
     vector<vector<vector<vector<vector<uint32_t>>>>> overflow_paths(DEPTH);
 
+    this->stages = _stages;
     std::cout << "[WaterfallFcm] Setup Summary and Overflow Paths" << std::endl;
     // Setup sizes for summary and overflow_paths
     for (size_t d = 0; d < DEPTH; d++) {
