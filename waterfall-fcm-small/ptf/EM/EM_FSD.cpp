@@ -273,19 +273,19 @@ public:
       std::cout << std::endl;
     }
     std::cout << std::endl;
-    std::cout << "[WaterfallFcm] Counters:" << std::endl;
-    for (auto &vc : counters) {
-      for (size_t st = 0; st < vc.size(); st++) {
-        if (vc[st].size() == 0) {
-          continue;
-        }
-        std::cout << "Degree " << st << " : ";
-        for (auto &val : vc[st]) {
-          std::cout << " " << val;
-        }
-        std::cout << std::endl;
-      }
-    }
+    /*std::cout << "[WaterfallFcm] Counters:" << std::endl;*/
+    /*for (auto &vc : counters) {*/
+    /*  for (size_t st = 0; st < vc.size(); st++) {*/
+    /*    if (vc[st].size() == 0) {*/
+    /*      continue;*/
+    /*    }*/
+    /*    std::cout << "Degree " << st << " : ";*/
+    /*    for (auto &val : vc[st]) {*/
+    /*      std::cout << " " << val;*/
+    /*    }*/
+    /*    std::cout << std::endl;*/
+    /*  }*/
+    /*}*/
 
     std::cout << "CHT maximum degree is: " << init_max_degree[0] << " and "
               << init_max_degree[1] << std::endl;
