@@ -245,46 +245,46 @@ public:
     // Show collision paths for all degrees and counts
     std::cout << "[WaterfallFcm] Setup summary and thresholds" << std::endl;
     std::cout << "[WaterfallFcm] Thresholds:" << std::endl;
-    /*for (auto &threshold : init_thresholds) {*/
-    /*  for (size_t d = 0; d < threshold.size(); d++) {*/
-    /*    if (init_thresholds[d].size() == 0) {*/
-    /*      continue;*/
-    /*    }*/
-    /*    std::cout << "Degree: " << d << std::endl;*/
-    /*    for (size_t i = 0; i < threshold[d].size(); i++) {*/
-    /*      if (threshold[d][i].size() == 0) {*/
-    /*        continue;*/
-    /*      }*/
-    /*      std::cout << "i" << i << ":";*/
-    /*      for (size_t l = 0; l < threshold[d][i].size(); l++) {*/
-    /*        std::cout << " <";*/
-    /*        for (auto &col : threshold[d][i][l]) {*/
-    /*          std::cout << col;*/
-    /*          if (&col != &threshold[d][i][l].back()) {*/
-    /*            std::cout << ", ";*/
-    /*          }*/
-    /*        }*/
-    /*        std::cout << "> ";*/
-    /*      }*/
-    /*      std::cout << std::endl;*/
-    /*    }*/
-    /*  }*/
-    /*  std::cout << std::endl;*/
-    /*}*/
-    /*std::cout << std::endl;*/
-    /*std::cout << "[WaterfallFcm] Counters:" << std::endl;*/
-    /*for (auto &vc : counters) {*/
-    /*  for (size_t st = 0; st < vc.size(); st++) {*/
-    /*    if (vc[st].size() == 0) {*/
-    /*      continue;*/
-    /*    }*/
-    /*    std::cout << "Degree " << st << " : ";*/
-    /*    for (auto &val : vc[st]) {*/
-    /*      std::cout << " " << val;*/
-    /*    }*/
-    /*    std::cout << std::endl;*/
-    /*  }*/
-    /*}*/
+    for (auto &threshold : init_thresholds) {
+      for (size_t d = 0; d < threshold.size(); d++) {
+        if (init_thresholds[d].size() == 0) {
+          continue;
+        }
+        std::cout << "Degree: " << d << std::endl;
+        for (size_t i = 0; i < threshold[d].size(); i++) {
+          if (threshold[d][i].size() == 0) {
+            continue;
+          }
+          std::cout << "i" << i << ":";
+          for (size_t l = 0; l < threshold[d][i].size(); l++) {
+            std::cout << " <";
+            for (auto &col : threshold[d][i][l]) {
+              std::cout << col;
+              if (&col != &threshold[d][i][l].back()) {
+                std::cout << ", ";
+              }
+            }
+            std::cout << "> ";
+          }
+          std::cout << std::endl;
+        }
+      }
+      std::cout << std::endl;
+    }
+    std::cout << std::endl;
+    std::cout << "[WaterfallFcm] Counters:" << std::endl;
+    for (auto &vc : counters) {
+      for (size_t st = 0; st < vc.size(); st++) {
+        if (vc[st].size() == 0) {
+          continue;
+        }
+        std::cout << "Degree " << st << " : ";
+        for (auto &val : vc[st]) {
+          std::cout << " " << val;
+        }
+        std::cout << std::endl;
+      }
+    }
 
     std::cout << "CHT maximum degree is: " << init_max_degree[0] << " and "
               << init_max_degree[1] << std::endl;
