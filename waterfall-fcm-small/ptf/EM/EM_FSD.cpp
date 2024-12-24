@@ -40,25 +40,23 @@ using std::vector;
 
 class EMFSD {
 public:
-  uint32_t w;                        // width of counters
-  vector<double> dist_old, dist_new; // for ratio \phi
-  array<vector<vector<uint32_t>>, DEPTH>
-      counters; // Counters as depth, degree, value
-  array<vector<vector<uint32_t>>, DEPTH> counter_dist; // initial counter values
-  array<vector<vector<vector<array<uint32_t, 4>>>>, DEPTH>
+  uint32_t w;                                // width of counters
+  vector<double> dist_old, dist_new;         // for ratio \phi
+  vector<vector<vector<uint32_t>>> counters; // Counters as depth, degree, value
+  vector<vector<vector<uint32_t>>> counter_dist; // initial counter values
+  vector<vector<vector<vector<vector<uint32_t>>>>>
       thresholds; // depth, degree, count, < stage, total coll, local
                   // colll, min_value >
 
   vector<vector<uint32_t>> init_degree;
-  array<uint32_t, DEPTH> init_max_degree = {
+  vector<uint32_t> init_max_degree = {
       0, 0}; // Maximum degree from Waterfall Tables
-  array<uint32_t, DEPTH> max_degree = {
+  vector<uint32_t> max_degree = {
       0, 0}; // Maximum degree from FCM Sketch with inital degree from Waterfall
 
   array<uint32_t, NUM_STAGES> stage_szes;
-  array<array<array<uint32_t, W1>, NUM_STAGES>, DEPTH>
-      stages;                // depth, stage, counter
-  vector<FLOW_TUPLE> tuples; // Found tuples by Waterfall Filter
+  vector<vector<vector<uint32_t>>> stages; // depth, stage, counter
+  vector<FLOW_TUPLE> tuples;               // Found tuples by Waterfall Filter
 
   vector<double> ns; // for integer n
   double n_sum;
@@ -66,11 +64,12 @@ public:
   uint32_t iter = 0;
   bool inited = false;
 
-  EMFSD(vector<vector<vector<uint32_t>>> stages, vector<FLOW_TUPLE> tuples,
+  EMFSD(vector<vector<vector<uint32_t>>> _stages, vector<FLOW_TUPLE> _tuples,
         size_t tuples_sz)
-      : init_degree(DEPTH, vector<uint32_t>(W1, 0)) {
+      : counters(DEPTH), counter_dist(DEPTH),
+        init_degree(DEPTH, vector<uint32_t>(W1, 0)), stages(_stages),
+        tuples(_tuples) {
 
-    this->tuples = tuples;
     this->stage_szes = {W1, W2, W3};
 
     std::cout << std::endl;
@@ -102,14 +101,6 @@ public:
               << init_max_degree[0] << " and " << init_max_degree[1]
               << std::endl;
 
-    std::cout << "[WaterfallFcm] Copy stages" << std::endl;
-    for (size_t d = 0; d < DEPTH; d++) {
-      for (size_t s = 0; s < NUM_STAGES; s++) {
-        for (size_t i = 0; i < this->stage_szes[s]; i++) {
-          this->stages[d][s][i] = stages[d][s][i];
-        }
-      }
-    }
     // Calculate Virtual Counters and thresholds
     // depth, stage, idx, (count, degree, overflown)
     array<array<vector<array<uint32_t, 3>>, NUM_STAGES>, DEPTH> summary;
