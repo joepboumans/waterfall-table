@@ -310,6 +310,7 @@ def read_data_set(data_name):
             count += 1
             if count % 10 == 0:
                 print("")
+    print("")
 
     # delay = 10
     # print(f"[Dataset Loader] ...done! Waiting for {delay}s before starting test...")
