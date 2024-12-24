@@ -236,36 +236,36 @@ public:
       }
     }
 
-    // Show collision paths for all degrees and counts
-    std::cout << "[WaterfallFcm] Setup summary and thresholds" << std::endl;
-    std::cout << "[WaterfallFcm] Thresholds:" << std::endl;
-    for (auto &threshold : init_thresholds) {
-      for (size_t d = 0; d < threshold.size(); d++) {
-        if (init_thresholds[d].size() == 0) {
-          continue;
-        }
-        std::cout << "Degree: " << d << std::endl;
-        for (size_t i = 0; i < threshold[d].size(); i++) {
-          if (threshold[d][i].size() == 0) {
-            continue;
-          }
-          std::cout << "i" << i << ":";
-          for (size_t l = 0; l < threshold[d][i].size(); l++) {
-            std::cout << " <";
-            for (auto &col : threshold[d][i][l]) {
-              std::cout << col;
-              if (&col != &threshold[d][i][l].back()) {
-                std::cout << ", ";
-              }
-            }
-            std::cout << "> ";
-          }
-          std::cout << std::endl;
-        }
-      }
-      std::cout << std::endl;
-    }
-    std::cout << std::endl;
+    /*// Show collision paths for all degrees and counts*/
+    /*std::cout << "[WaterfallFcm] Setup summary and thresholds" << std::endl;*/
+    /*std::cout << "[WaterfallFcm] Thresholds:" << std::endl;*/
+    /*for (auto &threshold : init_thresholds) {*/
+    /*  for (size_t d = 0; d < threshold.size(); d++) {*/
+    /*    if (init_thresholds[d].size() == 0) {*/
+    /*      continue;*/
+    /*    }*/
+    /*    std::cout << "Degree: " << d << std::endl;*/
+    /*    for (size_t i = 0; i < threshold[d].size(); i++) {*/
+    /*      if (threshold[d][i].size() == 0) {*/
+    /*        continue;*/
+    /*      }*/
+    /*      std::cout << "i" << i << ":";*/
+    /*      for (size_t l = 0; l < threshold[d][i].size(); l++) {*/
+    /*        std::cout << " <";*/
+    /*        for (auto &col : threshold[d][i][l]) {*/
+    /*          std::cout << col;*/
+    /*          if (&col != &threshold[d][i][l].back()) {*/
+    /*            std::cout << ", ";*/
+    /*          }*/
+    /*        }*/
+    /*        std::cout << "> ";*/
+    /*      }*/
+    /*      std::cout << std::endl;*/
+    /*    }*/
+    /*  }*/
+    /*  std::cout << std::endl;*/
+    /*}*/
+    /*std::cout << std::endl;*/
     /*std::cout << "[WaterfallFcm] Counters:" << std::endl;*/
     /*for (auto &vc : counters) {*/
     /*  for (size_t st = 0; st < vc.size(); st++) {*/
@@ -365,19 +365,12 @@ public:
     /*}*/
     /*std::cout << std::endl;*/
 
-    /*std::cout << "[EM_WATERFALL_FCM] Normalize guesses" << std::endl;*/
-    /*// Normalize over inital cardinality*/
-    /*for (size_t i = 0; i < this->dist_new.size(); i++) {*/
-    /*  this->dist_new[i] /= (static_cast<double>(DEPTH) * this->n_new);*/
-    /*  this->ns[i] /= double(DEPTH);*/
-    /*}*/
-    /*for (auto &x : this->dist_new) {*/
-    /**/
-    /*  if (x != 0) {*/
-    /*    std::cout << x << " ";*/
-    /*  }*/
-    /*}*/
-    /*std::cout << std::endl;*/
+    std::cout << "[EM_WATERFALL_FCM] Normalize guesses" << std::endl;
+    // Normalize over inital cardinality
+    for (size_t i = 0; i < this->dist_new.size(); i++) {
+      this->dist_new[i] /= (static_cast<double>(DEPTH) * this->n_new);
+      this->ns[i] /= double(DEPTH);
+    }
 
     printf("[EM_WATERFALL_FCM] Initial Cardinality : %9.1f\n", this->n_new);
     printf("[EM_WATERFALL_FCM] Max Counter value : %d\n",
@@ -579,14 +572,6 @@ private:
       uint32_t si = kv.first;
       double lambda_i = now_n * (now_dist[si] * degree) / w;
       ret *= (std::pow(lambda_i, fi)) / factorial(fi);
-      // if (lambda_i > 0) {
-      //   for (auto &x : bt.now_result) {
-      //     std::cout << x << " ";
-      //   }
-      //   std::cout << std::endl;
-      //   std::cout << lambda_i << " " << now_dist[si] << std::endl;
-      //   std::cout << si << " " << fi << " >> " << ret << std::endl;
-      // }
     }
 
     return ret;
@@ -642,7 +627,6 @@ private:
           }
         }
       } else {
-        std::cout << "Get beta combinations" << std::endl;
         while (beta.get_next()) {
           double p = get_p_from_beta(beta, lambda, dist_old, n_old, xi);
           for (size_t j = 0; j < beta.now_flow_num; ++j) {
@@ -719,10 +703,6 @@ public:
 
     for (size_t d = 0; d < DEPTH; d++) {
       for (size_t xi = 0; xi < nt[d].size(); xi++) {
-        // if (nt[d].size() > 0) {
-        //   std::cout << "Size of nt[" << d << "] " << nt[d].size() <<
-        //   std::endl;
-        // }
         for (uint32_t i = 0; i < nt[d][xi].size(); i++) {
           ns[i] += nt[d][xi][i];
         }
@@ -749,13 +729,6 @@ public:
            "%9.1f\n\n",
            iter, n_new);
     iter++;
-    // std::cout << "ns : ";
-    // for (size_t i = 0; i < ns.size(); i++) {
-    //   if (ns[i] != 0) {
-    //     std::cout << i << " = " << ns[i] << "\t";
-    //   }
-    // }
-    // std::cout << std::endl;
   }
 
   uint32_t hashing(FLOW_TUPLE tuple, uint32_t depth) {
@@ -777,7 +750,6 @@ void *EMFSD_new(uint32_t *s1_1, uint32_t *s1_2, uint32_t *s2_1, uint32_t *s2_2,
                 uint32_t tuples_sz) {
 
   std::cout << "[WaterfallFcm CTypes] Start parsing python to c" << std::endl;
-  /*array<array<array<uint32_t, W1>, NUM_STAGES>, DEPTH> stages;*/
   vector<vector<vector<uint32_t>>> stages;
   std::cout << "[WaterfallFcm CTypes] Start resizing stages " << std::endl;
   stages.resize(DEPTH);

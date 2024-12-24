@@ -212,7 +212,7 @@ class BfRt_interface():
             self.evaluate_table(self.table_dict, t)
 
 
-    def verify(self, in_tuples):
+    def verify(self, in_tuples, iters):
         print(f"[WaterfallFcm - verify] Calculate Waterfall F1-score...")
         true_pos = false_pos = true_neg =  false_neg = 0
 
@@ -243,35 +243,38 @@ class BfRt_interface():
         s2 = [fcm_tables[1], fcm_tables[4]]
         s3 = [fcm_tables[2], fcm_tables[5]]
         em_fsd = EM_FSD(s1, s2, s3, self.tuples)
-        self.ns = em_fsd.run_em(1)
 
-        print(f"[WaterfallFcm - verify] Calculate Flow Size Distribution...")
-        wmre = 0.0
-        wmre_nom = 0.0
-        wmre_denom = 0.0
+        for i in range(iters):
+            self.ns = em_fsd.run_em(1)
 
-        max_count_in = max(in_tuples.values())
-        max_count_em = len(self.ns)
-        print(f"[WaterfallFcm - verify] {max_count_in = } {max_count_em = }")
+            print(f"[WaterfallFcm - verify] Calculate Flow Size Distribution...")
+            wmre = 0.0
+            wmre_nom = 0.0
+            wmre_denom = 0.0
 
-        max_count = max(max_count_in, max_count_em) + 1
-        fsd = [0] * (max_count + 1)
+            max_count_in = max(in_tuples.values())
+            max_count_em = len(self.ns)
+            print(f"[WaterfallFcm - verify] {max_count_in = } {max_count_em = }")
 
-        print(f"[WaterfallFcm - verify] Setup real EM...")
-        for val in in_tuples.values():
-            fsd[val] += 1
+            max_count = max(max_count_in, max_count_em) + 1
+            fsd = [0] * (max_count + 1)
 
-        print(f"[WaterfallFcm - verify] ...done")
+            print(f"[WaterfallFcm - verify] Setup real EM...")
+            for val in in_tuples.values():
+                fsd[val] += 1
 
-        print(f"[WaterfallFcm - verify] Calculate WMRE...")
-        for real, est in zip(fsd, self.ns):
-            wmre_nom += abs(float(real) - est)
-            wmre_denom += (float(real) + est) / 2
+            print(f"[WaterfallFcm - verify] ...done")
 
-        if wmre_denom != 0:
-            wmre = wmre_nom / wmre_denom
+            print(f"[WaterfallFcm - verify] Calculate WMRE...")
+            for real, est in zip(fsd, self.ns):
+                wmre_nom += abs(float(real) - est)
+                wmre_denom += (float(real) + est) / 2
 
-        print(f"[WaterfallFcm] WMRE : {wmre : .2f}")
+            if wmre_denom != 0:
+                wmre = wmre_nom / wmre_denom
+
+            print(f"[WaterfallFcm] WMRE : {wmre : .2f}")
+
         print(f"[WaterfallFcm] Finished EM FSD")
 
 def read_data_set(data_name):
@@ -326,7 +329,7 @@ def main():
     bfrt_interface = BfRt_interface(0, 'localhost:50052', 0)
     # bfrt_interface.list_tables()
     bfrt_interface.run()
-    bfrt_interface.verify(input_tuples)
+    bfrt_interface.verify(input_tuples, 5)
 
 if __name__ == "__main__":
     main()
