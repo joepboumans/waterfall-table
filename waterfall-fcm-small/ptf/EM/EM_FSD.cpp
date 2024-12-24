@@ -23,10 +23,6 @@
 #include <vector>
 #include <zlib.h>
 
-using std::array;
-using std::unordered_map;
-using std::vector;
-
 #define NUM_STAGES 3
 #define DEPTH 2
 #define K 8
@@ -37,6 +33,10 @@ using std::vector;
 #define ADD_LEVEL2 65789 // (2^8 - 2) + (2^16 - 2) + 1 (actual count is 65788)
 #define OVERFLOW_LEVEL1 255   // 2^8 - 1 maximum count is 254
 #define OVERFLOW_LEVEL2 65535 // 2^16 - 1 maximum count is 65536
+
+using std::array;
+using std::unordered_map;
+using std::vector;
 
 class EMFSD {
 public:
@@ -49,7 +49,7 @@ public:
       thresholds; // depth, degree, count, < stage, total coll, local
                   // colll, min_value >
 
-  array<array<uint32_t, W1>, DEPTH> init_degree;
+  vector<vector<uint32_t>> init_degree;
   array<uint32_t, DEPTH> init_max_degree = {
       0, 0}; // Maximum degree from Waterfall Tables
   array<uint32_t, DEPTH> max_degree = {
@@ -67,7 +67,8 @@ public:
   bool inited = false;
 
   EMFSD(vector<vector<vector<uint32_t>>> stages, vector<FLOW_TUPLE> tuples,
-        size_t tuples_sz) {
+        size_t tuples_sz)
+      : init_degree(DEPTH, vector<uint32_t>(W1, 0)) {
 
     this->tuples = tuples;
     this->stage_szes = {W1, W2, W3};
