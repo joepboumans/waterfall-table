@@ -130,8 +130,8 @@ public:
                 // coll, min_value >
     // Resize to fill all possible degrees
     for (size_t d = 0; d < DEPTH; d++) {
-      this->counters[d].resize(init_max_degree[d] * 2 + 1);
-      init_thresholds[d].resize(init_max_degree[d] * 2 + 1);
+      this->counters[d].resize(init_max_degree[d] * 3 + 1);
+      init_thresholds[d].resize(init_max_degree[d] * 3 + 1);
     }
     std::cout << "[WaterfallFcm] Created virtual counters and thresholds"
               << std::endl;
@@ -301,12 +301,12 @@ public:
       }
       this->thresholds[d].resize(this->counters[d].size());
 
-      for (size_t xi = 0; xi < this->counters[d].size(); xi++) {
-        if (this->counters[d][xi].size() == 0) {
-          continue;
-        }
-        this->thresholds[d][xi].resize(this->max_counter_value + 1);
-      }
+      /*for (size_t xi = 0; xi < this->counters[d].size(); xi++) {*/
+      /*  if (this->counters[d][xi].size() == 0) {*/
+      /*    continue;*/
+      /*  }*/
+      /*  this->thresholds[d][xi].resize(this->max_counter_value + 1);*/
+      /*}*/
     }
     std::cout << "[EM_WATERFALL_FCM] Finished setting up counter_dist and "
                  "thresholds"
