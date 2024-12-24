@@ -104,18 +104,23 @@ public:
 
     // Calculate Virtual Counters and thresholds
     // depth, stage, idx, (count, degree, overflown)
-    array<array<vector<array<uint32_t, 3>>, NUM_STAGES>, DEPTH> summary;
+    vector<vector<vector<vector<uint32_t>>>> summary(DEPTH);
     // depth, stage, idx, layer, (stage, total degree/collisions, local
     // collisions, min_value)
-    array<array<vector<vector<vector<uint32_t>>>, NUM_STAGES>, DEPTH>
-        overflow_paths;
+    vector<vector<vector<vector<vector<uint32_t>>>>> overflow_paths(DEPTH);
 
     std::cout << "[WaterfallFcm] Setup Summary and Overflow Paths" << std::endl;
     // Setup sizes for summary and overflow_paths
     for (size_t d = 0; d < DEPTH; d++) {
+      summary[d].resize(NUM_STAGES);
+      overflow_paths[d].resize(NUM_STAGES);
       for (size_t stage = 0; stage < NUM_STAGES; stage++) {
         summary[d][stage].resize(this->stage_szes[stage]);
         overflow_paths[d][stage].resize(this->stage_szes[stage]);
+        for (size_t i = 0; i < this->stage_szes[stage]; i++) {
+          summary[d][stage][i].resize(3);
+          overflow_paths[d][stage][i].resize(4);
+        }
       }
     }
 
