@@ -46,7 +46,7 @@ elementclass Generator { $magic |
     input
     -> MarkMACHeader
     -> EnsureDPDKBuffer
-    -> shaper :: BandwidthRatedUnqueue($RATE, LINK_RATE true, ACTIVE true) // from Habib
+    //-> shaper :: BandwidthRatedUnqueue($RATE, LINK_RATE true, ACTIVE true) // from Habib
     -> EtherEncap(0x0800, 1:1:1:1:1:1, 2:2:2:2:2:2) // comment this if you want to use test.pcap
     -> doethRewrite :: { input[0] -> active::Switch(OUTPUT 0)[0] -> rwIN :: EtherRewrite($INsrcmac, $INdstmac) -> [0]output; active[1] -> [0]output }
     -> Pad
@@ -60,7 +60,7 @@ elementclass Generator { $magic |
 fdIN
 //-> replay0 :: ReplayUnqueue(STOP -1, ACTIVE true)
  -> unqueue0 :: BandwidthRatedUnqueue($RATE, LINK_RATE true, ACTIVE true)
--> gen0 :: Generator(\<5700>) -> tdIN; StaticThreadSched(fdIN 0/1, unqueue0 0/1);
+ -> gen0 :: Generator(\<5700>) -> tdIN; StaticThreadSched(fdIN 0/1, unqueue0 0/1);
 
 pkt_cnt :: HandlerAggregate(ELEMENT gen0/cnt);
 
