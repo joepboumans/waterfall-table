@@ -86,15 +86,15 @@ public:
             std::max(this->init_max_degree[d], this->init_degree[d][hash_idx]);
       }
     }
-    for (size_t d = 0; d < DEPTH; d++) {
-      std::cout << "[WaterfallFcm] Depth " << d << ":" << std::endl;
-      for (size_t i = 0; i < W1; i++) {
-        if (this->init_degree[d][i] > 0) {
-          std::cout << i << ":" << init_degree[d][i] << " ";
-        }
-      }
-      std::cout << std::endl;
-    }
+    /*for (size_t d = 0; d < DEPTH; d++) {*/
+    /*  std::cout << "[WaterfallFcm] Depth " << d << ":" << std::endl;*/
+    /*  for (size_t i = 0; i < W1; i++) {*/
+    /*    if (this->init_degree[d][i] > 0) {*/
+    /*      std::cout << i << ":" << init_degree[d][i] << " ";*/
+    /*    }*/
+    /*  }*/
+    /*  std::cout << std::endl;*/
+    /*}*/
 
     std::cout << "[WaterfallFcm] Colleted all initial degrees from Waterfall "
                  "with max degree "
