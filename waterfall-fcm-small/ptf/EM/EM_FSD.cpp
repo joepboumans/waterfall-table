@@ -84,10 +84,12 @@ public:
         /*std::cout << "Hashing at " << hash_idx << " : "*/
         /*          << init_degree[d][hash_idx] << " ";*/
         this->init_degree[d][hash_idx]++;
-        this->init_max_degree[d] =
-            std::max(this->init_max_degree[d], this->init_degree[d][hash_idx]);
       }
     }
+    this->init_max_degree[0] = *std::max_element(this->init_degree[0].begin(),
+                                                 this->init_degree[0].end());
+    this->init_max_degree[1] = *std::max_element(this->init_degree[1].begin(),
+                                                 this->init_degree[1].end());
     /*for (size_t d = 0; d < DEPTH; d++) {*/
     /*  std::cout << "[WaterfallFcm] Depth " << d << ":" << std::endl;*/
     /*  for (size_t i = 0; i < W1; i++) {*/
@@ -100,7 +102,7 @@ public:
 
     std::cout << "[WaterfallFcm] Colleted all initial degrees from Waterfall "
                  "with max degree "
-              << init_max_degree[0] << " and " << init_max_degree[1]
+              << this->init_max_degree[0] << " and " << this->init_max_degree[1]
               << std::endl;
 
     // Calculate Virtual Counters and thresholds
@@ -130,8 +132,8 @@ public:
                 // coll, min_value >
     // Resize to fill all possible degrees
     for (size_t d = 0; d < DEPTH; d++) {
-      this->counters[d].resize(init_max_degree[d] * 3 + 1);
-      init_thresholds[d].resize(init_max_degree[d] * 3 + 1);
+      this->counters[d].resize(this->init_max_degree[d] * 3 + 1);
+      init_thresholds[d].resize(this->init_max_degree[d] * 3 + 1);
     }
     std::cout << "[WaterfallFcm] Created virtual counters and thresholds"
               << std::endl;
@@ -145,8 +147,8 @@ public:
           if (s == 0) {
 
             // If qWaterfall missed the flow, give it a least a degree of 1
-            summary[d][s][i][1] = init_degree[d][i];
-            if (summary[d][s][i][0] > 0 && init_degree[d][i] < 1) {
+            summary[d][s][i][1] = this->init_degree[d][i];
+            if (summary[d][s][i][0] > 0 && this->init_degree[d][i] < 1) {
               summary[d][s][i][1] = 1;
             }
             // If overflown increase the minimal value for the collisions
