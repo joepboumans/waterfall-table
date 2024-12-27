@@ -500,6 +500,16 @@ private:
         if (colls <= 1) {
           continue;
         }
+        if (in_degree > 2) {
+          for (auto &x : t) {
+            std::cout << x;
+            if (&x != &t.back()) {
+              std::cout << ", ";
+            }
+          }
+          std::cout << "> ";
+        }
+        std::cout << std::endl;
 
         uint32_t tot_curr_colls = t[1];
         uint32_t group_sz = (uint32_t)now_flow_num / tot_curr_colls;
@@ -512,7 +522,7 @@ private:
         // Remainder is larger then minimal value thus 1 pass
         if (last_group_val >= min_val) {
           passes++;
-          std::cout << "pre if for loop" << std::endl;
+          /*std::cout << "pre if for loop" << std::endl;*/
           for (size_t i = 0; i < tot_curr_colls - 1; i++) {
             uint32_t accum =
                 std::accumulate(now_result.begin() + i * group_sz,
@@ -532,7 +542,7 @@ private:
             return false;
           }
           passes++;
-          std::cout << "pre else for loop" << std::endl;
+          /*std::cout << "pre else for loop" << std::endl;*/
           for (size_t i = 0; i < tot_curr_colls - 1; i++) {
             uint32_t accum =
                 std::accumulate(now_result.begin() + 1 + i * group_sz,
@@ -546,7 +556,7 @@ private:
         // E.g. it needs have 2 values large than the L2 threshold +
         // predecessor (min_value)
         if (passes < colls) {
-          std::cout << "Invalid permutation: ";
+          // std::cout << "Invalid permutation: ";
           //  for (auto &x : now_result) {
           //    std::cout << x << " ";
           //  }
