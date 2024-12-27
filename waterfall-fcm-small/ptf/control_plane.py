@@ -16,6 +16,18 @@ sys.path.append('/home/onie/sde/bf-sde-9.11.0/install/lib/python3.8/site-package
 # os.environ["GRPC_POLL_STRATEGY"] = "poll"
 # os.environ["GRPC_VERBOSITY"] = "debug"
 
+
+NUM_STAGES = 3
+DEPTH = 2
+K = 8
+W1 = 524288        
+W2 = 65536        
+W3 = 8192        
+ADD_LEVEL1 = 255
+ADD_LEVEL2 = 65789 
+OVERFLOW_LEVEL1 = 255   
+OVERFLOW_LEVEL2 = 65535 
+
 import bfrt_grpc.client as gc
 
 
@@ -277,6 +289,97 @@ class BfRt_interface():
 
         print(f"[WaterfallFcm] Finished EM FSD")
 
+    def verify_sim(self, in_tuples, iters):
+        print(f"[WaterfallFcm - verify sim] Calculate Waterfall F1-score...")
+        true_pos = false_pos = true_neg =  false_neg = 0
+
+        # Compare dataset tuples with Waterfall Tuples
+        for tup in in_tuples.keys():
+            if tup in self.tuples:
+                true_pos += 1
+            else:
+                false_pos += 1
+
+        # F1 Score
+        recall = precision = f1 = 0.0
+        recall = true_pos / (true_pos + false_pos)
+        precision = 1.0;
+        f1 = 2 * ((recall * precision) / (precision + recall))
+
+        print(f"[WaterfallFcm - verify sim] {recall = :.5f} {precision = :.5f} | {f1 = :.5f}")
+
+        load_factor = len(self.tuples) / len(in_tuples)
+        print(f"[WaterfallFcm - verify sim] Load factor is {load_factor}")
+
+        total_lf = self.total_received / len(in_tuples)
+        print(f"[WaterfallFcm - verify sim] Total Load factor is {total_lf}")
+
+        print(f"[WaterfallFcm - verify sim] Estimate Flow Size Distribution")
+
+        s1 = [[0] * W1, [0] * W1]
+        s2 = [[0] * W2, [0] * W2]
+        s3 = [[0] * W3, [0] * W3]
+
+        print(f"[WaterfallFcm - verify sim] Setup sim stages")
+        for d in range(DEPTH):
+            for tup, val in in_tuples.items():
+                if d == 0:
+                    hash_idx = utils.crc32_sf(tup, 0xFFFFFFFF) % W1
+                else:
+                    hash_idx = utils.crc32_sf(tup, 0x0FFFFFFF) % W1
+                
+                if s1[d][hash_idx] + val < OVERFLOW_LEVEL1:
+                    s1[d][hash_idx] += val
+                    continue
+
+                s1[d][hash_idx] = OVERFLOW_LEVEL1;
+                hash_idx = int(hash_idx / 8)
+                if s2[d][hash_idx] + val < OVERFLOW_LEVEL2:
+                    s2[d][hash_idx] += val
+                    continue
+
+                s2[d][hash_idx] = OVERFLOW_LEVEL2
+                hash_idx = int(hash_idx / 8)
+                s3[d][hash_idx] += val;
+
+        print(f"[WaterfallFcm - verify sim] Start estimation")
+
+
+        em_fsd = EM_FSD(s1, s2, s3, self.tuples)
+
+        for i in range(iters):
+            self.ns = em_fsd.run_em(1)
+
+            print(f"[WaterfallFcm - verify sim] Calculate Flow Size Distribution...")
+            wmre = 0.0
+            wmre_nom = 0.0
+            wmre_denom = 0.0
+
+            max_count_in = max(in_tuples.values())
+            max_count_em = len(self.ns)
+            print(f"[WaterfallFcm - verify sim] {max_count_in = } {max_count_em = }")
+
+            max_count = max(max_count_in, max_count_em) + 1
+            fsd = [0] * (max_count + 1)
+
+            print(f"[WaterfallFcm - verify sim] Setup real EM...")
+            for val in in_tuples.values():
+                fsd[val] += 1
+
+            print(f"[WaterfallFcm - verify sim] ...done")
+
+            print(f"[WaterfallFcm - verify sim] Calculate WMRE...")
+            for real, est in zip(fsd, self.ns):
+                wmre_nom += abs(float(real) - est)
+                wmre_denom += (float(real) + est) / 2
+
+            if wmre_denom != 0:
+                wmre = wmre_nom / wmre_denom
+
+            print(f"[WaterfallFcm] WMRE : {wmre : .2f}")
+
+        print(f"[WaterfallFcm] Finished EM FSD")
+
 def read_data_set(data_name):
     print(f"[Dataset Loader] Get data from {data_name}")
     first = True
@@ -323,6 +426,7 @@ def read_data_set(data_name):
 def main():
     parser = argparse.ArgumentParser(description="Loads in a dataset and connect to the network switch via gRPC. Verifies the results of the Waterfall and FCM sketch against the dataset")
     parser.add_argument('-i', '--input', type=str, required=True, help="Absolute path to dataset (/home/onie/*)")
+    parser.add_argument('--sim', type=bool, action='store_true', help="Absolute path to dataset (/home/onie/*)")
 
     args = parser.parse_args()
     input_tuples = read_data_set(args.input)
@@ -330,7 +434,10 @@ def main():
     bfrt_interface = BfRt_interface(0, 'localhost:50052', 0)
     # bfrt_interface.list_tables()
     bfrt_interface.run()
-    bfrt_interface.verify(input_tuples, 5)
+    if args.sim:
+        bfrt_interface.verify_sim(input_tuples, 5)
+    else:
+        bfrt_interface.verify(input_tuples, 5)
 
 if __name__ == "__main__":
     main()
