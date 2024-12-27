@@ -566,14 +566,9 @@ private:
             }
             std::cout << std::endl;
           }
-          if (last_group_sz <= 1) {
-            last_group_val = now_result[now_result.size() - 1] + now_result[0];
-          } else {
-            last_group_val =
-                std::accumulate(now_result.end() - last_group_sz + 1,
-                                now_result.end(), 0) +
-                now_result[0];
-          }
+          last_group_val = std::accumulate(now_result.end() - last_group_sz + 1,
+                                           now_result.end(), 0) +
+                           now_result[0];
           if (last_group_val < min_val) {
             return false;
           }
