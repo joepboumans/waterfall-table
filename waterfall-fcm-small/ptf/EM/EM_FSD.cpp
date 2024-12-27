@@ -508,8 +508,9 @@ private:
             }
           }
           std::cout << "> ";
+          std::cout << std::endl;
+          std::cout << "Current flow " << now_flow_num << std::endl;
         }
-        std::cout << std::endl;
 
         uint32_t tot_curr_colls = t[1];
         uint32_t group_sz = (uint32_t)now_flow_num / tot_curr_colls;
