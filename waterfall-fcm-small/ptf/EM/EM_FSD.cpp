@@ -655,10 +655,10 @@ public:
     auto start = std::chrono::high_resolution_clock::now();
     std::cout << "[EM_WATERFALL_FCM] Start next epoch" << std::endl;
 
-    n_old = n_new;
-    dist_old = dist_new;
+    this->n_old = this->n_new;
+    this->dist_old = this->dist_new;
 
-    array<vector<vector<double>>, DEPTH> nt;
+    vector<vector<vector<double>>> nt(DEPTH);
     std::fill(ns.begin(), ns.end(), 0);
 
     std::cout << "[EM_WATERFALL_FCM] Copy first degree distribution"
@@ -667,9 +667,10 @@ public:
     // estimation. qWaterfall is not perfect, but assumed to be
     for (size_t d = 0; d < DEPTH; d++) {
       nt[d].resize(this->max_degree[d] + 1);
-      nt[d][1].resize(counter_dist[d][1].size());
-      for (size_t i = 0; i < counter_dist[d][1].size(); i++) {
-        nt[d][1][i] += counter_dist[d][1][i];
+
+      nt[d][1].resize(this->counter_dist[d][1].size());
+      for (size_t i = 0; i < this->counter_dist[d][1].size(); i++) {
+        nt[d][1][i] += this->counter_dist[d][1][i];
       }
     }
 
@@ -712,20 +713,20 @@ public:
     for (size_t d = 0; d < DEPTH; d++) {
       for (size_t xi = 0; xi < nt[d].size(); xi++) {
         for (uint32_t i = 0; i < nt[d][xi].size(); i++) {
-          ns[i] += nt[d][xi][i];
+          this->ns[i] += nt[d][xi][i];
         }
       }
     }
 
-    n_new = 0.0;
-    for (size_t i = 0; i < ns.size(); i++) {
-      if (ns[i] != 0) {
-        ns[i] /= static_cast<double>(DEPTH);
-        n_new += ns[i];
+    this->n_new = 0.0;
+    for (size_t i = 0; i < this->ns.size(); i++) {
+      if (this->ns[i] != 0) {
+        this->ns[i] /= static_cast<double>(DEPTH);
+        this->n_new += this->ns[i];
       }
     }
-    for (uint32_t i = 0; i < ns.size(); i++) {
-      dist_new[i] = ns[i] / n_new;
+    for (uint32_t i = 0; i < this->ns.size(); i++) {
+      this->dist_new[i] = this->ns[i] / this->n_new;
     }
     auto stop = std::chrono::high_resolution_clock::now();
     auto time =
