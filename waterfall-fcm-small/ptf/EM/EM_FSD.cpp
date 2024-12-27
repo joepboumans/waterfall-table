@@ -587,8 +587,8 @@ private:
            xi, counter_dist[d][xi].size());
 
     double lambda = n_old * xi / double(w);
-    for (uint32_t i = 0; i < counter_dist[d][xi].size(); i++) {
-      if (counter_dist[d][xi][i] == 0) {
+    for (uint32_t i = 0; i < this->counter_dist[d][xi].size(); i++) {
+      if (this->counter_dist[d][xi][i] == 0) {
         continue;
       }
       /*std::cout << "Found value " << i << " with count of "*/
@@ -602,7 +602,8 @@ private:
       /*std::cout << "Get alpha combinations" << std::endl;*/
       // Sum over first combinations
       while (alpha.get_next()) {
-        double p = get_p_from_beta(alpha, lambda, dist_old, n_old, xi);
+        double p =
+            get_p_from_beta(alpha, lambda, this->dist_old, this->n_old, xi);
         sum_p += p;
         it++;
       }
@@ -628,9 +629,10 @@ private:
         }
       } else {
         while (beta.get_next()) {
-          double p = get_p_from_beta(beta, lambda, dist_old, n_old, xi);
+          double p =
+              get_p_from_beta(beta, lambda, this->dist_old, this->n_old, xi);
           for (size_t j = 0; j < beta.now_flow_num; ++j) {
-            nt[beta.now_result[j]] += counter_dist[d][xi][i] * p / sum_p;
+            nt[beta.now_result[j]] += this->counter_dist[d][xi][i] * p / sum_p;
           }
         }
       }
@@ -678,34 +680,34 @@ public:
     // Simple Multi thread
     vector<vector<std::thread>> threads(DEPTH);
     for (size_t d = 0; d < threads.size(); d++) {
-      threads[d].resize(this->max_degree[d]);
+      threads[d].resize(this->max_degree[d] + 1);
     }
 
     uint32_t total_degree = this->max_degree[0] + this->max_degree[1] + 1;
     std::cout << "[EM_WATERFALL_FCM] Created " << total_degree << " threads"
               << std::endl;
 
-    /*for (size_t d = 0; d < DEPTH; d++) {*/
-    /*  for (size_t t = 0; t < threads[d].size(); t++) {*/
-    /*    std::cout << "[EM_WATERFALL_FCM] Start thread " << t << " at depth "*/
-    /*              << d << std::endl;*/
-    /*    threads[d][t] = std::thread(&EMFSD::calculate_degree, *this,*/
-    /*                                std::ref(nt[d][t + 2]), d, t + 2);*/
-    /*  }*/
-    /*}*/
-    /**/
-    /*for (size_t d = 0; d < DEPTH; d++) {*/
-    /*  for (size_t t = 0; t < threads[d].size(); t++) {*/
-    /*    threads[d][t].join();*/
-    /*  }*/
-    /*}*/
-
-    // Single threaded
     for (size_t d = 0; d < DEPTH; d++) {
-      for (size_t xi = 2; xi <= this->max_degree[d]; xi++) {
-        this->calculate_degree(nt[d][xi], d, xi);
+      for (size_t t = 2; t < threads[d].size(); t++) {
+        std::cout << "[EM_WATERFALL_FCM] Start thread " << t << " at depth "
+                  << d << std::endl;
+        threads[d][t] = std::thread(&EMFSD::calculate_degree, *this,
+                                    std::ref(nt[d][t]), d, t);
       }
     }
+
+    for (size_t d = 0; d < DEPTH; d++) {
+      for (size_t t = 0; t < threads[d].size(); t++) {
+        threads[d][t].join();
+      }
+    }
+
+    // Single threaded
+    // for (size_t d = 0; d < DEPTH; d++) {
+    //   for (size_t xi = 2; xi <= this->max_degree[d]; xi++) {
+    //     this->calculate_degree(nt[d][xi], d, xi);
+    //   }
+    // }
 
     std::cout << "[EM_WATERFALL_FCM] Finished calculating nt per degree"
               << std::endl;
@@ -768,10 +770,10 @@ void *EMFSD_new(uint32_t *s1_1, uint32_t *s1_2, uint32_t *s2_1, uint32_t *s2_2,
   std::cout << "[WaterfallFcm CTypes] Start resizing stages[d][s] "
             << std::endl;
   stages[0][0].resize(W1);
-  stages[1][0].resize(W1);
   stages[0][1].resize(W2);
-  stages[1][1].resize(W2);
   stages[0][2].resize(W3);
+  stages[1][0].resize(W1);
+  stages[1][1].resize(W2);
   stages[1][2].resize(W3);
 
   std::cout << "\tcopy stages" << std::endl;
