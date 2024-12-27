@@ -308,7 +308,7 @@ class BfRt_interface():
 
         print(f"[WaterfallFcm - verify sim] {recall = :.5f} {precision = :.5f} | {f1 = :.5f}")
 
-        load_factor = len(self.tuples) / len(in_tuples)
+        load_factor = len(in_tuples) / len(in_tuples)
         print(f"[WaterfallFcm - verify sim] Load factor is {load_factor}")
 
         total_lf = self.total_received / len(in_tuples)
@@ -433,10 +433,10 @@ def main():
 
     bfrt_interface = BfRt_interface(0, 'localhost:50052', 0)
     # bfrt_interface.list_tables()
-    bfrt_interface.run()
     if args.sim:
         bfrt_interface.verify_sim(input_tuples, 1)
     else:
+        bfrt_interface.run()
         bfrt_interface.verify(input_tuples, 5)
 
 if __name__ == "__main__":
