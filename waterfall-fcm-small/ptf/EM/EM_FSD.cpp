@@ -401,14 +401,6 @@ private:
                            vector<vector<uint32_t>> _thresh)
         : sum(_sum), flow_num_limit(_in_degree), thresh(_thresh) {
 
-      now_flow_num = flow_num_limit;
-      now_result.resize(_in_degree);
-      for (size_t i = 0; i < _in_degree - 1; i++) {
-        now_result[i] = 1;
-      }
-
-      /*std::cout << "Set generator - now_result complete" << std::endl;*/
-
       if (sum > 600) {
         flow_num_limit = 2;
       } else if (sum > 250) {
@@ -417,6 +409,12 @@ private:
         flow_num_limit = std::min(4, flow_num_limit);
       } else if (sum > 50) {
         flow_num_limit = std::min(5, flow_num_limit);
+      }
+
+      now_flow_num = flow_num_limit;
+      now_result.resize(flow_num_limit);
+      for (size_t i = 0; i < _in_degree - 1; i++) {
+        now_result[i] = 1;
       }
       // else
       //   flow_num_limit = 6;
@@ -551,11 +549,6 @@ private:
           return false;
         }
       }
-      std::cout << "Valid perm";
-      for (auto &x : now_result) {
-        std::cout << x << " ";
-      }
-      std::cout << std::endl;
       return true;
     }
   };
