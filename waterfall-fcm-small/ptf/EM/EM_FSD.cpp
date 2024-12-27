@@ -603,7 +603,6 @@ private:
       /*std::cout << "Get alpha combinations" << std::endl;*/
       // Sum over first combinations
       while (alpha.get_next()) {
-        std::cout << "Found combination" << std::endl;
         double p =
             get_p_from_beta(alpha, lambda, this->dist_old, this->n_old, xi);
         sum_p += p;
