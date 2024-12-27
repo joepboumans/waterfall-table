@@ -396,7 +396,6 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
 
   action hit(PortId_t dst_port) {
     ig_intr_tm_md.ucast_egress_port = dst_port;
-    ig_intr_dprsr_md.drop_ctl = 0x0;
     ig_md.found = false;
   }
   action drop() { ig_intr_dprsr_md.drop_ctl = 0x1; }
@@ -432,6 +431,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     swap4.apply();
 
     resub.apply();
+    ig_intr_dprsr_md.drop_ctl = 0x0;
   }
 }
 
