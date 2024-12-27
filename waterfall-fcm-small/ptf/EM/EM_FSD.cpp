@@ -356,14 +356,14 @@ public:
         }
       }
     }
-    /*std::cout << "[EM_WATERFALL_FCM] Summed Flow Size Distribution"*/
-    /*          << std::endl;*/
-    /*for (auto &x : this->dist_new) {*/
-    /*  if (x != 0) {*/
-    /*    std::cout << x << " ";*/
-    /*  }*/
-    /*}*/
-    /*std::cout << std::endl;*/
+    std::cout << "[EM_WATERFALL_FCM] Summed Flow Size Distribution"
+              << std::endl;
+    for (auto &x : this->dist_new) {
+      if (x != 0) {
+        std::cout << x << " ";
+      }
+    }
+    std::cout << std::endl;
 
     std::cout << "[EM_WATERFALL_FCM] Normalize guesses" << std::endl;
     // Normalize over inital cardinality
@@ -371,6 +371,12 @@ public:
       this->dist_new[i] /= (static_cast<double>(DEPTH) * this->n_new);
       this->ns[i] /= double(DEPTH);
     }
+    for (auto &x : this->dist_new) {
+      if (x != 0) {
+        std::cout << x << " ";
+      }
+    }
+    std::cout << std::endl;
 
     printf("[EM_WATERFALL_FCM] Initial Cardinality : %9.1f\n", this->n_new);
     printf("[EM_WATERFALL_FCM] Max Counter value : %d\n",
