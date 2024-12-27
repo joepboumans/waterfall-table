@@ -518,7 +518,8 @@ private:
         }
         uint32_t tot_curr_colls = t[1];
         uint32_t group_sz = (uint32_t)now_flow_num / tot_curr_colls;
-        uint32_t last_group_sz = std::ceil(now_flow_num / tot_curr_colls);
+        uint32_t last_group_sz =
+            std::ceil((float)now_flow_num / (float)tot_curr_colls);
         uint32_t min_val = t[3];
         uint32_t passes = 0;
         uint32_t last_group_val = std::accumulate(
@@ -565,7 +566,7 @@ private:
             }
             std::cout << std::endl;
           }
-          if (last_group_sz == 1) {
+          if (last_group_sz <= 1) {
             last_group_val = now_result[now_result.size() - 1] + now_result[0];
           } else {
             last_group_val =
