@@ -556,6 +556,9 @@ private:
             std::cout << "> ";
             std::cout << std::endl;
             std::cout << "Current flow " << now_flow_num << std::endl;
+            std::cout << "Group size " << group_sz << " last group sz "
+                      << last_group_sz << std::endl;
+
             std::cout << "Now result:" << std::endl;
             for (auto &x : now_result) {
               std::cout << x << " ";
