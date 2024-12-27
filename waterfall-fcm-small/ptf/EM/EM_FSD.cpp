@@ -675,24 +675,27 @@ public:
 
     std::cout << "[EM_WATERFALL_FCM] Init first degree" << std::endl;
     // Simple Multi thread
-    uint32_t total_degree = this->max_degree[0] + this->max_degree[1] + 1;
-    std::thread threads[total_degree];
+    vector<vector<std::thread>> threads(DEPTH);
+    for (size_t d = 0; d < threads.size(); d++) {
+      threads[d].resize(this->max_degree[d]);
+    }
 
+    uint32_t total_degree = this->max_degree[0] + this->max_degree[1] + 1;
     std::cout << "[EM_WATERFALL_FCM] Created " << total_degree << " threads"
               << std::endl;
+
     for (size_t d = 0; d < DEPTH; d++) {
-      for (size_t t = 0; t <= this->max_degree[d]; t++) {
-        size_t idx = t + d * this->max_degree[0];
-        std::cout << "[EM_WATERFALL_FCM] Start thread " << idx << " at depth "
+      for (size_t t = 0; t < threads[d].size(); t++) {
+        std::cout << "[EM_WATERFALL_FCM] Start thread " << t << " at depth "
                   << d << std::endl;
-        threads[idx] = std::thread(&EMFSD::calculate_degree, *this,
-                                   std::ref(nt[d][t + 2]), d, t + 2);
+        threads[d][t] = std::thread(&EMFSD::calculate_degree, *this,
+                                    std::ref(nt[d][t + 2]), d, t + 2);
       }
     }
 
     for (size_t d = 0; d < DEPTH; d++) {
-      for (size_t t = 0; t <= this->max_degree[d]; t++) {
-        threads[t + d * this->max_degree[0]].join();
+      for (size_t t = 0; t < threads[d].size(); t++) {
+        threads[d][t].join();
       }
     }
 
