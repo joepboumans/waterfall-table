@@ -426,7 +426,7 @@ def read_data_set(data_name):
 def main():
     parser = argparse.ArgumentParser(description="Loads in a dataset and connect to the network switch via gRPC. Verifies the results of the Waterfall and FCM sketch against the dataset")
     parser.add_argument('-i', '--input', type=str, required=True, help="Absolute path to dataset (/home/onie/*)")
-    parser.add_argument('--sim', type=bool, action='store_true', help="Absolute path to dataset (/home/onie/*)")
+    parser.add_argument('--sim',  action='store_true', help="Absolute path to dataset (/home/onie/*)")
 
     args = parser.parse_args()
     input_tuples = read_data_set(args.input)
