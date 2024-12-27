@@ -290,30 +290,6 @@ class BfRt_interface():
         print(f"[WaterfallFcm] Finished EM FSD")
 
     def verify_sim(self, in_tuples, iters):
-        print(f"[WaterfallFcm - verify sim] Calculate Waterfall F1-score...")
-        true_pos = false_pos = true_neg =  false_neg = 0
-
-        # Compare dataset tuples with Waterfall Tuples
-        for tup in in_tuples.keys():
-            if tup in self.tuples:
-                true_pos += 1
-            else:
-                false_pos += 1
-
-        # F1 Score
-        recall = precision = f1 = 0.0
-        recall = true_pos / (true_pos + false_pos)
-        precision = 1.0;
-        f1 = 2 * ((recall * precision) / (precision + recall))
-
-        print(f"[WaterfallFcm - verify sim] {recall = :.5f} {precision = :.5f} | {f1 = :.5f}")
-
-        load_factor = len(in_tuples) / len(in_tuples)
-        print(f"[WaterfallFcm - verify sim] Load factor is {load_factor}")
-
-        total_lf = self.total_received / len(in_tuples)
-        print(f"[WaterfallFcm - verify sim] Total Load factor is {total_lf}")
-
         print(f"[WaterfallFcm - verify sim] Estimate Flow Size Distribution")
 
         s1 = [[0] * W1, [0] * W1]
