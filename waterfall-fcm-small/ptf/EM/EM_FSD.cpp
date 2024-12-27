@@ -545,6 +545,9 @@ private:
         // Remainder not larger than minimal value
         // Shift group to include first entry
         else {
+          if (in_degree > 2) {
+            std::cout << "Pre last group val" << std::endl;
+          }
           last_group_val = std::accumulate(now_result.end() - last_group_sz + 1,
                                            now_result.end(), 0) +
                            now_result[0];
