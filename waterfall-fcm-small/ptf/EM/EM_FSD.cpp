@@ -479,7 +479,7 @@ private:
     }
 
     bool check_condition() {
-      // return true;
+      return true;
       /*if (in_degree > 2) {*/
 
       /*  std::cout << "Checking condition" << std::endl;*/
