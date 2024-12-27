@@ -155,8 +155,9 @@ public:
               summary[d][s][i][2] = 1;
               /*std::cout << "Overflown in " << s << ":" << i << std::endl;*/
             }
-            overflow_paths[d][s][i].push_back(
-                {(uint32_t)s, init_degree[d][i], 1, summary[d][s][i][0]});
+            overflow_paths[d][s][i].push_back({(uint32_t)s, summary[d][s][i][1],
+                                               summary[d][s][i][1],
+                                               summary[d][s][i][0]});
 
           } else {
             if (summary[d][s][i][0] == 0) {
@@ -496,12 +497,12 @@ private:
       }
       std::cout << std::endl;
       for (auto &t : thresh) {
-        uint32_t colls = t[1];
+        uint32_t colls = t[2];
         if (colls <= 1) {
           continue;
         }
 
-        uint32_t tot_curr_colls = t[2];
+        uint32_t tot_curr_colls = t[1];
         uint32_t group_sz = (uint32_t)now_flow_num / tot_curr_colls;
         uint32_t last_group_sz = std::ceil(now_flow_num / tot_curr_colls);
         uint32_t min_val = t[3];
