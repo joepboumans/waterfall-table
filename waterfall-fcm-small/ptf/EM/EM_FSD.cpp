@@ -513,7 +513,7 @@ private:
         /*}*/
 
         // Limit the maximum collisions to the maximum numbers
-        if (in_degree > 2) {
+        if (in_degree > 3) {
           std::cout << "Pre calculating group sizes" << std::endl;
         }
         uint32_t tot_curr_colls = t[1];
@@ -546,7 +546,7 @@ private:
         // Remainder not larger than minimal value
         // Shift group to include first entry
         else {
-          if (in_degree > 2) {
+          if (in_degree > 3) {
             std::cout << "Pre last group val" << std::endl;
             for (auto &x : t) {
               std::cout << x;
@@ -573,7 +573,7 @@ private:
             return false;
           }
           passes++;
-          if (in_degree > 2) {
+          if (in_degree > 3) {
             std::cout << "pre else for loop" << std::endl;
           }
           for (size_t i = 0; i < tot_curr_colls - 1; i++) {
