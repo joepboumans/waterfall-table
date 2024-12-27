@@ -629,9 +629,9 @@ private:
           }
         }
       } else {
-        std::cout << "Get beta values" << std::endl;
-        std::cout << "Found value " << i << " with count of "
-                  << counter_dist[d][xi][i] << std::endl;
+        /*std::cout << "Get beta values" << std::endl;*/
+        /*std::cout << "Found value " << i << " with count of "*/
+        /*          << counter_dist[d][xi][i] << std::endl;*/
         while (beta.get_next()) {
           double p =
               get_p_from_beta(beta, lambda, this->dist_old, this->n_old, xi);
