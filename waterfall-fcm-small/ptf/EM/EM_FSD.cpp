@@ -480,21 +480,21 @@ private:
 
     bool check_condition() {
       // return true;
-      /*if (in_degree > 2) {*/
+      if (in_degree > 3) {
 
-      /*  std::cout << "Checking condition" << std::endl;*/
-      /*  for (auto &t : thresh) {*/
-      /*    std::cout << " <";*/
-      /*    for (auto &x : t) {*/
-      /*      std::cout << x;*/
-      /*      if (&x != &t.back()) {*/
-      /*        std::cout << ", ";*/
-      /*      }*/
-      /*    }*/
-      /*    std::cout << "> ";*/
-      /*  }*/
-      /*  std::cout << std::endl;*/
-      /*}*/
+        std::cout << "Checking condition" << std::endl;
+        for (auto &t : thresh) {
+          std::cout << " <";
+          for (auto &x : t) {
+            std::cout << x;
+            if (&x != &t.back()) {
+              std::cout << ", ";
+            }
+          }
+          std::cout << "> ";
+        }
+        std::cout << std::endl;
+      }
       for (auto &t : thresh) {
         uint32_t colls = t[2];
         if (colls <= 1) {
