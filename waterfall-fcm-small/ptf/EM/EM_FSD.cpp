@@ -403,15 +403,15 @@ private:
         : sum(_sum), in_degree(_in_degree), thresh(_thresh) {
 
       flow_num_limit = in_degree;
-      if (sum > 600) {
-        flow_num_limit = 2;
-      } else if (sum > 250) {
-        flow_num_limit = std::min(3, flow_num_limit);
-      } else if (sum > 100) {
-        flow_num_limit = std::min(4, flow_num_limit);
-      } else if (sum > 50) {
-        flow_num_limit = std::min(5, flow_num_limit);
-      }
+      /*if (sum > 600) {*/
+      /*  flow_num_limit = 2;*/
+      /*} else if (sum > 250) {*/
+      /*  flow_num_limit = std::min(3, flow_num_limit);*/
+      /*} else if (sum > 100) {*/
+      /*  flow_num_limit = std::min(4, flow_num_limit);*/
+      /*} else if (sum > 50) {*/
+      /*  flow_num_limit = std::min(5, flow_num_limit);*/
+      /*}*/
 
       now_flow_num = flow_num_limit;
       now_result.resize(flow_num_limit);
