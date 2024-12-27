@@ -570,7 +570,7 @@ private:
     for (auto &kv : mp) {
       uint32_t fi = kv.second;
       uint32_t si = kv.first;
-      double lambda_i = now_n * (now_dist[si] * degree) / w;
+      double lambda_i = now_n * (now_dist[si] * degree) / W1;
       ret *= (std::pow(lambda_i, fi)) / factorial(fi);
     }
 
@@ -591,8 +591,8 @@ private:
       if (this->counter_dist[d][xi][i] == 0) {
         continue;
       }
-      std::cout << "Found value " << i << " with count of "
-                << counter_dist[d][xi][i] << std::endl;
+      /*std::cout << "Found value " << i << " with count of "*/
+      /*          << counter_dist[d][xi][i] << std::endl;*/
 
       BetaGenerator alpha(i, xi, this->thresholds[d][xi][i]),
           beta(i, xi, this->thresholds[d][xi][i]);
@@ -628,6 +628,9 @@ private:
           }
         }
       } else {
+        std::cout << "Get beta values" << std::endl;
+        std::cout << "Found value " << i << " with count of "
+                  << counter_dist[d][xi][i] << std::endl;
         while (beta.get_next()) {
           double p =
               get_p_from_beta(beta, lambda, this->dist_old, this->n_old, xi);
