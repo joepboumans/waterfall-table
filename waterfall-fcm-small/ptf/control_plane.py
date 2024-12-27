@@ -435,7 +435,7 @@ def main():
     # bfrt_interface.list_tables()
     bfrt_interface.run()
     if args.sim:
-        bfrt_interface.verify_sim(input_tuples, 5)
+        bfrt_interface.verify_sim(input_tuples, 1)
     else:
         bfrt_interface.verify(input_tuples, 5)
 

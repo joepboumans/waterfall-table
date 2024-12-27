@@ -335,14 +335,14 @@ public:
         }
       }
     }
-    /*std::cout << "[EM_WATERFALL_FCM] Initial Flow Size Distribution guess"*/
-    /*          << std::endl;*/
-    /*for (auto &x : this->dist_new) {*/
-    /*  if (x != 0) {*/
-    /*    std::cout << x << " ";*/
-    /*  }*/
-    /*}*/
-    /*std::cout << std::endl;*/
+    std::cout << "[EM_WATERFALL_FCM] Initial Flow Size Distribution guess"
+              << std::endl;
+    for (auto &x : this->dist_new) {
+      if (x != 0) {
+        std::cout << x << " ";
+      }
+    }
+    std::cout << std::endl;
 
     this->ns.resize(this->max_counter_value + 1);
     for (size_t d = 0; d < DEPTH; d++) {
