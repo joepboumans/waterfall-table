@@ -678,36 +678,36 @@ public:
     std::fill(this->ns.begin(), this->ns.end(), 0);
     std::cout << "[EM_WATERFALL_FCM] Init first degree" << std::endl;
     // Simple Multi thread
-    vector<vector<std::thread>> threads(DEPTH);
-    for (size_t d = 0; d < threads.size(); d++) {
-      threads[d].resize(this->max_degree[d] + 1);
-    }
-
-    uint32_t total_degree = this->max_degree[0] + this->max_degree[1] + 1;
-    std::cout << "[EM_WATERFALL_FCM] Created " << total_degree << " threads"
-              << std::endl;
-
-    for (size_t d = 0; d < DEPTH; d++) {
-      for (size_t t = 2; t < threads[d].size(); t++) {
-        std::cout << "[EM_WATERFALL_FCM] Start thread " << t << " at depth "
-                  << d << std::endl;
-        threads[d][t] = std::thread(&EMFSD::calculate_degree, *this,
-                                    std::ref(nt[d][t]), d, t);
-      }
-    }
-
-    for (size_t d = 0; d < DEPTH; d++) {
-      for (size_t t = 0; t < threads[d].size(); t++) {
-        threads[d][t].join();
-      }
-    }
+    /*vector<vector<std::thread>> threads(DEPTH);*/
+    /*for (size_t d = 0; d < threads.size(); d++) {*/
+    /*  threads[d].resize(this->max_degree[d] + 1);*/
+    /*}*/
+    /**/
+    /*uint32_t total_degree = this->max_degree[0] + this->max_degree[1] + 1;*/
+    /*std::cout << "[EM_WATERFALL_FCM] Created " << total_degree << " threads"*/
+    /*          << std::endl;*/
+    /**/
+    /*for (size_t d = 0; d < DEPTH; d++) {*/
+    /*  for (size_t t = 2; t < threads[d].size(); t++) {*/
+    /*    std::cout << "[EM_WATERFALL_FCM] Start thread " << t << " at depth "*/
+    /*              << d << std::endl;*/
+    /*    threads[d][t] = std::thread(&EMFSD::calculate_degree, *this,*/
+    /*                                std::ref(nt[d][t]), d, t);*/
+    /*  }*/
+    /*}*/
+    /**/
+    /*for (size_t d = 0; d < DEPTH; d++) {*/
+    /*  for (size_t t = 0; t < threads[d].size(); t++) {*/
+    /*    threads[d][t].join();*/
+    /*  }*/
+    /*}*/
 
     // Single threaded
-    // for (size_t d = 0; d < DEPTH; d++) {
-    //   for (size_t xi = 2; xi <= this->max_degree[d]; xi++) {
-    //     this->calculate_degree(nt[d][xi], d, xi);
-    //   }
-    // }
+    for (size_t d = 0; d < DEPTH; d++) {
+      for (size_t xi = 2; xi <= this->max_degree[d]; xi++) {
+        this->calculate_degree(nt[d][xi], d, xi);
+      }
+    }
 
     std::cout << "[EM_WATERFALL_FCM] Finished calculating nt per degree"
               << std::endl;
