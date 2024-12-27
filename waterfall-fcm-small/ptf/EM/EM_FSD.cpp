@@ -394,13 +394,15 @@ private:
     int sum;
     int now_flow_num;
     int flow_num_limit;
+    int in_degree;
     vector<int> now_result;
     vector<vector<uint32_t>> thresh;
 
     explicit BetaGenerator(uint32_t _sum, uint32_t _in_degree,
                            vector<vector<uint32_t>> _thresh)
-        : sum(_sum), flow_num_limit(_in_degree), thresh(_thresh) {
+        : sum(_sum), in_degree(_in_degree), thresh(_thresh) {
 
+      flow_num_limit = in_degree;
       if (sum > 600) {
         flow_num_limit = 2;
       } else if (sum > 250) {
@@ -478,18 +480,21 @@ private:
 
     bool check_condition() {
       // return true;
-      /*std::cout << "Checking condition" << std::endl;*/
-      /*for (auto t : thresh) {*/
-      /*  std::cout << " <";*/
-      /*  for (auto x : t) {*/
-      /*    std::cout << x;*/
-      /*    if (&x != &t.back()) {*/
-      /*      std::cout << ", ";*/
-      /*    }*/
-      /*  }*/
-      /*  std::cout << "> ";*/
-      /*}*/
-      /*std::cout << std::endl;*/
+      if (in_degree > 2) {
+
+        std::cout << "Checking condition" << std::endl;
+        for (auto t : thresh) {
+          std::cout << " <";
+          for (auto x : t) {
+            std::cout << x;
+            if (&x != &t.back()) {
+              std::cout << ", ";
+            }
+          }
+          std::cout << "> ";
+        }
+        std::cout << std::endl;
+      }
       for (auto &t : thresh) {
         uint32_t colls = t[2];
         if (colls <= 1) {
