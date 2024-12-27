@@ -547,6 +547,20 @@ private:
         else {
           if (in_degree > 2) {
             std::cout << "Pre last group val" << std::endl;
+            for (auto &x : t) {
+              std::cout << x;
+              if (&x != &t.back()) {
+                std::cout << ", ";
+              }
+            }
+            std::cout << "> ";
+            std::cout << std::endl;
+            std::cout << "Current flow " << now_flow_num << std::endl;
+            std::cout << "Now result:" << std::endl;
+            for (auto &x : now_result) {
+              std::cout << x << " ";
+            }
+            std::cout << std::endl;
           }
           if (last_group_sz == 1) {
             last_group_val = now_result[now_result.size() - 1] + now_result[0];
