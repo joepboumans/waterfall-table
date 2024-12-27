@@ -479,23 +479,19 @@ private:
     }
 
     bool check_condition() {
-      std::cout << "Checking condition" << std::endl;
-      std::cout << "Thresh len " << thresh.size() << std::endl;
-      std::cout << "Show thresh[0][0] " << thresh[0][0] << std::endl;
-      std::cout << "Show thresh[len][0] " << thresh[thresh.size() - 1][0]
-                << std::endl;
       // return true;
-      for (auto t : thresh) {
-        std::cout << " <";
-        for (auto x : t) {
-          std::cout << x;
-          if (&x != &t.back()) {
-            std::cout << ", ";
-          }
-        }
-        std::cout << "> ";
-      }
-      std::cout << std::endl;
+      /*std::cout << "Checking condition" << std::endl;*/
+      /*for (auto t : thresh) {*/
+      /*  std::cout << " <";*/
+      /*  for (auto x : t) {*/
+      /*    std::cout << x;*/
+      /*    if (&x != &t.back()) {*/
+      /*      std::cout << ", ";*/
+      /*    }*/
+      /*  }*/
+      /*  std::cout << "> ";*/
+      /*}*/
+      /*std::cout << std::endl;*/
       for (auto &t : thresh) {
         uint32_t colls = t[2];
         if (colls <= 1) {
@@ -555,6 +551,11 @@ private:
           return false;
         }
       }
+      std::cout << "Valid perm";
+      for (auto &x : now_result) {
+        std::cout << x << " ";
+      }
+      std::cout << std::endl;
       return true;
     }
   };
