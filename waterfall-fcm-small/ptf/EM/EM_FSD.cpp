@@ -524,7 +524,9 @@ private:
         // Remainder is larger then minimal value thus 1 pass
         if (last_group_val >= min_val) {
           passes++;
-          /*std::cout << "pre if for loop" << std::endl;*/
+          if (in_degree > 2) {
+            std::cout << "pre if for loop" << std::endl;
+          }
           for (size_t i = 0; i < tot_curr_colls - 1; i++) {
             uint32_t accum =
                 std::accumulate(now_result.begin() + i * group_sz,
@@ -544,7 +546,9 @@ private:
             return false;
           }
           passes++;
-          /*std::cout << "pre else for loop" << std::endl;*/
+          if (in_degree > 2) {
+            std::cout << "pre else for loop" << std::endl;
+          }
           for (size_t i = 0; i < tot_curr_colls - 1; i++) {
             uint32_t accum =
                 std::accumulate(now_result.begin() + 1 + i * group_sz,
