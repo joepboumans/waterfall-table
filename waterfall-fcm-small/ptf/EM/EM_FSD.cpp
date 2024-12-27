@@ -414,7 +414,7 @@ private:
       }
 
       now_flow_num = flow_num_limit;
-      now_result.resize(flow_num_limit);
+      now_result.resize(in_degree);
       for (size_t i = 0; i < now_result.size(); i++) {
         now_result[i] = 1;
       }
@@ -513,7 +513,7 @@ private:
         /*}*/
 
         // Limit the maximum collisions to the maximum numbers
-        uint32_t tot_curr_colls = std::min(t[1], (uint32_t)flow_num_limit);
+        uint32_t tot_curr_colls = t[1];
         uint32_t group_sz = (uint32_t)now_flow_num / tot_curr_colls;
         uint32_t last_group_sz = std::ceil(now_flow_num / tot_curr_colls);
         uint32_t min_val = t[3];
