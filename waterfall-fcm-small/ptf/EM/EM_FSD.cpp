@@ -591,8 +591,8 @@ private:
       if (this->counter_dist[d][xi][i] == 0) {
         continue;
       }
-      /*std::cout << "Found value " << i << " with count of "*/
-      /*<< counter_dist[d][xi][i] << std::endl;*/
+      std::cout << "Found value " << i << " with count of "
+                << counter_dist[d][xi][i] << std::endl;
 
       BetaGenerator alpha(i, xi, this->thresholds[d][xi][i]),
           beta(i, xi, this->thresholds[d][xi][i]);
