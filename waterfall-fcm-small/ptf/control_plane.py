@@ -321,7 +321,7 @@ class BfRt_interface():
         print(f"[WaterfallFcm - verify sim] Start estimation")
 
 
-        em_fsd = EM_FSD(s1, s2, s3, self.tuples)
+        em_fsd = EM_FSD(s1, s2, s3, in_tuples)
 
         for i in range(iters):
             self.ns = em_fsd.run_em(1)
