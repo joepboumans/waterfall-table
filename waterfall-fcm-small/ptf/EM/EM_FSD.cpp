@@ -524,14 +524,14 @@ private:
         uint32_t passes = 0;
         uint32_t last_group_val = std::accumulate(
             now_result.end() - last_group_sz, now_result.end(), 0);
-        if (in_degree > 2) {
+        if (in_degree > 3) {
           std::cout << "Post calculating group sizes" << std::endl;
         }
 
         // Remainder is larger then minimal value thus 1 pass
         if (last_group_val >= min_val) {
           passes++;
-          if (in_degree > 2) {
+          if (in_degree > 3) {
             std::cout << "pre if for loop" << std::endl;
           }
           for (size_t i = 0; i < tot_curr_colls - 1; i++) {
