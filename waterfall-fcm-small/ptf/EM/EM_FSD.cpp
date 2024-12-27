@@ -584,9 +584,8 @@ private:
     printf("[EM_WATERFALL_FCM] ******** Running for degree %2d with a size of "
            "%12zu\t\t"
            "**********\n",
-           xi, counter_dist[d][xi].size());
+           xi, this->counter_dist[d][xi].size());
 
-    double lambda = n_old * xi / double(w);
     for (uint32_t i = 0; i < this->counter_dist[d][xi].size(); i++) {
       if (this->counter_dist[d][xi][i] == 0) {
         continue;
@@ -599,6 +598,7 @@ private:
       double sum_p = 0.0;
       uint32_t it = 0;
 
+      double lambda = this->n_old * xi / double(W1);
       /*std::cout << "Get alpha combinations" << std::endl;*/
       // Sum over first combinations
       while (alpha.get_next()) {
