@@ -324,7 +324,7 @@ class BfRt_interface():
         em_fsd = EM_FSD(s1, s2, s3, in_tuples)
 
         for i in range(iters):
-            self.ns = em_fsd.run_em(5)
+            self.ns = em_fsd.run_em(1)
 
             print(f"[WaterfallFcm - verify sim] Calculate Flow Size Distribution...")
             wmre = 0.0
