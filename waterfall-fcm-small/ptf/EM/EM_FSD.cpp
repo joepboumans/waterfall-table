@@ -682,11 +682,11 @@ public:
               << std::endl;
     for (size_t d = 0; d < DEPTH; d++) {
       for (size_t t = 0; t <= this->max_degree[d]; t++) {
-        std::cout << "[EM_WATERFALL_FCM] Start thread "
-                  << t + d * this->max_degree[0] << " at depth " << d
-                  << std::endl;
-        threads[t + d * this->max_degree[0]] = std::thread(
-            &EMFSD::calculate_degree, *this, std::ref(nt[d][t + 2]), d, t + 2);
+        size_t idx = t + d * this->max_degree[0];
+        std::cout << "[EM_WATERFALL_FCM] Start thread " << idx << " at depth "
+                  << d << std::endl;
+        threads[idx] = std::thread(&EMFSD::calculate_degree, *this,
+                                   std::ref(nt[d][t + 2]), d, t + 2);
       }
     }
 
