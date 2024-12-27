@@ -565,7 +565,7 @@ private:
   }
 
   double get_p_from_beta(BetaGenerator &bt, double lambda,
-                         vector<double> now_dist, double now_n,
+                         vector<double> &now_dist, double now_n,
                          uint32_t degree) {
     std::unordered_map<uint32_t, uint32_t> mp;
     for (int i = 0; i < bt.now_flow_num; ++i) {
@@ -608,6 +608,7 @@ private:
       /*std::cout << "Get alpha combinations" << std::endl;*/
       // Sum over first combinations
       while (alpha.get_next()) {
+        std::cout << "Found combination" << std::endl;
         double p =
             get_p_from_beta(alpha, lambda, this->dist_old, this->n_old, xi);
         sum_p += p;
