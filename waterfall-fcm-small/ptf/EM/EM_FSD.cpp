@@ -513,6 +513,9 @@ private:
         /*}*/
 
         // Limit the maximum collisions to the maximum numbers
+        if (in_degree > 2) {
+          std::cout << "Pre calculating group sizes" << std::endl;
+        }
         uint32_t tot_curr_colls = t[1];
         uint32_t group_sz = (uint32_t)now_flow_num / tot_curr_colls;
         uint32_t last_group_sz = std::ceil(now_flow_num / tot_curr_colls);
@@ -520,6 +523,9 @@ private:
         uint32_t passes = 0;
         uint32_t last_group_val = std::accumulate(
             now_result.end() - last_group_sz, now_result.end(), 0);
+        if (in_degree > 2) {
+          std::cout << "Post calculating group sizes" << std::endl;
+        }
 
         // Remainder is larger then minimal value thus 1 pass
         if (last_group_val >= min_val) {
