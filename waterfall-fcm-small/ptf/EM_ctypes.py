@@ -88,6 +88,8 @@ class EM_FSD(object):
         for i in range(len(stage3_1)):
             if i < len(s3[0]):
                 stage3_1[i] = s3[0][i]
+                if (s3[0][i] > 0):
+                    print(s3[0][i])
             else:
                 stage3_1[i] = 0
         print("[Waterfall - py ctypes] S3_1 done")
