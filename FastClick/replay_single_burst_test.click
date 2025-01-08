@@ -61,6 +61,6 @@ fdIN
 //-> replay0 :: ReplayUnqueue(STOP -1, ACTIVE true)
  -> unqueue0 :: BandwidthRatedUnqueue($RATE, LINK_RATE true, ACTIVE true)
 -> gen0 :: Generator(\<5700>)
--> tdIN; StaticThreadSched(fdIN 0/1, unqueue0 0/1);
+-> tdIN; StaticThreadSched(fdIN 0/1);
 
 //pkt_cnt :: HandlerAggregate(ELEMENT gen0/cnt);
