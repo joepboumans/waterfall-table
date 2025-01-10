@@ -46,7 +46,7 @@ run_test :: Script(TYPE PASSIVE,
 
 
 //To display stats every seconds, change PASSIVE by ACTIVE
-display_th :: Script(TYPE PASSIVE,
+display_th :: Script(TYPE ACTIVE,
                     print "Starting iterative...",
 
                      set stime $(now),
