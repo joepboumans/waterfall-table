@@ -57,12 +57,13 @@ display_th :: Script(TYPE ACTIVE,
                      print "Diff $diff",
                      set time $(sub $(now) $stime),
                      set sent $(avgSIN.count),
-        		     print "IGEN-$time-RESULT-ICOUNT $received",
-                     print "IGEN-$time-RESULT-IDROPPED $(sub $sent $received)",
-                     print "IGEN-$time-RESULT-IDROPPEDPS $(div $(sub $sent $received) $diff)",
-                     print "IGEN-$time-RESULT-ITHROUGHPUT $rx",
-
-                     print "IGEN-$time-RESULT-ITX $tx",
+                     print "Packets sent: $sent"
+//        		     print "IGEN-$time-RESULT-ICOUNT $received",
+//                     print "IGEN-$time-RESULT-IDROPPED $(sub $sent $received)",
+//                     print "IGEN-$time-RESULT-IDROPPEDPS $(div $(sub $sent $received) $diff)",
+//                     print "IGEN-$time-RESULT-ITHROUGHPUT $rx",
+//
+//                     print "IGEN-$time-RESULT-ITX $tx",
                      print "IGEN-$time-RESULT-ILOSS $(sub $rx $tx)",
                      goto g);
 
