@@ -487,21 +487,21 @@ private:
 
     bool check_condition() {
       // return true;
-      if (in_degree > 3) {
-
-        std::cout << "Checking condition" << std::endl;
-        for (auto &t : thresh) {
-          std::cout << " <";
-          for (auto &x : t) {
-            std::cout << x;
-            if (&x != &t.back()) {
-              std::cout << ", ";
-            }
-          }
-          std::cout << "> ";
-        }
-        std::cout << std::endl;
-      }
+      /*if (in_degree > 3) {*/
+      /**/
+      /*  std::cout << "Checking condition" << std::endl;*/
+      /*  for (auto &t : thresh) {*/
+      /*    std::cout << " <";*/
+      /*    for (auto &x : t) {*/
+      /*      std::cout << x;*/
+      /*      if (&x != &t.back()) {*/
+      /*        std::cout << ", ";*/
+      /*      }*/
+      /*    }*/
+      /*    std::cout << "> ";*/
+      /*  }*/
+      /*  std::cout << std::endl;*/
+      /*}*/
       for (auto &t : thresh) {
         uint32_t colls = t[2];
         if (colls <= 1) {
@@ -521,7 +521,7 @@ private:
 
         // Limit the maximum collisions to the maximum numbers
         if (in_degree > 3) {
-          std::cout << "Pre calculating group sizes" << std::endl;
+          /*std::cout << "Pre calculating group sizes" << std::endl;*/
         }
         uint32_t tot_curr_colls = t[1];
         uint32_t group_sz = (uint32_t)now_flow_num / tot_curr_colls;
@@ -532,14 +532,14 @@ private:
         uint32_t last_group_val = std::accumulate(
             now_result.end() - last_group_sz, now_result.end(), 0);
         if (in_degree > 3) {
-          std::cout << "Post calculating group sizes" << std::endl;
+          /*std::cout << "Post calculating group sizes" << std::endl;*/
         }
 
         // Remainder is larger then minimal value thus 1 pass
         if (last_group_val >= min_val) {
           passes++;
           if (in_degree > 3) {
-            std::cout << "pre if for loop" << std::endl;
+            /*std::cout << "pre if for loop" << std::endl;*/
           }
           for (size_t i = 0; i < tot_curr_colls - 1; i++) {
             uint32_t accum =
@@ -553,26 +553,26 @@ private:
         // Remainder not larger than minimal value
         // Shift group to include first entry
         else {
-          if (in_degree > 3) {
-            std::cout << "Pre last group val" << std::endl;
-            for (auto &x : t) {
-              std::cout << x;
-              if (&x != &t.back()) {
-                std::cout << ", ";
-              }
-            }
-            std::cout << "> ";
-            std::cout << std::endl;
-            std::cout << "Current flow " << now_flow_num << std::endl;
-            std::cout << "Group size " << group_sz << " last group sz "
-                      << last_group_sz << std::endl;
-
-            std::cout << "Now result:" << std::endl;
-            for (auto &x : now_result) {
-              std::cout << x << " ";
-            }
-            std::cout << std::endl;
-          }
+          /*if (in_degree > 3) {*/
+          /*  std::cout << "Pre last group val" << std::endl;*/
+          /*  for (auto &x : t) {*/
+          /*    std::cout << x;*/
+          /*    if (&x != &t.back()) {*/
+          /*      std::cout << ", ";*/
+          /*    }*/
+          /*  }*/
+          /*  std::cout << "> ";*/
+          /*  std::cout << std::endl;*/
+          /*  std::cout << "Current flow " << now_flow_num << std::endl;*/
+          /*  std::cout << "Group size " << group_sz << " last group sz "*/
+          /*            << last_group_sz << std::endl;*/
+          /**/
+          /*  std::cout << "Now result:" << std::endl;*/
+          /*  for (auto &x : now_result) {*/
+          /*    std::cout << x << " ";*/
+          /*  }*/
+          /*  std::cout << std::endl;*/
+          /*}*/
           last_group_val = std::accumulate(now_result.end() - last_group_sz + 1,
                                            now_result.end(), 0) +
                            now_result[0];
@@ -581,7 +581,7 @@ private:
           }
           passes++;
           if (in_degree > 3) {
-            std::cout << "pre else for loop" << std::endl;
+            /*std::cout << "pre else for loop" << std::endl;*/
           }
           for (size_t i = 0; i < tot_curr_colls - 1; i++) {
             uint32_t accum =
@@ -608,7 +608,7 @@ private:
     }
   };
 
-  int factorial(int n) {
+  static constexpr int factorial(int n) {
     if (n == 0 || n == 1)
       return 1;
     return factorial(n - 1) * n;
