@@ -293,7 +293,6 @@ public:
     std::cout << "Maximum degree is: " << this->max_degree[0] << " and "
               << this->max_degree[1] << std::endl;
     std::cout << "Maximum counter value is: " << max_counter_value << std::endl;
-    exit(0);
 
     // Setup counters and counters_distribution for estimation, counter_dist is
     // Depth, Degree, Count
