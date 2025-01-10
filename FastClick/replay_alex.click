@@ -78,8 +78,8 @@ link_initialized :: Script(TYPE PASSIVE,
 
 DriverManager(
                 print "Waiting for preload...",
-                pause, pause, pause, pause,
-                wait 2s,
+//                pause, pause, pause, pause,
+//                wait 3s,
                 label start,
                 write link_initialized.run,
                 label waitagain,
