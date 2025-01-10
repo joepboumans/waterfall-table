@@ -7,7 +7,8 @@
  * Example usage: bin/click --dpdk -l 0-15 -- conf/pktgen/pktgen-l2-mt-replaypcap.click trace=/tmp/trace.pcap
  */
 
-define($trace /data-1/users/jboumans/equinix-chicago.20160121-130000.UTC.pcap)
+//define($trace /data-1/users/jboumans/equinix-chicago.20160121-130000.UTC.pcap)
+define($trace /data-1/users/jboumans/single_test.pcap)
 define($max_packets_in_queue 500000)
 define($replay_count -1)
 

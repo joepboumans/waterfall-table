@@ -1,9 +1,10 @@
 define($trace /data-1/users/jboumans/single_test.pcap)
-define($RATE 1Mbps)
+define($RATE 1Gbps)
 define($max_packets_in_queue 500000)
 define($replay_count -1)
 
-//d :: DPDKInfo(NB_SOCKET_MBUF  1048575) //Should be a bit more than 4 times the limit
+d :: DPDKInfo( NB_SOCKET_MBUF 655350 )
+define($length 990, $rate 1)
 
 /* Can be whatever */
 define($INsrcmac b8:3f:d2:9f:2e:9b)
