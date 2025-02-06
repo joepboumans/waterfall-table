@@ -1,0 +1,3581 @@
+{
+    "schema_version": "1.0.0",
+    "symbols": [
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 134,
+                    "column": 43
+                }
+            ],
+            "symbol_name": "FcmEgress.fcmsketch.CRC32",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 133,
+                "column": 30
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 146,
+                    "column": 43
+                }
+            ],
+            "symbol_name": "FcmEgress.fcmsketch.CRC32_MPEG",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 145,
+                "column": 30
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 227,
+                    "column": 30
+                }
+            ],
+            "symbol_name": "FcmEgress.fcmsketch.hash_d1",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 134,
+                "column": 50
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 231,
+                    "column": 30
+                }
+            ],
+            "symbol_name": "FcmEgress.fcmsketch.hash_d2",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 146,
+                "column": 55
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 236,
+                    "column": 25
+                }
+            ],
+            "symbol_name": "FcmEgress.fcmsketch.increment_l1_d1",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 169,
+                "column": 61
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 250,
+                    "column": 25
+                }
+            ],
+            "symbol_name": "FcmEgress.fcmsketch.increment_l1_d2",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 192,
+                "column": 61
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 240,
+                    "column": 19
+                }
+            ],
+            "symbol_name": "FcmEgress.fcmsketch.increment_l2_d1",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 176,
+                "column": 62
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 254,
+                    "column": 19
+                }
+            ],
+            "symbol_name": "FcmEgress.fcmsketch.increment_l2_d2",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 199,
+                "column": 62
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 245,
+                    "column": 25
+                }
+            ],
+            "symbol_name": "FcmEgress.fcmsketch.increment_l3_d1",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 183,
+                "column": 62
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 259,
+                    "column": 25
+                }
+            ],
+            "symbol_name": "FcmEgress.fcmsketch.increment_l3_d2",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 206,
+                "column": 62
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 215,
+                    "column": 38
+                }
+            ],
+            "symbol_name": "FcmEgress.fcmsketch.reg_num_empty",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 162,
+                "column": 26
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 169,
+                    "column": 43
+                }
+            ],
+            "symbol_name": "FcmEgress.fcmsketch.sketch_reg_l1_d1",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 153,
+                "column": 37
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 192,
+                    "column": 43
+                }
+            ],
+            "symbol_name": "FcmEgress.fcmsketch.sketch_reg_l1_d2",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 157,
+                "column": 37
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 176,
+                    "column": 44
+                }
+            ],
+            "symbol_name": "FcmEgress.fcmsketch.sketch_reg_l2_d1",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 154,
+                "column": 38
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 199,
+                    "column": 44
+                }
+            ],
+            "symbol_name": "FcmEgress.fcmsketch.sketch_reg_l2_d2",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 158,
+                "column": 38
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 183,
+                    "column": 44
+                }
+            ],
+            "symbol_name": "FcmEgress.fcmsketch.sketch_reg_l3_d1",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 155,
+                "column": 37
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 206,
+                    "column": 44
+                }
+            ],
+            "symbol_name": "FcmEgress.fcmsketch.sketch_reg_l3_d2",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 159,
+                "column": 37
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 374,
+                    "column": 4
+                }
+            ],
+            "symbol_name": "FcmEgress.increment_pkt",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 366,
+                "column": 48
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 366,
+                    "column": 39
+                }
+            ],
+            "symbol_name": "FcmEgress.num_pkt",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 365,
+                "column": 30
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 129,
+                    "column": 41
+                }
+            ],
+            "symbol_name": "WaterfallIngress.CRC32_1",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 128,
+                "column": 28
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 138,
+                    "column": 41
+                }
+            ],
+            "symbol_name": "WaterfallIngress.CRC32_2",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 137,
+                "column": 28
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 147,
+                    "column": 41
+                }
+            ],
+            "symbol_name": "WaterfallIngress.CRC32_3",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 146,
+                "column": 28
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 156,
+                    "column": 41
+                }
+            ],
+            "symbol_name": "WaterfallIngress.CRC32_4",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 155,
+                "column": 28
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 159,
+                    "column": 24
+                }
+            ],
+            "symbol_name": "WaterfallIngress.hash1",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 129,
+                "column": 50
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 165,
+                    "column": 24
+                }
+            ],
+            "symbol_name": "WaterfallIngress.hash2",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 138,
+                "column": 50
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 171,
+                    "column": 24
+                }
+            ],
+            "symbol_name": "WaterfallIngress.hash3",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 147,
+                "column": 50
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 177,
+                    "column": 24
+                }
+            ],
+            "symbol_name": "WaterfallIngress.hash4",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 156,
+                "column": 50
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 187,
+                    "column": 42
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 219,
+                    "column": 39
+                }
+            ],
+            "symbol_name": "WaterfallIngress.table_1",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 182,
+                "column": 40
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 275,
+                    "column": 21
+                }
+            ],
+            "symbol_name": "WaterfallIngress.table_1_lookup",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 187,
+                "column": 51
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 270,
+                    "column": 25
+                }
+            ],
+            "symbol_name": "WaterfallIngress.table_1_swap",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 219,
+                "column": 48
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 195,
+                    "column": 42
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 226,
+                    "column": 45
+                }
+            ],
+            "symbol_name": "WaterfallIngress.table_2",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 183,
+                "column": 40
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 301,
+                    "column": 21
+                }
+            ],
+            "symbol_name": "WaterfallIngress.table_2_lookup",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 195,
+                "column": 51
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 293,
+                    "column": 25
+                }
+            ],
+            "symbol_name": "WaterfallIngress.table_2_swap",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 226,
+                "column": 54
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 203,
+                    "column": 42
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 233,
+                    "column": 45
+                }
+            ],
+            "symbol_name": "WaterfallIngress.table_3",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 184,
+                "column": 40
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 329,
+                    "column": 21
+                }
+            ],
+            "symbol_name": "WaterfallIngress.table_3_lookup",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 203,
+                "column": 51
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 321,
+                    "column": 25
+                }
+            ],
+            "symbol_name": "WaterfallIngress.table_3_swap",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 233,
+                "column": 54
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 211,
+                    "column": 42
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 240,
+                    "column": 45
+                }
+            ],
+            "symbol_name": "WaterfallIngress.table_4",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 185,
+                "column": 40
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 356,
+                    "column": 19
+                }
+            ],
+            "symbol_name": "WaterfallIngress.table_4_lookup",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 211,
+                "column": 51
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 348,
+                    "column": 25
+                }
+            ],
+            "symbol_name": "WaterfallIngress.table_4_swap",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 240,
+                "column": 54
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 424,
+                    "column": 7
+                }
+            ],
+            "symbol_name": "WaterfallIngressDeparser.digest",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 419,
+                "column": 22
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 427,
+                    "column": 7
+                }
+            ],
+            "symbol_name": "WaterfallIngressDeparser.resubmit",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 420,
+                "column": 14
+            },
+            "symbol_type": "Declaration_Instance_Type_Extern"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall_fcm.p4",
+                    "line": 38,
+                    "column": 8
+                }
+            ],
+            "symbol_name": "pipe",
+            "declaration": {
+                "file": "waterfall_fcm.p4",
+                "line": 36,
+                "column": 63
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 240,
+                    "column": 13
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 241,
+                    "column": 27
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 254,
+                    "column": 13
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 255,
+                    "column": 27
+                }
+            ],
+            "symbol_name": "FcmEgress.fcmsketch.res",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 254,
+                "column": 5
+            },
+            "symbol_type": "Declaration_Variable_Type_Bits"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 159,
+                    "column": 13
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 160,
+                    "column": 18
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 161,
+                    "column": 21
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 165,
+                    "column": 13
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 166,
+                    "column": 18
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 167,
+                    "column": 21
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 171,
+                    "column": 13
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 172,
+                    "column": 18
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 173,
+                    "column": 21
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 177,
+                    "column": 13
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 178,
+                    "column": 18
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 179,
+                    "column": 21
+                }
+            ],
+            "symbol_name": "WaterfallIngress.hash_val",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 177,
+                "column": 5
+            },
+            "symbol_type": "Declaration_Variable_Type_Bits"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 382,
+                    "column": 4
+                }
+            ],
+            "symbol_name": "FcmEgress.count_pkt",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 373,
+                "column": 10
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 337,
+                    "column": 3
+                }
+            ],
+            "symbol_name": "FcmEgress.fcmsketch.fcm_action_l1_d1",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 235,
+                "column": 9
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 338,
+                    "column": 3
+                }
+            ],
+            "symbol_name": "FcmEgress.fcmsketch.fcm_action_l1_d2",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 249,
+                "column": 9
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 272,
+                    "column": 4
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 277,
+                    "column": 12
+                }
+            ],
+            "symbol_name": "FcmEgress.fcmsketch.fcm_action_l2_d1",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 239,
+                "column": 9
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 304,
+                    "column": 4
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 309,
+                    "column": 12
+                }
+            ],
+            "symbol_name": "FcmEgress.fcmsketch.fcm_action_l2_d2",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 253,
+                "column": 9
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 288,
+                    "column": 4
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 293,
+                    "column": 14
+                }
+            ],
+            "symbol_name": "FcmEgress.fcmsketch.fcm_action_l3_d1",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 244,
+                "column": 9
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 320,
+                    "column": 4
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 325,
+                    "column": 14
+                }
+            ],
+            "symbol_name": "FcmEgress.fcmsketch.fcm_action_l3_d2",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 258,
+                "column": 9
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 334,
+                    "column": 5
+                }
+            ],
+            "symbol_name": "FcmEgress.fcmsketch.fcm_hash_d1",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 226,
+                "column": 10
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 335,
+                    "column": 5
+                }
+            ],
+            "symbol_name": "FcmEgress.fcmsketch.fcm_hash_d2",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 230,
+                "column": 10
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 273,
+                    "column": 17
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 275,
+                    "column": 26
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 289,
+                    "column": 17
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 291,
+                    "column": 26
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 305,
+                    "column": 17
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 307,
+                    "column": 26
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 321,
+                    "column": 17
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 323,
+                    "column": 26
+                }
+            ],
+            "symbol_name": "NoAction",
+            "declaration": {
+                "file": "/home/joep/Downloads/bf-sde-9.11.0/install/share/p4c/p4include/core.p4",
+                "line": 70,
+                "column": 8
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 284,
+                    "column": 7
+                }
+            ],
+            "symbol_name": "WaterfallIngress.do_swap1",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 268,
+                "column": 10
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 312,
+                    "column": 7
+                }
+            ],
+            "symbol_name": "WaterfallIngress.do_swap2",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 292,
+                "column": 10
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 339,
+                    "column": 7
+                }
+            ],
+            "symbol_name": "WaterfallIngress.do_swap3",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 320,
+                "column": 10
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 365,
+                    "column": 7
+                }
+            ],
+            "symbol_name": "WaterfallIngress.do_swap4",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 347,
+                "column": 10
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 386,
+                    "column": 7
+                }
+            ],
+            "symbol_name": "WaterfallIngress.drop",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 377,
+                "column": 10
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 397,
+                    "column": 5
+                }
+            ],
+            "symbol_name": "WaterfallIngress.get_hash1",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 158,
+                "column": 10
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 400,
+                    "column": 5
+                }
+            ],
+            "symbol_name": "WaterfallIngress.get_hash2",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 164,
+                "column": 10
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 403,
+                    "column": 5
+                }
+            ],
+            "symbol_name": "WaterfallIngress.get_hash3",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 170,
+                "column": 10
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 406,
+                    "column": 5
+                }
+            ],
+            "symbol_name": "WaterfallIngress.get_hash4",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 176,
+                "column": 10
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 385,
+                    "column": 7
+                }
+            ],
+            "symbol_name": "WaterfallIngress.hit",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 373,
+                "column": 10
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 285,
+                    "column": 7
+                }
+            ],
+            "symbol_name": "WaterfallIngress.lookup1",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 273,
+                "column": 10
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 314,
+                    "column": 7
+                }
+            ],
+            "symbol_name": "WaterfallIngress.lookup2",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 300,
+                "column": 10
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 341,
+                    "column": 7
+                }
+            ],
+            "symbol_name": "WaterfallIngress.lookup3",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 328,
+                "column": 10
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 367,
+                    "column": 7
+                }
+            ],
+            "symbol_name": "WaterfallIngress.lookup4",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 355,
+                "column": 10
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 262,
+                    "column": 7
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 264,
+                    "column": 22
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 286,
+                    "column": 7
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 288,
+                    "column": 22
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 387,
+                    "column": 7
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 390,
+                    "column": 22
+                }
+            ],
+            "symbol_name": "WaterfallIngress.no_action",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 253,
+                "column": 10
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 313,
+                    "column": 7
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 316,
+                    "column": 22
+                }
+            ],
+            "symbol_name": "WaterfallIngress.no_swap2",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 296,
+                "column": 10
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 340,
+                    "column": 7
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 343,
+                    "column": 22
+                }
+            ],
+            "symbol_name": "WaterfallIngress.no_swap3",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 324,
+                "column": 10
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 366,
+                    "column": 7
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 369,
+                    "column": 22
+                }
+            ],
+            "symbol_name": "WaterfallIngress.no_swap4",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 351,
+                "column": 10
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 261,
+                    "column": 7
+                }
+            ],
+            "symbol_name": "WaterfallIngress.resubmit_hdr",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 247,
+                "column": 10
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 386,
+                    "column": 28
+                }
+            ],
+            "symbol_name": "fcm386",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 386,
+                "column": 28
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 343,
+                    "column": 3
+                }
+            ],
+            "symbol_name": "FcmEgress.fcmsketch.tb_fcm_l1_to_l2_d1",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 267,
+                "column": 8
+            },
+            "symbol_type": "P4Table"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 344,
+                    "column": 3
+                }
+            ],
+            "symbol_name": "FcmEgress.fcmsketch.tb_fcm_l1_to_l2_d2",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 299,
+                "column": 8
+            },
+            "symbol_type": "P4Table"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 345,
+                    "column": 3
+                }
+            ],
+            "symbol_name": "FcmEgress.fcmsketch.tb_fcm_l2_to_l3_d1",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 283,
+                "column": 8
+            },
+            "symbol_type": "P4Table"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 346,
+                    "column": 3
+                }
+            ],
+            "symbol_name": "FcmEgress.fcmsketch.tb_fcm_l2_to_l3_d2",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 315,
+                "column": 8
+            },
+            "symbol_type": "P4Table"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 394,
+                    "column": 5
+                }
+            ],
+            "symbol_name": "WaterfallIngress.forward",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 380,
+                "column": 9
+            },
+            "symbol_type": "P4Table"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 409,
+                    "column": 5
+                }
+            ],
+            "symbol_name": "WaterfallIngress.resub",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 255,
+                "column": 9
+            },
+            "symbol_type": "P4Table"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 398,
+                    "column": 5
+                }
+            ],
+            "symbol_name": "WaterfallIngress.swap1",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 279,
+                "column": 9
+            },
+            "symbol_type": "P4Table"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 401,
+                    "column": 5
+                }
+            ],
+            "symbol_name": "WaterfallIngress.swap2",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 306,
+                "column": 9
+            },
+            "symbol_type": "P4Table"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 404,
+                    "column": 5
+                }
+            ],
+            "symbol_name": "WaterfallIngress.swap3",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 333,
+                "column": 9
+            },
+            "symbol_type": "P4Table"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 407,
+                    "column": 5
+                }
+            ],
+            "symbol_name": "WaterfallIngress.swap4",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 359,
+                "column": 9
+            },
+            "symbol_type": "P4Table"
+        },
+        {
+            "references": [],
+            "symbol_name": "tbl_count_pkt",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 382,
+                "column": 4
+            },
+            "symbol_type": "P4Table"
+        },
+        {
+            "references": [],
+            "symbol_name": "tbl_fcm386",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 386,
+                "column": 28
+            },
+            "symbol_type": "P4Table"
+        },
+        {
+            "references": [],
+            "symbol_name": "tbl_fcmsketch_fcm_action_l1_d1",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 337,
+                "column": 3
+            },
+            "symbol_type": "P4Table"
+        },
+        {
+            "references": [],
+            "symbol_name": "tbl_fcmsketch_fcm_action_l1_d2",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 338,
+                "column": 3
+            },
+            "symbol_type": "P4Table"
+        },
+        {
+            "references": [],
+            "symbol_name": "tbl_fcmsketch_fcm_hash_d1",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 334,
+                "column": 5
+            },
+            "symbol_type": "P4Table"
+        },
+        {
+            "references": [],
+            "symbol_name": "tbl_fcmsketch_fcm_hash_d2",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 335,
+                "column": 5
+            },
+            "symbol_type": "P4Table"
+        },
+        {
+            "references": [],
+            "symbol_name": "tbl_get_hash1",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 397,
+                "column": 5
+            },
+            "symbol_type": "P4Table"
+        },
+        {
+            "references": [],
+            "symbol_name": "tbl_get_hash2",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 400,
+                "column": 5
+            },
+            "symbol_type": "P4Table"
+        },
+        {
+            "references": [],
+            "symbol_name": "tbl_get_hash3",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 403,
+                "column": 5
+            },
+            "symbol_type": "P4Table"
+        },
+        {
+            "references": [],
+            "symbol_name": "tbl_get_hash4",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 406,
+                "column": 5
+            },
+            "symbol_type": "P4Table"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 386,
+                    "column": 7
+                }
+            ],
+            "symbol_name": "FcmEgress.eg_dprsr_md.drop_ctl",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 359,
+                "column": 56
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 227,
+                    "column": 5
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 236,
+                    "column": 49
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 240,
+                    "column": 43
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 245,
+                    "column": 49
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 384,
+                    "column": 8
+                }
+            ],
+            "symbol_name": "FcmEgress.eg_md.hash_meta_d1",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 356,
+                "column": 30
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 231,
+                    "column": 5
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 250,
+                    "column": 49
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 254,
+                    "column": 43
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 259,
+                    "column": 49
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 384,
+                    "column": 8
+                }
+            ],
+            "symbol_name": "FcmEgress.eg_md.hash_meta_d2",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 356,
+                "column": 30
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 217,
+                    "column": 21
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 218,
+                    "column": 20
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 384,
+                    "column": 8
+                }
+            ],
+            "symbol_name": "FcmEgress.eg_md.increment_occupied",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 356,
+                "column": 30
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 236,
+                    "column": 3
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 241,
+                    "column": 5
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 245,
+                    "column": 3
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 269,
+                    "column": 4
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 285,
+                    "column": 4
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 384,
+                    "column": 8
+                }
+            ],
+            "symbol_name": "FcmEgress.eg_md.result_d1",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 356,
+                "column": 30
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 250,
+                    "column": 3
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 255,
+                    "column": 5
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 259,
+                    "column": 3
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 301,
+                    "column": 4
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 317,
+                    "column": 4
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 384,
+                    "column": 8
+                }
+            ],
+            "symbol_name": "FcmEgress.eg_md.result_d2",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 356,
+                "column": 30
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 227,
+                    "column": 63
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 231,
+                    "column": 63
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 383,
+                    "column": 20
+                }
+            ],
+            "symbol_name": "FcmEgress.hdr.ipv4.dst_addr",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 355,
+                "column": 24
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 227,
+                    "column": 44
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 231,
+                    "column": 44
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 383,
+                    "column": 20
+                }
+            ],
+            "symbol_name": "FcmEgress.hdr.ipv4.src_addr",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 355,
+                "column": 24
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 172,
+                    "column": 4
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 178,
+                    "column": 4
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 185,
+                    "column": 4
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 195,
+                    "column": 4
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 201,
+                    "column": 4
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 208,
+                    "column": 4
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 217,
+                    "column": 4
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 369,
+                    "column": 5
+                }
+            ],
+            "symbol_name": "FcmEgress.result",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 216,
+                "column": 47
+            },
+            "symbol_type": "Parameter_Type_Bits"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 171,
+                    "column": 4
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 171,
+                    "column": 12
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 172,
+                    "column": 22
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 178,
+                    "column": 22
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 179,
+                    "column": 4
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 179,
+                    "column": 12
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 185,
+                    "column": 13
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 186,
+                    "column": 4
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 186,
+                    "column": 12
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 194,
+                    "column": 4
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 194,
+                    "column": 12
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 195,
+                    "column": 22
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 201,
+                    "column": 22
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 202,
+                    "column": 4
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 202,
+                    "column": 12
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 208,
+                    "column": 13
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 209,
+                    "column": 4
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 209,
+                    "column": 12
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 217,
+                    "column": 13
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 218,
+                    "column": 4
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 218,
+                    "column": 12
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 368,
+                    "column": 5
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 368,
+                    "column": 13
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 369,
+                    "column": 14
+                }
+            ],
+            "symbol_name": "FcmEgress.value",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 216,
+                "column": 28
+            },
+            "symbol_type": "Parameter_Type_Bits"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 400,
+                    "column": 18
+                }
+            ],
+            "symbol_name": "FcmEgressDeparser.hdr.ethernet",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 395,
+                "column": 24
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 400,
+                    "column": 18
+                }
+            ],
+            "symbol_name": "FcmEgressDeparser.hdr.ipv4",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 395,
+                "column": 24
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 400,
+                    "column": 18
+                }
+            ],
+            "symbol_name": "FcmEgressDeparser.hdr.ipv6",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 395,
+                "column": 24
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 400,
+                    "column": 18
+                }
+            ],
+            "symbol_name": "FcmEgressDeparser.hdr.tcp",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 395,
+                "column": 24
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 400,
+                    "column": 18
+                }
+            ],
+            "symbol_name": "FcmEgressDeparser.hdr.udp",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 395,
+                "column": 24
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 400,
+                    "column": 18
+                }
+            ],
+            "symbol_name": "FcmEgressDeparser.hdr.vlan_tag",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 395,
+                "column": 24
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 400,
+                    "column": 9
+                }
+            ],
+            "symbol_name": "FcmEgressDeparser.pkt",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 394,
+                "column": 20
+            },
+            "symbol_type": "Parameter_Type_Extern"
+        },
+        {
+            "references": [
+                {
+                    "file": "common/util.p4",
+                    "line": 49,
+                    "column": 21
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 73,
+                    "column": 34
+                }
+            ],
+            "symbol_name": "FcmEgressParser.eg_intr_md",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 68,
+                "column": 41
+            },
+            "symbol_type": "Parameter_Type_Header"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 73,
+                    "column": 34
+                }
+            ],
+            "symbol_name": "FcmEgressParser.eg_intr_md.$valid",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 68,
+                "column": 41
+            },
+            "symbol_type": "Parameter_Type_Header"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 77,
+                    "column": 6
+                }
+            ],
+            "symbol_name": "FcmEgressParser.eg_md.increment_occupied",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 67,
+                "column": 28
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 75,
+                    "column": 6
+                }
+            ],
+            "symbol_name": "FcmEgressParser.eg_md.result_d1",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 67,
+                "column": 28
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 76,
+                    "column": 6
+                }
+            ],
+            "symbol_name": "FcmEgressParser.eg_md.result_d2",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 67,
+                "column": 28
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 83,
+                    "column": 21
+                }
+            ],
+            "symbol_name": "FcmEgressParser.hdr.ethernet",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 66,
+                "column": 22
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 84,
+                    "column": 28
+                }
+            ],
+            "symbol_name": "FcmEgressParser.hdr.ethernet.ether_type",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 66,
+                "column": 22
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 91,
+                    "column": 21
+                }
+            ],
+            "symbol_name": "FcmEgressParser.hdr.ipv4",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 66,
+                "column": 22
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 92,
+                    "column": 27
+                }
+            ],
+            "symbol_name": "FcmEgressParser.hdr.ipv4.protocol",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 66,
+                "column": 22
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 101,
+                    "column": 27
+                }
+            ],
+            "symbol_name": "FcmEgressParser.hdr.ipv4.total_len",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 66,
+                "column": 22
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 100,
+                    "column": 21
+                }
+            ],
+            "symbol_name": "FcmEgressParser.hdr.tcp",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 66,
+                "column": 22
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 107,
+                    "column": 21
+                }
+            ],
+            "symbol_name": "FcmEgressParser.hdr.udp",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 66,
+                "column": 22
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 108,
+                    "column": 27
+                }
+            ],
+            "symbol_name": "FcmEgressParser.hdr.udp.dst_port",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 66,
+                "column": 22
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "common/util.p4",
+                    "line": 49,
+                    "column": 9
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 73,
+                    "column": 29
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 83,
+                    "column": 9
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 91,
+                    "column": 9
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 100,
+                    "column": 9
+                },
+                {
+                    "file": "fcm/fcm.p4",
+                    "line": 107,
+                    "column": 9
+                }
+            ],
+            "symbol_name": "FcmEgressParser.pkt",
+            "declaration": {
+                "file": "fcm/fcm.p4",
+                "line": 65,
+                "column": 19
+            },
+            "symbol_type": "Parameter_Type_Extern"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 159,
+                    "column": 54
+                }
+            ],
+            "symbol_name": "WaterfallIngress.hdr.ipv4.dst_addr",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 116,
+                "column": 41
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 159,
+                    "column": 35
+                }
+            ],
+            "symbol_name": "WaterfallIngress.hdr.ipv4.src_addr",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 116,
+                "column": 41
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 374,
+                    "column": 39
+                }
+            ],
+            "symbol_name": "WaterfallIngress.hit.dst_port",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 373,
+                "column": 23
+            },
+            "symbol_type": "Parameter_Type_Bits"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 269,
+                    "column": 5
+                }
+            ],
+            "symbol_name": "WaterfallIngress.ig_intr_dprsr_md.digest_type",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 119,
+                "column": 63
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 375,
+                    "column": 5
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 377,
+                    "column": 19
+                }
+            ],
+            "symbol_name": "WaterfallIngress.ig_intr_dprsr_md.drop_ctl",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 119,
+                "column": 63
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 248,
+                    "column": 5
+                }
+            ],
+            "symbol_name": "WaterfallIngress.ig_intr_dprsr_md.resubmit_type",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 119,
+                "column": 63
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 382,
+                    "column": 7
+                }
+            ],
+            "symbol_name": "WaterfallIngress.ig_intr_md.ingress_port",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 117,
+                "column": 47
+            },
+            "symbol_type": "Parameter_Type_Header"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 258,
+                    "column": 7
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 281,
+                    "column": 7
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 309,
+                    "column": 7
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 336,
+                    "column": 7
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 362,
+                    "column": 7
+                }
+            ],
+            "symbol_name": "WaterfallIngress.ig_intr_md.resubmit_flag",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 117,
+                "column": 47
+            },
+            "symbol_type": "Parameter_Type_Header"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 374,
+                    "column": 5
+                }
+            ],
+            "symbol_name": "WaterfallIngress.ig_intr_tm_md.ucast_egress_port",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 120,
+                "column": 57
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 257,
+                    "column": 7
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 275,
+                    "column": 7
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 301,
+                    "column": 7
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 329,
+                    "column": 7
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 356,
+                    "column": 5
+                }
+            ],
+            "symbol_name": "WaterfallIngress.ig_md.found",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 116,
+                "column": 73
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 160,
+                    "column": 5
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 165,
+                    "column": 35
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 249,
+                    "column": 29
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 270,
+                    "column": 46
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 275,
+                    "column": 44
+                }
+            ],
+            "symbol_name": "WaterfallIngress.ig_md.idx1",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 116,
+                "column": 73
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 166,
+                    "column": 5
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 171,
+                    "column": 35
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 293,
+                    "column": 46
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 301,
+                    "column": 44
+                }
+            ],
+            "symbol_name": "WaterfallIngress.ig_md.idx2",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 116,
+                "column": 73
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 172,
+                    "column": 5
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 177,
+                    "column": 35
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 321,
+                    "column": 46
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 329,
+                    "column": 44
+                }
+            ],
+            "symbol_name": "WaterfallIngress.ig_md.idx3",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 116,
+                "column": 73
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 178,
+                    "column": 5
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 348,
+                    "column": 46
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 356,
+                    "column": 42
+                }
+            ],
+            "symbol_name": "WaterfallIngress.ig_md.idx4",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 116,
+                "column": 73
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 165,
+                    "column": 47
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 270,
+                    "column": 5
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 276,
+                    "column": 7
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 308,
+                    "column": 7
+                }
+            ],
+            "symbol_name": "WaterfallIngress.ig_md.out_remain1",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 116,
+                "column": 73
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 171,
+                    "column": 47
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 293,
+                    "column": 5
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 297,
+                    "column": 5
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 302,
+                    "column": 7
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 335,
+                    "column": 7
+                }
+            ],
+            "symbol_name": "WaterfallIngress.ig_md.out_remain2",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 116,
+                "column": 73
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 177,
+                    "column": 47
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 321,
+                    "column": 5
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 325,
+                    "column": 5
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 330,
+                    "column": 7
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 361,
+                    "column": 7
+                }
+            ],
+            "symbol_name": "WaterfallIngress.ig_md.out_remain3",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 116,
+                "column": 73
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 348,
+                    "column": 5
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 352,
+                    "column": 5
+                }
+            ],
+            "symbol_name": "WaterfallIngress.ig_md.out_remain4",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 116,
+                "column": 73
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 161,
+                    "column": 5
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 189,
+                    "column": 11
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 250,
+                    "column": 32
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 276,
+                    "column": 27
+                }
+            ],
+            "symbol_name": "WaterfallIngress.ig_md.remain1",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 116,
+                "column": 73
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 167,
+                    "column": 5
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 197,
+                    "column": 11
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 229,
+                    "column": 13
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 302,
+                    "column": 27
+                }
+            ],
+            "symbol_name": "WaterfallIngress.ig_md.remain2",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 116,
+                "column": 73
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 173,
+                    "column": 5
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 205,
+                    "column": 11
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 236,
+                    "column": 13
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 330,
+                    "column": 27
+                }
+            ],
+            "symbol_name": "WaterfallIngress.ig_md.remain3",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 116,
+                "column": 73
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 179,
+                    "column": 5
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 213,
+                    "column": 11
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 243,
+                    "column": 13
+                }
+            ],
+            "symbol_name": "WaterfallIngress.ig_md.remain4",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 116,
+                "column": 73
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 249,
+                    "column": 5
+                }
+            ],
+            "symbol_name": "WaterfallIngress.ig_md.resubmit_md.idx",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 116,
+                "column": 73
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 222,
+                    "column": 13
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 250,
+                    "column": 5
+                }
+            ],
+            "symbol_name": "WaterfallIngress.ig_md.resubmit_md.remain",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 116,
+                "column": 73
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 190,
+                    "column": 9
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 198,
+                    "column": 9
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 206,
+                    "column": 9
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 214,
+                    "column": 9
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 221,
+                    "column": 7
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 228,
+                    "column": 7
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 235,
+                    "column": 7
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 242,
+                    "column": 7
+                }
+            ],
+            "symbol_name": "WaterfallIngress.read_value",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 241,
+                "column": 47
+            },
+            "symbol_type": "Parameter_Type_Bits"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 189,
+                    "column": 28
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 197,
+                    "column": 28
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 205,
+                    "column": 28
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 213,
+                    "column": 28
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 221,
+                    "column": 20
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 222,
+                    "column": 7
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 228,
+                    "column": 20
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 229,
+                    "column": 7
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 235,
+                    "column": 20
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 236,
+                    "column": 7
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 242,
+                    "column": 20
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 243,
+                    "column": 7
+                }
+            ],
+            "symbol_name": "WaterfallIngress.val",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 241,
+                "column": 30
+            },
+            "symbol_type": "Parameter_Type_Bits"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 429,
+                    "column": 14
+                }
+            ],
+            "symbol_name": "WaterfallIngressDeparser.hdr.ethernet",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 416,
+                "column": 66
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 429,
+                    "column": 14
+                }
+            ],
+            "symbol_name": "WaterfallIngressDeparser.hdr.ipv4",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 416,
+                "column": 66
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 424,
+                    "column": 39
+                }
+            ],
+            "symbol_name": "WaterfallIngressDeparser.hdr.ipv4.dst_addr",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 416,
+                "column": 66
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 424,
+                    "column": 20
+                }
+            ],
+            "symbol_name": "WaterfallIngressDeparser.hdr.ipv4.src_addr",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 416,
+                "column": 66
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 429,
+                    "column": 14
+                }
+            ],
+            "symbol_name": "WaterfallIngressDeparser.hdr.ipv6",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 416,
+                "column": 66
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 429,
+                    "column": 14
+                }
+            ],
+            "symbol_name": "WaterfallIngressDeparser.hdr.tcp",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 416,
+                "column": 66
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 429,
+                    "column": 14
+                }
+            ],
+            "symbol_name": "WaterfallIngressDeparser.hdr.udp",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 416,
+                "column": 66
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 429,
+                    "column": 14
+                }
+            ],
+            "symbol_name": "WaterfallIngressDeparser.hdr.vlan_tag",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 416,
+                "column": 66
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 423,
+                    "column": 9
+                }
+            ],
+            "symbol_name": "WaterfallIngressDeparser.ig_intr_dprsr_md.digest_type",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 417,
+                "column": 50
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [],
+            "symbol_name": "WaterfallIngressDeparser.ig_intr_dprsr_md.mirror_type",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 417,
+                "column": 50
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 426,
+                    "column": 9
+                }
+            ],
+            "symbol_name": "WaterfallIngressDeparser.ig_intr_dprsr_md.resubmit_type",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 417,
+                "column": 50
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 427,
+                    "column": 21
+                }
+            ],
+            "symbol_name": "WaterfallIngressDeparser.ig_md.resubmit_md.idx",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 416,
+                "column": 95
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 427,
+                    "column": 21
+                }
+            ],
+            "symbol_name": "WaterfallIngressDeparser.ig_md.resubmit_md.remain",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 416,
+                "column": 95
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 429,
+                    "column": 5
+                }
+            ],
+            "symbol_name": "WaterfallIngressDeparser.pkt",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 416,
+                "column": 46
+            },
+            "symbol_type": "Parameter_Type_Extern"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 81,
+                    "column": 17
+                }
+            ],
+            "symbol_name": "WaterfallIngressParser.hdr.ethernet",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 59,
+                "column": 59
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 82,
+                    "column": 23
+                }
+            ],
+            "symbol_name": "WaterfallIngressParser.hdr.ethernet.ether_type",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 59,
+                "column": 59
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 91,
+                    "column": 17
+                }
+            ],
+            "symbol_name": "WaterfallIngressParser.hdr.ipv4",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 59,
+                "column": 59
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 92,
+                    "column": 23
+                }
+            ],
+            "symbol_name": "WaterfallIngressParser.hdr.ipv4.protocol",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 59,
+                "column": 59
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 103,
+                    "column": 17
+                }
+            ],
+            "symbol_name": "WaterfallIngressParser.hdr.tcp",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 59,
+                "column": 59
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 108,
+                    "column": 17
+                }
+            ],
+            "symbol_name": "WaterfallIngressParser.hdr.udp",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 59,
+                "column": 59
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 63,
+                    "column": 17
+                }
+            ],
+            "symbol_name": "WaterfallIngressParser.ig_intr_md",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 60,
+                "column": 54
+            },
+            "symbol_type": "Parameter_Type_Header"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 64,
+                    "column": 23
+                }
+            ],
+            "symbol_name": "WaterfallIngressParser.ig_intr_md.resubmit_flag",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 60,
+                "column": 54
+            },
+            "symbol_type": "Parameter_Type_Header"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 71,
+                    "column": 5
+                }
+            ],
+            "symbol_name": "WaterfallIngressParser.ig_md.port_metadata",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 59,
+                "column": 89
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 76,
+                    "column": 17
+                }
+            ],
+            "symbol_name": "WaterfallIngressParser.ig_md.resubmit_md",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 59,
+                "column": 89
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 63,
+                    "column": 5
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 76,
+                    "column": 5
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 81,
+                    "column": 5
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 91,
+                    "column": 5
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 103,
+                    "column": 5
+                },
+                {
+                    "file": "waterfall/waterfall.p4",
+                    "line": 108,
+                    "column": 5
+                }
+            ],
+            "symbol_name": "WaterfallIngressParser.pkt",
+            "declaration": {
+                "file": "waterfall/waterfall.p4",
+                "line": 59,
+                "column": 41
+            },
+            "symbol_type": "Parameter_Type_Extern"
+        }
+    ],
+    "source_root": "/workspace/P4-code/waterfall-table/waterfall-fcm-small"
+}

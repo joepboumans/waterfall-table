@@ -1,0 +1,573 @@
++---------------------------------------------------------------------+
+|  Log file: mau.characterize.log                                     |
+|  Compiler version: 9.11.0 (fdd358c)                                 |
+|  Created on: Fri Dec 13 13:51:39 2024                               |
+|  Run ID: 31a74692ef674dd7                                           |
++---------------------------------------------------------------------+
+
+Match+Action Resource Usage
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|                    1                    |    2    |   3    |      4       |  5   |         6         |   7   |         8         |      9       |    10   |   11  |          12         |      13      |      14      |      15      |   16   |     17    |      18      |      19      |       20      |       21      |    22   |
+|                  Table                  |   Dir   | Stage  |      P4      | Mem  |       Total       | Total |       Table       |    Match     |   TCAM  |  SRAM |        Match        |     Imm.     |     TCAM     |     SRAM     |   P4   |   Action  |    Ideal     |    Actual    |      TCAM     |      SRAM     |   SRAM  |
+|                   Name                  |         |        |    Lookup    | Type |       SRAMs       | TCAMs |      Entries      |     Bits     |  Over-  | Over- |       Overhead      |    Action    |     Bits     |     Bits     | Action |    Bits   |    Match     |    Match     |     Match     |     Match     |  Action |
+|                                         |         |        |   Type(s)    |      |  TOT(M/A/S/MT/I)  |       |     Requested     |     Per      |   head  |  head |      Structure      |     Data     |     Per      |     Per      |  Bits  |    Per    |   Entries-   |   Entries-   |    Packing    |    Packing    | Packing |
+|                                         |         |        |              |      |      (legend      |       |         /         |    Entry     |   Bits  |  Bits | NT/AI/AD/M/S/SL/V/I |      in      |    Entry     |    Entry     |        |   Entry   |    Number    |    Number    |      Eff.     |      Eff.     |   Eff.  |
+|                                         |         |        |              |      |       below)      |       |     Allocated     |  R/A(diff)   |   Per   |  Per  |       (legend       |   Overhead   |  R/A(diff)   |  R/A(diff)   |        | R/A(diff) |     Per      |     Per      |     Ideal/    |     Ideal/    |  Ideal/ |
+|                                         |         |        |              |      |                   |       |       (diff)      |              |  Entry  | Entry |        below)       |  R/A(diff)   |              |              |        |           |    Memory    |    Memory    |     Actual    |     Actual    |  Actual |
+|                                         |         |        |              |      |                   |       |                   |              | ver/vld |       |                     |              |              |              |        |           |    Units     |    Units     |               |               |         |
+|                                         |         |        |              |      |                   |       |                   |              |         |       |                     |              |              |              |        |           |    (bits)    |    (bits)    |               |               |         |
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|  WaterfallIngressParser.$PORT_METADATA  | ingress | parser |    exact     | buf  |   0 (0/0/0/0/0)   |   0   |   288 / 288 (0)   |  9 / 0 (-9)  |    0    |   0   |   0/0/0/0/0/0/0/0   | 64 / 0 (-64) |  0 / 0 (0)   |  0 / 0 (0)   |   64   | 0 / 0 (0) | 1 in 2 (128) | 1 in 1 (64)  |     - / -     |     - / -     |  - / -  |
+|                                         |         |        |              |      |                   |       |                   |              |         |       |                     |              |              |              |        |           |              |              |               |               |         |
+|         WaterfallIngress.forward        | ingress |   0    |    exact     | sram |   1 (1/0/0/0/0)   |   0   | 512 / 5120 (4608) |  9 / 2 (-7)  |    0    |   13  |   0/0/0/0/0/0/4/9   |  9 / 9 (0)   |  0 / 0 (0)   | 22 / 15 (-7) |   9    | 0 / 0 (0) | 5 in 1 (128) | 5 in 1 (128) |     - / -     | 70.3% / 35.2% |  - / -  |
+|              tbl_get_hash1              | ingress |   0    |      -       |  -   |   0 (0/0/0/0/0)   |   0   |     0 / 0 (0)     |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   |  0 / 0 (0)   |  0 / 0 (0)   |   0    | 0 / 0 (0) |  0 in 0 (0)  |  0 in 0 (0)  |     - / -     |     - / -     |  - / -  |
+| fcmsketch_tb_fcm_l1_to_l2_d1$precompute |  egress |   0    |      -       | sram |   0 (0/0/0/0/0)   |   0   |     0 / 0 (0)     |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   |  0 / 0 (0)   |  0 / 0 (0)   |   0    | 0 / 0 (0) |  0 in 0 (0)  |  1 in 0 (0)  |     - / -     |     - / -     |  - / -  |
+| fcmsketch_tb_fcm_l1_to_l2_d2$precompute |  egress |   0    |      -       | sram |   0 (0/0/0/0/0)   |   0   |     0 / 0 (0)     |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   |  0 / 0 (0)   |  0 / 0 (0)   |   0    | 0 / 0 (0) |  0 in 0 (0)  |  1 in 0 (0)  |     - / -     |     - / -     |  - / -  |
+|              tbl_count_pkt              |  egress |   0    |      -       | sram |   2 (0/0/0/2/0)   |   0   |     0 / 0 (0)     |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   |  0 / 0 (0)   |  0 / 0 (0)   |   0    | 0 / 0 (0) |  0 in 0 (0)  |  1 in 0 (0)  |     - / -     |     - / -     |  - / -  |
+|        tbl_fcmsketch_fcm_hash_d1        |  egress |   0    |      -       |  -   |   0 (0/0/0/0/0)   |   0   |     0 / 0 (0)     |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   |  0 / 0 (0)   |  0 / 0 (0)   |   0    | 0 / 0 (0) |  0 in 0 (0)  |  0 in 0 (0)  |     - / -     |     - / -     |  - / -  |
+|        tbl_fcmsketch_fcm_hash_d2        |  egress |   0    |      -       |  -   |   0 (0/0/0/0/0)   |   0   |     0 / 0 (0)     |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   |  0 / 0 (0)   |  0 / 0 (0)   |   0    | 0 / 0 (0) |  0 in 0 (0)  |  0 in 0 (0)  |     - / -     |     - / -     |  - / -  |
+|              stage 0 totals             |    -    |   -    |      -       |  -   |   3 (1/0/0/2/0)   |   0   |         -         |      -       |    -    |   -   |          -          |      -       |      -       |      -       |   -    |     -     |      -       |      -       |       -       |       -       |    -    |
+|                                         |         |        |              |      |                   |       |                   |              |         |       |                     |              |              |              |        |           |              |              |               |               |         |
+|          WaterfallIngress.swap1         | ingress |   1    |    exact     | sram |   10 (1/0/0/9/0)  |   0   |  2 / 2048 (2046)  | 1 / 22 (21)  |    0    |   4   |   0/0/0/0/0/0/4/0   |  0 / 0 (0)   |  0 / 0 (0)   | 5 / 26 (21)  |   0    | 0 / 0 (0) | 5 in 1 (128) | 2 in 1 (128) |     - / -     |  3.9% / 0.0%  |  - / -  |
+|      tbl_fcmsketch_fcm_action_l1_d2     |  egress |   1    |      -       |  -   |  33 (0/0/0/33/0)  |   0   |     0 / 0 (0)     |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   |  0 / 0 (0)   |  0 / 0 (0)   |   0    | 0 / 0 (0) |  0 in 0 (0)  |  0 in 0 (0)  |     - / -     |     - / -     |  - / -  |
+|              stage 1 totals             |    -    |   -    |      -       |  -   |  43 (1/0/0/42/0)  |   0   |         -         |      -       |    -    |   -   |          -          |      -       |      -       |      -       |   -    |     -     |      -       |      -       |       -       |       -       |    -    |
+|                                         |         |        |              |      |                   |       |                   |              |         |       |                     |              |              |              |        |           |              |              |               |               |         |
+|              tbl_get_hash2              | ingress |   2    |      -       |  -   |   0 (0/0/0/0/0)   |   0   |     0 / 0 (0)     |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   |  0 / 0 (0)   |  0 / 0 (0)   |   0    | 0 / 0 (0) |  0 in 0 (0)  |  0 in 0 (0)  |     - / -     |     - / -     |  - / -  |
+|  FcmEgress.fcmsketch.tb_fcm_l1_to_l2_d2 |  egress |   2    |    exact     | sram |   9 (0/0/0/9/0)   |   0   |     1 / 1 (0)     | 32 / 0 (-32) |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   |  0 / 0 (0)   | 32 / 0 (-32) |   0    | 0 / 0 (0) |  0 in 0 (0)  |  0 in 0 (0)  |     - / -     |     - / -     |  - / -  |
+|      tbl_fcmsketch_fcm_action_l1_d1     |  egress |   2    |      -       |  -   |  33 (0/0/0/33/0)  |   0   |     0 / 0 (0)     |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   |  0 / 0 (0)   |  0 / 0 (0)   |   0    | 0 / 0 (0) |  0 in 0 (0)  |  0 in 0 (0)  |     - / -     |     - / -     |  - / -  |
+|              stage 2 totals             |    -    |   -    |      -       |  -   |  42 (0/0/0/42/0)  |   0   |         -         |      -       |    -    |   -   |          -          |      -       |      -       |      -       |   -    |     -     |      -       |      -       |       -       |       -       |    -    |
+|                                         |         |        |              |      |                   |       |                   |              |         |       |                     |              |              |              |        |           |              |              |               |               |         |
+|          WaterfallIngress.swap2         | ingress |   3    | exact, range | tcam |   10 (0/0/0/9/1)  |   1   |   3 / 512 (509)   | 17 / 17 (0)  |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   | 21 / 44 (23) | 0 / 32 (32)  |   0    | 0 / 0 (0) | 1 in 1 (44)  | 1 in 1 (44)  | 38.6% / 38.6% |     - / -     |  - / -  |
+|  FcmEgress.fcmsketch.tb_fcm_l1_to_l2_d1 |  egress |   3    |    exact     | sram |   9 (0/0/0/9/0)   |   0   |     1 / 1 (0)     | 32 / 0 (-32) |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   |  0 / 0 (0)   | 32 / 0 (-32) |   0    | 0 / 0 (0) |  0 in 0 (0)  |  0 in 0 (0)  |     - / -     |     - / -     |  - / -  |
+|  FcmEgress.fcmsketch.tb_fcm_l2_to_l3_d2 |  egress |   3    |    exact     | sram |   3 (0/0/0/3/0)   |   0   |     1 / 1 (0)     | 32 / 0 (-32) |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   |  0 / 0 (0)   | 32 / 0 (-32) |   0    | 0 / 0 (0) |  0 in 0 (0)  |  0 in 0 (0)  |     - / -     |     - / -     |  - / -  |
+|              stage 3 totals             |    -    |   -    |      -       |  -   |  22 (0/0/0/21/1)  |   1   |         -         |      -       |    -    |   -   |          -          |      -       |      -       |      -       |   -    |     -     |      -       |      -       |       -       |       -       |    -    |
+|                                         |         |        |              |      |                   |       |                   |              |         |       |                     |              |              |              |        |           |              |              |               |               |         |
+|              tbl_get_hash3              | ingress |   4    |      -       |  -   |   0 (0/0/0/0/0)   |   0   |     0 / 0 (0)     |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   |  0 / 0 (0)   |  0 / 0 (0)   |   0    | 0 / 0 (0) |  0 in 0 (0)  |  0 in 0 (0)  |     - / -     |     - / -     |  - / -  |
+|  FcmEgress.fcmsketch.tb_fcm_l2_to_l3_d1 |  egress |   4    |    exact     | sram |   3 (0/0/0/3/0)   |   0   |     1 / 1 (0)     | 32 / 0 (-32) |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   |  0 / 0 (0)   | 32 / 0 (-32) |   0    | 0 / 0 (0) |  0 in 0 (0)  |  0 in 0 (0)  |     - / -     |     - / -     |  - / -  |
+|              stage 4 totals             |    -    |   -    |      -       |  -   |   3 (0/0/0/3/0)   |   0   |         -         |      -       |    -    |   -   |          -          |      -       |      -       |      -       |   -    |     -     |      -       |      -       |       -       |       -       |    -    |
+|                                         |         |        |              |      |                   |       |                   |              |         |       |                     |              |              |              |        |           |              |              |               |               |         |
+|          WaterfallIngress.swap3         | ingress |   5    | exact, range | tcam |   10 (0/0/0/9/1)  |   1   |   2 / 512 (510)   | 17 / 17 (0)  |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   | 21 / 44 (23) | 0 / 32 (32)  |   0    | 0 / 0 (0) | 1 in 1 (44)  | 1 in 1 (44)  | 38.6% / 38.6% |     - / -     |  - / -  |
+|              stage 5 totals             |    -    |   -    |      -       |  -   |   10 (0/0/0/9/1)  |   1   |         -         |      -       |    -    |   -   |          -          |      -       |      -       |      -       |   -    |     -     |      -       |      -       |       -       |       -       |    -    |
+|                                         |         |        |              |      |                   |       |                   |              |         |       |                     |              |              |              |        |           |              |              |               |               |         |
+|              tbl_get_hash4              | ingress |   6    |      -       |  -   |   0 (0/0/0/0/0)   |   0   |     0 / 0 (0)     |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   |  0 / 0 (0)   |  0 / 0 (0)   |   0    | 0 / 0 (0) |  0 in 0 (0)  |  0 in 0 (0)  |     - / -     |     - / -     |  - / -  |
+|              stage 6 totals             |    -    |   -    |      -       |  -   |   0 (0/0/0/0/0)   |   0   |         -         |      -       |    -    |   -   |          -          |      -       |      -       |      -       |   -    |     -     |      -       |      -       |       -       |       -       |    -    |
+|                                         |         |        |              |      |                   |       |                   |              |         |       |                     |              |              |              |        |           |              |              |               |               |         |
+|          WaterfallIngress.swap4         | ingress |   7    | exact, range | tcam |   10 (0/0/0/9/1)  |   1   |   2 / 512 (510)   | 17 / 17 (0)  |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   | 21 / 44 (23) | 0 / 32 (32)  |   0    | 0 / 0 (0) | 1 in 1 (44)  | 1 in 1 (44)  | 38.6% / 38.6% |     - / -     |  - / -  |
+|              stage 7 totals             |    -    |   -    |      -       |  -   |   10 (0/0/0/9/1)  |   1   |         -         |      -       |    -    |   -   |          -          |      -       |      -       |      -       |   -    |     -     |      -       |      -       |       -       |       -       |    -    |
+|                                         |         |        |              |      |                   |       |                   |              |         |       |                     |              |              |              |        |           |              |              |               |               |         |
+|          WaterfallIngress.resub         | ingress |   8    |    exact     | sram |   1 (1/0/0/0/0)   |   0   |  3 / 5120 (5117)  |  2 / 1 (-1)  |    0    |   4   |   0/0/0/0/0/0/4/0   |  0 / 0 (0)   |  0 / 0 (0)   |  6 / 5 (-1)  |   0    | 0 / 0 (0) | 5 in 1 (128) | 5 in 1 (128) |     - / -     |  7.8% / 0.0%  |  - / -  |
+|              stage 8 totals             |    -    |   -    |      -       |  -   |   1 (1/0/0/0/0)   |   0   |         -         |      -       |    -    |   -   |          -          |      -       |      -       |      -       |   -    |     -     |      -       |      -       |       -       |       -       |    -    |
+|                                         |         |        |              |      |                   |       |                   |              |         |       |                     |              |              |              |        |           |              |              |               |               |         |
+|         overall totals (ingress)        |    -    |   -    |      -       |  -   |  42 (3/0/0/36/3)  |   3   |         -         |      -       |    -    |   -   |          -          |      -       |      -       |      -       |   -    |     -     |      -       |      -       |       -       |       -       |    -    |
+|                                         |         |        |              |      |                   |       |                   |              |         |       |                     |              |              |              |        |           |              |              |               |               |         |
+|         overall totals (egress)         |    -    |   -    |      -       |  -   |  92 (0/0/0/92/0)  |   0   |         -         |      -       |    -    |   -   |          -          |      -       |      -       |      -       |   -    |     -     |      -       |      -       |       -       |       -       |    -    |
+|                                         |         |        |              |      |                   |       |                   |              |         |       |                     |              |              |              |        |           |              |              |               |               |         |
+|              overall totals             |    -    |   -    |      -       |  -   | 134 (3/0/0/128/3) |   3   |         -         |      -       |    -    |   -   |          -          |      -       |      -       |      -       |   -    |     -     |      -       |      -       |       -       |       -       |    -    |
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Total SRAMs Legend:
+TOT (M/A/S/MT/I)
+TOT = Total
+M = Match
+A = Action
+S = Statistics
+MT = Meter / Stateful / Selection
+I = Ternary Indirection
+
+Match Overhead Structure Legend:
+NT/AI/AD/M/S/SL/V/I
+NT = Next Table Pointer
+AI = Action Instruction Pointer
+AD = Action Data Pointer
+M = Meter/Selection/Stateful Pointer
+S = Statistics Pointer
+SL = Selection Length
+V = Entry Version
+I = Immediate Action Data
+
+
+
+
+
++----------------------------------------------------------------+
+    OVERHEAD STRUCTURES
++----------------------------------------------------------------+
+
++----------------------------------------------------------------+
+   FcmEgress.fcmsketch.tb_fcm_l1_to_l2_d1
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
++----------------------------------------------------------------+
+   FcmEgress.fcmsketch.tb_fcm_l1_to_l2_d2
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
++----------------------------------------------------------------+
+   FcmEgress.fcmsketch.tb_fcm_l2_to_l3_d1
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
++----------------------------------------------------------------+
+   FcmEgress.fcmsketch.tb_fcm_l2_to_l3_d2
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
++----------------------------------------------------------------+
+   WaterfallIngress.forward
++----------------------------------------------------------------+
+Match Overhead:
+  Field --version_valid-- [3:0] (4 bits)
+  Field --immediate-- [8:0] (9 bits)
+
+  Total bits: 13
++----------------------------------------------------------------+
+   WaterfallIngress.resub
++----------------------------------------------------------------+
+Match Overhead:
+  Field --version_valid-- [3:0] (4 bits)
+
+  Total bits: 4
++----------------------------------------------------------------+
+   WaterfallIngress.swap1
++----------------------------------------------------------------+
+Match Overhead:
+  Field --version_valid-- [3:0] (4 bits)
+
+  Total bits: 4
++----------------------------------------------------------------+
+   WaterfallIngress.swap2
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
++----------------------------------------------------------------+
+   WaterfallIngress.swap3
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
++----------------------------------------------------------------+
+   WaterfallIngress.swap4
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
++----------------------------------------------------------------+
+   WaterfallIngressParser.$PORT_METADATA
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
++----------------------------------------------------------------+
+   fcmsketch_tb_fcm_l1_to_l2_d1$precompute
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
++----------------------------------------------------------------+
+   fcmsketch_tb_fcm_l1_to_l2_d2$precompute
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
++----------------------------------------------------------------+
+   tbl_count_pkt
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
++----------------------------------------------------------------+
+   tbl_fcmsketch_fcm_action_l1_d1
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
++----------------------------------------------------------------+
+   tbl_fcmsketch_fcm_action_l1_d2
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
++----------------------------------------------------------------+
+   tbl_fcmsketch_fcm_hash_d1
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
++----------------------------------------------------------------+
+   tbl_fcmsketch_fcm_hash_d2
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
++----------------------------------------------------------------+
+   tbl_get_hash1
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
++----------------------------------------------------------------+
+   tbl_get_hash2
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
++----------------------------------------------------------------+
+   tbl_get_hash3
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
++----------------------------------------------------------------+
+   tbl_get_hash4
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
+
+
+
+
+
++----------------------------------------------------------------+
+    MATCH AND ACTION FORMATS
++----------------------------------------------------------------+
+
++----------------------------------------------------------------+
+  FcmEgress.fcmsketch.tb_fcm_l1_to_l2_d1
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for FcmEgress.fcmsketch.tb_fcm_l1_to_l2_d1
++------------------------------------------------+
+Stage 3:
+No match entries required.
++----------------------------------------------------------------+
+  FcmEgress.fcmsketch.tb_fcm_l1_to_l2_d2
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for FcmEgress.fcmsketch.tb_fcm_l1_to_l2_d2
++------------------------------------------------+
+Stage 2:
+No match entries required.
++----------------------------------------------------------------+
+  FcmEgress.fcmsketch.tb_fcm_l2_to_l3_d1
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for FcmEgress.fcmsketch.tb_fcm_l2_to_l3_d1
++------------------------------------------------+
+Stage 4:
+No match entries required.
++----------------------------------------------------------------+
+  FcmEgress.fcmsketch.tb_fcm_l2_to_l3_d2
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for FcmEgress.fcmsketch.tb_fcm_l2_to_l3_d2
++------------------------------------------------+
+Stage 3:
+No match entries required.
++----------------------------------------------------------------+
+  WaterfallIngress.forward
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for WaterfallIngress.forward
++------------------------------------------------+
+Stage 0:
+Pack Format:
+  table_word_width: 128
+  memory_word_width: 128
+  entries_per_table_word: 5
+  number_memory_units_per_table_word: 1
+  entry_list: [
+    entry_number : 4
+    field_list : [
+       Field action [1:0]      : in bits [9:8]
+       Field immediate [8:0]   : in bits [54:46]
+       Field version [3:0]     : in bits [59:56]
+    ]
+    entry_number : 3
+    field_list : [
+       Field action [1:0]      : in bits [7:6]
+       Field immediate [8:0]   : in bits [45:37]
+       Field version [3:0]     : in bits [127:124]
+    ]
+    entry_number : 2
+    field_list : [
+       Field action [1:0]      : in bits [5:4]
+       Field immediate [8:0]   : in bits [36:28]
+       Field version [3:0]     : in bits [123:120]
+    ]
+    entry_number : 1
+    field_list : [
+       Field action [1:0]      : in bits [3:2]
+       Field immediate [8:0]   : in bits [27:19]
+       Field version [3:0]     : in bits [119:116]
+    ]
+    entry_number : 0
+    field_list : [
+       Field action [1:0]      : in bits [1:0]
+       Field immediate [8:0]   : in bits [18:10]
+       Field version [3:0]     : in bits [115:112]
+    ]
+  ]
++----------------------------------------------------------------+
+  WaterfallIngress.resub
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for WaterfallIngress.resub
++------------------------------------------------+
+Stage 8:
+Pack Format:
+  table_word_width: 128
+  memory_word_width: 128
+  entries_per_table_word: 5
+  number_memory_units_per_table_word: 1
+  entry_list: [
+    entry_number : 4
+    field_list : [
+       Field action [0:0]    : in bits [4:4]
+       Field version [3:0]   : in bits [11:8]
+    ]
+    entry_number : 3
+    field_list : [
+       Field action [0:0]    : in bits [3:3]
+       Field version [3:0]   : in bits [127:124]
+    ]
+    entry_number : 2
+    field_list : [
+       Field action [0:0]    : in bits [2:2]
+       Field version [3:0]   : in bits [123:120]
+    ]
+    entry_number : 1
+    field_list : [
+       Field action [0:0]    : in bits [1:1]
+       Field version [3:0]   : in bits [119:116]
+    ]
+    entry_number : 0
+    field_list : [
+       Field action [0:0]    : in bits [0:0]
+       Field version [3:0]   : in bits [115:112]
+    ]
+  ]
++----------------------------------------------------------------+
+  WaterfallIngress.swap1
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for WaterfallIngress.swap1
++------------------------------------------------+
+Stage 1:
+Pack Format:
+  table_word_width: 128
+  memory_word_width: 128
+  entries_per_table_word: 2
+  number_memory_units_per_table_word: 1
+  entry_list: [
+    entry_number : 1
+    field_list : [
+       Field action [1:0]         : in bits [3:2]
+       Field version [3:0]        : in bits [119:116]
+       Field meter_addr [19:4]    : in bits [39:24]
+       Field meter_pfe [23:23]    : in bits [40:40]
+       Field meter_type [26:24]   : in bits [43:41]
+    ]
+    entry_number : 0
+    field_list : [
+       Field action [1:0]         : in bits [1:0]
+       Field version [3:0]        : in bits [115:112]
+       Field meter_addr [19:4]    : in bits [19:4]
+       Field meter_pfe [23:23]    : in bits [20:20]
+       Field meter_type [26:24]   : in bits [23:21]
+    ]
+  ]
++----------------------------------------------------------------+
+  WaterfallIngress.swap2
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for WaterfallIngress.swap2
++------------------------------------------------+
+Stage 3:
+Pack Format:
+  table_word_width: 44
+  memory_word_width: 44
+  entries_per_table_word: 1
+  number_memory_units_per_table_word: 1
+  entry_list: [
+    entry_number : 0
+    field_list : [
+       Field --version-- [1:0]                : in bits [43:42]
+       Field ig_md.out_remain1 [3:0]          : in bits [3:0]
+       Field ig_md.out_remain1 [3:0]          : in bits [7:4]
+       Field ig_md.out_remain1 [11:8]         : in bits [11:8]
+       Field ig_md.out_remain1 [11:8]         : in bits [15:12]
+       Field ig_md.out_remain1 [7:4]          : in bits [19:16]
+       Field ig_md.out_remain1 [7:4]          : in bits [23:20]
+       Field ig_md.out_remain1 [15:12]        : in bits [27:24]
+       Field ig_md.out_remain1 [15:12]        : in bits [31:28]
+       Field ig_intr_md.resubmit_flag [0:0]   : in bits [39:39]
+    ]
+  ]
++----------------------------------------------------------------+
+  WaterfallIngress.swap3
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for WaterfallIngress.swap3
++------------------------------------------------+
+Stage 5:
+Pack Format:
+  table_word_width: 44
+  memory_word_width: 44
+  entries_per_table_word: 1
+  number_memory_units_per_table_word: 1
+  entry_list: [
+    entry_number : 0
+    field_list : [
+       Field --version-- [1:0]                : in bits [43:42]
+       Field ig_md.out_remain2 [3:0]          : in bits [3:0]
+       Field ig_md.out_remain2 [3:0]          : in bits [7:4]
+       Field ig_md.out_remain2 [11:8]         : in bits [11:8]
+       Field ig_md.out_remain2 [11:8]         : in bits [15:12]
+       Field ig_md.out_remain2 [7:4]          : in bits [19:16]
+       Field ig_md.out_remain2 [7:4]          : in bits [23:20]
+       Field ig_md.out_remain2 [15:12]        : in bits [27:24]
+       Field ig_md.out_remain2 [15:12]        : in bits [31:28]
+       Field ig_intr_md.resubmit_flag [0:0]   : in bits [39:39]
+    ]
+  ]
++----------------------------------------------------------------+
+  WaterfallIngress.swap4
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for WaterfallIngress.swap4
++------------------------------------------------+
+Stage 7:
+Pack Format:
+  table_word_width: 44
+  memory_word_width: 44
+  entries_per_table_word: 1
+  number_memory_units_per_table_word: 1
+  entry_list: [
+    entry_number : 0
+    field_list : [
+       Field --version-- [1:0]                : in bits [43:42]
+       Field ig_md.out_remain3 [3:0]          : in bits [3:0]
+       Field ig_md.out_remain3 [3:0]          : in bits [7:4]
+       Field ig_md.out_remain3 [11:8]         : in bits [11:8]
+       Field ig_md.out_remain3 [11:8]         : in bits [15:12]
+       Field ig_md.out_remain3 [7:4]          : in bits [19:16]
+       Field ig_md.out_remain3 [7:4]          : in bits [23:20]
+       Field ig_md.out_remain3 [15:12]        : in bits [27:24]
+       Field ig_md.out_remain3 [15:12]        : in bits [31:28]
+       Field ig_intr_md.resubmit_flag [0:0]   : in bits [39:39]
+    ]
+  ]
++----------------------------------------------------------------+
+  WaterfallIngressParser.$PORT_METADATA
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for WaterfallIngressParser.$PORT_METADATA
++------------------------------------------------+
+Stage -1:
+Pack Format:
+  table_word_width: 64
+  memory_word_width: 64
+  entries_per_table_word: 1
+  number_memory_units_per_table_word: 1
+  entry_list: [
+    entry_number : 0
+    field_list : [
+       Field f1 [31:0]   : in bits [63:32]
+       Field f2 [31:0]   : in bits [31:0]
+    ]
+  ]
++----------------------------------------------------------------+
+  fcmsketch_tb_fcm_l1_to_l2_d1$precompute
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for fcmsketch_tb_fcm_l1_to_l2_d1$precompute
++------------------------------------------------+
+Stage 0:
+No match entries required.
++----------------------------------------------------------------+
+  fcmsketch_tb_fcm_l1_to_l2_d2$precompute
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for fcmsketch_tb_fcm_l1_to_l2_d2$precompute
++------------------------------------------------+
+Stage 0:
+No match entries required.
++----------------------------------------------------------------+
+  tbl_count_pkt
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for tbl_count_pkt
++------------------------------------------------+
+Stage 0:
+No match entries required.
++----------------------------------------------------------------+
+  tbl_fcmsketch_fcm_action_l1_d1
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for tbl_fcmsketch_fcm_action_l1_d1
++------------------------------------------------+
+Stage 2:
+No match entries required.
++----------------------------------------------------------------+
+  tbl_fcmsketch_fcm_action_l1_d2
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for tbl_fcmsketch_fcm_action_l1_d2
++------------------------------------------------+
+Stage 1:
+No match entries required.
++----------------------------------------------------------------+
+  tbl_fcmsketch_fcm_hash_d1
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for tbl_fcmsketch_fcm_hash_d1
++------------------------------------------------+
+Stage 0:
+No match entries required.
++----------------------------------------------------------------+
+  tbl_fcmsketch_fcm_hash_d2
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for tbl_fcmsketch_fcm_hash_d2
++------------------------------------------------+
+Stage 0:
+No match entries required.
++----------------------------------------------------------------+
+  tbl_get_hash1
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for tbl_get_hash1
++------------------------------------------------+
+Stage 0:
+No match entries required.
++----------------------------------------------------------------+
+  tbl_get_hash2
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for tbl_get_hash2
++------------------------------------------------+
+Stage 2:
+No match entries required.
++----------------------------------------------------------------+
+  tbl_get_hash3
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for tbl_get_hash3
++------------------------------------------------+
+Stage 4:
+No match entries required.
++----------------------------------------------------------------+
+  tbl_get_hash4
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for tbl_get_hash4
++------------------------------------------------+
+Stage 6:
+No match entries required.
