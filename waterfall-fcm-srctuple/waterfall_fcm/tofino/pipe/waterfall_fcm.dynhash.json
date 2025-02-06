@@ -443,131 +443,131 @@
             "num_hash_bits" : 32,
             "hash_bits" : [
               {
-                "gfm_hash_bit" : 16,
+                "gfm_hash_bit" : 0,
                 "p4_hash_bit" : 0
               },
               {
-                "gfm_hash_bit" : 17,
+                "gfm_hash_bit" : 1,
                 "p4_hash_bit" : 1
               },
               {
-                "gfm_hash_bit" : 18,
+                "gfm_hash_bit" : 2,
                 "p4_hash_bit" : 2
               },
               {
-                "gfm_hash_bit" : 19,
+                "gfm_hash_bit" : 3,
                 "p4_hash_bit" : 3
               },
               {
-                "gfm_hash_bit" : 20,
+                "gfm_hash_bit" : 4,
                 "p4_hash_bit" : 4
               },
               {
-                "gfm_hash_bit" : 21,
+                "gfm_hash_bit" : 5,
                 "p4_hash_bit" : 5
               },
               {
-                "gfm_hash_bit" : 22,
+                "gfm_hash_bit" : 6,
                 "p4_hash_bit" : 6
               },
               {
-                "gfm_hash_bit" : 23,
+                "gfm_hash_bit" : 7,
                 "p4_hash_bit" : 7
               },
               {
-                "gfm_hash_bit" : 24,
+                "gfm_hash_bit" : 8,
                 "p4_hash_bit" : 8
               },
               {
-                "gfm_hash_bit" : 25,
+                "gfm_hash_bit" : 9,
                 "p4_hash_bit" : 9
               },
               {
-                "gfm_hash_bit" : 26,
+                "gfm_hash_bit" : 10,
                 "p4_hash_bit" : 10
               },
               {
-                "gfm_hash_bit" : 27,
+                "gfm_hash_bit" : 11,
                 "p4_hash_bit" : 11
               },
               {
-                "gfm_hash_bit" : 28,
+                "gfm_hash_bit" : 12,
                 "p4_hash_bit" : 12
               },
               {
-                "gfm_hash_bit" : 29,
+                "gfm_hash_bit" : 13,
                 "p4_hash_bit" : 13
               },
               {
-                "gfm_hash_bit" : 30,
+                "gfm_hash_bit" : 14,
                 "p4_hash_bit" : 14
               },
               {
-                "gfm_hash_bit" : 31,
+                "gfm_hash_bit" : 15,
                 "p4_hash_bit" : 15
               },
               {
-                "gfm_hash_bit" : 32,
+                "gfm_hash_bit" : 16,
                 "p4_hash_bit" : 16
               },
               {
-                "gfm_hash_bit" : 33,
+                "gfm_hash_bit" : 17,
                 "p4_hash_bit" : 17
               },
               {
-                "gfm_hash_bit" : 34,
+                "gfm_hash_bit" : 18,
                 "p4_hash_bit" : 18
               },
               {
-                "gfm_hash_bit" : 35,
+                "gfm_hash_bit" : 19,
                 "p4_hash_bit" : 19
               },
               {
-                "gfm_hash_bit" : 36,
+                "gfm_hash_bit" : 20,
                 "p4_hash_bit" : 20
               },
               {
-                "gfm_hash_bit" : 37,
+                "gfm_hash_bit" : 21,
                 "p4_hash_bit" : 21
               },
               {
-                "gfm_hash_bit" : 38,
+                "gfm_hash_bit" : 22,
                 "p4_hash_bit" : 22
               },
               {
-                "gfm_hash_bit" : 39,
+                "gfm_hash_bit" : 23,
                 "p4_hash_bit" : 23
               },
               {
-                "gfm_hash_bit" : 40,
+                "gfm_hash_bit" : 24,
                 "p4_hash_bit" : 24
               },
               {
-                "gfm_hash_bit" : 41,
+                "gfm_hash_bit" : 25,
                 "p4_hash_bit" : 25
               },
               {
-                "gfm_hash_bit" : 42,
+                "gfm_hash_bit" : 26,
                 "p4_hash_bit" : 26
               },
               {
-                "gfm_hash_bit" : 43,
+                "gfm_hash_bit" : 27,
                 "p4_hash_bit" : 27
               },
               {
-                "gfm_hash_bit" : 44,
+                "gfm_hash_bit" : 28,
                 "p4_hash_bit" : 28
               },
               {
-                "gfm_hash_bit" : 45,
+                "gfm_hash_bit" : 29,
                 "p4_hash_bit" : 29
               },
               {
-                "gfm_hash_bit" : 46,
+                "gfm_hash_bit" : 30,
                 "p4_hash_bit" : 30
               },
               {
-                "gfm_hash_bit" : 47,
+                "gfm_hash_bit" : 31,
                 "p4_hash_bit" : 31
               }
             ]
@@ -1012,396 +1012,6 @@
                 }
               ],
               "crossbar_mod" : []
-            },
-            {
-              "stage_number" : 0,
-              "crossbar" : [
-                {
-                  "byte_number" : 32,
-                  "bit_in_byte" : 0,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 0
-                },
-                {
-                  "byte_number" : 32,
-                  "bit_in_byte" : 1,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 1
-                },
-                {
-                  "byte_number" : 32,
-                  "bit_in_byte" : 2,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 2
-                },
-                {
-                  "byte_number" : 32,
-                  "bit_in_byte" : 3,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 3
-                },
-                {
-                  "byte_number" : 32,
-                  "bit_in_byte" : 4,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 4
-                },
-                {
-                  "byte_number" : 32,
-                  "bit_in_byte" : 5,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 5
-                },
-                {
-                  "byte_number" : 32,
-                  "bit_in_byte" : 6,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 6
-                },
-                {
-                  "byte_number" : 32,
-                  "bit_in_byte" : 7,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 7
-                },
-                {
-                  "byte_number" : 33,
-                  "bit_in_byte" : 0,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 8
-                },
-                {
-                  "byte_number" : 33,
-                  "bit_in_byte" : 1,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 9
-                },
-                {
-                  "byte_number" : 33,
-                  "bit_in_byte" : 2,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 10
-                },
-                {
-                  "byte_number" : 33,
-                  "bit_in_byte" : 3,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 11
-                },
-                {
-                  "byte_number" : 33,
-                  "bit_in_byte" : 4,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 12
-                },
-                {
-                  "byte_number" : 33,
-                  "bit_in_byte" : 5,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 13
-                },
-                {
-                  "byte_number" : 33,
-                  "bit_in_byte" : 6,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 14
-                },
-                {
-                  "byte_number" : 33,
-                  "bit_in_byte" : 7,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 15
-                },
-                {
-                  "byte_number" : 34,
-                  "bit_in_byte" : 0,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 16
-                },
-                {
-                  "byte_number" : 34,
-                  "bit_in_byte" : 1,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 17
-                },
-                {
-                  "byte_number" : 34,
-                  "bit_in_byte" : 2,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 18
-                },
-                {
-                  "byte_number" : 34,
-                  "bit_in_byte" : 3,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 19
-                },
-                {
-                  "byte_number" : 34,
-                  "bit_in_byte" : 4,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 20
-                },
-                {
-                  "byte_number" : 34,
-                  "bit_in_byte" : 5,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 21
-                },
-                {
-                  "byte_number" : 34,
-                  "bit_in_byte" : 6,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 22
-                },
-                {
-                  "byte_number" : 34,
-                  "bit_in_byte" : 7,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 23
-                },
-                {
-                  "byte_number" : 35,
-                  "bit_in_byte" : 0,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 24
-                },
-                {
-                  "byte_number" : 35,
-                  "bit_in_byte" : 1,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 25
-                },
-                {
-                  "byte_number" : 35,
-                  "bit_in_byte" : 2,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 26
-                },
-                {
-                  "byte_number" : 35,
-                  "bit_in_byte" : 3,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 27
-                },
-                {
-                  "byte_number" : 35,
-                  "bit_in_byte" : 4,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 28
-                },
-                {
-                  "byte_number" : 35,
-                  "bit_in_byte" : 5,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 29
-                },
-                {
-                  "byte_number" : 35,
-                  "bit_in_byte" : 6,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 30
-                },
-                {
-                  "byte_number" : 35,
-                  "bit_in_byte" : 7,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 31
-                },
-                {
-                  "byte_number" : 36,
-                  "bit_in_byte" : 0,
-                  "name" : "hdr.ipv4.src_addr",
-                  "field_bit" : 0
-                },
-                {
-                  "byte_number" : 36,
-                  "bit_in_byte" : 1,
-                  "name" : "hdr.ipv4.src_addr",
-                  "field_bit" : 1
-                },
-                {
-                  "byte_number" : 36,
-                  "bit_in_byte" : 2,
-                  "name" : "hdr.ipv4.src_addr",
-                  "field_bit" : 2
-                },
-                {
-                  "byte_number" : 36,
-                  "bit_in_byte" : 3,
-                  "name" : "hdr.ipv4.src_addr",
-                  "field_bit" : 3
-                },
-                {
-                  "byte_number" : 36,
-                  "bit_in_byte" : 4,
-                  "name" : "hdr.ipv4.src_addr",
-                  "field_bit" : 4
-                },
-                {
-                  "byte_number" : 36,
-                  "bit_in_byte" : 5,
-                  "name" : "hdr.ipv4.src_addr",
-                  "field_bit" : 5
-                },
-                {
-                  "byte_number" : 36,
-                  "bit_in_byte" : 6,
-                  "name" : "hdr.ipv4.src_addr",
-                  "field_bit" : 6
-                },
-                {
-                  "byte_number" : 36,
-                  "bit_in_byte" : 7,
-                  "name" : "hdr.ipv4.src_addr",
-                  "field_bit" : 7
-                },
-                {
-                  "byte_number" : 37,
-                  "bit_in_byte" : 0,
-                  "name" : "hdr.ipv4.src_addr",
-                  "field_bit" : 8
-                },
-                {
-                  "byte_number" : 37,
-                  "bit_in_byte" : 1,
-                  "name" : "hdr.ipv4.src_addr",
-                  "field_bit" : 9
-                },
-                {
-                  "byte_number" : 37,
-                  "bit_in_byte" : 2,
-                  "name" : "hdr.ipv4.src_addr",
-                  "field_bit" : 10
-                },
-                {
-                  "byte_number" : 37,
-                  "bit_in_byte" : 3,
-                  "name" : "hdr.ipv4.src_addr",
-                  "field_bit" : 11
-                },
-                {
-                  "byte_number" : 37,
-                  "bit_in_byte" : 4,
-                  "name" : "hdr.ipv4.src_addr",
-                  "field_bit" : 12
-                },
-                {
-                  "byte_number" : 37,
-                  "bit_in_byte" : 5,
-                  "name" : "hdr.ipv4.src_addr",
-                  "field_bit" : 13
-                },
-                {
-                  "byte_number" : 37,
-                  "bit_in_byte" : 6,
-                  "name" : "hdr.ipv4.src_addr",
-                  "field_bit" : 14
-                },
-                {
-                  "byte_number" : 37,
-                  "bit_in_byte" : 7,
-                  "name" : "hdr.ipv4.src_addr",
-                  "field_bit" : 15
-                },
-                {
-                  "byte_number" : 38,
-                  "bit_in_byte" : 0,
-                  "name" : "hdr.ipv4.src_addr",
-                  "field_bit" : 16
-                },
-                {
-                  "byte_number" : 38,
-                  "bit_in_byte" : 1,
-                  "name" : "hdr.ipv4.src_addr",
-                  "field_bit" : 17
-                },
-                {
-                  "byte_number" : 38,
-                  "bit_in_byte" : 2,
-                  "name" : "hdr.ipv4.src_addr",
-                  "field_bit" : 18
-                },
-                {
-                  "byte_number" : 38,
-                  "bit_in_byte" : 3,
-                  "name" : "hdr.ipv4.src_addr",
-                  "field_bit" : 19
-                },
-                {
-                  "byte_number" : 38,
-                  "bit_in_byte" : 4,
-                  "name" : "hdr.ipv4.src_addr",
-                  "field_bit" : 20
-                },
-                {
-                  "byte_number" : 38,
-                  "bit_in_byte" : 5,
-                  "name" : "hdr.ipv4.src_addr",
-                  "field_bit" : 21
-                },
-                {
-                  "byte_number" : 38,
-                  "bit_in_byte" : 6,
-                  "name" : "hdr.ipv4.src_addr",
-                  "field_bit" : 22
-                },
-                {
-                  "byte_number" : 38,
-                  "bit_in_byte" : 7,
-                  "name" : "hdr.ipv4.src_addr",
-                  "field_bit" : 23
-                },
-                {
-                  "byte_number" : 39,
-                  "bit_in_byte" : 0,
-                  "name" : "hdr.ipv4.src_addr",
-                  "field_bit" : 24
-                },
-                {
-                  "byte_number" : 39,
-                  "bit_in_byte" : 1,
-                  "name" : "hdr.ipv4.src_addr",
-                  "field_bit" : 25
-                },
-                {
-                  "byte_number" : 39,
-                  "bit_in_byte" : 2,
-                  "name" : "hdr.ipv4.src_addr",
-                  "field_bit" : 26
-                },
-                {
-                  "byte_number" : 39,
-                  "bit_in_byte" : 3,
-                  "name" : "hdr.ipv4.src_addr",
-                  "field_bit" : 27
-                },
-                {
-                  "byte_number" : 39,
-                  "bit_in_byte" : 4,
-                  "name" : "hdr.ipv4.src_addr",
-                  "field_bit" : 28
-                },
-                {
-                  "byte_number" : 39,
-                  "bit_in_byte" : 5,
-                  "name" : "hdr.ipv4.src_addr",
-                  "field_bit" : 29
-                },
-                {
-                  "byte_number" : 39,
-                  "bit_in_byte" : 6,
-                  "name" : "hdr.ipv4.src_addr",
-                  "field_bit" : 30
-                },
-                {
-                  "byte_number" : 39,
-                  "bit_in_byte" : 7,
-                  "name" : "hdr.ipv4.src_addr",
-                  "field_bit" : 31
-                }
-              ],
-              "crossbar_mod" : []
             }
           ]
         }
@@ -1411,148 +1021,134 @@
           "stage_number" : 0,
           "hash" : {
             "hash_id" : 0,
-            "num_hash_bits" : 16,
+            "num_hash_bits" : 32,
             "hash_bits" : [
               {
-                "gfm_hash_bit" : 32,
+                "gfm_hash_bit" : 16,
                 "p4_hash_bit" : 0
               },
               {
-                "gfm_hash_bit" : 33,
+                "gfm_hash_bit" : 17,
                 "p4_hash_bit" : 1
               },
               {
-                "gfm_hash_bit" : 34,
+                "gfm_hash_bit" : 18,
                 "p4_hash_bit" : 2
               },
               {
-                "gfm_hash_bit" : 35,
+                "gfm_hash_bit" : 19,
                 "p4_hash_bit" : 3
               },
               {
-                "gfm_hash_bit" : 36,
+                "gfm_hash_bit" : 20,
                 "p4_hash_bit" : 4
               },
               {
-                "gfm_hash_bit" : 37,
+                "gfm_hash_bit" : 21,
                 "p4_hash_bit" : 5
               },
               {
-                "gfm_hash_bit" : 38,
+                "gfm_hash_bit" : 22,
                 "p4_hash_bit" : 6
               },
               {
-                "gfm_hash_bit" : 39,
+                "gfm_hash_bit" : 23,
                 "p4_hash_bit" : 7
               },
               {
-                "gfm_hash_bit" : 40,
+                "gfm_hash_bit" : 24,
                 "p4_hash_bit" : 8
               },
               {
-                "gfm_hash_bit" : 41,
+                "gfm_hash_bit" : 25,
                 "p4_hash_bit" : 9
               },
               {
-                "gfm_hash_bit" : 42,
+                "gfm_hash_bit" : 26,
                 "p4_hash_bit" : 10
               },
               {
-                "gfm_hash_bit" : 43,
+                "gfm_hash_bit" : 27,
                 "p4_hash_bit" : 11
               },
               {
-                "gfm_hash_bit" : 44,
+                "gfm_hash_bit" : 28,
                 "p4_hash_bit" : 12
               },
               {
-                "gfm_hash_bit" : 45,
+                "gfm_hash_bit" : 29,
                 "p4_hash_bit" : 13
               },
               {
-                "gfm_hash_bit" : 46,
+                "gfm_hash_bit" : 30,
                 "p4_hash_bit" : 14
               },
               {
-                "gfm_hash_bit" : 47,
+                "gfm_hash_bit" : 31,
                 "p4_hash_bit" : 15
-              }
-            ]
-          },
-          "hash_mod" : {
-            "hash_id" : 0,
-            "num_hash_bits" : 0,
-            "hash_bits" : []
-          }
-        },
-        {
-          "stage_number" : 0,
-          "hash" : {
-            "hash_id" : 2,
-            "num_hash_bits" : 16,
-            "hash_bits" : [
+              },
               {
-                "gfm_hash_bit" : 0,
+                "gfm_hash_bit" : 32,
                 "p4_hash_bit" : 16
               },
               {
-                "gfm_hash_bit" : 1,
+                "gfm_hash_bit" : 33,
                 "p4_hash_bit" : 17
               },
               {
-                "gfm_hash_bit" : 2,
+                "gfm_hash_bit" : 34,
                 "p4_hash_bit" : 18
               },
               {
-                "gfm_hash_bit" : 3,
+                "gfm_hash_bit" : 35,
                 "p4_hash_bit" : 19
               },
               {
-                "gfm_hash_bit" : 4,
+                "gfm_hash_bit" : 36,
                 "p4_hash_bit" : 20
               },
               {
-                "gfm_hash_bit" : 5,
+                "gfm_hash_bit" : 37,
                 "p4_hash_bit" : 21
               },
               {
-                "gfm_hash_bit" : 6,
+                "gfm_hash_bit" : 38,
                 "p4_hash_bit" : 22
               },
               {
-                "gfm_hash_bit" : 7,
+                "gfm_hash_bit" : 39,
                 "p4_hash_bit" : 23
               },
               {
-                "gfm_hash_bit" : 8,
+                "gfm_hash_bit" : 40,
                 "p4_hash_bit" : 24
               },
               {
-                "gfm_hash_bit" : 9,
+                "gfm_hash_bit" : 41,
                 "p4_hash_bit" : 25
               },
               {
-                "gfm_hash_bit" : 10,
+                "gfm_hash_bit" : 42,
                 "p4_hash_bit" : 26
               },
               {
-                "gfm_hash_bit" : 11,
+                "gfm_hash_bit" : 43,
                 "p4_hash_bit" : 27
               },
               {
-                "gfm_hash_bit" : 12,
+                "gfm_hash_bit" : 44,
                 "p4_hash_bit" : 28
               },
               {
-                "gfm_hash_bit" : 13,
+                "gfm_hash_bit" : 45,
                 "p4_hash_bit" : 29
               },
               {
-                "gfm_hash_bit" : 14,
+                "gfm_hash_bit" : 46,
                 "p4_hash_bit" : 30
               },
               {
-                "gfm_hash_bit" : 15,
+                "gfm_hash_bit" : 47,
                 "p4_hash_bit" : 31
               }
             ]
@@ -1598,13 +1194,6 @@
               "bit_width" : 32,
               "optional" : true,
               "is_constant" : false
-            },
-            {
-              "name" : "hdr.ipv4.dst_addr",
-              "start_bit" : 0,
-              "bit_width" : 32,
-              "optional" : true,
-              "is_constant" : false
             }
           ],
           "crossbar_configuration" : [
@@ -1802,198 +1391,6 @@
                   "bit_in_byte" : 7,
                   "name" : "hdr.ipv4.src_addr",
                   "field_bit" : 31
-                },
-                {
-                  "byte_number" : 4,
-                  "bit_in_byte" : 0,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 0
-                },
-                {
-                  "byte_number" : 4,
-                  "bit_in_byte" : 1,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 1
-                },
-                {
-                  "byte_number" : 4,
-                  "bit_in_byte" : 2,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 2
-                },
-                {
-                  "byte_number" : 4,
-                  "bit_in_byte" : 3,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 3
-                },
-                {
-                  "byte_number" : 4,
-                  "bit_in_byte" : 4,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 4
-                },
-                {
-                  "byte_number" : 4,
-                  "bit_in_byte" : 5,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 5
-                },
-                {
-                  "byte_number" : 4,
-                  "bit_in_byte" : 6,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 6
-                },
-                {
-                  "byte_number" : 4,
-                  "bit_in_byte" : 7,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 7
-                },
-                {
-                  "byte_number" : 5,
-                  "bit_in_byte" : 0,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 8
-                },
-                {
-                  "byte_number" : 5,
-                  "bit_in_byte" : 1,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 9
-                },
-                {
-                  "byte_number" : 5,
-                  "bit_in_byte" : 2,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 10
-                },
-                {
-                  "byte_number" : 5,
-                  "bit_in_byte" : 3,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 11
-                },
-                {
-                  "byte_number" : 5,
-                  "bit_in_byte" : 4,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 12
-                },
-                {
-                  "byte_number" : 5,
-                  "bit_in_byte" : 5,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 13
-                },
-                {
-                  "byte_number" : 5,
-                  "bit_in_byte" : 6,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 14
-                },
-                {
-                  "byte_number" : 5,
-                  "bit_in_byte" : 7,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 15
-                },
-                {
-                  "byte_number" : 6,
-                  "bit_in_byte" : 0,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 16
-                },
-                {
-                  "byte_number" : 6,
-                  "bit_in_byte" : 1,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 17
-                },
-                {
-                  "byte_number" : 6,
-                  "bit_in_byte" : 2,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 18
-                },
-                {
-                  "byte_number" : 6,
-                  "bit_in_byte" : 3,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 19
-                },
-                {
-                  "byte_number" : 6,
-                  "bit_in_byte" : 4,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 20
-                },
-                {
-                  "byte_number" : 6,
-                  "bit_in_byte" : 5,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 21
-                },
-                {
-                  "byte_number" : 6,
-                  "bit_in_byte" : 6,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 22
-                },
-                {
-                  "byte_number" : 6,
-                  "bit_in_byte" : 7,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 23
-                },
-                {
-                  "byte_number" : 7,
-                  "bit_in_byte" : 0,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 24
-                },
-                {
-                  "byte_number" : 7,
-                  "bit_in_byte" : 1,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 25
-                },
-                {
-                  "byte_number" : 7,
-                  "bit_in_byte" : 2,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 26
-                },
-                {
-                  "byte_number" : 7,
-                  "bit_in_byte" : 3,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 27
-                },
-                {
-                  "byte_number" : 7,
-                  "bit_in_byte" : 4,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 28
-                },
-                {
-                  "byte_number" : 7,
-                  "bit_in_byte" : 5,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 29
-                },
-                {
-                  "byte_number" : 7,
-                  "bit_in_byte" : 6,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 30
-                },
-                {
-                  "byte_number" : 7,
-                  "bit_in_byte" : 7,
-                  "name" : "hdr.ipv4.dst_addr",
-                  "field_bit" : 31
                 }
               ],
               "crossbar_mod" : []
@@ -2006,134 +1403,70 @@
           "stage_number" : 0,
           "hash" : {
             "hash_id" : 0,
-            "num_hash_bits" : 32,
+            "num_hash_bits" : 16,
             "hash_bits" : [
               {
                 "gfm_hash_bit" : 0,
-                "p4_hash_bit" : 0
-              },
-              {
-                "gfm_hash_bit" : 1,
-                "p4_hash_bit" : 1
-              },
-              {
-                "gfm_hash_bit" : 2,
-                "p4_hash_bit" : 2
-              },
-              {
-                "gfm_hash_bit" : 3,
-                "p4_hash_bit" : 3
-              },
-              {
-                "gfm_hash_bit" : 4,
-                "p4_hash_bit" : 4
-              },
-              {
-                "gfm_hash_bit" : 5,
-                "p4_hash_bit" : 5
-              },
-              {
-                "gfm_hash_bit" : 6,
-                "p4_hash_bit" : 6
-              },
-              {
-                "gfm_hash_bit" : 7,
-                "p4_hash_bit" : 7
-              },
-              {
-                "gfm_hash_bit" : 8,
-                "p4_hash_bit" : 8
-              },
-              {
-                "gfm_hash_bit" : 9,
-                "p4_hash_bit" : 9
-              },
-              {
-                "gfm_hash_bit" : 10,
-                "p4_hash_bit" : 10
-              },
-              {
-                "gfm_hash_bit" : 11,
-                "p4_hash_bit" : 11
-              },
-              {
-                "gfm_hash_bit" : 12,
-                "p4_hash_bit" : 12
-              },
-              {
-                "gfm_hash_bit" : 13,
-                "p4_hash_bit" : 13
-              },
-              {
-                "gfm_hash_bit" : 14,
-                "p4_hash_bit" : 14
-              },
-              {
-                "gfm_hash_bit" : 15,
-                "p4_hash_bit" : 15
-              },
-              {
-                "gfm_hash_bit" : 16,
                 "p4_hash_bit" : 16
               },
               {
-                "gfm_hash_bit" : 17,
+                "gfm_hash_bit" : 1,
                 "p4_hash_bit" : 17
               },
               {
-                "gfm_hash_bit" : 18,
+                "gfm_hash_bit" : 2,
                 "p4_hash_bit" : 18
               },
               {
-                "gfm_hash_bit" : 19,
+                "gfm_hash_bit" : 3,
                 "p4_hash_bit" : 19
               },
               {
-                "gfm_hash_bit" : 20,
+                "gfm_hash_bit" : 4,
                 "p4_hash_bit" : 20
               },
               {
-                "gfm_hash_bit" : 21,
+                "gfm_hash_bit" : 5,
                 "p4_hash_bit" : 21
               },
               {
-                "gfm_hash_bit" : 22,
+                "gfm_hash_bit" : 6,
                 "p4_hash_bit" : 22
               },
               {
-                "gfm_hash_bit" : 23,
+                "gfm_hash_bit" : 7,
                 "p4_hash_bit" : 23
               },
               {
-                "gfm_hash_bit" : 24,
+                "gfm_hash_bit" : 8,
                 "p4_hash_bit" : 24
               },
               {
-                "gfm_hash_bit" : 25,
+                "gfm_hash_bit" : 9,
                 "p4_hash_bit" : 25
               },
               {
-                "gfm_hash_bit" : 26,
+                "gfm_hash_bit" : 10,
                 "p4_hash_bit" : 26
               },
               {
-                "gfm_hash_bit" : 27,
+                "gfm_hash_bit" : 11,
                 "p4_hash_bit" : 27
               },
               {
-                "gfm_hash_bit" : 28,
+                "gfm_hash_bit" : 12,
                 "p4_hash_bit" : 28
               },
               {
-                "gfm_hash_bit" : 29,
+                "gfm_hash_bit" : 13,
                 "p4_hash_bit" : 29
               },
               {
-                "gfm_hash_bit" : 30,
+                "gfm_hash_bit" : 14,
                 "p4_hash_bit" : 30
               },
               {
-                "gfm_hash_bit" : 31,
+                "gfm_hash_bit" : 15,
                 "p4_hash_bit" : 31
               }
             ]
@@ -2174,23 +1507,16 @@
           "can_rotate" : true,
           "fields" : [
             {
-              "name" : "ig_md.idx1",
-              "start_bit" : 0,
-              "bit_width" : 16,
-              "optional" : true,
-              "is_constant" : false
-            },
-            {
               "name" : "ig_md.out_remain1",
               "start_bit" : 0,
-              "bit_width" : 16,
+              "bit_width" : 32,
               "optional" : true,
               "is_constant" : false
             }
           ],
           "crossbar_configuration" : [
             {
-              "stage_number" : 2,
+              "stage_number" : 3,
               "crossbar" : [
                 {
                   "byte_number" : 0,
@@ -2291,98 +1617,98 @@
                 {
                   "byte_number" : 2,
                   "bit_in_byte" : 0,
-                  "name" : "ig_md.idx1",
-                  "field_bit" : 0
+                  "name" : "ig_md.out_remain1",
+                  "field_bit" : 16
                 },
                 {
                   "byte_number" : 2,
                   "bit_in_byte" : 1,
-                  "name" : "ig_md.idx1",
-                  "field_bit" : 1
+                  "name" : "ig_md.out_remain1",
+                  "field_bit" : 17
                 },
                 {
                   "byte_number" : 2,
                   "bit_in_byte" : 2,
-                  "name" : "ig_md.idx1",
-                  "field_bit" : 2
+                  "name" : "ig_md.out_remain1",
+                  "field_bit" : 18
                 },
                 {
                   "byte_number" : 2,
                   "bit_in_byte" : 3,
-                  "name" : "ig_md.idx1",
-                  "field_bit" : 3
+                  "name" : "ig_md.out_remain1",
+                  "field_bit" : 19
                 },
                 {
                   "byte_number" : 2,
                   "bit_in_byte" : 4,
-                  "name" : "ig_md.idx1",
-                  "field_bit" : 4
+                  "name" : "ig_md.out_remain1",
+                  "field_bit" : 20
                 },
                 {
                   "byte_number" : 2,
                   "bit_in_byte" : 5,
-                  "name" : "ig_md.idx1",
-                  "field_bit" : 5
+                  "name" : "ig_md.out_remain1",
+                  "field_bit" : 21
                 },
                 {
                   "byte_number" : 2,
                   "bit_in_byte" : 6,
-                  "name" : "ig_md.idx1",
-                  "field_bit" : 6
+                  "name" : "ig_md.out_remain1",
+                  "field_bit" : 22
                 },
                 {
                   "byte_number" : 2,
                   "bit_in_byte" : 7,
-                  "name" : "ig_md.idx1",
-                  "field_bit" : 7
+                  "name" : "ig_md.out_remain1",
+                  "field_bit" : 23
                 },
                 {
                   "byte_number" : 3,
                   "bit_in_byte" : 0,
-                  "name" : "ig_md.idx1",
-                  "field_bit" : 8
+                  "name" : "ig_md.out_remain1",
+                  "field_bit" : 24
                 },
                 {
                   "byte_number" : 3,
                   "bit_in_byte" : 1,
-                  "name" : "ig_md.idx1",
-                  "field_bit" : 9
+                  "name" : "ig_md.out_remain1",
+                  "field_bit" : 25
                 },
                 {
                   "byte_number" : 3,
                   "bit_in_byte" : 2,
-                  "name" : "ig_md.idx1",
-                  "field_bit" : 10
+                  "name" : "ig_md.out_remain1",
+                  "field_bit" : 26
                 },
                 {
                   "byte_number" : 3,
                   "bit_in_byte" : 3,
-                  "name" : "ig_md.idx1",
-                  "field_bit" : 11
+                  "name" : "ig_md.out_remain1",
+                  "field_bit" : 27
                 },
                 {
                   "byte_number" : 3,
                   "bit_in_byte" : 4,
-                  "name" : "ig_md.idx1",
-                  "field_bit" : 12
+                  "name" : "ig_md.out_remain1",
+                  "field_bit" : 28
                 },
                 {
                   "byte_number" : 3,
                   "bit_in_byte" : 5,
-                  "name" : "ig_md.idx1",
-                  "field_bit" : 13
+                  "name" : "ig_md.out_remain1",
+                  "field_bit" : 29
                 },
                 {
                   "byte_number" : 3,
                   "bit_in_byte" : 6,
-                  "name" : "ig_md.idx1",
-                  "field_bit" : 14
+                  "name" : "ig_md.out_remain1",
+                  "field_bit" : 30
                 },
                 {
                   "byte_number" : 3,
                   "bit_in_byte" : 7,
-                  "name" : "ig_md.idx1",
-                  "field_bit" : 15
+                  "name" : "ig_md.out_remain1",
+                  "field_bit" : 31
                 }
               ],
               "crossbar_mod" : []
@@ -2392,137 +1718,73 @@
       ],
       "hash_configuration" : [
         {
-          "stage_number" : 2,
+          "stage_number" : 3,
           "hash" : {
             "hash_id" : 0,
-            "num_hash_bits" : 32,
+            "num_hash_bits" : 16,
             "hash_bits" : [
               {
                 "gfm_hash_bit" : 0,
-                "p4_hash_bit" : 0
-              },
-              {
-                "gfm_hash_bit" : 1,
-                "p4_hash_bit" : 1
-              },
-              {
-                "gfm_hash_bit" : 2,
-                "p4_hash_bit" : 2
-              },
-              {
-                "gfm_hash_bit" : 3,
-                "p4_hash_bit" : 3
-              },
-              {
-                "gfm_hash_bit" : 4,
-                "p4_hash_bit" : 4
-              },
-              {
-                "gfm_hash_bit" : 5,
-                "p4_hash_bit" : 5
-              },
-              {
-                "gfm_hash_bit" : 6,
-                "p4_hash_bit" : 6
-              },
-              {
-                "gfm_hash_bit" : 7,
-                "p4_hash_bit" : 7
-              },
-              {
-                "gfm_hash_bit" : 8,
-                "p4_hash_bit" : 8
-              },
-              {
-                "gfm_hash_bit" : 9,
-                "p4_hash_bit" : 9
-              },
-              {
-                "gfm_hash_bit" : 10,
-                "p4_hash_bit" : 10
-              },
-              {
-                "gfm_hash_bit" : 11,
-                "p4_hash_bit" : 11
-              },
-              {
-                "gfm_hash_bit" : 12,
-                "p4_hash_bit" : 12
-              },
-              {
-                "gfm_hash_bit" : 13,
-                "p4_hash_bit" : 13
-              },
-              {
-                "gfm_hash_bit" : 14,
-                "p4_hash_bit" : 14
-              },
-              {
-                "gfm_hash_bit" : 15,
-                "p4_hash_bit" : 15
-              },
-              {
-                "gfm_hash_bit" : 16,
                 "p4_hash_bit" : 16
               },
               {
-                "gfm_hash_bit" : 17,
+                "gfm_hash_bit" : 1,
                 "p4_hash_bit" : 17
               },
               {
-                "gfm_hash_bit" : 18,
+                "gfm_hash_bit" : 2,
                 "p4_hash_bit" : 18
               },
               {
-                "gfm_hash_bit" : 19,
+                "gfm_hash_bit" : 3,
                 "p4_hash_bit" : 19
               },
               {
-                "gfm_hash_bit" : 20,
+                "gfm_hash_bit" : 4,
                 "p4_hash_bit" : 20
               },
               {
-                "gfm_hash_bit" : 21,
+                "gfm_hash_bit" : 5,
                 "p4_hash_bit" : 21
               },
               {
-                "gfm_hash_bit" : 22,
+                "gfm_hash_bit" : 6,
                 "p4_hash_bit" : 22
               },
               {
-                "gfm_hash_bit" : 23,
+                "gfm_hash_bit" : 7,
                 "p4_hash_bit" : 23
               },
               {
-                "gfm_hash_bit" : 24,
+                "gfm_hash_bit" : 8,
                 "p4_hash_bit" : 24
               },
               {
-                "gfm_hash_bit" : 25,
+                "gfm_hash_bit" : 9,
                 "p4_hash_bit" : 25
               },
               {
-                "gfm_hash_bit" : 26,
+                "gfm_hash_bit" : 10,
                 "p4_hash_bit" : 26
               },
               {
-                "gfm_hash_bit" : 27,
+                "gfm_hash_bit" : 11,
                 "p4_hash_bit" : 27
               },
               {
-                "gfm_hash_bit" : 28,
+                "gfm_hash_bit" : 12,
                 "p4_hash_bit" : 28
               },
               {
-                "gfm_hash_bit" : 29,
+                "gfm_hash_bit" : 13,
                 "p4_hash_bit" : 29
               },
               {
-                "gfm_hash_bit" : 30,
+                "gfm_hash_bit" : 14,
                 "p4_hash_bit" : 30
               },
               {
-                "gfm_hash_bit" : 31,
+                "gfm_hash_bit" : 15,
                 "p4_hash_bit" : 31
               }
             ]
@@ -2563,121 +1825,18 @@
           "can_rotate" : true,
           "fields" : [
             {
-              "name" : "ig_md.idx2",
-              "start_bit" : 0,
-              "bit_width" : 16,
-              "optional" : true,
-              "is_constant" : false
-            },
-            {
               "name" : "ig_md.out_remain2",
               "start_bit" : 0,
-              "bit_width" : 16,
+              "bit_width" : 32,
               "optional" : true,
               "is_constant" : false
             }
           ],
           "crossbar_configuration" : [
             {
-              "stage_number" : 4,
+              "stage_number" : 5,
               "crossbar" : [
                 {
-                  "byte_number" : 2,
-                  "bit_in_byte" : 0,
-                  "name" : "ig_md.idx2",
-                  "field_bit" : 0
-                },
-                {
-                  "byte_number" : 2,
-                  "bit_in_byte" : 1,
-                  "name" : "ig_md.idx2",
-                  "field_bit" : 1
-                },
-                {
-                  "byte_number" : 2,
-                  "bit_in_byte" : 2,
-                  "name" : "ig_md.idx2",
-                  "field_bit" : 2
-                },
-                {
-                  "byte_number" : 2,
-                  "bit_in_byte" : 3,
-                  "name" : "ig_md.idx2",
-                  "field_bit" : 3
-                },
-                {
-                  "byte_number" : 2,
-                  "bit_in_byte" : 4,
-                  "name" : "ig_md.idx2",
-                  "field_bit" : 4
-                },
-                {
-                  "byte_number" : 2,
-                  "bit_in_byte" : 5,
-                  "name" : "ig_md.idx2",
-                  "field_bit" : 5
-                },
-                {
-                  "byte_number" : 2,
-                  "bit_in_byte" : 6,
-                  "name" : "ig_md.idx2",
-                  "field_bit" : 6
-                },
-                {
-                  "byte_number" : 2,
-                  "bit_in_byte" : 7,
-                  "name" : "ig_md.idx2",
-                  "field_bit" : 7
-                },
-                {
-                  "byte_number" : 3,
-                  "bit_in_byte" : 0,
-                  "name" : "ig_md.idx2",
-                  "field_bit" : 8
-                },
-                {
-                  "byte_number" : 3,
-                  "bit_in_byte" : 1,
-                  "name" : "ig_md.idx2",
-                  "field_bit" : 9
-                },
-                {
-                  "byte_number" : 3,
-                  "bit_in_byte" : 2,
-                  "name" : "ig_md.idx2",
-                  "field_bit" : 10
-                },
-                {
-                  "byte_number" : 3,
-                  "bit_in_byte" : 3,
-                  "name" : "ig_md.idx2",
-                  "field_bit" : 11
-                },
-                {
-                  "byte_number" : 3,
-                  "bit_in_byte" : 4,
-                  "name" : "ig_md.idx2",
-                  "field_bit" : 12
-                },
-                {
-                  "byte_number" : 3,
-                  "bit_in_byte" : 5,
-                  "name" : "ig_md.idx2",
-                  "field_bit" : 13
-                },
-                {
-                  "byte_number" : 3,
-                  "bit_in_byte" : 6,
-                  "name" : "ig_md.idx2",
-                  "field_bit" : 14
-                },
-                {
-                  "byte_number" : 3,
-                  "bit_in_byte" : 7,
-                  "name" : "ig_md.idx2",
-                  "field_bit" : 15
-                },
-                {
                   "byte_number" : 0,
                   "bit_in_byte" : 0,
                   "name" : "ig_md.out_remain2",
@@ -2772,6 +1931,102 @@
                   "bit_in_byte" : 7,
                   "name" : "ig_md.out_remain2",
                   "field_bit" : 15
+                },
+                {
+                  "byte_number" : 2,
+                  "bit_in_byte" : 0,
+                  "name" : "ig_md.out_remain2",
+                  "field_bit" : 16
+                },
+                {
+                  "byte_number" : 2,
+                  "bit_in_byte" : 1,
+                  "name" : "ig_md.out_remain2",
+                  "field_bit" : 17
+                },
+                {
+                  "byte_number" : 2,
+                  "bit_in_byte" : 2,
+                  "name" : "ig_md.out_remain2",
+                  "field_bit" : 18
+                },
+                {
+                  "byte_number" : 2,
+                  "bit_in_byte" : 3,
+                  "name" : "ig_md.out_remain2",
+                  "field_bit" : 19
+                },
+                {
+                  "byte_number" : 2,
+                  "bit_in_byte" : 4,
+                  "name" : "ig_md.out_remain2",
+                  "field_bit" : 20
+                },
+                {
+                  "byte_number" : 2,
+                  "bit_in_byte" : 5,
+                  "name" : "ig_md.out_remain2",
+                  "field_bit" : 21
+                },
+                {
+                  "byte_number" : 2,
+                  "bit_in_byte" : 6,
+                  "name" : "ig_md.out_remain2",
+                  "field_bit" : 22
+                },
+                {
+                  "byte_number" : 2,
+                  "bit_in_byte" : 7,
+                  "name" : "ig_md.out_remain2",
+                  "field_bit" : 23
+                },
+                {
+                  "byte_number" : 3,
+                  "bit_in_byte" : 0,
+                  "name" : "ig_md.out_remain2",
+                  "field_bit" : 24
+                },
+                {
+                  "byte_number" : 3,
+                  "bit_in_byte" : 1,
+                  "name" : "ig_md.out_remain2",
+                  "field_bit" : 25
+                },
+                {
+                  "byte_number" : 3,
+                  "bit_in_byte" : 2,
+                  "name" : "ig_md.out_remain2",
+                  "field_bit" : 26
+                },
+                {
+                  "byte_number" : 3,
+                  "bit_in_byte" : 3,
+                  "name" : "ig_md.out_remain2",
+                  "field_bit" : 27
+                },
+                {
+                  "byte_number" : 3,
+                  "bit_in_byte" : 4,
+                  "name" : "ig_md.out_remain2",
+                  "field_bit" : 28
+                },
+                {
+                  "byte_number" : 3,
+                  "bit_in_byte" : 5,
+                  "name" : "ig_md.out_remain2",
+                  "field_bit" : 29
+                },
+                {
+                  "byte_number" : 3,
+                  "bit_in_byte" : 6,
+                  "name" : "ig_md.out_remain2",
+                  "field_bit" : 30
+                },
+                {
+                  "byte_number" : 3,
+                  "bit_in_byte" : 7,
+                  "name" : "ig_md.out_remain2",
+                  "field_bit" : 31
                 }
               ],
               "crossbar_mod" : []
@@ -2781,137 +2036,73 @@
       ],
       "hash_configuration" : [
         {
-          "stage_number" : 4,
+          "stage_number" : 5,
           "hash" : {
             "hash_id" : 0,
-            "num_hash_bits" : 32,
+            "num_hash_bits" : 16,
             "hash_bits" : [
               {
                 "gfm_hash_bit" : 0,
-                "p4_hash_bit" : 0
-              },
-              {
-                "gfm_hash_bit" : 1,
-                "p4_hash_bit" : 1
-              },
-              {
-                "gfm_hash_bit" : 2,
-                "p4_hash_bit" : 2
-              },
-              {
-                "gfm_hash_bit" : 3,
-                "p4_hash_bit" : 3
-              },
-              {
-                "gfm_hash_bit" : 4,
-                "p4_hash_bit" : 4
-              },
-              {
-                "gfm_hash_bit" : 5,
-                "p4_hash_bit" : 5
-              },
-              {
-                "gfm_hash_bit" : 6,
-                "p4_hash_bit" : 6
-              },
-              {
-                "gfm_hash_bit" : 7,
-                "p4_hash_bit" : 7
-              },
-              {
-                "gfm_hash_bit" : 8,
-                "p4_hash_bit" : 8
-              },
-              {
-                "gfm_hash_bit" : 9,
-                "p4_hash_bit" : 9
-              },
-              {
-                "gfm_hash_bit" : 10,
-                "p4_hash_bit" : 10
-              },
-              {
-                "gfm_hash_bit" : 11,
-                "p4_hash_bit" : 11
-              },
-              {
-                "gfm_hash_bit" : 12,
-                "p4_hash_bit" : 12
-              },
-              {
-                "gfm_hash_bit" : 13,
-                "p4_hash_bit" : 13
-              },
-              {
-                "gfm_hash_bit" : 14,
-                "p4_hash_bit" : 14
-              },
-              {
-                "gfm_hash_bit" : 15,
-                "p4_hash_bit" : 15
-              },
-              {
-                "gfm_hash_bit" : 16,
                 "p4_hash_bit" : 16
               },
               {
-                "gfm_hash_bit" : 17,
+                "gfm_hash_bit" : 1,
                 "p4_hash_bit" : 17
               },
               {
-                "gfm_hash_bit" : 18,
+                "gfm_hash_bit" : 2,
                 "p4_hash_bit" : 18
               },
               {
-                "gfm_hash_bit" : 19,
+                "gfm_hash_bit" : 3,
                 "p4_hash_bit" : 19
               },
               {
-                "gfm_hash_bit" : 20,
+                "gfm_hash_bit" : 4,
                 "p4_hash_bit" : 20
               },
               {
-                "gfm_hash_bit" : 21,
+                "gfm_hash_bit" : 5,
                 "p4_hash_bit" : 21
               },
               {
-                "gfm_hash_bit" : 22,
+                "gfm_hash_bit" : 6,
                 "p4_hash_bit" : 22
               },
               {
-                "gfm_hash_bit" : 23,
+                "gfm_hash_bit" : 7,
                 "p4_hash_bit" : 23
               },
               {
-                "gfm_hash_bit" : 24,
+                "gfm_hash_bit" : 8,
                 "p4_hash_bit" : 24
               },
               {
-                "gfm_hash_bit" : 25,
+                "gfm_hash_bit" : 9,
                 "p4_hash_bit" : 25
               },
               {
-                "gfm_hash_bit" : 26,
+                "gfm_hash_bit" : 10,
                 "p4_hash_bit" : 26
               },
               {
-                "gfm_hash_bit" : 27,
+                "gfm_hash_bit" : 11,
                 "p4_hash_bit" : 27
               },
               {
-                "gfm_hash_bit" : 28,
+                "gfm_hash_bit" : 12,
                 "p4_hash_bit" : 28
               },
               {
-                "gfm_hash_bit" : 29,
+                "gfm_hash_bit" : 13,
                 "p4_hash_bit" : 29
               },
               {
-                "gfm_hash_bit" : 30,
+                "gfm_hash_bit" : 14,
                 "p4_hash_bit" : 30
               },
               {
-                "gfm_hash_bit" : 31,
+                "gfm_hash_bit" : 15,
                 "p4_hash_bit" : 31
               }
             ]
@@ -2952,23 +2143,16 @@
           "can_rotate" : true,
           "fields" : [
             {
-              "name" : "ig_md.idx3",
-              "start_bit" : 0,
-              "bit_width" : 16,
-              "optional" : true,
-              "is_constant" : false
-            },
-            {
               "name" : "ig_md.out_remain3",
               "start_bit" : 0,
-              "bit_width" : 16,
+              "bit_width" : 32,
               "optional" : true,
               "is_constant" : false
             }
           ],
           "crossbar_configuration" : [
             {
-              "stage_number" : 6,
+              "stage_number" : 7,
               "crossbar" : [
                 {
                   "byte_number" : 0,
@@ -3069,98 +2253,98 @@
                 {
                   "byte_number" : 2,
                   "bit_in_byte" : 0,
-                  "name" : "ig_md.idx3",
-                  "field_bit" : 0
+                  "name" : "ig_md.out_remain3",
+                  "field_bit" : 16
                 },
                 {
                   "byte_number" : 2,
                   "bit_in_byte" : 1,
-                  "name" : "ig_md.idx3",
-                  "field_bit" : 1
+                  "name" : "ig_md.out_remain3",
+                  "field_bit" : 17
                 },
                 {
                   "byte_number" : 2,
                   "bit_in_byte" : 2,
-                  "name" : "ig_md.idx3",
-                  "field_bit" : 2
+                  "name" : "ig_md.out_remain3",
+                  "field_bit" : 18
                 },
                 {
                   "byte_number" : 2,
                   "bit_in_byte" : 3,
-                  "name" : "ig_md.idx3",
-                  "field_bit" : 3
+                  "name" : "ig_md.out_remain3",
+                  "field_bit" : 19
                 },
                 {
                   "byte_number" : 2,
                   "bit_in_byte" : 4,
-                  "name" : "ig_md.idx3",
-                  "field_bit" : 4
+                  "name" : "ig_md.out_remain3",
+                  "field_bit" : 20
                 },
                 {
                   "byte_number" : 2,
                   "bit_in_byte" : 5,
-                  "name" : "ig_md.idx3",
-                  "field_bit" : 5
+                  "name" : "ig_md.out_remain3",
+                  "field_bit" : 21
                 },
                 {
                   "byte_number" : 2,
                   "bit_in_byte" : 6,
-                  "name" : "ig_md.idx3",
-                  "field_bit" : 6
+                  "name" : "ig_md.out_remain3",
+                  "field_bit" : 22
                 },
                 {
                   "byte_number" : 2,
                   "bit_in_byte" : 7,
-                  "name" : "ig_md.idx3",
-                  "field_bit" : 7
+                  "name" : "ig_md.out_remain3",
+                  "field_bit" : 23
                 },
                 {
                   "byte_number" : 3,
                   "bit_in_byte" : 0,
-                  "name" : "ig_md.idx3",
-                  "field_bit" : 8
+                  "name" : "ig_md.out_remain3",
+                  "field_bit" : 24
                 },
                 {
                   "byte_number" : 3,
                   "bit_in_byte" : 1,
-                  "name" : "ig_md.idx3",
-                  "field_bit" : 9
+                  "name" : "ig_md.out_remain3",
+                  "field_bit" : 25
                 },
                 {
                   "byte_number" : 3,
                   "bit_in_byte" : 2,
-                  "name" : "ig_md.idx3",
-                  "field_bit" : 10
+                  "name" : "ig_md.out_remain3",
+                  "field_bit" : 26
                 },
                 {
                   "byte_number" : 3,
                   "bit_in_byte" : 3,
-                  "name" : "ig_md.idx3",
-                  "field_bit" : 11
+                  "name" : "ig_md.out_remain3",
+                  "field_bit" : 27
                 },
                 {
                   "byte_number" : 3,
                   "bit_in_byte" : 4,
-                  "name" : "ig_md.idx3",
-                  "field_bit" : 12
+                  "name" : "ig_md.out_remain3",
+                  "field_bit" : 28
                 },
                 {
                   "byte_number" : 3,
                   "bit_in_byte" : 5,
-                  "name" : "ig_md.idx3",
-                  "field_bit" : 13
+                  "name" : "ig_md.out_remain3",
+                  "field_bit" : 29
                 },
                 {
                   "byte_number" : 3,
                   "bit_in_byte" : 6,
-                  "name" : "ig_md.idx3",
-                  "field_bit" : 14
+                  "name" : "ig_md.out_remain3",
+                  "field_bit" : 30
                 },
                 {
                   "byte_number" : 3,
                   "bit_in_byte" : 7,
-                  "name" : "ig_md.idx3",
-                  "field_bit" : 15
+                  "name" : "ig_md.out_remain3",
+                  "field_bit" : 31
                 }
               ],
               "crossbar_mod" : []
@@ -3170,10 +2354,10 @@
       ],
       "hash_configuration" : [
         {
-          "stage_number" : 6,
+          "stage_number" : 7,
           "hash" : {
             "hash_id" : 0,
-            "num_hash_bits" : 32,
+            "num_hash_bits" : 16,
             "hash_bits" : [
               {
                 "gfm_hash_bit" : 0,
@@ -3238,70 +2422,6 @@
               {
                 "gfm_hash_bit" : 15,
                 "p4_hash_bit" : 31
-              },
-              {
-                "gfm_hash_bit" : 16,
-                "p4_hash_bit" : 0
-              },
-              {
-                "gfm_hash_bit" : 17,
-                "p4_hash_bit" : 1
-              },
-              {
-                "gfm_hash_bit" : 18,
-                "p4_hash_bit" : 2
-              },
-              {
-                "gfm_hash_bit" : 19,
-                "p4_hash_bit" : 3
-              },
-              {
-                "gfm_hash_bit" : 20,
-                "p4_hash_bit" : 4
-              },
-              {
-                "gfm_hash_bit" : 21,
-                "p4_hash_bit" : 5
-              },
-              {
-                "gfm_hash_bit" : 22,
-                "p4_hash_bit" : 6
-              },
-              {
-                "gfm_hash_bit" : 23,
-                "p4_hash_bit" : 7
-              },
-              {
-                "gfm_hash_bit" : 24,
-                "p4_hash_bit" : 8
-              },
-              {
-                "gfm_hash_bit" : 25,
-                "p4_hash_bit" : 9
-              },
-              {
-                "gfm_hash_bit" : 26,
-                "p4_hash_bit" : 10
-              },
-              {
-                "gfm_hash_bit" : 27,
-                "p4_hash_bit" : 11
-              },
-              {
-                "gfm_hash_bit" : 28,
-                "p4_hash_bit" : 12
-              },
-              {
-                "gfm_hash_bit" : 29,
-                "p4_hash_bit" : 13
-              },
-              {
-                "gfm_hash_bit" : 30,
-                "p4_hash_bit" : 14
-              },
-              {
-                "gfm_hash_bit" : 31,
-                "p4_hash_bit" : 15
               }
             ]
           },

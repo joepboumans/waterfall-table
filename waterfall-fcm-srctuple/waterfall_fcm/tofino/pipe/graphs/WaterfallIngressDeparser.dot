@@ -6,7 +6,7 @@ fontsize="22pt", label=WaterfallIngressDeparser, style=bold];
 1[label=__EXIT__, margin="", shape=rectangle, style=solid];
 2[label="ig_intr_dprsr_md.mirror_type == 0;", margin="", shape=rectangle, style=rounded];
 3[label="mirror.emit(0);", margin="", shape=rectangle, style=solid];
-4[label="ig_intr_dprsr_md.digest_type == 1;", margin="", shape=rectangle, style=rounded];
+4[label="ig_intr_dprsr_md.digest_type == 5;", margin="", shape=rectangle, style=rounded];
 5[label="digest_0/digest.pack({
   ...", margin="", shape=rectangle, style=solid];
 6[label="ig_intr_dprsr_md.resubmit_type == 3;", margin="", shape=rectangle, style=rounded];

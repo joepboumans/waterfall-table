@@ -308,7 +308,6 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
 
   table swap2 {
     key = {
-      ig_md.out_remain1 : range;
       ig_intr_md.resubmit_flag : exact;
       ig_md.found : exact;
     }
@@ -318,7 +317,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
       lookup2;
     }
     default_action = no_swap2;
-    size = 3;
+    size = 5;
   }
 
   action do_swap3() {
@@ -336,7 +335,6 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
 
   table swap3 {
     key = {
-      ig_md.out_remain2 : range;
       ig_intr_md.resubmit_flag : exact;
       ig_md.found : exact;
     }
@@ -363,7 +361,6 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
 
   table swap4 {
     key = {
-      ig_md.out_remain3 : range;
       ig_intr_md.resubmit_flag : exact;
       ig_md.found : exact;
     }

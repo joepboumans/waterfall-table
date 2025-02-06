@@ -1,7 +1,7 @@
 {
-    "build_date": "Fri Dec 13 13:51:39 2024", 
+    "build_date": "Thu Feb  6 16:06:39 2025", 
     "program_name": "waterfall_fcm", 
-    "run_id": "31a74692ef674dd7", 
+    "run_id": "e8c50ffae3064924", 
     "compiler_version": "9.11.0 (fdd358c)", 
     "schema_version": "1.0.0", 
     "tables": [
@@ -33,7 +33,7 @@
             ], 
             "stage_allocation": [
                 {
-                    "stage_number": 3, 
+                    "stage_number": 4, 
                     "memories": [
                         {
                             "memory_type": "sram", 
@@ -159,7 +159,7 @@
             ], 
             "stage_allocation": [
                 {
-                    "stage_number": 4, 
+                    "stage_number": 5, 
                     "memories": [
                         {
                             "memory_type": "sram", 
@@ -447,6 +447,152 @@
             ]
         }, 
         {
+            "name": "WaterfallIngress.parse_resub_hdr", 
+            "gress": "ingress", 
+            "lookup_types": [
+                "exact"
+            ], 
+            "entries_requested": 2, 
+            "entries_allocated": 5120, 
+            "match_fields": [
+                {
+                    "name": "ig_intr_md.resubmit_flag", 
+                    "start_bit": 0, 
+                    "bit_width": 1, 
+                    "lookup_type": "exact"
+                }
+            ], 
+            "action_parameters": [
+                {
+                    "action_name": "WaterfallIngress.parse_hdr", 
+                    "parameters": []
+                }, 
+                {
+                    "action_name": "WaterfallIngress.no_action", 
+                    "parameters": []
+                }
+            ], 
+            "stage_allocation": [
+                {
+                    "stage_number": 1, 
+                    "memories": [
+                        {
+                            "memory_type": "sram", 
+                            "table_word_width": 128, 
+                            "memory_word_width": 128, 
+                            "entries_per_table_word": 5, 
+                            "table_type": "match", 
+                            "num_memories": 1, 
+                            "entries_requested": 2, 
+                            "entries_allocated": 5120, 
+                            "imm_bit_width_in_overhead_requested": 0, 
+                            "imm_bit_width_in_overhead_allocated": 0, 
+                            "entry_bit_width_requested": 5, 
+                            "entry_bit_width_allocated": 5, 
+                            "ideal_entries_per_table_word": 5, 
+                            "ideal_table_word_bit_width": 128
+                        }
+                    ], 
+                    "overhead_fields": [
+                        {
+                            "name": "version/valid", 
+                            "bit_width": 4
+                        }
+                    ], 
+                    "match_format": {
+                        "entries": [
+                            {
+                                "entry_number": 4, 
+                                "fields": [
+                                    {
+                                        "name": "action", 
+                                        "bit_width": 1, 
+                                        "start_bit": 0, 
+                                        "memory_start_bit": 4
+                                    }, 
+                                    {
+                                        "name": "version", 
+                                        "bit_width": 4, 
+                                        "start_bit": 0, 
+                                        "memory_start_bit": 8
+                                    }
+                                ]
+                            }, 
+                            {
+                                "entry_number": 3, 
+                                "fields": [
+                                    {
+                                        "name": "action", 
+                                        "bit_width": 1, 
+                                        "start_bit": 0, 
+                                        "memory_start_bit": 3
+                                    }, 
+                                    {
+                                        "name": "version", 
+                                        "bit_width": 4, 
+                                        "start_bit": 0, 
+                                        "memory_start_bit": 124
+                                    }
+                                ]
+                            }, 
+                            {
+                                "entry_number": 2, 
+                                "fields": [
+                                    {
+                                        "name": "action", 
+                                        "bit_width": 1, 
+                                        "start_bit": 0, 
+                                        "memory_start_bit": 2
+                                    }, 
+                                    {
+                                        "name": "version", 
+                                        "bit_width": 4, 
+                                        "start_bit": 0, 
+                                        "memory_start_bit": 120
+                                    }
+                                ]
+                            }, 
+                            {
+                                "entry_number": 1, 
+                                "fields": [
+                                    {
+                                        "name": "action", 
+                                        "bit_width": 1, 
+                                        "start_bit": 0, 
+                                        "memory_start_bit": 1
+                                    }, 
+                                    {
+                                        "name": "version", 
+                                        "bit_width": 4, 
+                                        "start_bit": 0, 
+                                        "memory_start_bit": 116
+                                    }
+                                ]
+                            }, 
+                            {
+                                "entry_number": 0, 
+                                "fields": [
+                                    {
+                                        "name": "action", 
+                                        "bit_width": 1, 
+                                        "start_bit": 0, 
+                                        "memory_start_bit": 0
+                                    }, 
+                                    {
+                                        "name": "version", 
+                                        "bit_width": 4, 
+                                        "start_bit": 0, 
+                                        "memory_start_bit": 112
+                                    }
+                                ]
+                            }
+                        ]
+                    }, 
+                    "action_formats": []
+                }
+            ]
+        }, 
+        {
             "name": "WaterfallIngress.resub", 
             "gress": "ingress", 
             "lookup_types": [
@@ -480,7 +626,7 @@
             ], 
             "stage_allocation": [
                 {
-                    "stage_number": 8, 
+                    "stage_number": 9, 
                     "memories": [
                         {
                             "memory_type": "sram", 
@@ -630,7 +776,7 @@
             ], 
             "stage_allocation": [
                 {
-                    "stage_number": 1, 
+                    "stage_number": 2, 
                     "memories": [
                         {
                             "memory_type": "sram", 
@@ -652,9 +798,9 @@
                             "memory_type": "sram", 
                             "table_word_width": 128, 
                             "memory_word_width": 128, 
-                            "entries_per_table_word": 8, 
+                            "entries_per_table_word": 4, 
                             "table_type": "stateful", 
-                            "num_memories": 9
+                            "num_memories": 17
                         }
                     ], 
                     "overhead_fields": [
@@ -683,7 +829,7 @@
                                     {
                                         "name": "meter_addr", 
                                         "bit_width": 16, 
-                                        "start_bit": 4, 
+                                        "start_bit": 5, 
                                         "memory_start_bit": 24
                                     }, 
                                     {
@@ -718,7 +864,7 @@
                                     {
                                         "name": "meter_addr", 
                                         "bit_width": 16, 
-                                        "start_bit": 4, 
+                                        "start_bit": 5, 
                                         "memory_start_bit": 4
                                     }, 
                                     {
@@ -745,20 +891,19 @@
             "name": "WaterfallIngress.swap2", 
             "gress": "ingress", 
             "lookup_types": [
-                "range", 
                 "exact"
             ], 
-            "entries_requested": 3, 
-            "entries_allocated": 512, 
+            "entries_requested": 5, 
+            "entries_allocated": 2048, 
             "match_fields": [
                 {
-                    "name": "ig_md.out_remain1", 
+                    "name": "ig_intr_md.resubmit_flag", 
                     "start_bit": 0, 
-                    "bit_width": 16, 
-                    "lookup_type": "range"
+                    "bit_width": 1, 
+                    "lookup_type": "exact"
                 }, 
                 {
-                    "name": "ig_intr_md.resubmit_flag", 
+                    "name": "ig_md.found", 
                     "start_bit": 0, 
                     "bit_width": 1, 
                     "lookup_type": "exact"
@@ -780,108 +925,108 @@
             ], 
             "stage_allocation": [
                 {
-                    "stage_number": 3, 
+                    "stage_number": 4, 
                     "memories": [
                         {
-                            "memory_type": "tcam", 
-                            "table_word_width": 44, 
-                            "memory_word_width": 44, 
-                            "entries_per_table_word": 1, 
+                            "memory_type": "sram", 
+                            "table_word_width": 128, 
+                            "memory_word_width": 128, 
+                            "entries_per_table_word": 2, 
                             "table_type": "match", 
                             "num_memories": 1, 
-                            "entries_requested": 3, 
-                            "entries_allocated": 512, 
+                            "entries_requested": 5, 
+                            "entries_allocated": 2048, 
                             "imm_bit_width_in_overhead_requested": 0, 
                             "imm_bit_width_in_overhead_allocated": 0, 
-                            "entry_bit_width_requested": 21, 
-                            "entry_bit_width_allocated": 44, 
-                            "ideal_entries_per_table_word": 1, 
-                            "ideal_table_word_bit_width": 44
+                            "entry_bit_width_requested": 6, 
+                            "entry_bit_width_allocated": 26, 
+                            "ideal_entries_per_table_word": 5, 
+                            "ideal_table_word_bit_width": 128
                         }, 
                         {
                             "memory_type": "sram", 
                             "table_word_width": 128, 
                             "memory_word_width": 128, 
                             "entries_per_table_word": 4, 
-                            "table_type": "tind", 
-                            "num_memories": 1, 
-                            "entry_bit_width_requested": 0, 
-                            "entry_bit_width_allocated": 32
-                        }, 
-                        {
-                            "memory_type": "sram", 
-                            "table_word_width": 128, 
-                            "memory_word_width": 128, 
-                            "entries_per_table_word": 8, 
                             "table_type": "stateful", 
-                            "num_memories": 9
+                            "num_memories": 17
                         }
                     ], 
-                    "overhead_fields": [], 
+                    "overhead_fields": [
+                        {
+                            "name": "version/valid", 
+                            "bit_width": 4
+                        }
+                    ], 
                     "match_format": {
                         "entries": [
+                            {
+                                "entry_number": 1, 
+                                "fields": [
+                                    {
+                                        "name": "action", 
+                                        "bit_width": 2, 
+                                        "start_bit": 0, 
+                                        "memory_start_bit": 2
+                                    }, 
+                                    {
+                                        "name": "version", 
+                                        "bit_width": 4, 
+                                        "start_bit": 0, 
+                                        "memory_start_bit": 116
+                                    }, 
+                                    {
+                                        "name": "meter_addr", 
+                                        "bit_width": 16, 
+                                        "start_bit": 5, 
+                                        "memory_start_bit": 24
+                                    }, 
+                                    {
+                                        "name": "meter_pfe", 
+                                        "bit_width": 1, 
+                                        "start_bit": 23, 
+                                        "memory_start_bit": 40
+                                    }, 
+                                    {
+                                        "name": "meter_type", 
+                                        "bit_width": 3, 
+                                        "start_bit": 24, 
+                                        "memory_start_bit": 41
+                                    }
+                                ]
+                            }, 
                             {
                                 "entry_number": 0, 
                                 "fields": [
                                     {
-                                        "name": "--version--", 
+                                        "name": "action", 
                                         "bit_width": 2, 
-                                        "start_bit": 0, 
-                                        "memory_start_bit": 42
-                                    }, 
-                                    {
-                                        "name": "ig_md.out_remain1", 
-                                        "bit_width": 4, 
                                         "start_bit": 0, 
                                         "memory_start_bit": 0
                                     }, 
                                     {
-                                        "name": "ig_md.out_remain1", 
+                                        "name": "version", 
                                         "bit_width": 4, 
                                         "start_bit": 0, 
+                                        "memory_start_bit": 112
+                                    }, 
+                                    {
+                                        "name": "meter_addr", 
+                                        "bit_width": 16, 
+                                        "start_bit": 5, 
                                         "memory_start_bit": 4
                                     }, 
                                     {
-                                        "name": "ig_md.out_remain1", 
-                                        "bit_width": 4, 
-                                        "start_bit": 8, 
-                                        "memory_start_bit": 8
-                                    }, 
-                                    {
-                                        "name": "ig_md.out_remain1", 
-                                        "bit_width": 4, 
-                                        "start_bit": 8, 
-                                        "memory_start_bit": 12
-                                    }, 
-                                    {
-                                        "name": "ig_md.out_remain1", 
-                                        "bit_width": 4, 
-                                        "start_bit": 4, 
-                                        "memory_start_bit": 16
-                                    }, 
-                                    {
-                                        "name": "ig_md.out_remain1", 
-                                        "bit_width": 4, 
-                                        "start_bit": 4, 
+                                        "name": "meter_pfe", 
+                                        "bit_width": 1, 
+                                        "start_bit": 23, 
                                         "memory_start_bit": 20
                                     }, 
                                     {
-                                        "name": "ig_md.out_remain1", 
-                                        "bit_width": 4, 
-                                        "start_bit": 12, 
-                                        "memory_start_bit": 24
-                                    }, 
-                                    {
-                                        "name": "ig_md.out_remain1", 
-                                        "bit_width": 4, 
-                                        "start_bit": 12, 
-                                        "memory_start_bit": 28
-                                    }, 
-                                    {
-                                        "name": "ig_intr_md.resubmit_flag", 
-                                        "bit_width": 1, 
-                                        "start_bit": 0, 
-                                        "memory_start_bit": 39
+                                        "name": "meter_type", 
+                                        "bit_width": 3, 
+                                        "start_bit": 24, 
+                                        "memory_start_bit": 21
                                     }
                                 ]
                             }
@@ -895,20 +1040,19 @@
             "name": "WaterfallIngress.swap3", 
             "gress": "ingress", 
             "lookup_types": [
-                "range", 
                 "exact"
             ], 
-            "entries_requested": 2, 
-            "entries_allocated": 512, 
+            "entries_requested": 3, 
+            "entries_allocated": 2048, 
             "match_fields": [
                 {
-                    "name": "ig_md.out_remain2", 
+                    "name": "ig_intr_md.resubmit_flag", 
                     "start_bit": 0, 
-                    "bit_width": 16, 
-                    "lookup_type": "range"
+                    "bit_width": 1, 
+                    "lookup_type": "exact"
                 }, 
                 {
-                    "name": "ig_intr_md.resubmit_flag", 
+                    "name": "ig_md.found", 
                     "start_bit": 0, 
                     "bit_width": 1, 
                     "lookup_type": "exact"
@@ -930,108 +1074,108 @@
             ], 
             "stage_allocation": [
                 {
-                    "stage_number": 5, 
+                    "stage_number": 6, 
                     "memories": [
                         {
-                            "memory_type": "tcam", 
-                            "table_word_width": 44, 
-                            "memory_word_width": 44, 
-                            "entries_per_table_word": 1, 
+                            "memory_type": "sram", 
+                            "table_word_width": 128, 
+                            "memory_word_width": 128, 
+                            "entries_per_table_word": 2, 
                             "table_type": "match", 
                             "num_memories": 1, 
-                            "entries_requested": 2, 
-                            "entries_allocated": 512, 
+                            "entries_requested": 3, 
+                            "entries_allocated": 2048, 
                             "imm_bit_width_in_overhead_requested": 0, 
                             "imm_bit_width_in_overhead_allocated": 0, 
-                            "entry_bit_width_requested": 21, 
-                            "entry_bit_width_allocated": 44, 
-                            "ideal_entries_per_table_word": 1, 
-                            "ideal_table_word_bit_width": 44
+                            "entry_bit_width_requested": 6, 
+                            "entry_bit_width_allocated": 26, 
+                            "ideal_entries_per_table_word": 5, 
+                            "ideal_table_word_bit_width": 128
                         }, 
                         {
                             "memory_type": "sram", 
                             "table_word_width": 128, 
                             "memory_word_width": 128, 
                             "entries_per_table_word": 4, 
-                            "table_type": "tind", 
-                            "num_memories": 1, 
-                            "entry_bit_width_requested": 0, 
-                            "entry_bit_width_allocated": 32
-                        }, 
-                        {
-                            "memory_type": "sram", 
-                            "table_word_width": 128, 
-                            "memory_word_width": 128, 
-                            "entries_per_table_word": 8, 
                             "table_type": "stateful", 
-                            "num_memories": 9
+                            "num_memories": 17
                         }
                     ], 
-                    "overhead_fields": [], 
+                    "overhead_fields": [
+                        {
+                            "name": "version/valid", 
+                            "bit_width": 4
+                        }
+                    ], 
                     "match_format": {
                         "entries": [
+                            {
+                                "entry_number": 1, 
+                                "fields": [
+                                    {
+                                        "name": "action", 
+                                        "bit_width": 2, 
+                                        "start_bit": 0, 
+                                        "memory_start_bit": 2
+                                    }, 
+                                    {
+                                        "name": "version", 
+                                        "bit_width": 4, 
+                                        "start_bit": 0, 
+                                        "memory_start_bit": 116
+                                    }, 
+                                    {
+                                        "name": "meter_addr", 
+                                        "bit_width": 16, 
+                                        "start_bit": 5, 
+                                        "memory_start_bit": 24
+                                    }, 
+                                    {
+                                        "name": "meter_pfe", 
+                                        "bit_width": 1, 
+                                        "start_bit": 23, 
+                                        "memory_start_bit": 40
+                                    }, 
+                                    {
+                                        "name": "meter_type", 
+                                        "bit_width": 3, 
+                                        "start_bit": 24, 
+                                        "memory_start_bit": 41
+                                    }
+                                ]
+                            }, 
                             {
                                 "entry_number": 0, 
                                 "fields": [
                                     {
-                                        "name": "--version--", 
+                                        "name": "action", 
                                         "bit_width": 2, 
-                                        "start_bit": 0, 
-                                        "memory_start_bit": 42
-                                    }, 
-                                    {
-                                        "name": "ig_md.out_remain2", 
-                                        "bit_width": 4, 
                                         "start_bit": 0, 
                                         "memory_start_bit": 0
                                     }, 
                                     {
-                                        "name": "ig_md.out_remain2", 
+                                        "name": "version", 
                                         "bit_width": 4, 
                                         "start_bit": 0, 
+                                        "memory_start_bit": 112
+                                    }, 
+                                    {
+                                        "name": "meter_addr", 
+                                        "bit_width": 16, 
+                                        "start_bit": 5, 
                                         "memory_start_bit": 4
                                     }, 
                                     {
-                                        "name": "ig_md.out_remain2", 
-                                        "bit_width": 4, 
-                                        "start_bit": 8, 
-                                        "memory_start_bit": 8
-                                    }, 
-                                    {
-                                        "name": "ig_md.out_remain2", 
-                                        "bit_width": 4, 
-                                        "start_bit": 8, 
-                                        "memory_start_bit": 12
-                                    }, 
-                                    {
-                                        "name": "ig_md.out_remain2", 
-                                        "bit_width": 4, 
-                                        "start_bit": 4, 
-                                        "memory_start_bit": 16
-                                    }, 
-                                    {
-                                        "name": "ig_md.out_remain2", 
-                                        "bit_width": 4, 
-                                        "start_bit": 4, 
+                                        "name": "meter_pfe", 
+                                        "bit_width": 1, 
+                                        "start_bit": 23, 
                                         "memory_start_bit": 20
                                     }, 
                                     {
-                                        "name": "ig_md.out_remain2", 
-                                        "bit_width": 4, 
-                                        "start_bit": 12, 
-                                        "memory_start_bit": 24
-                                    }, 
-                                    {
-                                        "name": "ig_md.out_remain2", 
-                                        "bit_width": 4, 
-                                        "start_bit": 12, 
-                                        "memory_start_bit": 28
-                                    }, 
-                                    {
-                                        "name": "ig_intr_md.resubmit_flag", 
-                                        "bit_width": 1, 
-                                        "start_bit": 0, 
-                                        "memory_start_bit": 39
+                                        "name": "meter_type", 
+                                        "bit_width": 3, 
+                                        "start_bit": 24, 
+                                        "memory_start_bit": 21
                                     }
                                 ]
                             }
@@ -1045,20 +1189,19 @@
             "name": "WaterfallIngress.swap4", 
             "gress": "ingress", 
             "lookup_types": [
-                "range", 
                 "exact"
             ], 
-            "entries_requested": 2, 
-            "entries_allocated": 512, 
+            "entries_requested": 3, 
+            "entries_allocated": 2048, 
             "match_fields": [
                 {
-                    "name": "ig_md.out_remain3", 
+                    "name": "ig_intr_md.resubmit_flag", 
                     "start_bit": 0, 
-                    "bit_width": 16, 
-                    "lookup_type": "range"
+                    "bit_width": 1, 
+                    "lookup_type": "exact"
                 }, 
                 {
-                    "name": "ig_intr_md.resubmit_flag", 
+                    "name": "ig_md.found", 
                     "start_bit": 0, 
                     "bit_width": 1, 
                     "lookup_type": "exact"
@@ -1080,108 +1223,108 @@
             ], 
             "stage_allocation": [
                 {
-                    "stage_number": 7, 
+                    "stage_number": 8, 
                     "memories": [
                         {
-                            "memory_type": "tcam", 
-                            "table_word_width": 44, 
-                            "memory_word_width": 44, 
-                            "entries_per_table_word": 1, 
+                            "memory_type": "sram", 
+                            "table_word_width": 128, 
+                            "memory_word_width": 128, 
+                            "entries_per_table_word": 2, 
                             "table_type": "match", 
                             "num_memories": 1, 
-                            "entries_requested": 2, 
-                            "entries_allocated": 512, 
+                            "entries_requested": 3, 
+                            "entries_allocated": 2048, 
                             "imm_bit_width_in_overhead_requested": 0, 
                             "imm_bit_width_in_overhead_allocated": 0, 
-                            "entry_bit_width_requested": 21, 
-                            "entry_bit_width_allocated": 44, 
-                            "ideal_entries_per_table_word": 1, 
-                            "ideal_table_word_bit_width": 44
+                            "entry_bit_width_requested": 6, 
+                            "entry_bit_width_allocated": 26, 
+                            "ideal_entries_per_table_word": 5, 
+                            "ideal_table_word_bit_width": 128
                         }, 
                         {
                             "memory_type": "sram", 
                             "table_word_width": 128, 
                             "memory_word_width": 128, 
                             "entries_per_table_word": 4, 
-                            "table_type": "tind", 
-                            "num_memories": 1, 
-                            "entry_bit_width_requested": 0, 
-                            "entry_bit_width_allocated": 32
-                        }, 
-                        {
-                            "memory_type": "sram", 
-                            "table_word_width": 128, 
-                            "memory_word_width": 128, 
-                            "entries_per_table_word": 8, 
                             "table_type": "stateful", 
-                            "num_memories": 9
+                            "num_memories": 17
                         }
                     ], 
-                    "overhead_fields": [], 
+                    "overhead_fields": [
+                        {
+                            "name": "version/valid", 
+                            "bit_width": 4
+                        }
+                    ], 
                     "match_format": {
                         "entries": [
+                            {
+                                "entry_number": 1, 
+                                "fields": [
+                                    {
+                                        "name": "action", 
+                                        "bit_width": 2, 
+                                        "start_bit": 0, 
+                                        "memory_start_bit": 2
+                                    }, 
+                                    {
+                                        "name": "version", 
+                                        "bit_width": 4, 
+                                        "start_bit": 0, 
+                                        "memory_start_bit": 116
+                                    }, 
+                                    {
+                                        "name": "meter_addr", 
+                                        "bit_width": 16, 
+                                        "start_bit": 5, 
+                                        "memory_start_bit": 24
+                                    }, 
+                                    {
+                                        "name": "meter_pfe", 
+                                        "bit_width": 1, 
+                                        "start_bit": 23, 
+                                        "memory_start_bit": 40
+                                    }, 
+                                    {
+                                        "name": "meter_type", 
+                                        "bit_width": 3, 
+                                        "start_bit": 24, 
+                                        "memory_start_bit": 41
+                                    }
+                                ]
+                            }, 
                             {
                                 "entry_number": 0, 
                                 "fields": [
                                     {
-                                        "name": "--version--", 
+                                        "name": "action", 
                                         "bit_width": 2, 
-                                        "start_bit": 0, 
-                                        "memory_start_bit": 42
-                                    }, 
-                                    {
-                                        "name": "ig_md.out_remain3", 
-                                        "bit_width": 4, 
                                         "start_bit": 0, 
                                         "memory_start_bit": 0
                                     }, 
                                     {
-                                        "name": "ig_md.out_remain3", 
+                                        "name": "version", 
                                         "bit_width": 4, 
                                         "start_bit": 0, 
+                                        "memory_start_bit": 112
+                                    }, 
+                                    {
+                                        "name": "meter_addr", 
+                                        "bit_width": 16, 
+                                        "start_bit": 5, 
                                         "memory_start_bit": 4
                                     }, 
                                     {
-                                        "name": "ig_md.out_remain3", 
-                                        "bit_width": 4, 
-                                        "start_bit": 8, 
-                                        "memory_start_bit": 8
-                                    }, 
-                                    {
-                                        "name": "ig_md.out_remain3", 
-                                        "bit_width": 4, 
-                                        "start_bit": 8, 
-                                        "memory_start_bit": 12
-                                    }, 
-                                    {
-                                        "name": "ig_md.out_remain3", 
-                                        "bit_width": 4, 
-                                        "start_bit": 4, 
-                                        "memory_start_bit": 16
-                                    }, 
-                                    {
-                                        "name": "ig_md.out_remain3", 
-                                        "bit_width": 4, 
-                                        "start_bit": 4, 
+                                        "name": "meter_pfe", 
+                                        "bit_width": 1, 
+                                        "start_bit": 23, 
                                         "memory_start_bit": 20
                                     }, 
                                     {
-                                        "name": "ig_md.out_remain3", 
-                                        "bit_width": 4, 
-                                        "start_bit": 12, 
-                                        "memory_start_bit": 24
-                                    }, 
-                                    {
-                                        "name": "ig_md.out_remain3", 
-                                        "bit_width": 4, 
-                                        "start_bit": 12, 
-                                        "memory_start_bit": 28
-                                    }, 
-                                    {
-                                        "name": "ig_intr_md.resubmit_flag", 
-                                        "bit_width": 1, 
-                                        "start_bit": 0, 
-                                        "memory_start_bit": 39
+                                        "name": "meter_type", 
+                                        "bit_width": 3, 
+                                        "start_bit": 24, 
+                                        "memory_start_bit": 21
                                     }
                                 ]
                             }
@@ -1433,7 +1576,7 @@
             ], 
             "stage_allocation": [
                 {
-                    "stage_number": 2, 
+                    "stage_number": 3, 
                     "memories": [
                         {
                             "memory_type": "sram", 
@@ -1576,7 +1719,7 @@
             ], 
             "stage_allocation": [
                 {
-                    "stage_number": 2, 
+                    "stage_number": 3, 
                     "memories": [], 
                     "overhead_fields": [], 
                     "match_format": {
@@ -1601,7 +1744,7 @@
             ], 
             "stage_allocation": [
                 {
-                    "stage_number": 4, 
+                    "stage_number": 5, 
                     "memories": [], 
                     "overhead_fields": [], 
                     "match_format": {
@@ -1626,7 +1769,7 @@
             ], 
             "stage_allocation": [
                 {
-                    "stage_number": 6, 
+                    "stage_number": 7, 
                     "memories": [], 
                     "overhead_fields": [], 
                     "match_format": {

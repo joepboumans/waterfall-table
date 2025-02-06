@@ -73,9 +73,10 @@ ComputeLoweredParserIR preorder on Header : header tcp_h {
   bit<16> checksum;
   bit<16> urgent_ptr; }
 ComputeLoweredParserIR preorder on Header : header resubmit_md_t {
-  bit<16> remain;
+  bit<8> type;
   bit<16> idx;
-  @padding @overlayable bit<32> __pad_0; }
+  bit<32> remain;
+  @padding @overlayable bit<8> __pad_0; }
 ComputeLoweredParserIR preorder on Header : header egress_intrinsic_metadata_t @__intrinsic_metadata {
   @padding @__intrinsic_metadata bit<7> _pad0;
   @__intrinsic_metadata bit<9> egress_port;

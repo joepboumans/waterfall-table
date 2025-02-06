@@ -21,24 +21,28 @@
                 "type" : "action_param",
                 "name" : "dst_port"
               }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "ig_md.found"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "1"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "1w0"
+              }
             }
           ]
         },
         {
           "name" : "WaterfallIngress.drop",
-          "primitives" : [
-            {
-              "name" : "DropPrimitive",
-              "dst" : {
-                "type" : "phv",
-                "name" : "ig_intr_md_for_dprsr.drop_ctl"
-              },
-              "src1" : {
-                "type" : "immediate",
-                "name" : "1"
-              }
-            }
-          ]
+          "primitives" : []
         },
         {
           "name" : "WaterfallIngress.no_action",
@@ -73,10 +77,60 @@
               },
               "dst_mask" : {
                 "type" : "immediate",
-                "name" : "65535"
+                "name" : "0"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "hdr.ipv4.src_addr"
               }
             }
           ]
+        }
+      ]
+    },
+    {
+      "name" : "WaterfallIngress.parse_resub_hdr",
+      "actions" : [
+        {
+          "name" : "WaterfallIngress.parse_hdr",
+          "primitives" : [
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "ig_md.idx1"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "ig_md.resubmit_md.idx"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "ig_md.remain1"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "0"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "ig_md.resubmit_md.remain"
+              }
+            }
+          ]
+        },
+        {
+          "name" : "WaterfallIngress.no_action",
+          "primitives" : []
         }
       ]
     },
@@ -103,7 +157,7 @@
                 "single_bit_mode" : false,
                 "update_lo_1_value" : {
                   "operand_1_type" : "phv",
-                  "operand_1_value" : "ingress::ig_md.resubmit_md.remain"
+                  "operand_1_value" : "ingress::ig_md.remain1"
                 },
                 "output_value" : {
                   "operand_1_type" : "memory",
@@ -125,7 +179,7 @@
               },
               "src1" : {
                 "type" : "immediate",
-                "name" : "3w1"
+                "name" : "3w5"
               }
             }
           ]
@@ -160,7 +214,7 @@
               },
               "dst_mask" : {
                 "type" : "immediate",
-                "name" : "65535"
+                "name" : "0"
               },
               "src1" : {
                 "type" : "phv",
@@ -202,7 +256,11 @@
               },
               "dst_mask" : {
                 "type" : "immediate",
-                "name" : "65535"
+                "name" : "0"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "ig_md.out_remain1"
               }
             }
           ]
@@ -277,7 +335,7 @@
               },
               "dst_mask" : {
                 "type" : "immediate",
-                "name" : "65535"
+                "name" : "0"
               },
               "src1" : {
                 "type" : "phv",
@@ -315,7 +373,11 @@
               },
               "dst_mask" : {
                 "type" : "immediate",
-                "name" : "65535"
+                "name" : "0"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "ig_md.out_remain2"
               }
             }
           ]
@@ -390,7 +452,7 @@
               },
               "dst_mask" : {
                 "type" : "immediate",
-                "name" : "65535"
+                "name" : "0"
               },
               "src1" : {
                 "type" : "phv",
@@ -428,7 +490,11 @@
               },
               "dst_mask" : {
                 "type" : "immediate",
-                "name" : "65535"
+                "name" : "0"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "ig_md.out_remain3"
               }
             }
           ]
@@ -524,6 +590,22 @@
               "operation" : "set",
               "dst" : {
                 "type" : "phv",
+                "name" : "ig_md.resubmit_md.type"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "255"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "8w3"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
                 "name" : "ig_md.resubmit_md.idx"
               },
               "dst_mask" : {
@@ -544,7 +626,7 @@
               },
               "dst_mask" : {
                 "type" : "immediate",
-                "name" : "65535"
+                "name" : "0"
               },
               "src1" : {
                 "type" : "phv",

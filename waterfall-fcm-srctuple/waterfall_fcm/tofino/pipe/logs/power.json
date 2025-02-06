@@ -1,8 +1,8 @@
 {
-    "build_date": "Fri Dec 13 13:51:38 2024",
+    "build_date": "Thu Feb  6 16:06:39 2025",
     "compiler_version": "9.11.0",
     "program_name": "waterfall_fcm.p4",
-    "run_id": "31a74692ef674dd7",
+    "run_id": "e8c50ffae3064924",
     "schema_version": "1.0.1",
     "stage_characteristics": [
         {
@@ -31,6 +31,31 @@
             "stage_number": 0
         },
         {
+            "clock_cycles": 20,
+            "cycles_contribute_to_latency": 2,
+            "dependency_to_previous": "action",
+            "features": {
+                "exact": true,
+                "lpf_wred": false,
+                "selectors": false,
+                "stateful": false,
+                "statistics": false,
+                "ternary": false,
+                "max_selector_words": 0
+            },
+            "features_to_balance_latency": {
+                "exact": false,
+                "lpf_wred": false,
+                "selectors": false,
+                "stateful": false,
+                "statistics": false,
+                "ternary": false
+            },
+            "gress": "ingress",
+            "predication_cycle": 11,
+            "stage_number": 1
+        },
+        {
             "clock_cycles": 24,
             "cycles_contribute_to_latency": 24,
             "dependency_to_previous": "match",
@@ -53,7 +78,7 @@
             },
             "gress": "ingress",
             "predication_cycle": 11,
-            "stage_number": 1
+            "stage_number": 2
         },
         {
             "clock_cycles": 20,
@@ -78,42 +103,17 @@
             },
             "gress": "ingress",
             "predication_cycle": 11,
-            "stage_number": 2
-        },
-        {
-            "clock_cycles": 26,
-            "cycles_contribute_to_latency": 26,
-            "dependency_to_previous": "match",
-            "features": {
-                "exact": false,
-                "lpf_wred": false,
-                "selectors": false,
-                "stateful": true,
-                "statistics": false,
-                "ternary": true,
-                "max_selector_words": 0
-            },
-            "features_to_balance_latency": {
-                "exact": false,
-                "lpf_wred": false,
-                "selectors": false,
-                "stateful": false,
-                "statistics": false,
-                "ternary": false
-            },
-            "gress": "ingress",
-            "predication_cycle": 13,
             "stage_number": 3
         },
         {
-            "clock_cycles": 20,
-            "cycles_contribute_to_latency": 20,
+            "clock_cycles": 24,
+            "cycles_contribute_to_latency": 24,
             "dependency_to_previous": "match",
             "features": {
                 "exact": true,
                 "lpf_wred": false,
                 "selectors": false,
-                "stateful": false,
+                "stateful": true,
                 "statistics": false,
                 "ternary": false,
                 "max_selector_words": 0
@@ -131,16 +131,16 @@
             "stage_number": 4
         },
         {
-            "clock_cycles": 26,
-            "cycles_contribute_to_latency": 26,
+            "clock_cycles": 20,
+            "cycles_contribute_to_latency": 20,
             "dependency_to_previous": "match",
             "features": {
-                "exact": false,
+                "exact": true,
                 "lpf_wred": false,
                 "selectors": false,
-                "stateful": true,
+                "stateful": false,
                 "statistics": false,
-                "ternary": true,
+                "ternary": false,
                 "max_selector_words": 0
             },
             "features_to_balance_latency": {
@@ -152,8 +152,33 @@
                 "ternary": false
             },
             "gress": "ingress",
-            "predication_cycle": 13,
+            "predication_cycle": 11,
             "stage_number": 5
+        },
+        {
+            "clock_cycles": 24,
+            "cycles_contribute_to_latency": 24,
+            "dependency_to_previous": "match",
+            "features": {
+                "exact": true,
+                "lpf_wred": false,
+                "selectors": false,
+                "stateful": true,
+                "statistics": false,
+                "ternary": false,
+                "max_selector_words": 0
+            },
+            "features_to_balance_latency": {
+                "exact": false,
+                "lpf_wred": false,
+                "selectors": false,
+                "stateful": false,
+                "statistics": false,
+                "ternary": false
+            },
+            "gress": "ingress",
+            "predication_cycle": 11,
+            "stage_number": 6
         },
         {
             "clock_cycles": 20,
@@ -178,42 +203,17 @@
             },
             "gress": "ingress",
             "predication_cycle": 11,
-            "stage_number": 6
-        },
-        {
-            "clock_cycles": 26,
-            "cycles_contribute_to_latency": 26,
-            "dependency_to_previous": "match",
-            "features": {
-                "exact": false,
-                "lpf_wred": false,
-                "selectors": false,
-                "stateful": true,
-                "statistics": false,
-                "ternary": true,
-                "max_selector_words": 0
-            },
-            "features_to_balance_latency": {
-                "exact": false,
-                "lpf_wred": false,
-                "selectors": false,
-                "stateful": false,
-                "statistics": false,
-                "ternary": false
-            },
-            "gress": "ingress",
-            "predication_cycle": 13,
             "stage_number": 7
         },
         {
-            "clock_cycles": 20,
-            "cycles_contribute_to_latency": 20,
+            "clock_cycles": 24,
+            "cycles_contribute_to_latency": 24,
             "dependency_to_previous": "match",
             "features": {
                 "exact": true,
                 "lpf_wred": false,
                 "selectors": false,
-                "stateful": false,
+                "stateful": true,
                 "statistics": false,
                 "ternary": false,
                 "max_selector_words": 0
@@ -232,10 +232,10 @@
         },
         {
             "clock_cycles": 20,
-            "cycles_contribute_to_latency": 1,
-            "dependency_to_previous": "concurrent",
+            "cycles_contribute_to_latency": 20,
+            "dependency_to_previous": "match",
             "features": {
-                "exact": false,
+                "exact": true,
                 "lpf_wred": false,
                 "selectors": false,
                 "stateful": false,
@@ -244,7 +244,7 @@
                 "max_selector_words": 0
             },
             "features_to_balance_latency": {
-                "exact": true,
+                "exact": false,
                 "lpf_wred": false,
                 "selectors": false,
                 "stateful": false,
@@ -431,14 +431,14 @@
             "stage_number": 4
         },
         {
-            "clock_cycles": 20,
-            "cycles_contribute_to_latency": 20,
+            "clock_cycles": 24,
+            "cycles_contribute_to_latency": 24,
             "dependency_to_previous": "match",
             "features": {
-                "exact": false,
+                "exact": true,
                 "lpf_wred": false,
                 "selectors": false,
-                "stateful": false,
+                "stateful": true,
                 "statistics": false,
                 "ternary": false,
                 "max_selector_words": 0
@@ -636,7 +636,7 @@
                         }
                     ],
                     "on_critical_path": true,
-                    "stage_number": 3,
+                    "stage_number": 4,
                     "weight": 30.95149863760218
                 }
             ]
@@ -704,7 +704,7 @@
                         }
                     ],
                     "on_critical_path": true,
-                    "stage_number": 4,
+                    "stage_number": 5,
                     "weight": 23.264305177111717
                 }
             ]
@@ -764,6 +764,25 @@
         },
         {
             "gress": "ingress",
+            "name": "WaterfallIngress.parse_resub_hdr",
+            "stages": [
+                {
+                    "always_runs": false,
+                    "memories": [
+                        {
+                            "access_type": "read",
+                            "memory_type": "sram",
+                            "num_memories": 1
+                        }
+                    ],
+                    "on_critical_path": true,
+                    "stage_number": 1,
+                    "weight": 6.3269754768392369
+                }
+            ]
+        },
+        {
+            "gress": "ingress",
             "name": "WaterfallIngress.resub",
             "stages": [
                 {
@@ -776,7 +795,7 @@
                         }
                     ],
                     "on_critical_path": true,
-                    "stage_number": 8,
+                    "stage_number": 9,
                     "weight": 6.3269754768392369
                 }
             ]
@@ -801,7 +820,7 @@
                         {
                             "access_type": "read",
                             "memory_type": "map_ram",
-                            "num_memories": 9
+                            "num_memories": 17
                         },
                         {
                             "access_type": "write",
@@ -810,8 +829,8 @@
                         }
                     ],
                     "on_critical_path": true,
-                    "stage_number": 1,
-                    "weight": 37.27847411444141
+                    "stage_number": 2,
+                    "weight": 47.52806539509537
                 }
             ]
         },
@@ -833,14 +852,9 @@
                             "num_memories": 1
                         },
                         {
-                            "access_type": "search",
-                            "memory_type": "tcam",
-                            "num_memories": 1
-                        },
-                        {
                             "access_type": "read",
                             "memory_type": "map_ram",
-                            "num_memories": 9
+                            "num_memories": 17
                         },
                         {
                             "access_type": "write",
@@ -849,8 +863,8 @@
                         }
                     ],
                     "on_critical_path": true,
-                    "stage_number": 3,
-                    "weight": 43.83825495360445
+                    "stage_number": 4,
+                    "weight": 47.52806539509537
                 }
             ]
         },
@@ -872,14 +886,9 @@
                             "num_memories": 1
                         },
                         {
-                            "access_type": "search",
-                            "memory_type": "tcam",
-                            "num_memories": 1
-                        },
-                        {
                             "access_type": "read",
                             "memory_type": "map_ram",
-                            "num_memories": 9
+                            "num_memories": 17
                         },
                         {
                             "access_type": "write",
@@ -888,8 +897,8 @@
                         }
                     ],
                     "on_critical_path": true,
-                    "stage_number": 5,
-                    "weight": 43.83825495360445
+                    "stage_number": 6,
+                    "weight": 47.52806539509537
                 }
             ]
         },
@@ -911,14 +920,9 @@
                             "num_memories": 1
                         },
                         {
-                            "access_type": "search",
-                            "memory_type": "tcam",
-                            "num_memories": 1
-                        },
-                        {
                             "access_type": "read",
                             "memory_type": "map_ram",
-                            "num_memories": 9
+                            "num_memories": 17
                         },
                         {
                             "access_type": "write",
@@ -927,8 +931,8 @@
                         }
                     ],
                     "on_critical_path": true,
-                    "stage_number": 7,
-                    "weight": 43.83825495360445
+                    "stage_number": 8,
+                    "weight": 47.52806539509537
                 }
             ]
         },
@@ -1033,7 +1037,7 @@
                         }
                     ],
                     "on_critical_path": true,
-                    "stage_number": 2,
+                    "stage_number": 3,
                     "weight": 61.700272479564038
                 }
             ]
@@ -1119,7 +1123,7 @@
                     "always_runs": false,
                     "memories": [],
                     "on_critical_path": true,
-                    "stage_number": 2,
+                    "stage_number": 3,
                     "weight": 0.0
                 }
             ]
@@ -1132,7 +1136,7 @@
                     "always_runs": false,
                     "memories": [],
                     "on_critical_path": true,
-                    "stage_number": 4,
+                    "stage_number": 5,
                     "weight": 0.0
                 }
             ]
@@ -1145,7 +1149,7 @@
                     "always_runs": false,
                     "memories": [],
                     "on_critical_path": true,
-                    "stage_number": 6,
+                    "stage_number": 7,
                     "weight": 0.0
                 }
             ]
@@ -1154,12 +1158,12 @@
     "total_latency": [
         {
             "gress": "ingress",
-            "latency": 209,
+            "latency": 204,
             "pipe_number": 0
         },
         {
             "gress": "egress",
-            "latency": 171,
+            "latency": 175,
             "pipe_number": 0
         }
     ],
@@ -1167,7 +1171,7 @@
         {
             "gress": "ingress",
             "pipe_number": 0,
-            "power": 2.6662866539039999
+            "power": 3.087209823456
         },
         {
             "gress": "egress",

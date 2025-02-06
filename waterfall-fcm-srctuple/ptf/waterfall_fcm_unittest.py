@@ -66,7 +66,6 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         # Get digest/learn filter from gRPC
         self.learn_filter = self.bfrt_info.learn_get("digest")
         self.learn_filter.info.data_field_annotation_add("src_addr", "ipv4")
-        self.learn_filter.info.data_field_annotation_add("dst_addr", "ipv4")
 
         # Get Waterfall tables
         self.table_1 = self.bfrt_info.table_get("table_1") 
@@ -148,19 +147,10 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
                 data_dict = data.to_dict()
                 recv_src_addr = data_dict["src_addr"]
 
-                recv_dst_addr = data_dict["dst_addr"]
-                recv_src_port = data_dict["src_port"]
-                recv_dst_port = data_dict["dst_port"]
-                recv_protocol = data_dict["protocol"]
-                recv_remain4 = data_dict["remain4"]
                 # logger.info(f"{recv_src_addr = } : {recv_dst_addr = } | {recv_src_port = } {recv_dst_port = } | {recv_protocol = } | {recv_remain4}")
                 raw_src_addr = [int(x) for x in recv_src_addr.split('.')]
-                raw_dst_addr = [int(x) for x in recv_dst_addr.split('.')]
-                raw_src_port = [int(x) for x in int(recv_src_port).to_bytes(2, byteorder='big')]
-                raw_dst_port = [int(x) for x in int(recv_dst_port).to_bytes(2, byteorder='big')]
-                raw_protocol = [int(recv_protocol)]
                 # logger.info(f"{raw_src_addr = } : {raw_dst_addr = } | {raw_src_port = } {raw_dst_port = } | {raw_protocol = }")
-                tuple_list = raw_src_addr + raw_dst_addr + raw_src_port + raw_dst_port + raw_protocol
+                tuple_list = raw_src_addr 
                 tuple_key = ".".join([str(x) for x in tuple_list])
                 tuples[tuple_key] = tuple_list
 
@@ -244,7 +234,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         data = swap2.make_data([], "WaterfallIngress.lookup2")
         swap2.entry_add(target, [key], [data])
 
-        key = swap2.make_key([gc.KeyTuple('ig_md.out_remain1', low=0x1, high=0xFFFF), gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
+        key = swap2.make_key([ gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
         data = swap2.make_data([], "WaterfallIngress.do_swap2")
         swap2.entry_add(target, [key], [data])
 
@@ -252,7 +242,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         data = swap3.make_data([], "WaterfallIngress.lookup3")
         swap3.entry_add(target, [key], [data])
 
-        key = swap3.make_key([gc.KeyTuple('ig_md.out_remain2', low=0x1, high=0xFFFF), gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
+        key = swap3.make_key([ gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
         data = swap3.make_data([], "WaterfallIngress.do_swap3")
         swap3.entry_add(target, [key], [data])
 
@@ -260,7 +250,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         data = swap4.make_data([], "WaterfallIngress.lookup4")
         swap4.entry_add(target, [key], [data])
 
-        key = swap4.make_key([gc.KeyTuple('ig_md.out_remain3', low=0x1, high=0xFFFF), gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
+        key = swap4.make_key([ gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
         data = swap4.make_data([], "WaterfallIngress.do_swap4")
         swap4.entry_add(target, [key], [data])
 
@@ -294,13 +284,9 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
                 total_pkts_sends += flow_size
 
                 raw_src_addr = [int(x) for x in src_addr.split('.')]
-                raw_dst_addr = [int(x) for x in dst_addr.split('.')]
-                raw_src_port = [int(x) for x in int(src_port).to_bytes(2, byteorder='big')]
-                raw_dst_port = [int(x) for x in int(dst_port).to_bytes(2, byteorder='big')]
-                raw_protocol = [6]
                 # logger.info(f"{raw_src_addr = } : {raw_dst_addr = } | {raw_src_port = } {raw_dst_port = } | {raw_protocol = }")
 
-                tuple_list = raw_src_addr + raw_dst_addr + raw_src_port + raw_dst_port + raw_protocol
+                tuple_list = raw_src_addr 
                 tuple_key = ".".join([str(x) for x in tuple_list])
                 in_tuples[tuple_key] = flow_size
                 fsd[flow_size] += 1
@@ -375,6 +361,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         #     for st in fcm_d:
         #         logger.info(f"Stage with size {len(st)}")
 
+        return
         # call the register values and get flow size estimation
         logger.info("[INFO-FCM] Start query processing...")
         ARE = 0

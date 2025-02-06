@@ -4,10 +4,22 @@ M:\l
  ig_intr_md.ingress_port\l
 \lW:\l
  ig_intr_md_for_tm.ucast_egress_port\l
- ig_intr_md_for_dprsr.drop_ctl\l
+ ig_md.found\l
  "];
 tbl_get_hash1 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_get_hash1\l\l
-W:\l
+R:\l
+ hdr.ipv4.src_addr\l
+\lW:\l
+ ig_md.idx1\l
+ ig_md.remain1\l
+ "];
+parse_resub_hdr_0 [ shape=record, style="filled", fillcolor=cornsilk, label="parse_resub_hdr_0\l\l
+M:\l
+ ig_intr_md.resubmit_flag\l
+\lR:\l
+ ig_md.resubmit_md.idx\l
+ ig_md.resubmit_md.remain\l
+\lW:\l
  ig_md.idx1\l
  ig_md.remain1\l
  "];
@@ -15,7 +27,6 @@ swap1_0 [ shape=record, style="filled", fillcolor=cornsilk, label="swap1_0\l\l
 M:\l
  ig_intr_md.resubmit_flag\l
 \lR:\l
- ig_md.resubmit_md.remain\l
  ig_md.remain1\l
 \lW:\l
  ig_intr_md_for_dprsr.digest_type\l
@@ -23,14 +34,16 @@ M:\l
  ig_md.found\l
  "];
 tbl_get_hash2 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_get_hash2\l\l
-W:\l
+R:\l
+ ig_md.out_remain1\l
+\lW:\l
  ig_md.idx2\l
  ig_md.remain2\l
  "];
 swap2_0 [ shape=record, style="filled", fillcolor=cornsilk, label="swap2_0\l\l
 M:\l
- ig_md.out_remain1\l
  ig_intr_md.resubmit_flag\l
+ ig_md.found\l
 \lR:\l
  ig_md.remain2\l
 \lW:\l
@@ -38,14 +51,16 @@ M:\l
  ig_md.found\l
  "];
 tbl_get_hash3 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_get_hash3\l\l
-W:\l
+R:\l
+ ig_md.out_remain2\l
+\lW:\l
  ig_md.idx3\l
  ig_md.remain3\l
  "];
 swap3_0 [ shape=record, style="filled", fillcolor=cornsilk, label="swap3_0\l\l
 M:\l
- ig_md.out_remain2\l
  ig_intr_md.resubmit_flag\l
+ ig_md.found\l
 \lR:\l
  ig_md.remain3\l
 \lW:\l
@@ -53,14 +68,16 @@ M:\l
  ig_md.found\l
  "];
 tbl_get_hash4 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_get_hash4\l\l
-W:\l
+R:\l
+ ig_md.out_remain3\l
+\lW:\l
  ig_md.idx4\l
  ig_md.remain4\l
  "];
 swap4_0 [ shape=record, style="filled", fillcolor=cornsilk, label="swap4_0\l\l
 M:\l
- ig_md.out_remain3\l
  ig_intr_md.resubmit_flag\l
+ ig_md.found\l
 \lR:\l
  ig_md.remain4\l
 \lW:\l
@@ -75,12 +92,14 @@ M:\l
  ig_md.remain1\l
 \lW:\l
  ig_intr_md_for_dprsr.resubmit_type\l
+ ig_md.resubmit_md.type\l
  ig_md.resubmit_md.idx\l
  ig_md.resubmit_md.remain\l
  "];
     PARSER -> forward_0
     forward_0 -> tbl_get_hash1
-    tbl_get_hash1 -> swap1_0
+    tbl_get_hash1 -> parse_resub_hdr_0
+    parse_resub_hdr_0 -> swap1_0
     swap1_0 -> tbl_get_hash2
     tbl_get_hash2 -> swap2_0
     swap2_0 -> tbl_get_hash3

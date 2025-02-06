@@ -1,7 +1,8 @@
 FindDependencyGraph : After Instruction Selection
-ingress: [3] 0 00 000 0000 00000 000000 0000000 00000000 000000000
+ingress: [3] 0 00 000 0000 00000 000000 0000000 00000000 000000000 0000000000 00000000000
   forward_0
   tbl_get_hash1
+  parse_resub_hdr_0
   swap1_0
     stateful WaterfallIngress.table_1  66K
   tbl_get_hash2
@@ -14,6 +15,7 @@ ingress: [3] 0 00 000 0000 00000 000000 0000000 00000000 000000000
   swap4_0
     stateful WaterfallIngress.table_4  66K
   resub_0
+  tbl_waterfall430
 egress: [4] 0 00 000 0000 00000 000000 0000000 00000000 000000000 0000000000 00000000000
   tbl_count_pkt
     stateful FcmEgress.num_pkt    1
@@ -37,6 +39,7 @@ egress: [4] 0 00 000 0000 00000 000000 0000000 00000000 000000000 0000000000 000
 
 DepStagesThruDomFrontier postorder : forward_0
 DepStagesThruDomFrontier postorder : tbl_get_hash1
+DepStagesThruDomFrontier postorder : parse_resub_hdr_0
 DepStagesThruDomFrontier postorder : swap1_0
 DepStagesThruDomFrontier postorder : tbl_get_hash2
 DepStagesThruDomFrontier postorder : swap2_0
@@ -45,6 +48,7 @@ DepStagesThruDomFrontier postorder : swap3_0
 DepStagesThruDomFrontier postorder : tbl_get_hash4
 DepStagesThruDomFrontier postorder : swap4_0
 DepStagesThruDomFrontier postorder : resub_0
+DepStagesThruDomFrontier postorder : tbl_waterfall430
 DepStagesThruDomFrontier postorder : tbl_count_pkt
 DepStagesThruDomFrontier postorder : tbl_fcmsketch_fcm_hash_d1
 DepStagesThruDomFrontier postorder : tbl_fcmsketch_fcm_hash_d2
@@ -58,38 +62,55 @@ DepStagesThruDomFrontier postorder : fcmsketch_tb_fcm_l2_to_l3_d1
 DepStagesThruDomFrontier postorder : fcmsketch_tb_fcm_l2_to_l3_d2
 DepStagesThruDomFrontier postorder : tbl_fcm386
     Maximum stage number according to dependences: 
-      INGRESS: 8
+      INGRESS: 9
       EGRESS: 3
 GRAPH
+    tbl_get_hash1 -- OUTPUT --> parse_resub_hdr_0
+    parse_resub_hdr_0 -- IXBAR_READ --> swap1_0
     tbl_get_hash1 -- IXBAR_READ --> swap1_0
+    forward_0 -- OUTPUT --> swap1_0
+    parse_resub_hdr_0 -- ACTION_READ --> swap1_0
     tbl_get_hash1 -- ACTION_READ --> swap1_0
-    tbl_get_hash1 -- IXBAR_READ --> tbl_get_hash2
     swap1_0 -- IXBAR_READ --> tbl_get_hash2
+    swap1_0 -- ACTION_READ --> tbl_get_hash2
+    forward_0 -- IXBAR_READ --> swap2_0
     swap1_0 -- IXBAR_READ --> swap2_0
     tbl_get_hash2 -- IXBAR_READ --> swap2_0
+    forward_0 -- OUTPUT --> swap2_0
     swap1_0 -- OUTPUT --> swap2_0
     tbl_get_hash2 -- ACTION_READ --> swap2_0
-    tbl_get_hash2 -- IXBAR_READ --> tbl_get_hash3
     swap2_0 -- IXBAR_READ --> tbl_get_hash3
+    swap2_0 -- ACTION_READ --> tbl_get_hash3
+    forward_0 -- IXBAR_READ --> swap3_0
+    swap1_0 -- IXBAR_READ --> swap3_0
     swap2_0 -- IXBAR_READ --> swap3_0
     tbl_get_hash3 -- IXBAR_READ --> swap3_0
+    swap2_0 -- ANTI_ACTION_READ --> swap3_0
+    forward_0 -- OUTPUT --> swap3_0
     swap1_0 -- OUTPUT --> swap3_0
     swap2_0 -- OUTPUT --> swap3_0
     tbl_get_hash3 -- ACTION_READ --> swap3_0
-    tbl_get_hash3 -- IXBAR_READ --> tbl_get_hash4
     swap3_0 -- IXBAR_READ --> tbl_get_hash4
+    swap3_0 -- ACTION_READ --> tbl_get_hash4
+    forward_0 -- IXBAR_READ --> swap4_0
+    swap1_0 -- IXBAR_READ --> swap4_0
+    swap2_0 -- IXBAR_READ --> swap4_0
     swap3_0 -- IXBAR_READ --> swap4_0
     tbl_get_hash4 -- IXBAR_READ --> swap4_0
+    swap2_0 -- ANTI_ACTION_READ --> swap4_0
+    swap3_0 -- ANTI_ACTION_READ --> swap4_0
+    forward_0 -- OUTPUT --> swap4_0
     swap1_0 -- OUTPUT --> swap4_0
     swap2_0 -- OUTPUT --> swap4_0
     swap3_0 -- OUTPUT --> swap4_0
+    forward_0 -- IXBAR_READ --> resub_0
     swap1_0 -- IXBAR_READ --> resub_0
     swap2_0 -- IXBAR_READ --> resub_0
     swap3_0 -- IXBAR_READ --> resub_0
     swap4_0 -- IXBAR_READ --> resub_0
+    parse_resub_hdr_0 -- ANTI_ACTION_READ --> resub_0
+    parse_resub_hdr_0 -- ACTION_READ --> resub_0
     tbl_get_hash1 -- ACTION_READ --> resub_0
-    swap1_0 -- ANTI_ACTION_READ --> resub_0
-    swap1_0 -- ANTI_TABLE_READ --> resub_0
     tbl_fcmsketch_fcm_hash_d1 -- IXBAR_READ --> tbl_fcmsketch_fcm_action_l1_d1
     tbl_fcmsketch_fcm_hash_d2 -- IXBAR_READ --> tbl_fcmsketch_fcm_action_l1_d2
     tbl_fcmsketch_fcm_action_l1_d1 -- IXBAR_READ --> fcmsketch_tb_fcm_l1_to_l2_d1
@@ -118,26 +139,31 @@ GRAPH
     swap3_0 -- ANTI_NEXT_TABLE_DATA --> swap4_0
     swap3_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
     tbl_get_hash3 -- ANTI_NEXT_TABLE_DATA --> swap3_0
-    tbl_get_hash3 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash4
     swap2_0 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash3
     swap2_0 -- ANTI_NEXT_TABLE_DATA --> swap3_0
     swap2_0 -- ANTI_NEXT_TABLE_DATA --> swap4_0
     swap2_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
     tbl_get_hash2 -- ANTI_NEXT_TABLE_DATA --> swap2_0
-    tbl_get_hash2 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash3
-    fcmsketch_tb_fcm_l1_to_l2_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d1
-    fcmsketch_tb_fcm_l1_to_l2_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d2
     swap1_0 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash2
     swap1_0 -- ANTI_NEXT_TABLE_DATA --> swap2_0
     swap1_0 -- ANTI_NEXT_TABLE_DATA --> swap3_0
     swap1_0 -- ANTI_NEXT_TABLE_DATA --> swap4_0
     swap1_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
+    fcmsketch_tb_fcm_l1_to_l2_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d1
+    fcmsketch_tb_fcm_l1_to_l2_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d2
+    parse_resub_hdr_0 -- ANTI_NEXT_TABLE_DATA --> swap1_0
+    parse_resub_hdr_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
     tbl_fcmsketch_fcm_action_l1_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l1_to_l2_d1
     tbl_fcmsketch_fcm_action_l1_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d1
     tbl_fcmsketch_fcm_action_l1_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l1_to_l2_d2
     tbl_fcmsketch_fcm_action_l1_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d2
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap1_0
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap2_0
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap3_0
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap4_0
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
+    tbl_get_hash1 -- ANTI_NEXT_TABLE_DATA --> parse_resub_hdr_0
     tbl_get_hash1 -- ANTI_NEXT_TABLE_DATA --> swap1_0
-    tbl_get_hash1 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash2
     tbl_get_hash1 -- ANTI_NEXT_TABLE_DATA --> resub_0
     tbl_fcmsketch_fcm_hash_d1 -- ANTI_NEXT_TABLE_DATA --> tbl_fcmsketch_fcm_action_l1_d1
     tbl_fcmsketch_fcm_hash_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l1_to_l2_d1
@@ -152,8 +178,9 @@ MIN STAGE INFO
     First number refers to a dependency chain from which each tables are not split
     Second number refers to a dependency chain from which each tables are split as on  last allocation pass
  Stage #0
-     forward_0 0 0
-     tbl_get_hash1 8 8
+     forward_0 8 8
+     tbl_get_hash1 9 9
+     tbl_waterfall430 0 0
      tbl_count_pkt 0 0
      tbl_fcmsketch_fcm_hash_d1 3 3
      tbl_fcmsketch_fcm_hash_d2 3 3
@@ -161,16 +188,16 @@ MIN STAGE INFO
      fcmsketch_tb_fcm_l1_to_l2_d2$precompute 2 2
      tbl_fcm386 0 0
  Stage #1
-     swap1_0 7 7
-	- Edge IXBAR_READ tbl_get_hash1
-	- Edge ACTION_READ tbl_get_hash1
+     parse_resub_hdr_0 8 8
+	- Edge OUTPUT tbl_get_hash1
      tbl_fcmsketch_fcm_action_l1_d1 2 2
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_hash_d1
      tbl_fcmsketch_fcm_action_l1_d2 2 2
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_hash_d2
  Stage #2
-     tbl_get_hash2 6 6
-	- Edge IXBAR_READ swap1_0
+     swap1_0 7 7
+	- Edge IXBAR_READ parse_resub_hdr_0
+	- Edge ACTION_READ parse_resub_hdr_0
      fcmsketch_tb_fcm_l1_to_l2_d1 1 1
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_action_l1_d1
 	- Edge OUTPUT tbl_fcmsketch_fcm_action_l1_d1
@@ -178,9 +205,9 @@ MIN STAGE INFO
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_action_l1_d2
 	- Edge OUTPUT tbl_fcmsketch_fcm_action_l1_d2
  Stage #3
-     swap2_0 5 5
-	- Edge IXBAR_READ tbl_get_hash2
-	- Edge ACTION_READ tbl_get_hash2
+     tbl_get_hash2 6 6
+	- Edge IXBAR_READ swap1_0
+	- Edge ACTION_READ swap1_0
      fcmsketch_tb_fcm_l2_to_l3_d1 0 0
 	- Edge IXBAR_READ fcmsketch_tb_fcm_l1_to_l2_d1
 	- Edge OUTPUT fcmsketch_tb_fcm_l1_to_l2_d1
@@ -188,26 +215,33 @@ MIN STAGE INFO
 	- Edge IXBAR_READ fcmsketch_tb_fcm_l1_to_l2_d2
 	- Edge OUTPUT fcmsketch_tb_fcm_l1_to_l2_d2
  Stage #4
+     swap2_0 5 5
+	- Edge IXBAR_READ tbl_get_hash2
+	- Edge ACTION_READ tbl_get_hash2
+ Stage #5
      tbl_get_hash3 4 4
 	- Edge IXBAR_READ swap2_0
- Stage #5
+	- Edge ACTION_READ swap2_0
+ Stage #6
      swap3_0 3 3
 	- Edge IXBAR_READ tbl_get_hash3
 	- Edge ACTION_READ tbl_get_hash3
- Stage #6
+ Stage #7
      tbl_get_hash4 2 2
 	- Edge IXBAR_READ swap3_0
- Stage #7
+	- Edge ACTION_READ swap3_0
+ Stage #8
      swap4_0 1 1
 	- Edge IXBAR_READ tbl_get_hash4
- Stage #8
+ Stage #9
      resub_0 0 0
 	- Edge IXBAR_READ swap4_0
 
 FindDependencyGraph : Just Before PHV allocation
-ingress: [3] 0 00 000 0000 00000 000000 0000000 00000000 000000000
+ingress: [3] 0 00 000 0000 00000 000000 0000000 00000000 000000000 0000000000
   forward_0
   tbl_get_hash1
+  parse_resub_hdr_0
   swap1_0
     stateful WaterfallIngress.table_1  66K
   tbl_get_hash2
@@ -242,6 +276,7 @@ egress: [4] 0 00 000 0000 00000 000000 0000000 00000000 000000000 0000000000
 
 DepStagesThruDomFrontier postorder : forward_0
 DepStagesThruDomFrontier postorder : tbl_get_hash1
+DepStagesThruDomFrontier postorder : parse_resub_hdr_0
 DepStagesThruDomFrontier postorder : swap1_0
 DepStagesThruDomFrontier postorder : tbl_get_hash2
 DepStagesThruDomFrontier postorder : swap2_0
@@ -262,38 +297,55 @@ DepStagesThruDomFrontier postorder : fcmsketch_tb_fcm_l1_to_l2_d2
 DepStagesThruDomFrontier postorder : fcmsketch_tb_fcm_l2_to_l3_d1
 DepStagesThruDomFrontier postorder : fcmsketch_tb_fcm_l2_to_l3_d2
     Maximum stage number according to dependences: 
-      INGRESS: 8
+      INGRESS: 9
       EGRESS: 3
 GRAPH
+    tbl_get_hash1 -- OUTPUT --> parse_resub_hdr_0
+    parse_resub_hdr_0 -- IXBAR_READ --> swap1_0
     tbl_get_hash1 -- IXBAR_READ --> swap1_0
+    forward_0 -- OUTPUT --> swap1_0
+    parse_resub_hdr_0 -- ACTION_READ --> swap1_0
     tbl_get_hash1 -- ACTION_READ --> swap1_0
-    tbl_get_hash1 -- IXBAR_READ --> tbl_get_hash2
     swap1_0 -- IXBAR_READ --> tbl_get_hash2
+    swap1_0 -- ACTION_READ --> tbl_get_hash2
+    forward_0 -- IXBAR_READ --> swap2_0
     swap1_0 -- IXBAR_READ --> swap2_0
     tbl_get_hash2 -- IXBAR_READ --> swap2_0
+    forward_0 -- OUTPUT --> swap2_0
     swap1_0 -- OUTPUT --> swap2_0
     tbl_get_hash2 -- ACTION_READ --> swap2_0
-    tbl_get_hash2 -- IXBAR_READ --> tbl_get_hash3
     swap2_0 -- IXBAR_READ --> tbl_get_hash3
+    swap2_0 -- ACTION_READ --> tbl_get_hash3
+    forward_0 -- IXBAR_READ --> swap3_0
+    swap1_0 -- IXBAR_READ --> swap3_0
     swap2_0 -- IXBAR_READ --> swap3_0
     tbl_get_hash3 -- IXBAR_READ --> swap3_0
+    swap2_0 -- ANTI_ACTION_READ --> swap3_0
+    forward_0 -- OUTPUT --> swap3_0
     swap1_0 -- OUTPUT --> swap3_0
     swap2_0 -- OUTPUT --> swap3_0
     tbl_get_hash3 -- ACTION_READ --> swap3_0
-    tbl_get_hash3 -- IXBAR_READ --> tbl_get_hash4
     swap3_0 -- IXBAR_READ --> tbl_get_hash4
+    swap3_0 -- ACTION_READ --> tbl_get_hash4
+    forward_0 -- IXBAR_READ --> swap4_0
+    swap1_0 -- IXBAR_READ --> swap4_0
+    swap2_0 -- IXBAR_READ --> swap4_0
     swap3_0 -- IXBAR_READ --> swap4_0
+    swap2_0 -- ANTI_ACTION_READ --> swap4_0
+    swap3_0 -- ANTI_ACTION_READ --> swap4_0
+    forward_0 -- OUTPUT --> swap4_0
     swap1_0 -- OUTPUT --> swap4_0
     swap2_0 -- OUTPUT --> swap4_0
     swap3_0 -- OUTPUT --> swap4_0
     tbl_get_hash4 -- IXBAR_READ --> swap4_0
+    forward_0 -- IXBAR_READ --> resub_0
     swap1_0 -- IXBAR_READ --> resub_0
     swap2_0 -- IXBAR_READ --> resub_0
     swap3_0 -- IXBAR_READ --> resub_0
     swap4_0 -- IXBAR_READ --> resub_0
+    parse_resub_hdr_0 -- ANTI_ACTION_READ --> resub_0
+    parse_resub_hdr_0 -- ACTION_READ --> resub_0
     tbl_get_hash1 -- ACTION_READ --> resub_0
-    swap1_0 -- ANTI_ACTION_READ --> resub_0
-    swap1_0 -- ANTI_TABLE_READ --> resub_0
     tbl_fcmsketch_fcm_hash_d1 -- IXBAR_READ --> tbl_fcmsketch_fcm_action_l1_d1
     tbl_fcmsketch_fcm_hash_d2 -- IXBAR_READ --> tbl_fcmsketch_fcm_action_l1_d2
     tbl_fcmsketch_fcm_action_l1_d1 -- IXBAR_READ --> fcmsketch_tb_fcm_l1_to_l2_d1
@@ -316,26 +368,31 @@ GRAPH
     swap3_0 -- ANTI_NEXT_TABLE_DATA --> swap4_0
     swap3_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
     tbl_get_hash3 -- ANTI_NEXT_TABLE_DATA --> swap3_0
-    tbl_get_hash3 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash4
     swap2_0 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash3
     swap2_0 -- ANTI_NEXT_TABLE_DATA --> swap3_0
     swap2_0 -- ANTI_NEXT_TABLE_DATA --> swap4_0
     swap2_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
     tbl_get_hash2 -- ANTI_NEXT_TABLE_DATA --> swap2_0
-    tbl_get_hash2 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash3
-    fcmsketch_tb_fcm_l1_to_l2_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d1
-    fcmsketch_tb_fcm_l1_to_l2_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d2
     swap1_0 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash2
     swap1_0 -- ANTI_NEXT_TABLE_DATA --> swap2_0
     swap1_0 -- ANTI_NEXT_TABLE_DATA --> swap3_0
     swap1_0 -- ANTI_NEXT_TABLE_DATA --> swap4_0
     swap1_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
+    fcmsketch_tb_fcm_l1_to_l2_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d1
+    fcmsketch_tb_fcm_l1_to_l2_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d2
+    parse_resub_hdr_0 -- ANTI_NEXT_TABLE_DATA --> swap1_0
+    parse_resub_hdr_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
     tbl_fcmsketch_fcm_action_l1_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l1_to_l2_d1
     tbl_fcmsketch_fcm_action_l1_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d1
     tbl_fcmsketch_fcm_action_l1_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l1_to_l2_d2
     tbl_fcmsketch_fcm_action_l1_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d2
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap1_0
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap2_0
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap3_0
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap4_0
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
+    tbl_get_hash1 -- ANTI_NEXT_TABLE_DATA --> parse_resub_hdr_0
     tbl_get_hash1 -- ANTI_NEXT_TABLE_DATA --> swap1_0
-    tbl_get_hash1 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash2
     tbl_get_hash1 -- ANTI_NEXT_TABLE_DATA --> resub_0
     tbl_fcmsketch_fcm_hash_d1 -- ANTI_NEXT_TABLE_DATA --> tbl_fcmsketch_fcm_action_l1_d1
     tbl_fcmsketch_fcm_hash_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l1_to_l2_d1
@@ -350,24 +407,24 @@ MIN STAGE INFO
     First number refers to a dependency chain from which each tables are not split
     Second number refers to a dependency chain from which each tables are split as on  last allocation pass
  Stage #0
-     forward_0 0 0
-     tbl_get_hash1 8 8
+     forward_0 8 8
+     tbl_get_hash1 9 9
      tbl_count_pkt 0 0
      tbl_fcmsketch_fcm_hash_d1 3 3
      tbl_fcmsketch_fcm_hash_d2 3 3
      fcmsketch_tb_fcm_l1_to_l2_d1$precompute 2 2
      fcmsketch_tb_fcm_l1_to_l2_d2$precompute 2 2
  Stage #1
-     swap1_0 7 7
-	- Edge IXBAR_READ tbl_get_hash1
-	- Edge ACTION_READ tbl_get_hash1
+     parse_resub_hdr_0 8 8
+	- Edge OUTPUT tbl_get_hash1
      tbl_fcmsketch_fcm_action_l1_d1 2 2
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_hash_d1
      tbl_fcmsketch_fcm_action_l1_d2 2 2
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_hash_d2
  Stage #2
-     tbl_get_hash2 6 6
-	- Edge IXBAR_READ swap1_0
+     swap1_0 7 7
+	- Edge IXBAR_READ parse_resub_hdr_0
+	- Edge ACTION_READ parse_resub_hdr_0
      fcmsketch_tb_fcm_l1_to_l2_d1 1 1
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_action_l1_d1
 	- Edge OUTPUT tbl_fcmsketch_fcm_action_l1_d1
@@ -375,43 +432,50 @@ MIN STAGE INFO
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_action_l1_d2
 	- Edge OUTPUT tbl_fcmsketch_fcm_action_l1_d2
  Stage #3
-     swap2_0 5 5
-	- Edge IXBAR_READ tbl_get_hash2
-	- Edge ACTION_READ tbl_get_hash2
+     tbl_get_hash2 6 6
+	- Edge IXBAR_READ swap1_0
+	- Edge ACTION_READ swap1_0
      fcmsketch_tb_fcm_l2_to_l3_d1 0 0
 	- Edge IXBAR_READ fcmsketch_tb_fcm_l1_to_l2_d1
      fcmsketch_tb_fcm_l2_to_l3_d2 0 0
 	- Edge IXBAR_READ fcmsketch_tb_fcm_l1_to_l2_d2
  Stage #4
+     swap2_0 5 5
+	- Edge IXBAR_READ tbl_get_hash2
+	- Edge ACTION_READ tbl_get_hash2
+ Stage #5
      tbl_get_hash3 4 4
 	- Edge IXBAR_READ swap2_0
- Stage #5
+	- Edge ACTION_READ swap2_0
+ Stage #6
      swap3_0 3 3
 	- Edge IXBAR_READ tbl_get_hash3
 	- Edge ACTION_READ tbl_get_hash3
- Stage #6
+ Stage #7
      tbl_get_hash4 2 2
 	- Edge IXBAR_READ swap3_0
- Stage #7
+	- Edge ACTION_READ swap3_0
+ Stage #8
      swap4_0 1 1
 	- Edge IXBAR_READ tbl_get_hash4
- Stage #8
+ Stage #9
      resub_0 0 0
 	- Edge IXBAR_READ swap4_0
 
-ingress: [3] 0 01 011 0111 01111 011111 0111111 01111111 011111111
+ingress: [3] 0 01 111 1111 11111 111111 1111111 11111111 111111111 1111111111
   forward_0{ E -1+2, 2 0K }
   tbl_get_hash1
+  parse_resub_hdr_0{ E -9+1, 0 0K }
   swap1_0{ E -9+2, 0 0K }
     stateful WaterfallIngress.table_1  66K
   tbl_get_hash2
-  swap2_0{ T 33+2, 0 0K }
+  swap2_0{ E -8+2, 0 0K }
     stateful WaterfallIngress.table_2  66K
   tbl_get_hash3
-  swap3_0{ T 33+2, 0 0K }
+  swap3_0{ E -8+2, 0 0K }
     stateful WaterfallIngress.table_3  66K
   tbl_get_hash4
-  swap4_0{ T 33+2, 0 0K }
+  swap4_0{ E -8+2, 0 0K }
     stateful WaterfallIngress.table_4  66K
   resub_0{ E -8+1, 0 0K }
 egress: [4] 0 00 010 0010 00000 010101 0000000 00101001 010101100 0010100110
@@ -436,6 +500,7 @@ egress: [4] 0 00 010 0010 00000 010101 0000000 00101001 010101100 0010100110
 
 DepStagesThruDomFrontier postorder : forward_0
 DepStagesThruDomFrontier postorder : tbl_get_hash1
+DepStagesThruDomFrontier postorder : parse_resub_hdr_0
 DepStagesThruDomFrontier postorder : swap1_0
 DepStagesThruDomFrontier postorder : tbl_get_hash2
 DepStagesThruDomFrontier postorder : swap2_0
@@ -456,51 +521,62 @@ DepStagesThruDomFrontier postorder : fcmsketch_tb_fcm_l1_to_l2_d2
 DepStagesThruDomFrontier postorder : fcmsketch_tb_fcm_l2_to_l3_d1
 DepStagesThruDomFrontier postorder : fcmsketch_tb_fcm_l2_to_l3_d2
     Maximum stage number according to dependences: 
-      INGRESS: 8
+      INGRESS: 9
       EGRESS: 3
 GRAPH
-    swap2_0 -- ANTI_NEXT_TABLE_METADATA --> resub_0
+    forward_0 -- ANTI_NEXT_TABLE_METADATA --> swap2_0
+    forward_0 -- ANTI_NEXT_TABLE_METADATA --> tbl_get_hash2
     swap2_0 -- ANTI_NEXT_TABLE_METADATA --> swap4_0
     swap2_0 -- ANTI_NEXT_TABLE_METADATA --> tbl_get_hash4
-    tbl_get_hash3 -- ANTI_NEXT_TABLE_METADATA --> resub_0
-    forward_0 -- ANTI_NEXT_TABLE_METADATA --> resub_0
-    forward_0 -- ANTI_NEXT_TABLE_METADATA --> swap1_0
-    forward_0 -- ANTI_NEXT_TABLE_METADATA --> swap2_0
-    forward_0 -- ANTI_NEXT_TABLE_METADATA --> swap3_0
-    forward_0 -- ANTI_NEXT_TABLE_METADATA --> swap4_0
-    forward_0 -- ANTI_NEXT_TABLE_METADATA --> tbl_get_hash4
-    forward_0 -- ANTI_NEXT_TABLE_METADATA --> tbl_get_hash2
+    swap2_0 -- ANTI_NEXT_TABLE_METADATA --> resub_0
     tbl_get_hash2 -- ANTI_NEXT_TABLE_METADATA --> swap4_0
     tbl_get_hash2 -- ANTI_NEXT_TABLE_METADATA --> tbl_get_hash4
+    tbl_get_hash1 -- OUTPUT --> parse_resub_hdr_0
+    parse_resub_hdr_0 -- IXBAR_READ --> swap1_0
     tbl_get_hash1 -- IXBAR_READ --> swap1_0
+    forward_0 -- OUTPUT --> swap1_0
+    parse_resub_hdr_0 -- ACTION_READ --> swap1_0
     tbl_get_hash1 -- ACTION_READ --> swap1_0
-    tbl_get_hash1 -- IXBAR_READ --> tbl_get_hash2
     swap1_0 -- IXBAR_READ --> tbl_get_hash2
+    swap1_0 -- ACTION_READ --> tbl_get_hash2
+    forward_0 -- IXBAR_READ --> swap2_0
     swap1_0 -- IXBAR_READ --> swap2_0
     tbl_get_hash2 -- IXBAR_READ --> swap2_0
+    forward_0 -- OUTPUT --> swap2_0
     swap1_0 -- OUTPUT --> swap2_0
     tbl_get_hash2 -- ACTION_READ --> swap2_0
-    tbl_get_hash2 -- IXBAR_READ --> tbl_get_hash3
     swap2_0 -- IXBAR_READ --> tbl_get_hash3
+    swap2_0 -- ACTION_READ --> tbl_get_hash3
+    forward_0 -- IXBAR_READ --> swap3_0
+    swap1_0 -- IXBAR_READ --> swap3_0
     swap2_0 -- IXBAR_READ --> swap3_0
     tbl_get_hash3 -- IXBAR_READ --> swap3_0
+    swap2_0 -- ANTI_ACTION_READ --> swap3_0
+    forward_0 -- OUTPUT --> swap3_0
     swap1_0 -- OUTPUT --> swap3_0
     swap2_0 -- OUTPUT --> swap3_0
     tbl_get_hash3 -- ACTION_READ --> swap3_0
-    tbl_get_hash3 -- IXBAR_READ --> tbl_get_hash4
     swap3_0 -- IXBAR_READ --> tbl_get_hash4
+    swap3_0 -- ACTION_READ --> tbl_get_hash4
+    forward_0 -- IXBAR_READ --> swap4_0
+    swap1_0 -- IXBAR_READ --> swap4_0
+    swap2_0 -- IXBAR_READ --> swap4_0
     swap3_0 -- IXBAR_READ --> swap4_0
+    swap2_0 -- ANTI_ACTION_READ --> swap4_0
+    swap3_0 -- ANTI_ACTION_READ --> swap4_0
+    forward_0 -- OUTPUT --> swap4_0
     swap1_0 -- OUTPUT --> swap4_0
     swap2_0 -- OUTPUT --> swap4_0
     swap3_0 -- OUTPUT --> swap4_0
     tbl_get_hash4 -- IXBAR_READ --> swap4_0
+    forward_0 -- IXBAR_READ --> resub_0
     swap1_0 -- IXBAR_READ --> resub_0
     swap2_0 -- IXBAR_READ --> resub_0
     swap3_0 -- IXBAR_READ --> resub_0
     swap4_0 -- IXBAR_READ --> resub_0
+    parse_resub_hdr_0 -- ANTI_ACTION_READ --> resub_0
+    parse_resub_hdr_0 -- ACTION_READ --> resub_0
     tbl_get_hash1 -- ACTION_READ --> resub_0
-    swap1_0 -- ANTI_ACTION_READ --> resub_0
-    swap1_0 -- ANTI_TABLE_READ --> resub_0
     tbl_fcmsketch_fcm_hash_d1 -- IXBAR_READ --> tbl_fcmsketch_fcm_action_l1_d1
     tbl_fcmsketch_fcm_hash_d2 -- IXBAR_READ --> tbl_fcmsketch_fcm_action_l1_d2
     tbl_fcmsketch_fcm_action_l1_d1 -- IXBAR_READ --> fcmsketch_tb_fcm_l1_to_l2_d1
@@ -522,38 +598,36 @@ GRAPH
     swap3_0 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash4
     swap3_0 -- ANTI_NEXT_TABLE_DATA --> swap4_0
     swap3_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
-    tbl_get_hash3 -- ANTI_NEXT_TABLE_DATA --> resub_0
     tbl_get_hash3 -- ANTI_NEXT_TABLE_DATA --> swap3_0
-    tbl_get_hash3 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash4
-    swap2_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
     swap2_0 -- ANTI_NEXT_TABLE_DATA --> swap4_0
     swap2_0 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash4
+    swap2_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
     swap2_0 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash3
     swap2_0 -- ANTI_NEXT_TABLE_DATA --> swap3_0
     tbl_get_hash2 -- ANTI_NEXT_TABLE_DATA --> swap4_0
     tbl_get_hash2 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash4
     tbl_get_hash2 -- ANTI_NEXT_TABLE_DATA --> swap2_0
-    tbl_get_hash2 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash3
-    fcmsketch_tb_fcm_l1_to_l2_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d1
-    fcmsketch_tb_fcm_l1_to_l2_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d2
     swap1_0 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash2
     swap1_0 -- ANTI_NEXT_TABLE_DATA --> swap2_0
     swap1_0 -- ANTI_NEXT_TABLE_DATA --> swap3_0
     swap1_0 -- ANTI_NEXT_TABLE_DATA --> swap4_0
     swap1_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
+    fcmsketch_tb_fcm_l1_to_l2_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d1
+    fcmsketch_tb_fcm_l1_to_l2_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d2
+    parse_resub_hdr_0 -- ANTI_NEXT_TABLE_DATA --> swap1_0
+    parse_resub_hdr_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
     tbl_fcmsketch_fcm_action_l1_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l1_to_l2_d1
     tbl_fcmsketch_fcm_action_l1_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d1
     tbl_fcmsketch_fcm_action_l1_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l1_to_l2_d2
     tbl_fcmsketch_fcm_action_l1_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d2
-    forward_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
-    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap1_0
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap2_0
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash2
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap1_0
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap3_0
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap4_0
-    forward_0 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash4
-    forward_0 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash2
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
+    tbl_get_hash1 -- ANTI_NEXT_TABLE_DATA --> parse_resub_hdr_0
     tbl_get_hash1 -- ANTI_NEXT_TABLE_DATA --> swap1_0
-    tbl_get_hash1 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash2
     tbl_get_hash1 -- ANTI_NEXT_TABLE_DATA --> resub_0
     tbl_fcmsketch_fcm_hash_d1 -- ANTI_NEXT_TABLE_DATA --> tbl_fcmsketch_fcm_action_l1_d1
     tbl_fcmsketch_fcm_hash_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l1_to_l2_d1
@@ -568,24 +642,24 @@ MIN STAGE INFO
     First number refers to a dependency chain from which each tables are not split
     Second number refers to a dependency chain from which each tables are split as on  last allocation pass
  Stage #0
-     forward_0 7 7
-     tbl_get_hash1 8 8
+     forward_0 8 8
+     tbl_get_hash1 9 9
      tbl_count_pkt 0 0
      tbl_fcmsketch_fcm_hash_d1 3 3
      tbl_fcmsketch_fcm_hash_d2 3 3
      fcmsketch_tb_fcm_l1_to_l2_d1$precompute 2 2
      fcmsketch_tb_fcm_l1_to_l2_d2$precompute 2 2
  Stage #1
-     swap1_0 7 7
-	- Edge IXBAR_READ tbl_get_hash1
-	- Edge ACTION_READ tbl_get_hash1
+     parse_resub_hdr_0 8 8
+	- Edge OUTPUT tbl_get_hash1
      tbl_fcmsketch_fcm_action_l1_d1 2 2
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_hash_d1
      tbl_fcmsketch_fcm_action_l1_d2 2 2
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_hash_d2
  Stage #2
-     tbl_get_hash2 6 6
-	- Edge IXBAR_READ swap1_0
+     swap1_0 7 7
+	- Edge IXBAR_READ parse_resub_hdr_0
+	- Edge ACTION_READ parse_resub_hdr_0
      fcmsketch_tb_fcm_l1_to_l2_d1 1 1
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_action_l1_d1
 	- Edge OUTPUT tbl_fcmsketch_fcm_action_l1_d1
@@ -593,44 +667,51 @@ MIN STAGE INFO
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_action_l1_d2
 	- Edge OUTPUT tbl_fcmsketch_fcm_action_l1_d2
  Stage #3
-     swap2_0 5 5
-	- Edge IXBAR_READ tbl_get_hash2
-	- Edge ACTION_READ tbl_get_hash2
+     tbl_get_hash2 6 6
+	- Edge IXBAR_READ swap1_0
+	- Edge ACTION_READ swap1_0
      fcmsketch_tb_fcm_l2_to_l3_d1 0 0
 	- Edge IXBAR_READ fcmsketch_tb_fcm_l1_to_l2_d1
      fcmsketch_tb_fcm_l2_to_l3_d2 0 0
 	- Edge IXBAR_READ fcmsketch_tb_fcm_l1_to_l2_d2
  Stage #4
+     swap2_0 5 5
+	- Edge IXBAR_READ tbl_get_hash2
+	- Edge ACTION_READ tbl_get_hash2
+ Stage #5
      tbl_get_hash3 4 4
 	- Edge IXBAR_READ swap2_0
- Stage #5
+	- Edge ACTION_READ swap2_0
+ Stage #6
      swap3_0 3 3
 	- Edge IXBAR_READ tbl_get_hash3
 	- Edge ACTION_READ tbl_get_hash3
- Stage #6
+ Stage #7
      tbl_get_hash4 2 2
 	- Edge IXBAR_READ swap3_0
- Stage #7
+	- Edge ACTION_READ swap3_0
+ Stage #8
      swap4_0 1 1
 	- Edge IXBAR_READ tbl_get_hash4
- Stage #8
+ Stage #9
      resub_0 0 0
 	- Edge IXBAR_READ swap4_0
 
 FindDependencyGraph : Before Table Placement
-ingress: [3] 0 01 011 0111 01111 011111 0111111 01111111 011111111
+ingress: [3] 0 01 111 1111 11111 111111 1111111 11111111 111111111 1111111111
   forward_0{ E -1+2, 2 0K }
   tbl_get_hash1
+  parse_resub_hdr_0{ E -9+1, 0 0K }
   swap1_0{ E -9+2, 0 0K }
     stateful WaterfallIngress.table_1  66K
   tbl_get_hash2
-  swap2_0{ T 33+2, 0 0K }
+  swap2_0{ E -8+2, 0 0K }
     stateful WaterfallIngress.table_2  66K
   tbl_get_hash3
-  swap3_0{ T 33+2, 0 0K }
+  swap3_0{ E -8+2, 0 0K }
     stateful WaterfallIngress.table_3  66K
   tbl_get_hash4
-  swap4_0{ T 33+2, 0 0K }
+  swap4_0{ E -8+2, 0 0K }
     stateful WaterfallIngress.table_4  66K
   resub_0{ E -8+1, 0 0K }
 egress: [4] 0 00 010 0010 00000 010101 0000000 00101001 010101100 0010100110
@@ -655,6 +736,7 @@ egress: [4] 0 00 010 0010 00000 010101 0000000 00101001 010101100 0010100110
 
 DepStagesThruDomFrontier postorder : forward_0
 DepStagesThruDomFrontier postorder : tbl_get_hash1
+DepStagesThruDomFrontier postorder : parse_resub_hdr_0
 DepStagesThruDomFrontier postorder : swap1_0
 DepStagesThruDomFrontier postorder : tbl_get_hash2
 DepStagesThruDomFrontier postorder : swap2_0
@@ -675,51 +757,62 @@ DepStagesThruDomFrontier postorder : fcmsketch_tb_fcm_l1_to_l2_d2
 DepStagesThruDomFrontier postorder : fcmsketch_tb_fcm_l2_to_l3_d1
 DepStagesThruDomFrontier postorder : fcmsketch_tb_fcm_l2_to_l3_d2
     Maximum stage number according to dependences: 
-      INGRESS: 8
+      INGRESS: 9
       EGRESS: 3
 GRAPH
-    swap2_0 -- ANTI_NEXT_TABLE_METADATA --> resub_0
+    forward_0 -- ANTI_NEXT_TABLE_METADATA --> swap2_0
+    forward_0 -- ANTI_NEXT_TABLE_METADATA --> tbl_get_hash2
     swap2_0 -- ANTI_NEXT_TABLE_METADATA --> swap4_0
     swap2_0 -- ANTI_NEXT_TABLE_METADATA --> tbl_get_hash4
-    tbl_get_hash3 -- ANTI_NEXT_TABLE_METADATA --> resub_0
-    forward_0 -- ANTI_NEXT_TABLE_METADATA --> resub_0
-    forward_0 -- ANTI_NEXT_TABLE_METADATA --> swap1_0
-    forward_0 -- ANTI_NEXT_TABLE_METADATA --> swap2_0
-    forward_0 -- ANTI_NEXT_TABLE_METADATA --> swap3_0
-    forward_0 -- ANTI_NEXT_TABLE_METADATA --> swap4_0
-    forward_0 -- ANTI_NEXT_TABLE_METADATA --> tbl_get_hash4
-    forward_0 -- ANTI_NEXT_TABLE_METADATA --> tbl_get_hash2
+    swap2_0 -- ANTI_NEXT_TABLE_METADATA --> resub_0
     tbl_get_hash2 -- ANTI_NEXT_TABLE_METADATA --> swap4_0
     tbl_get_hash2 -- ANTI_NEXT_TABLE_METADATA --> tbl_get_hash4
+    tbl_get_hash1 -- OUTPUT --> parse_resub_hdr_0
+    parse_resub_hdr_0 -- IXBAR_READ --> swap1_0
     tbl_get_hash1 -- IXBAR_READ --> swap1_0
+    forward_0 -- OUTPUT --> swap1_0
+    parse_resub_hdr_0 -- ACTION_READ --> swap1_0
     tbl_get_hash1 -- ACTION_READ --> swap1_0
-    tbl_get_hash1 -- IXBAR_READ --> tbl_get_hash2
     swap1_0 -- IXBAR_READ --> tbl_get_hash2
+    swap1_0 -- ACTION_READ --> tbl_get_hash2
+    forward_0 -- IXBAR_READ --> swap2_0
     swap1_0 -- IXBAR_READ --> swap2_0
     tbl_get_hash2 -- IXBAR_READ --> swap2_0
+    forward_0 -- OUTPUT --> swap2_0
     swap1_0 -- OUTPUT --> swap2_0
     tbl_get_hash2 -- ACTION_READ --> swap2_0
-    tbl_get_hash2 -- IXBAR_READ --> tbl_get_hash3
     swap2_0 -- IXBAR_READ --> tbl_get_hash3
+    swap2_0 -- ACTION_READ --> tbl_get_hash3
+    forward_0 -- IXBAR_READ --> swap3_0
+    swap1_0 -- IXBAR_READ --> swap3_0
     swap2_0 -- IXBAR_READ --> swap3_0
     tbl_get_hash3 -- IXBAR_READ --> swap3_0
+    swap2_0 -- ANTI_ACTION_READ --> swap3_0
+    forward_0 -- OUTPUT --> swap3_0
     swap1_0 -- OUTPUT --> swap3_0
     swap2_0 -- OUTPUT --> swap3_0
     tbl_get_hash3 -- ACTION_READ --> swap3_0
-    tbl_get_hash3 -- IXBAR_READ --> tbl_get_hash4
     swap3_0 -- IXBAR_READ --> tbl_get_hash4
+    swap3_0 -- ACTION_READ --> tbl_get_hash4
+    forward_0 -- IXBAR_READ --> swap4_0
+    swap1_0 -- IXBAR_READ --> swap4_0
+    swap2_0 -- IXBAR_READ --> swap4_0
     swap3_0 -- IXBAR_READ --> swap4_0
+    swap2_0 -- ANTI_ACTION_READ --> swap4_0
+    swap3_0 -- ANTI_ACTION_READ --> swap4_0
+    forward_0 -- OUTPUT --> swap4_0
     swap1_0 -- OUTPUT --> swap4_0
     swap2_0 -- OUTPUT --> swap4_0
     swap3_0 -- OUTPUT --> swap4_0
     tbl_get_hash4 -- IXBAR_READ --> swap4_0
+    forward_0 -- IXBAR_READ --> resub_0
     swap1_0 -- IXBAR_READ --> resub_0
     swap2_0 -- IXBAR_READ --> resub_0
     swap3_0 -- IXBAR_READ --> resub_0
     swap4_0 -- IXBAR_READ --> resub_0
+    parse_resub_hdr_0 -- ANTI_ACTION_READ --> resub_0
+    parse_resub_hdr_0 -- ACTION_READ --> resub_0
     tbl_get_hash1 -- ACTION_READ --> resub_0
-    swap1_0 -- ANTI_ACTION_READ --> resub_0
-    swap1_0 -- ANTI_TABLE_READ --> resub_0
     tbl_fcmsketch_fcm_hash_d1 -- IXBAR_READ --> tbl_fcmsketch_fcm_action_l1_d1
     tbl_fcmsketch_fcm_hash_d2 -- IXBAR_READ --> tbl_fcmsketch_fcm_action_l1_d2
     tbl_fcmsketch_fcm_action_l1_d1 -- IXBAR_READ --> fcmsketch_tb_fcm_l1_to_l2_d1
@@ -741,38 +834,36 @@ GRAPH
     swap3_0 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash4
     swap3_0 -- ANTI_NEXT_TABLE_DATA --> swap4_0
     swap3_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
-    tbl_get_hash3 -- ANTI_NEXT_TABLE_DATA --> resub_0
     tbl_get_hash3 -- ANTI_NEXT_TABLE_DATA --> swap3_0
-    tbl_get_hash3 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash4
-    swap2_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
     swap2_0 -- ANTI_NEXT_TABLE_DATA --> swap4_0
     swap2_0 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash4
+    swap2_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
     swap2_0 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash3
     swap2_0 -- ANTI_NEXT_TABLE_DATA --> swap3_0
     tbl_get_hash2 -- ANTI_NEXT_TABLE_DATA --> swap4_0
     tbl_get_hash2 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash4
     tbl_get_hash2 -- ANTI_NEXT_TABLE_DATA --> swap2_0
-    tbl_get_hash2 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash3
-    fcmsketch_tb_fcm_l1_to_l2_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d1
-    fcmsketch_tb_fcm_l1_to_l2_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d2
     swap1_0 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash2
     swap1_0 -- ANTI_NEXT_TABLE_DATA --> swap2_0
     swap1_0 -- ANTI_NEXT_TABLE_DATA --> swap3_0
     swap1_0 -- ANTI_NEXT_TABLE_DATA --> swap4_0
     swap1_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
+    fcmsketch_tb_fcm_l1_to_l2_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d1
+    fcmsketch_tb_fcm_l1_to_l2_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d2
+    parse_resub_hdr_0 -- ANTI_NEXT_TABLE_DATA --> swap1_0
+    parse_resub_hdr_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
     tbl_fcmsketch_fcm_action_l1_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l1_to_l2_d1
     tbl_fcmsketch_fcm_action_l1_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d1
     tbl_fcmsketch_fcm_action_l1_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l1_to_l2_d2
     tbl_fcmsketch_fcm_action_l1_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d2
-    forward_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
-    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap1_0
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap2_0
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash2
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap1_0
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap3_0
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap4_0
-    forward_0 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash4
-    forward_0 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash2
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
+    tbl_get_hash1 -- ANTI_NEXT_TABLE_DATA --> parse_resub_hdr_0
     tbl_get_hash1 -- ANTI_NEXT_TABLE_DATA --> swap1_0
-    tbl_get_hash1 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash2
     tbl_get_hash1 -- ANTI_NEXT_TABLE_DATA --> resub_0
     tbl_fcmsketch_fcm_hash_d1 -- ANTI_NEXT_TABLE_DATA --> tbl_fcmsketch_fcm_action_l1_d1
     tbl_fcmsketch_fcm_hash_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l1_to_l2_d1
@@ -787,24 +878,24 @@ MIN STAGE INFO
     First number refers to a dependency chain from which each tables are not split
     Second number refers to a dependency chain from which each tables are split as on  last allocation pass
  Stage #0
-     forward_0 7 7
-     tbl_get_hash1 8 8
+     forward_0 8 8
+     tbl_get_hash1 9 9
      tbl_count_pkt 0 0
      tbl_fcmsketch_fcm_hash_d1 3 3
      tbl_fcmsketch_fcm_hash_d2 3 3
      fcmsketch_tb_fcm_l1_to_l2_d1$precompute 2 2
      fcmsketch_tb_fcm_l1_to_l2_d2$precompute 2 2
  Stage #1
-     swap1_0 7 7
-	- Edge IXBAR_READ tbl_get_hash1
-	- Edge ACTION_READ tbl_get_hash1
+     parse_resub_hdr_0 8 8
+	- Edge OUTPUT tbl_get_hash1
      tbl_fcmsketch_fcm_action_l1_d1 2 2
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_hash_d1
      tbl_fcmsketch_fcm_action_l1_d2 2 2
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_hash_d2
  Stage #2
-     tbl_get_hash2 6 6
-	- Edge IXBAR_READ swap1_0
+     swap1_0 7 7
+	- Edge IXBAR_READ parse_resub_hdr_0
+	- Edge ACTION_READ parse_resub_hdr_0
      fcmsketch_tb_fcm_l1_to_l2_d1 1 1
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_action_l1_d1
 	- Edge OUTPUT tbl_fcmsketch_fcm_action_l1_d1
@@ -812,47 +903,54 @@ MIN STAGE INFO
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_action_l1_d2
 	- Edge OUTPUT tbl_fcmsketch_fcm_action_l1_d2
  Stage #3
-     swap2_0 5 5
-	- Edge IXBAR_READ tbl_get_hash2
-	- Edge ACTION_READ tbl_get_hash2
+     tbl_get_hash2 6 6
+	- Edge IXBAR_READ swap1_0
+	- Edge ACTION_READ swap1_0
      fcmsketch_tb_fcm_l2_to_l3_d1 0 0
 	- Edge IXBAR_READ fcmsketch_tb_fcm_l1_to_l2_d1
      fcmsketch_tb_fcm_l2_to_l3_d2 0 0
 	- Edge IXBAR_READ fcmsketch_tb_fcm_l1_to_l2_d2
  Stage #4
+     swap2_0 5 5
+	- Edge IXBAR_READ tbl_get_hash2
+	- Edge ACTION_READ tbl_get_hash2
+ Stage #5
      tbl_get_hash3 4 4
 	- Edge IXBAR_READ swap2_0
- Stage #5
+	- Edge ACTION_READ swap2_0
+ Stage #6
      swap3_0 3 3
 	- Edge IXBAR_READ tbl_get_hash3
 	- Edge ACTION_READ tbl_get_hash3
- Stage #6
+ Stage #7
      tbl_get_hash4 2 2
 	- Edge IXBAR_READ swap3_0
- Stage #7
+	- Edge ACTION_READ swap3_0
+ Stage #8
      swap4_0 1 1
 	- Edge IXBAR_READ tbl_get_hash4
- Stage #8
+ Stage #9
      resub_0 0 0
 	- Edge IXBAR_READ swap4_0
 
 FindDependencyGraph : After Table Placement
-ingress: [3] 0 10 101 1011 10111 101111 1011111 10111111 101111111
+ingress: [3] 0 10 111 1111 11111 111111 1111111 11111111 111111111 1111111111
   0: tbl_get_hash1
   1: forward_0{ E -1+11, 2 [1x5 5K] }
-  10: swap1_0{ E -9+22, 0 [1x2 2K] }
+  10: parse_resub_hdr_0{ E -9+1, 0 [1x5 5K] }
+  20: swap1_0{ E -9+22, 0 [1x2 2K] }
     stateful WaterfallIngress.table_1 66 K
-  20: tbl_get_hash2
-  30: swap2_0{ T 33+22, 0 0K }
+  30: tbl_get_hash2
+  40: swap2_0{ E -8+22, 0 [1x2 2K] }
     stateful WaterfallIngress.table_2 66 K
-  40: tbl_get_hash3
-  50: swap3_0{ T 33+22, 0 0K }
+  50: tbl_get_hash3
+  60: swap3_0{ E -8+22, 0 [1x2 2K] }
     stateful WaterfallIngress.table_3 66 K
-  60: tbl_get_hash4
-  70: swap4_0{ T 33+22, 0 0K }
+  70: tbl_get_hash4
+  80: swap4_0{ E -8+22, 0 [1x2 2K] }
     stateful WaterfallIngress.table_4 66 K
-  80: resub_0{ E -8+1, 0 [1x5 5K] }
-egress: [4] 0 00 000 0000 10000 010000 1010010 01010010 101001010 0101001010
+  90: resub_0{ E -8+1, 0 [1x5 5K] }
+egress: [4] 0 00 000 0000 10000 101001 0100000 10100110 010100010 0101000101
   2: tbl_fcmsketch_fcm_hash_d2
   3: tbl_fcmsketch_fcm_hash_d1
   4: fcmsketch_tb_fcm_l1_to_l2_d2$precompute
@@ -861,23 +959,24 @@ egress: [4] 0 00 000 0000 10000 010000 1010010 01010010 101001010 0101001010
     stateful FcmEgress.num_pkt 1   
   11: tbl_fcmsketch_fcm_action_l1_d2{ E 0+19, 0 0K }
     stateful FcmEgress.fcmsketch.sketch_reg_l1_d2 524K
-  21: tbl_fcmsketch_fcm_action_l1_d1{ E 0+19, 0 0K }
-    stateful FcmEgress.fcmsketch.sketch_reg_l1_d1 524K
-  22: fcmsketch_tb_fcm_l1_to_l2_d2(egress::eg_md.result_d2 == 255; => $entry0, 1){ GE 0+16, 0 0K }
+  21: fcmsketch_tb_fcm_l1_to_l2_d2(egress::eg_md.result_d2 == 255; => $entry0, 1){ GE 0+16, 0 0K }
     stateful FcmEgress.fcmsketch.sketch_reg_l2_d2 66 K
     $entry0, $miss: [6]
-  31: fcmsketch_tb_fcm_l1_to_l2_d1(egress::eg_md.result_d1 == 255; => $entry0, 1){ GE 0+16, 0 0K }
-    stateful FcmEgress.fcmsketch.sketch_reg_l2_d1 66 K
-    $entry0, $miss: [5]
+  31: tbl_fcmsketch_fcm_action_l1_d1{ E 0+19, 0 0K }
+    stateful FcmEgress.fcmsketch.sketch_reg_l1_d1 524K
   32: fcmsketch_tb_fcm_l2_to_l3_d2(egress::eg_md.result_d2 == 65789; => $entry0, 1){ GE 0+13, 0 0K }
     stateful FcmEgress.fcmsketch.sketch_reg_l3_d2 8192
     $entry0, $miss: [8]
-  41: fcmsketch_tb_fcm_l2_to_l3_d1(egress::eg_md.result_d1 == 65789; => $entry0, 1){ GE 0+13, 0 0K }
+  41: fcmsketch_tb_fcm_l1_to_l2_d1(egress::eg_md.result_d1 == 255; => $entry0, 1){ GE 0+16, 0 0K }
+    stateful FcmEgress.fcmsketch.sketch_reg_l2_d1 66 K
+    $entry0, $miss: [5]
+  51: fcmsketch_tb_fcm_l2_to_l3_d1(egress::eg_md.result_d1 == 65789; => $entry0, 1){ GE 0+13, 0 0K }
     stateful FcmEgress.fcmsketch.sketch_reg_l3_d1 8192
     $entry0, $miss: [7]
 
 DepStagesThruDomFrontier postorder : tbl_get_hash1
 DepStagesThruDomFrontier postorder : forward_0
+DepStagesThruDomFrontier postorder : parse_resub_hdr_0
 DepStagesThruDomFrontier postorder : swap1_0
 DepStagesThruDomFrontier postorder : tbl_get_hash2
 DepStagesThruDomFrontier postorder : swap2_0
@@ -892,57 +991,74 @@ DepStagesThruDomFrontier postorder : fcmsketch_tb_fcm_l1_to_l2_d2$precompute
 DepStagesThruDomFrontier postorder : fcmsketch_tb_fcm_l1_to_l2_d1$precompute
 DepStagesThruDomFrontier postorder : tbl_count_pkt
 DepStagesThruDomFrontier postorder : tbl_fcmsketch_fcm_action_l1_d2
-DepStagesThruDomFrontier postorder : tbl_fcmsketch_fcm_action_l1_d1
 DepStagesThruDomFrontier postorder : fcmsketch_tb_fcm_l1_to_l2_d2
-DepStagesThruDomFrontier postorder : fcmsketch_tb_fcm_l1_to_l2_d1
+DepStagesThruDomFrontier postorder : tbl_fcmsketch_fcm_action_l1_d1
 DepStagesThruDomFrontier postorder : fcmsketch_tb_fcm_l2_to_l3_d2
+DepStagesThruDomFrontier postorder : fcmsketch_tb_fcm_l1_to_l2_d1
 DepStagesThruDomFrontier postorder : fcmsketch_tb_fcm_l2_to_l3_d1
     Maximum stage number according to dependences: 
-      INGRESS: 8
+      INGRESS: 9
       EGRESS: 3
 GRAPH
+    tbl_get_hash1 -- OUTPUT --> parse_resub_hdr_0
+    parse_resub_hdr_0 -- IXBAR_READ --> swap1_0
     tbl_get_hash1 -- IXBAR_READ --> swap1_0
+    parse_resub_hdr_0 -- ACTION_READ --> swap1_0
     tbl_get_hash1 -- ACTION_READ --> swap1_0
-    tbl_get_hash1 -- IXBAR_READ --> tbl_get_hash2
+    forward_0 -- OUTPUT --> swap1_0
+    swap1_0 -- ACTION_READ --> tbl_get_hash2
     swap1_0 -- IXBAR_READ --> tbl_get_hash2
+    forward_0 -- IXBAR_READ --> swap2_0
     swap1_0 -- IXBAR_READ --> swap2_0
     tbl_get_hash2 -- IXBAR_READ --> swap2_0
     tbl_get_hash2 -- ACTION_READ --> swap2_0
+    forward_0 -- OUTPUT --> swap2_0
     swap1_0 -- OUTPUT --> swap2_0
-    tbl_get_hash2 -- IXBAR_READ --> tbl_get_hash3
+    swap2_0 -- ACTION_READ --> tbl_get_hash3
     swap2_0 -- IXBAR_READ --> tbl_get_hash3
+    forward_0 -- IXBAR_READ --> swap3_0
+    swap1_0 -- IXBAR_READ --> swap3_0
     swap2_0 -- IXBAR_READ --> swap3_0
     tbl_get_hash3 -- IXBAR_READ --> swap3_0
     tbl_get_hash3 -- ACTION_READ --> swap3_0
+    swap2_0 -- ANTI_ACTION_READ --> swap3_0
+    forward_0 -- OUTPUT --> swap3_0
     swap1_0 -- OUTPUT --> swap3_0
     swap2_0 -- OUTPUT --> swap3_0
-    tbl_get_hash3 -- IXBAR_READ --> tbl_get_hash4
+    swap3_0 -- ACTION_READ --> tbl_get_hash4
     swap3_0 -- IXBAR_READ --> tbl_get_hash4
+    forward_0 -- IXBAR_READ --> swap4_0
+    swap1_0 -- IXBAR_READ --> swap4_0
+    swap2_0 -- IXBAR_READ --> swap4_0
     swap3_0 -- IXBAR_READ --> swap4_0
+    swap2_0 -- ANTI_ACTION_READ --> swap4_0
+    swap3_0 -- ANTI_ACTION_READ --> swap4_0
+    forward_0 -- OUTPUT --> swap4_0
     swap1_0 -- OUTPUT --> swap4_0
     swap2_0 -- OUTPUT --> swap4_0
     swap3_0 -- OUTPUT --> swap4_0
     tbl_get_hash4 -- IXBAR_READ --> swap4_0
+    forward_0 -- IXBAR_READ --> resub_0
     swap1_0 -- IXBAR_READ --> resub_0
     swap2_0 -- IXBAR_READ --> resub_0
     swap3_0 -- IXBAR_READ --> resub_0
     swap4_0 -- IXBAR_READ --> resub_0
+    parse_resub_hdr_0 -- ANTI_ACTION_READ --> resub_0
+    parse_resub_hdr_0 -- ACTION_READ --> resub_0
     tbl_get_hash1 -- ACTION_READ --> resub_0
-    swap1_0 -- ANTI_ACTION_READ --> resub_0
-    swap1_0 -- ANTI_TABLE_READ --> resub_0
     tbl_fcmsketch_fcm_hash_d2 -- IXBAR_READ --> tbl_fcmsketch_fcm_action_l1_d2
-    tbl_fcmsketch_fcm_hash_d1 -- IXBAR_READ --> tbl_fcmsketch_fcm_action_l1_d1
     tbl_fcmsketch_fcm_action_l1_d2 -- ACTION_READ --> fcmsketch_tb_fcm_l1_to_l2_d2
     tbl_fcmsketch_fcm_action_l1_d2 -- OUTPUT --> fcmsketch_tb_fcm_l1_to_l2_d2
     fcmsketch_tb_fcm_l1_to_l2_d2$precompute -- ACTION_READ --> fcmsketch_tb_fcm_l1_to_l2_d2
     tbl_fcmsketch_fcm_hash_d2 -- IXBAR_READ --> fcmsketch_tb_fcm_l1_to_l2_d2
+    tbl_fcmsketch_fcm_hash_d1 -- IXBAR_READ --> tbl_fcmsketch_fcm_action_l1_d1
+    fcmsketch_tb_fcm_l1_to_l2_d2 -- ACTION_READ --> fcmsketch_tb_fcm_l2_to_l3_d2
+    tbl_fcmsketch_fcm_action_l1_d2 -- ACTION_READ --> fcmsketch_tb_fcm_l2_to_l3_d2
+    tbl_fcmsketch_fcm_hash_d2 -- IXBAR_READ --> fcmsketch_tb_fcm_l2_to_l3_d2
     tbl_fcmsketch_fcm_action_l1_d1 -- ACTION_READ --> fcmsketch_tb_fcm_l1_to_l2_d1
     tbl_fcmsketch_fcm_action_l1_d1 -- OUTPUT --> fcmsketch_tb_fcm_l1_to_l2_d1
     fcmsketch_tb_fcm_l1_to_l2_d1$precompute -- ACTION_READ --> fcmsketch_tb_fcm_l1_to_l2_d1
     tbl_fcmsketch_fcm_hash_d1 -- IXBAR_READ --> fcmsketch_tb_fcm_l1_to_l2_d1
-    fcmsketch_tb_fcm_l1_to_l2_d2 -- ACTION_READ --> fcmsketch_tb_fcm_l2_to_l3_d2
-    tbl_fcmsketch_fcm_action_l1_d2 -- ACTION_READ --> fcmsketch_tb_fcm_l2_to_l3_d2
-    tbl_fcmsketch_fcm_hash_d2 -- IXBAR_READ --> fcmsketch_tb_fcm_l2_to_l3_d2
     fcmsketch_tb_fcm_l1_to_l2_d1 -- ACTION_READ --> fcmsketch_tb_fcm_l2_to_l3_d1
     tbl_fcmsketch_fcm_action_l1_d1 -- ACTION_READ --> fcmsketch_tb_fcm_l2_to_l3_d1
     tbl_fcmsketch_fcm_hash_d1 -- IXBAR_READ --> fcmsketch_tb_fcm_l2_to_l3_d1
@@ -952,27 +1068,32 @@ GRAPH
     swap3_0 -- ANTI_NEXT_TABLE_DATA --> swap4_0
     swap3_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
     tbl_get_hash3 -- ANTI_NEXT_TABLE_DATA --> swap3_0
-    tbl_get_hash3 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash4
     swap2_0 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash3
     swap2_0 -- ANTI_NEXT_TABLE_DATA --> swap3_0
     swap2_0 -- ANTI_NEXT_TABLE_DATA --> swap4_0
     swap2_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
     tbl_get_hash2 -- ANTI_NEXT_TABLE_DATA --> swap2_0
-    tbl_get_hash2 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash3
-    fcmsketch_tb_fcm_l1_to_l2_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d2
-    fcmsketch_tb_fcm_l1_to_l2_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d1
     swap1_0 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash2
     swap1_0 -- ANTI_NEXT_TABLE_DATA --> swap2_0
     swap1_0 -- ANTI_NEXT_TABLE_DATA --> swap3_0
     swap1_0 -- ANTI_NEXT_TABLE_DATA --> swap4_0
     swap1_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
+    fcmsketch_tb_fcm_l1_to_l2_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d2
+    fcmsketch_tb_fcm_l1_to_l2_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d1
+    parse_resub_hdr_0 -- ANTI_NEXT_TABLE_DATA --> swap1_0
+    parse_resub_hdr_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
     tbl_fcmsketch_fcm_action_l1_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l1_to_l2_d2
     tbl_fcmsketch_fcm_action_l1_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d2
     tbl_fcmsketch_fcm_action_l1_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l1_to_l2_d1
     tbl_fcmsketch_fcm_action_l1_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d1
+    tbl_get_hash1 -- ANTI_NEXT_TABLE_DATA --> parse_resub_hdr_0
     tbl_get_hash1 -- ANTI_NEXT_TABLE_DATA --> swap1_0
-    tbl_get_hash1 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash2
     tbl_get_hash1 -- ANTI_NEXT_TABLE_DATA --> resub_0
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap1_0
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap2_0
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap3_0
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap4_0
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
     tbl_fcmsketch_fcm_hash_d2 -- ANTI_NEXT_TABLE_DATA --> tbl_fcmsketch_fcm_action_l1_d2
     tbl_fcmsketch_fcm_hash_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l1_to_l2_d2
     tbl_fcmsketch_fcm_hash_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d2
@@ -986,24 +1107,24 @@ MIN STAGE INFO
     First number refers to a dependency chain from which each tables are not split
     Second number refers to a dependency chain from which each tables are split as on  last allocation pass
  Stage #0
-     tbl_get_hash1 8 8
-     forward_0 0 0
+     tbl_get_hash1 9 9
+     forward_0 8 8
      tbl_fcmsketch_fcm_hash_d2 3 3
      tbl_fcmsketch_fcm_hash_d1 3 3
      fcmsketch_tb_fcm_l1_to_l2_d2$precompute 2 2
      fcmsketch_tb_fcm_l1_to_l2_d1$precompute 2 2
      tbl_count_pkt 0 0
  Stage #1
-     swap1_0 7 7
-	- Edge IXBAR_READ tbl_get_hash1
-	- Edge ACTION_READ tbl_get_hash1
+     parse_resub_hdr_0 8 8
+	- Edge OUTPUT tbl_get_hash1
      tbl_fcmsketch_fcm_action_l1_d2 2 2
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_hash_d2
      tbl_fcmsketch_fcm_action_l1_d1 2 2
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_hash_d1
  Stage #2
-     tbl_get_hash2 6 6
-	- Edge IXBAR_READ swap1_0
+     swap1_0 7 7
+	- Edge IXBAR_READ parse_resub_hdr_0
+	- Edge ACTION_READ parse_resub_hdr_0
      fcmsketch_tb_fcm_l1_to_l2_d2 1 1
 	- Edge ACTION_READ tbl_fcmsketch_fcm_action_l1_d2
 	- Edge OUTPUT tbl_fcmsketch_fcm_action_l1_d2
@@ -1011,47 +1132,54 @@ MIN STAGE INFO
 	- Edge ACTION_READ tbl_fcmsketch_fcm_action_l1_d1
 	- Edge OUTPUT tbl_fcmsketch_fcm_action_l1_d1
  Stage #3
-     swap2_0 5 5
-	- Edge IXBAR_READ tbl_get_hash2
-	- Edge ACTION_READ tbl_get_hash2
+     tbl_get_hash2 6 6
+	- Edge ACTION_READ swap1_0
+	- Edge IXBAR_READ swap1_0
      fcmsketch_tb_fcm_l2_to_l3_d2 0 0
 	- Edge ACTION_READ fcmsketch_tb_fcm_l1_to_l2_d2
      fcmsketch_tb_fcm_l2_to_l3_d1 0 0
 	- Edge ACTION_READ fcmsketch_tb_fcm_l1_to_l2_d1
  Stage #4
-     tbl_get_hash3 4 4
-	- Edge IXBAR_READ swap2_0
+     swap2_0 5 5
+	- Edge IXBAR_READ tbl_get_hash2
+	- Edge ACTION_READ tbl_get_hash2
  Stage #5
+     tbl_get_hash3 4 4
+	- Edge ACTION_READ swap2_0
+	- Edge IXBAR_READ swap2_0
+ Stage #6
      swap3_0 3 3
 	- Edge IXBAR_READ tbl_get_hash3
 	- Edge ACTION_READ tbl_get_hash3
- Stage #6
-     tbl_get_hash4 2 2
-	- Edge IXBAR_READ swap3_0
  Stage #7
+     tbl_get_hash4 2 2
+	- Edge ACTION_READ swap3_0
+	- Edge IXBAR_READ swap3_0
+ Stage #8
      swap4_0 1 1
 	- Edge IXBAR_READ tbl_get_hash4
- Stage #8
+ Stage #9
      resub_0 0 0
 	- Edge IXBAR_READ swap4_0
 
 FindDependencyGraph : Power Calculation
-ingress: [3] 0 10 101 1011 10111 101111 1011111 10111111 101111111
+ingress: [3] 0 10 111 1111 11111 111111 1111111 11111111 111111111 1111111111
   0: tbl_get_hash1
   1: forward_0{ E -1+11, 2 [1x5 5K] }
-  10: swap1_0{ E -9+22, 0 [1x2 2K] }
+  10: parse_resub_hdr_0{ E -9+1, 0 [1x5 5K] }
+  20: swap1_0{ E -9+22, 0 [1x2 2K] }
     stateful WaterfallIngress.table_1 66 K
-  20: tbl_get_hash2
-  30: swap2_0{ T 33+22, 0 0K }
+  30: tbl_get_hash2
+  40: swap2_0{ E -8+22, 0 [1x2 2K] }
     stateful WaterfallIngress.table_2 66 K
-  40: tbl_get_hash3
-  50: swap3_0{ T 33+22, 0 0K }
+  50: tbl_get_hash3
+  60: swap3_0{ E -8+22, 0 [1x2 2K] }
     stateful WaterfallIngress.table_3 66 K
-  60: tbl_get_hash4
-  70: swap4_0{ T 33+22, 0 0K }
+  70: tbl_get_hash4
+  80: swap4_0{ E -8+22, 0 [1x2 2K] }
     stateful WaterfallIngress.table_4 66 K
-  80: resub_0{ E -8+1, 0 [1x5 5K] }
-egress: [4] 0 00 000 0000 10000 010000 1010010 01010010 101001010 0101001010
+  90: resub_0{ E -8+1, 0 [1x5 5K] }
+egress: [4] 0 00 000 0000 10000 101001 0100000 10100110 010100010 0101000101
   2: tbl_fcmsketch_fcm_hash_d2
   3: tbl_fcmsketch_fcm_hash_d1
   4: fcmsketch_tb_fcm_l1_to_l2_d2$precompute
@@ -1060,23 +1188,24 @@ egress: [4] 0 00 000 0000 10000 010000 1010010 01010010 101001010 0101001010
     stateful FcmEgress.num_pkt 1   
   11: tbl_fcmsketch_fcm_action_l1_d2{ E 0+19, 0 0K }
     stateful FcmEgress.fcmsketch.sketch_reg_l1_d2 524K
-  21: tbl_fcmsketch_fcm_action_l1_d1{ E 0+19, 0 0K }
-    stateful FcmEgress.fcmsketch.sketch_reg_l1_d1 524K
-  22: fcmsketch_tb_fcm_l1_to_l2_d2(egress::eg_md.result_d2 == 255; => $entry0, 1){ GE 0+16, 0 0K }
+  21: fcmsketch_tb_fcm_l1_to_l2_d2(egress::eg_md.result_d2 == 255; => $entry0, 1){ GE 0+16, 0 0K }
     stateful FcmEgress.fcmsketch.sketch_reg_l2_d2 66 K
     $entry0, $miss: [6]
-  31: fcmsketch_tb_fcm_l1_to_l2_d1(egress::eg_md.result_d1 == 255; => $entry0, 1){ GE 0+16, 0 0K }
-    stateful FcmEgress.fcmsketch.sketch_reg_l2_d1 66 K
-    $entry0, $miss: [5]
+  31: tbl_fcmsketch_fcm_action_l1_d1{ E 0+19, 0 0K }
+    stateful FcmEgress.fcmsketch.sketch_reg_l1_d1 524K
   32: fcmsketch_tb_fcm_l2_to_l3_d2(egress::eg_md.result_d2 == 65789; => $entry0, 1){ GE 0+13, 0 0K }
     stateful FcmEgress.fcmsketch.sketch_reg_l3_d2 8192
     $entry0, $miss: [8]
-  41: fcmsketch_tb_fcm_l2_to_l3_d1(egress::eg_md.result_d1 == 65789; => $entry0, 1){ GE 0+13, 0 0K }
+  41: fcmsketch_tb_fcm_l1_to_l2_d1(egress::eg_md.result_d1 == 255; => $entry0, 1){ GE 0+16, 0 0K }
+    stateful FcmEgress.fcmsketch.sketch_reg_l2_d1 66 K
+    $entry0, $miss: [5]
+  51: fcmsketch_tb_fcm_l2_to_l3_d1(egress::eg_md.result_d1 == 65789; => $entry0, 1){ GE 0+13, 0 0K }
     stateful FcmEgress.fcmsketch.sketch_reg_l3_d1 8192
     $entry0, $miss: [7]
 
 DepStagesThruDomFrontier postorder : tbl_get_hash1
 DepStagesThruDomFrontier postorder : forward_0
+DepStagesThruDomFrontier postorder : parse_resub_hdr_0
 DepStagesThruDomFrontier postorder : swap1_0
 DepStagesThruDomFrontier postorder : tbl_get_hash2
 DepStagesThruDomFrontier postorder : swap2_0
@@ -1091,57 +1220,74 @@ DepStagesThruDomFrontier postorder : fcmsketch_tb_fcm_l1_to_l2_d2$precompute
 DepStagesThruDomFrontier postorder : fcmsketch_tb_fcm_l1_to_l2_d1$precompute
 DepStagesThruDomFrontier postorder : tbl_count_pkt
 DepStagesThruDomFrontier postorder : tbl_fcmsketch_fcm_action_l1_d2
-DepStagesThruDomFrontier postorder : tbl_fcmsketch_fcm_action_l1_d1
 DepStagesThruDomFrontier postorder : fcmsketch_tb_fcm_l1_to_l2_d2
-DepStagesThruDomFrontier postorder : fcmsketch_tb_fcm_l1_to_l2_d1
+DepStagesThruDomFrontier postorder : tbl_fcmsketch_fcm_action_l1_d1
 DepStagesThruDomFrontier postorder : fcmsketch_tb_fcm_l2_to_l3_d2
+DepStagesThruDomFrontier postorder : fcmsketch_tb_fcm_l1_to_l2_d1
 DepStagesThruDomFrontier postorder : fcmsketch_tb_fcm_l2_to_l3_d1
     Maximum stage number according to dependences: 
-      INGRESS: 8
+      INGRESS: 9
       EGRESS: 3
 GRAPH
+    tbl_get_hash1 -- OUTPUT --> parse_resub_hdr_0
+    parse_resub_hdr_0 -- IXBAR_READ --> swap1_0
     tbl_get_hash1 -- IXBAR_READ --> swap1_0
+    parse_resub_hdr_0 -- ACTION_READ --> swap1_0
     tbl_get_hash1 -- ACTION_READ --> swap1_0
-    tbl_get_hash1 -- IXBAR_READ --> tbl_get_hash2
+    forward_0 -- OUTPUT --> swap1_0
+    swap1_0 -- ACTION_READ --> tbl_get_hash2
     swap1_0 -- IXBAR_READ --> tbl_get_hash2
+    forward_0 -- IXBAR_READ --> swap2_0
     swap1_0 -- IXBAR_READ --> swap2_0
     tbl_get_hash2 -- IXBAR_READ --> swap2_0
     tbl_get_hash2 -- ACTION_READ --> swap2_0
+    forward_0 -- OUTPUT --> swap2_0
     swap1_0 -- OUTPUT --> swap2_0
-    tbl_get_hash2 -- IXBAR_READ --> tbl_get_hash3
+    swap2_0 -- ACTION_READ --> tbl_get_hash3
     swap2_0 -- IXBAR_READ --> tbl_get_hash3
+    forward_0 -- IXBAR_READ --> swap3_0
+    swap1_0 -- IXBAR_READ --> swap3_0
     swap2_0 -- IXBAR_READ --> swap3_0
     tbl_get_hash3 -- IXBAR_READ --> swap3_0
     tbl_get_hash3 -- ACTION_READ --> swap3_0
+    swap2_0 -- ANTI_ACTION_READ --> swap3_0
+    forward_0 -- OUTPUT --> swap3_0
     swap1_0 -- OUTPUT --> swap3_0
     swap2_0 -- OUTPUT --> swap3_0
-    tbl_get_hash3 -- IXBAR_READ --> tbl_get_hash4
+    swap3_0 -- ACTION_READ --> tbl_get_hash4
     swap3_0 -- IXBAR_READ --> tbl_get_hash4
+    forward_0 -- IXBAR_READ --> swap4_0
+    swap1_0 -- IXBAR_READ --> swap4_0
+    swap2_0 -- IXBAR_READ --> swap4_0
     swap3_0 -- IXBAR_READ --> swap4_0
+    swap2_0 -- ANTI_ACTION_READ --> swap4_0
+    swap3_0 -- ANTI_ACTION_READ --> swap4_0
+    forward_0 -- OUTPUT --> swap4_0
     swap1_0 -- OUTPUT --> swap4_0
     swap2_0 -- OUTPUT --> swap4_0
     swap3_0 -- OUTPUT --> swap4_0
     tbl_get_hash4 -- IXBAR_READ --> swap4_0
+    forward_0 -- IXBAR_READ --> resub_0
     swap1_0 -- IXBAR_READ --> resub_0
     swap2_0 -- IXBAR_READ --> resub_0
     swap3_0 -- IXBAR_READ --> resub_0
     swap4_0 -- IXBAR_READ --> resub_0
+    parse_resub_hdr_0 -- ANTI_ACTION_READ --> resub_0
+    parse_resub_hdr_0 -- ACTION_READ --> resub_0
     tbl_get_hash1 -- ACTION_READ --> resub_0
-    swap1_0 -- ANTI_ACTION_READ --> resub_0
-    swap1_0 -- ANTI_TABLE_READ --> resub_0
     tbl_fcmsketch_fcm_hash_d2 -- IXBAR_READ --> tbl_fcmsketch_fcm_action_l1_d2
-    tbl_fcmsketch_fcm_hash_d1 -- IXBAR_READ --> tbl_fcmsketch_fcm_action_l1_d1
     tbl_fcmsketch_fcm_action_l1_d2 -- ACTION_READ --> fcmsketch_tb_fcm_l1_to_l2_d2
     tbl_fcmsketch_fcm_action_l1_d2 -- OUTPUT --> fcmsketch_tb_fcm_l1_to_l2_d2
     fcmsketch_tb_fcm_l1_to_l2_d2$precompute -- ACTION_READ --> fcmsketch_tb_fcm_l1_to_l2_d2
     tbl_fcmsketch_fcm_hash_d2 -- IXBAR_READ --> fcmsketch_tb_fcm_l1_to_l2_d2
+    tbl_fcmsketch_fcm_hash_d1 -- IXBAR_READ --> tbl_fcmsketch_fcm_action_l1_d1
+    fcmsketch_tb_fcm_l1_to_l2_d2 -- ACTION_READ --> fcmsketch_tb_fcm_l2_to_l3_d2
+    tbl_fcmsketch_fcm_action_l1_d2 -- ACTION_READ --> fcmsketch_tb_fcm_l2_to_l3_d2
+    tbl_fcmsketch_fcm_hash_d2 -- IXBAR_READ --> fcmsketch_tb_fcm_l2_to_l3_d2
     tbl_fcmsketch_fcm_action_l1_d1 -- ACTION_READ --> fcmsketch_tb_fcm_l1_to_l2_d1
     tbl_fcmsketch_fcm_action_l1_d1 -- OUTPUT --> fcmsketch_tb_fcm_l1_to_l2_d1
     fcmsketch_tb_fcm_l1_to_l2_d1$precompute -- ACTION_READ --> fcmsketch_tb_fcm_l1_to_l2_d1
     tbl_fcmsketch_fcm_hash_d1 -- IXBAR_READ --> fcmsketch_tb_fcm_l1_to_l2_d1
-    fcmsketch_tb_fcm_l1_to_l2_d2 -- ACTION_READ --> fcmsketch_tb_fcm_l2_to_l3_d2
-    tbl_fcmsketch_fcm_action_l1_d2 -- ACTION_READ --> fcmsketch_tb_fcm_l2_to_l3_d2
-    tbl_fcmsketch_fcm_hash_d2 -- IXBAR_READ --> fcmsketch_tb_fcm_l2_to_l3_d2
     fcmsketch_tb_fcm_l1_to_l2_d1 -- ACTION_READ --> fcmsketch_tb_fcm_l2_to_l3_d1
     tbl_fcmsketch_fcm_action_l1_d1 -- ACTION_READ --> fcmsketch_tb_fcm_l2_to_l3_d1
     tbl_fcmsketch_fcm_hash_d1 -- IXBAR_READ --> fcmsketch_tb_fcm_l2_to_l3_d1
@@ -1151,27 +1297,32 @@ GRAPH
     swap3_0 -- ANTI_NEXT_TABLE_DATA --> swap4_0
     swap3_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
     tbl_get_hash3 -- ANTI_NEXT_TABLE_DATA --> swap3_0
-    tbl_get_hash3 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash4
     swap2_0 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash3
     swap2_0 -- ANTI_NEXT_TABLE_DATA --> swap3_0
     swap2_0 -- ANTI_NEXT_TABLE_DATA --> swap4_0
     swap2_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
     tbl_get_hash2 -- ANTI_NEXT_TABLE_DATA --> swap2_0
-    tbl_get_hash2 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash3
-    fcmsketch_tb_fcm_l1_to_l2_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d2
-    fcmsketch_tb_fcm_l1_to_l2_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d1
     swap1_0 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash2
     swap1_0 -- ANTI_NEXT_TABLE_DATA --> swap2_0
     swap1_0 -- ANTI_NEXT_TABLE_DATA --> swap3_0
     swap1_0 -- ANTI_NEXT_TABLE_DATA --> swap4_0
     swap1_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
+    fcmsketch_tb_fcm_l1_to_l2_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d2
+    fcmsketch_tb_fcm_l1_to_l2_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d1
+    parse_resub_hdr_0 -- ANTI_NEXT_TABLE_DATA --> swap1_0
+    parse_resub_hdr_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
     tbl_fcmsketch_fcm_action_l1_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l1_to_l2_d2
     tbl_fcmsketch_fcm_action_l1_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d2
     tbl_fcmsketch_fcm_action_l1_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l1_to_l2_d1
     tbl_fcmsketch_fcm_action_l1_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d1
+    tbl_get_hash1 -- ANTI_NEXT_TABLE_DATA --> parse_resub_hdr_0
     tbl_get_hash1 -- ANTI_NEXT_TABLE_DATA --> swap1_0
-    tbl_get_hash1 -- ANTI_NEXT_TABLE_DATA --> tbl_get_hash2
     tbl_get_hash1 -- ANTI_NEXT_TABLE_DATA --> resub_0
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap1_0
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap2_0
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap3_0
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap4_0
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
     tbl_fcmsketch_fcm_hash_d2 -- ANTI_NEXT_TABLE_DATA --> tbl_fcmsketch_fcm_action_l1_d2
     tbl_fcmsketch_fcm_hash_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l1_to_l2_d2
     tbl_fcmsketch_fcm_hash_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d2
@@ -1185,24 +1336,24 @@ MIN STAGE INFO
     First number refers to a dependency chain from which each tables are not split
     Second number refers to a dependency chain from which each tables are split as on  last allocation pass
  Stage #0
-     tbl_get_hash1 8 8
-     forward_0 0 0
+     tbl_get_hash1 9 9
+     forward_0 8 8
      tbl_fcmsketch_fcm_hash_d2 3 3
      tbl_fcmsketch_fcm_hash_d1 3 3
      fcmsketch_tb_fcm_l1_to_l2_d2$precompute 2 2
      fcmsketch_tb_fcm_l1_to_l2_d1$precompute 2 2
      tbl_count_pkt 0 0
  Stage #1
-     swap1_0 7 7
-	- Edge IXBAR_READ tbl_get_hash1
-	- Edge ACTION_READ tbl_get_hash1
+     parse_resub_hdr_0 8 8
+	- Edge OUTPUT tbl_get_hash1
      tbl_fcmsketch_fcm_action_l1_d2 2 2
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_hash_d2
      tbl_fcmsketch_fcm_action_l1_d1 2 2
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_hash_d1
  Stage #2
-     tbl_get_hash2 6 6
-	- Edge IXBAR_READ swap1_0
+     swap1_0 7 7
+	- Edge IXBAR_READ parse_resub_hdr_0
+	- Edge ACTION_READ parse_resub_hdr_0
      fcmsketch_tb_fcm_l1_to_l2_d2 1 1
 	- Edge ACTION_READ tbl_fcmsketch_fcm_action_l1_d2
 	- Edge OUTPUT tbl_fcmsketch_fcm_action_l1_d2
@@ -1210,27 +1361,33 @@ MIN STAGE INFO
 	- Edge ACTION_READ tbl_fcmsketch_fcm_action_l1_d1
 	- Edge OUTPUT tbl_fcmsketch_fcm_action_l1_d1
  Stage #3
-     swap2_0 5 5
-	- Edge IXBAR_READ tbl_get_hash2
-	- Edge ACTION_READ tbl_get_hash2
+     tbl_get_hash2 6 6
+	- Edge ACTION_READ swap1_0
+	- Edge IXBAR_READ swap1_0
      fcmsketch_tb_fcm_l2_to_l3_d2 0 0
 	- Edge ACTION_READ fcmsketch_tb_fcm_l1_to_l2_d2
      fcmsketch_tb_fcm_l2_to_l3_d1 0 0
 	- Edge ACTION_READ fcmsketch_tb_fcm_l1_to_l2_d1
  Stage #4
-     tbl_get_hash3 4 4
-	- Edge IXBAR_READ swap2_0
+     swap2_0 5 5
+	- Edge IXBAR_READ tbl_get_hash2
+	- Edge ACTION_READ tbl_get_hash2
  Stage #5
+     tbl_get_hash3 4 4
+	- Edge ACTION_READ swap2_0
+	- Edge IXBAR_READ swap2_0
+ Stage #6
      swap3_0 3 3
 	- Edge IXBAR_READ tbl_get_hash3
 	- Edge ACTION_READ tbl_get_hash3
- Stage #6
-     tbl_get_hash4 2 2
-	- Edge IXBAR_READ swap3_0
  Stage #7
+     tbl_get_hash4 2 2
+	- Edge ACTION_READ swap3_0
+	- Edge IXBAR_READ swap3_0
+ Stage #8
      swap4_0 1 1
 	- Edge IXBAR_READ tbl_get_hash4
- Stage #8
+ Stage #9
      resub_0 0 0
 	- Edge IXBAR_READ swap4_0
 

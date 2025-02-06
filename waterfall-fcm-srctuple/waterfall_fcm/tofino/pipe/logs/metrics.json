@@ -1,30 +1,30 @@
 {
     "program_name": "waterfall_fcm.p4", 
-    "build_date": "Fri Dec 13 13:51:39 2024", 
-    "run_id": "31a74692ef674dd7", 
+    "build_date": "Thu Feb  6 16:06:39 2025", 
+    "run_id": "e8c50ffae3064924", 
     "compiler_version": "9.11.0", 
     "schema_version": "1.1.0", 
     "target": "tofino", 
-    "compilation_time": "4.469789028167725", 
+    "compilation_time": "39.08804154396057", 
     "phv": {
         "normal": [
             {
                 "bit_width": 8, 
-                "containers_occupied": 10, 
-                "bits_occupied": 46, 
-                "bits_overlaid": 15
+                "containers_occupied": 8, 
+                "bits_occupied": 42, 
+                "bits_overlaid": 6
             }, 
             {
                 "bit_width": 16, 
-                "containers_occupied": 12, 
-                "bits_occupied": 178, 
-                "bits_overlaid": 32
+                "containers_occupied": 6, 
+                "bits_occupied": 77, 
+                "bits_overlaid": 9
             }, 
             {
                 "bit_width": 32, 
-                "containers_occupied": 10, 
-                "bits_occupied": 320, 
-                "bits_overlaid": 0
+                "containers_occupied": 16, 
+                "bits_occupied": 512, 
+                "bits_overlaid": 48
             }
         ], 
         "tagalong": [
@@ -42,8 +42,8 @@
             }, 
             {
                 "bit_width": 32, 
-                "containers_occupied": 14, 
-                "bits_occupied": 448, 
+                "containers_occupied": 15, 
+                "bits_occupied": 480, 
                 "bits_overlaid": 128
             }
         ]
@@ -57,27 +57,27 @@
         }
     }, 
     "mau": {
-        "srams": 134, 
-        "tcams": 3, 
-        "map_rams": 128, 
-        "logical_tables": 21, 
-        "action_bus_bytes": 52, 
-        "exact_crossbar_bytes": 92, 
-        "ternary_crossbar_bytes": 15, 
+        "srams": 167, 
+        "tcams": 0, 
+        "map_rams": 160, 
+        "logical_tables": 22, 
+        "action_bus_bytes": 53, 
+        "exact_crossbar_bytes": 102, 
+        "ternary_crossbar_bytes": 0, 
         "latency": [
             {
                 "gress": "ingress", 
-                "cycles": 209
+                "cycles": 204
             }, 
             {
                 "gress": "egress", 
-                "cycles": 171
+                "cycles": 175
             }
         ], 
         "power": [
             {
                 "gress": "ingress", 
-                "estimate": "2.6662866539"
+                "estimate": "3.08720982346"
             }, 
             {
                 "gress": "egress", 

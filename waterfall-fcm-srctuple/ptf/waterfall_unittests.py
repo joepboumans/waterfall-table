@@ -42,7 +42,6 @@ class WaterfallUnitTests(BfRuntimeTest):
         # Get digest/learn filter from gRPC
         self.learn_filter = self.bfrt_info.learn_get("digest")
         self.learn_filter.info.data_field_annotation_add("src_addr", "ipv4")
-        self.learn_filter.info.data_field_annotation_add("dst_addr", "ipv4")
 
         # Get Waterfall tables
         self.table_1 = self.bfrt_info.table_get("table_1")
@@ -87,7 +86,6 @@ class WaterfallUnitTests(BfRuntimeTest):
         # Get digest/learn filter from gRPC
         self.learn_filter = self.bfrt_info.learn_get("digest")
         self.learn_filter.info.data_field_annotation_add("src_addr", "ipv4")
-        self.learn_filter.info.data_field_annotation_add("dst_addr", "ipv4")
 
         # Get Waterfall tables
         self.table_1 = self.bfrt_info.table_get("table_1")
@@ -140,12 +138,7 @@ class WaterfallUnitTests(BfRuntimeTest):
             for data in data_list:
                 data_dict = data.to_dict()
                 recv_src_addr = data_dict["src_addr"]
-                recv_dst_addr = data_dict["dst_addr"]
-                recv_src_port = data_dict["src_port"]
-                recv_dst_port = data_dict["dst_port"]
-                recv_protocol = data_dict["protocol"]
-                recv_remain4 = data_dict["remain4"]
-                logger.info(f"{recv_src_addr = } : {recv_dst_addr = } | {recv_src_port = } {recv_dst_port = } | {recv_protocol = } | {recv_remain4}")
+                logger.info(f"{recv_src_addr = }")
             try:
                 digest = self.interface.digest_get()
             except:
@@ -171,8 +164,7 @@ class WaterfallUnitTests(BfRuntimeTest):
     def testDigest(self):
         ig_port = swports[0]
         eg_port = swports[1]
-        # ig_port = 132 # hwports can be 132, 140, 148, 156
-        # eg_port = hwports[ig_port]
+
         target = self.target
         forward = self.forward
         resub = self.resub
@@ -217,7 +209,7 @@ class WaterfallUnitTests(BfRuntimeTest):
         data = swap2.make_data([], "WaterfallIngress.lookup2")
         swap2.entry_add(target, [key], [data])
 
-        key = swap2.make_key([gc.KeyTuple('ig_md.out_remain1', low=0x1, high=0xFFFF), gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
+        key = swap2.make_key([ gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
         data = swap2.make_data([], "WaterfallIngress.do_swap2")
         swap2.entry_add(target, [key], [data])
 
@@ -225,7 +217,7 @@ class WaterfallUnitTests(BfRuntimeTest):
         data = swap3.make_data([], "WaterfallIngress.lookup3")
         swap3.entry_add(target, [key], [data])
 
-        key = swap3.make_key([gc.KeyTuple('ig_md.out_remain2', low=0x1, high=0xFFFF), gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
+        key = swap3.make_key([ gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
         data = swap3.make_data([], "WaterfallIngress.do_swap3")
         swap3.entry_add(target, [key], [data])
 
@@ -233,7 +225,7 @@ class WaterfallUnitTests(BfRuntimeTest):
         data = swap4.make_data([], "WaterfallIngress.lookup4")
         swap4.entry_add(target, [key], [data])
 
-        key = swap4.make_key([gc.KeyTuple('ig_md.out_remain3', low=0x1, high=0xFFFF), gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
+        key = swap4.make_key([ gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
         data = swap4.make_data([], "WaterfallIngress.do_swap4")
         swap4.entry_add(target, [key], [data])
 
@@ -303,7 +295,7 @@ class WaterfallUnitTests(BfRuntimeTest):
         data = swap2.make_data([], "WaterfallIngress.lookup2")
         swap2.entry_add(target, [key], [data])
 
-        key = swap2.make_key([gc.KeyTuple('ig_md.out_remain1', low=0x1, high=0xFFFF), gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
+        key = swap2.make_key([ gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
         data = swap2.make_data([], "WaterfallIngress.do_swap2")
         swap2.entry_add(target, [key], [data])
 
@@ -311,7 +303,7 @@ class WaterfallUnitTests(BfRuntimeTest):
         data = swap3.make_data([], "WaterfallIngress.lookup3")
         swap3.entry_add(target, [key], [data])
 
-        key = swap3.make_key([gc.KeyTuple('ig_md.out_remain2', low=0x1, high=0xFFFF), gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
+        key = swap3.make_key([ gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
         data = swap3.make_data([], "WaterfallIngress.do_swap3")
         swap3.entry_add(target, [key], [data])
 
@@ -319,7 +311,7 @@ class WaterfallUnitTests(BfRuntimeTest):
         data = swap4.make_data([], "WaterfallIngress.lookup4")
         swap4.entry_add(target, [key], [data])
 
-        key = swap4.make_key([gc.KeyTuple('ig_md.out_remain3', low=0x1, high=0xFFFF), gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
+        key = swap4.make_key([ gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
         data = swap4.make_data([], "WaterfallIngress.do_swap4")
         swap4.entry_add(target, [key], [data])
 
@@ -395,7 +387,7 @@ class WaterfallUnitTests(BfRuntimeTest):
         data = swap2.make_data([], "WaterfallIngress.lookup2")
         swap2.entry_add(target, [key], [data])
 
-        key = swap2.make_key([gc.KeyTuple('ig_md.out_remain1', low=0x1, high=0xFFFF), gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
+        key = swap2.make_key([ gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
         data = swap2.make_data([], "WaterfallIngress.do_swap2")
         swap2.entry_add(target, [key], [data])
 
@@ -403,7 +395,7 @@ class WaterfallUnitTests(BfRuntimeTest):
         data = swap3.make_data([], "WaterfallIngress.lookup3")
         swap3.entry_add(target, [key], [data])
 
-        key = swap3.make_key([gc.KeyTuple('ig_md.out_remain2', low=0x1, high=0xFFFF), gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
+        key = swap3.make_key([ gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
         data = swap3.make_data([], "WaterfallIngress.do_swap3")
         swap3.entry_add(target, [key], [data])
 
@@ -411,7 +403,7 @@ class WaterfallUnitTests(BfRuntimeTest):
         data = swap4.make_data([], "WaterfallIngress.lookup4")
         swap4.entry_add(target, [key], [data])
 
-        key = swap4.make_key([gc.KeyTuple('ig_md.out_remain3', low=0x1, high=0xFFFF), gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
+        key = swap4.make_key([ gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
         data = swap4.make_data([], "WaterfallIngress.do_swap4")
         swap4.entry_add(target, [key], [data])
 
