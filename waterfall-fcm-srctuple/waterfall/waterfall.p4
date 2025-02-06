@@ -12,8 +12,8 @@
 #include "../common/util.p4"
 
 // Waterfall defines
+#define WATERFALL_REMAIN_BIT_WIDTH 32 // SrcAddr
 #define WATERFALL_BIT_WIDTH 16
-#define WATERFALL_REMAIN_BIT_WIDTH 16 // 32 - WATERFALL_BIT_WIDTH
 #define WATERFALL_WIDTH 65535 // 2 ^ WATERFALL_BIT_WIDTH - 1 = WATERFALL_WIDTH
 
 const bit<8> RESUB = 3;
@@ -22,8 +22,8 @@ const bit<3> DIGEST = 5;
 
 header resubmit_md_t {
   bit<8> type;
-  bit<16> idx;
-  bit<16> remain;
+  bit<WATERFALL_BIT_WIDTH> idx;
+  bit<WATERFALL_REMAIN_BIT_WIDTH> remain;
 }
 
 struct port_metadata_t {
@@ -33,7 +33,6 @@ struct port_metadata_t {
 
 struct digest_t {
   bit<32> src_addr;
-  bit<32> dst_addr;
 }
 
 struct waterfall_metadata_t {
@@ -158,27 +157,27 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
   Hash<bit<32>>(HashAlgorithm_t.CUSTOM, CRC32_4) hash4;
 
   action get_hash1() {
-    bit<32> hash_val = hash1.get({hdr.ipv4.src_addr, hdr.ipv4.dst_addr});
+    bit<32> hash_val = hash1.get({hdr.ipv4.src_addr});
     ig_md.idx1 = hash_val[31:WATERFALL_BIT_WIDTH];
-    ig_md.remain1 = hash_val[WATERFALL_BIT_WIDTH - 1:0];
+    ig_md.remain1 = hdr.ipv4.src_addr;
   }
 
   action get_hash2() {
-    bit<32> hash_val = hash2.get({ig_md.idx1, ig_md.out_remain1});
+    bit<32> hash_val = hash2.get({ig_md.out_remain1});
     ig_md.idx2 = hash_val[31:WATERFALL_BIT_WIDTH];
-    ig_md.remain2 = hash_val[WATERFALL_BIT_WIDTH - 1:0];
+    ig_md.remain2 = ig_md.out_remain1;
   }
 
   action get_hash3() {
-    bit<32> hash_val = hash3.get({ig_md.idx2, ig_md.out_remain2});
+    bit<32> hash_val = hash3.get({ig_md.out_remain2});
     ig_md.idx3 = hash_val[31:WATERFALL_BIT_WIDTH];
-    ig_md.remain3 = hash_val[WATERFALL_BIT_WIDTH - 1:0];
+    ig_md.remain3 = ig_md.out_remain2;
   }
 
   action get_hash4() {
-    bit<32> hash_val = hash4.get({ig_md.idx3, ig_md.out_remain3});
+    bit<32> hash_val = hash4.get({ig_md.out_remain3});
     ig_md.idx4 = hash_val[31:WATERFALL_BIT_WIDTH];
-    ig_md.remain4 = hash_val[WATERFALL_BIT_WIDTH - 1:0];
+    ig_md.remain4 = ig_md.out_remain3;
   }
   
   Register<bit<WATERFALL_REMAIN_BIT_WIDTH>, bit<WATERFALL_BIT_WIDTH>>(WATERFALL_WIDTH, 0) table_1; 
