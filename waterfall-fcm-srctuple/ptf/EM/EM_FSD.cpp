@@ -850,7 +850,7 @@ void *EMFSD_new(uint32_t *s1_1, uint32_t *s1_2, uint32_t *s2_1, uint32_t *s2_2,
   // Setup tuple list
   std::cout << "[WaterfallFcm CTypes] Setup FlowTuple vector with size "
             << tuples_sz << std::endl;
-  std::vector<FLOW_TUPLE> tuples_vec(tuples_sz);
+  std::vector<TUPLE> tuples_vec(tuples_sz);
   for (size_t i = 0; i < tuples_sz; i++) {
     tuples_vec.at(i) = tuples[i];
   }
@@ -861,7 +861,204 @@ void *EMFSD_new(uint32_t *s1_1, uint32_t *s1_2, uint32_t *s2_1, uint32_t *s2_2,
   /*  std::cout << i << " : " << tuples_vec.at(i) << " ";*/
   /*}*/
   std::cout << std::endl;
-  return new EMFSD(stages, tuples_vec, tuples_sz);
+  std::cout << "[WaterfallFCM] Calculate initial degrees from Waterfall..."
+            << std::endl;
+  vector<vector<uint32_t>> init_degree(DEPTH, vector<uint32_t>(W1));
+
+  for (size_t d = 0; d < DEPTH; d++) {
+    for (auto &tuple : tuples) {
+      uint32_t hash_idx = this->fcm_sketches.hashing(tuple, d);
+      init_degree[d][hash_idx]++;
+    }
+  }
+  std::cout << "[WaterfallFCM] ...done!" << std::endl;
+  for (size_t d = 0; d < DEPTH; d++) {
+    std::cout << "Depth " << d << std::endl;
+    for (size_t i = 0; i < init_degree.size(); i++) {
+      if (init_degree[d][i] == 0) {
+        continue;
+      }
+      std::cout << i << ":" << init_degree[d][i] << " ";
+    }
+    std::cout << std::endl;
+  }
+  uint32_t max_counter_value = 0;
+  vector<uint32_t> max_degree = {0, 0};
+  // Summarize sketch and find collisions
+  // depth, stage, idx, (count, total degree, sketch degree)
+  vector<vector<vector<vector<uint32_t>>>> summary(this->n_stages);
+  // Create virtual counters based on degree and count
+  // depth, degree, count, value, collisions
+  vector<vector<vector<uint32_t>>> virtual_counters;
+  // Base for EM
+  vector<vector<vector<uint32_t>>> sketch_degrees;
+  vector<vector<uint32_t>> init_fsd(DEPTH);
+  // depth, stage, idx, layer, vector<stage, local degree, total degree, min
+  // value>
+  vector<vector<vector<vector<vector<uint32_t>>>>> overflow_paths(
+      this->n_stages);
+  // depth, degree, count, value, vector<stage, local collisions, total
+  // collisions, min value>
+  vector<vector<vector<vector<vector<uint32_t>>>>> thresholds;
+
+  std::cout << "[EM_WFCM] Setting up summary and overflow paths..."
+            << std::endl;
+  // Setup sizes for summary and overflow_paths
+  for (size_t d = 0; d < DEPTH; d++) {
+    summary[d].resize(this->n_stages);
+    overflow_paths[d].resize(this->n_stages);
+    for (size_t stage = 0; stage < this->n_stages; stage++) {
+      summary[d][stage].resize(this->fcm_sketches.stages_sz[stage],
+                               vector<uint32_t>(3, 0));
+      overflow_paths[d][stage].resize(this->fcm_sketches.stages_sz[stage]);
+    }
+  }
+  std::cout << "[EM_WFCM] ...done!" << std::endl;
+  std::cout << "[EM_WFCM] Setting up virtual counters and thresholds..."
+            << std::endl;
+
+  virtual_counters.resize(DEPTH);
+  sketch_degrees.resize(DEPTH);
+  thresholds.resize(DEPTH);
+
+  std::cout << "[EM_WFCM] ...done!" << std::endl;
+  std::cout << "[EM_WFCM] Load count from sketches into virtual counters and "
+               "thresholds..."
+            << std::endl;
+  for (size_t d = 0; d < DEPTH; d++) {
+    for (size_t stage = 0; stage < this->n_stages; stage++) {
+      for (size_t i = 0; i < this->fcm_sketches.stages_sz[stage]; i++) {
+        if (this->fcm_sketches.stages[d][stage][i].count <= 0) {
+          continue;
+        }
+
+        // If overflown increase the minimal value for the collisions
+        summary[d][stage][i][0] = this->fcm_sketches.stages[d][stage][i].count;
+        if (this->fcm_sketches.stages[d][stage][i].overflow) {
+          summary[d][stage][i][0] =
+              this->fcm_sketches.stages[d][stage][i].max_count;
+        }
+
+        // Store local and initial degree
+        if (stage == 0) {
+          summary[d][stage][i][1] = 1;
+          summary[d][stage][i][2] = init_degree[d][i];
+        } else if (stage > 0) { // Start checking childeren from stage 1 and up
+          for (size_t k = 0; k < K; k++) {
+            uint32_t child_idx = i * K + k;
+
+            // Add childs count, total and sketch degree to current counter
+            if (this->fcm_sketches.stages[d][stage - 1][child_idx].overflow) {
+              summary[d][stage][i][0] += summary[d][stage - 1][child_idx][0];
+              summary[d][stage][i][1] += summary[d][stage - 1][child_idx][1];
+              summary[d][stage][i][2] += summary[d][stage - 1][child_idx][2];
+
+              // Add overflow path of child to my own path
+              for (auto &path : overflow_paths[d][stage - 1][child_idx]) {
+                overflow_paths[d][stage][i].push_back(path);
+              }
+            }
+          }
+        }
+
+        // If not overflown and non-zero, we are at the end of the path
+        if (!this->fcm_sketches.stages[d][stage][i].overflow &&
+            summary[d][stage][i][0] > 0) {
+
+          uint32_t count = summary[d][stage][i][0];
+          uint32_t sketch_degree = summary[d][stage][i][1];
+          uint32_t degree = summary[d][stage][i][2];
+          max_counter_value = std::max(max_counter_value, count);
+          max_degree[d] = std::max(max_degree[d], degree);
+
+          if (max_counter_value >= init_fsd[d].size()) {
+            init_fsd[d].resize(max_counter_value + 2);
+          }
+
+          if (degree == 1) {
+            init_fsd[d][count]++;
+          } else if (degree == count) {
+            init_fsd[d][1] += count;
+            /*} else if (degree + 1 == count) {*/
+            /*  init_fsd[d][1] += (count - 1);*/
+            /*  init_fsd[d][2] += 1;*/
+          } else {
+            if (degree >= virtual_counters[d].size()) {
+              virtual_counters[d].resize(degree + 1);
+              thresholds[d].resize(degree + 1);
+              sketch_degrees[d].resize(degree + 1);
+            }
+
+            // Separate L1 VC's as these do not require thresholds to solve.
+            // Store L1 VC in degree 0
+            /*if (sketch_degree == 1) {*/
+            /*  sketch_degree = degree;*/
+            /*  degree = 0;*/
+            /*}*/
+            // Add entry to VC with its degree [1] and count [0]
+            virtual_counters[d][degree].push_back(count);
+            sketch_degrees[d][degree].push_back(sketch_degree);
+
+            thresholds[d][degree].push_back(overflow_paths[d][stage][i]);
+          }
+
+        } else {
+          uint32_t max_val = summary[d][stage][i][0];
+          uint32_t local_degree = summary[d][stage][i][1];
+          uint32_t total_degree = summary[d][stage][i][2];
+          vector<uint32_t> local = {static_cast<uint32_t>(stage), local_degree,
+                                    total_degree, max_val};
+          overflow_paths[d][stage][i].push_back(local);
+        }
+      }
+    }
+  }
+
+  std::cout << "[EM_WFCM] ...done!" << std::endl;
+
+  if (0) {
+    // Print vc with thresholds
+    for (size_t d = 0; d < DEPTH; d++) {
+      for (size_t st = 0; st < virtual_counters[d].size(); st++) {
+        if (virtual_counters[d][st].size() == 0) {
+          continue;
+        }
+        for (size_t i = 0; i < virtual_counters[d][st].size(); i++) {
+          printf("Depth %zu, Degree %zu, Sketch Degree %u, Index %zu ]= Val "
+                 "%d \tThresholds: ",
+                 d, st, sketch_degrees[d][st][i], i,
+                 virtual_counters[d][st][i]);
+          for (auto &t : thresholds[d][st][i]) {
+            std::cout << "<";
+            for (auto &x : t) {
+              std::cout << x;
+              if (&x != &t.back()) {
+                std::cout << ", ";
+              }
+            }
+            std::cout << ">";
+            if (&t != &thresholds[d][st][i].back()) {
+              std::cout << ", ";
+            }
+          }
+          std::cout << std::endl;
+        }
+      }
+      for (size_t i = 0; i < init_fsd[d].size(); i++) {
+        if (init_fsd[d][i] != 0) {
+          printf("Depth %zu, Index %zu ]= Val %d\n", d, i, init_fsd[d][i]);
+        }
+      }
+    }
+  }
+
+  std::cout << "Maximum degree is: " << max_degree[0] << ", " << max_degree[1]
+            << std::endl;
+  std::cout << "Maximum counter value is: " << max_counter_value << std::endl;
+
+  std::cout << "[EMS_FSD] Initializing EMS_FSD..." << std::endl;
+  return new EM_WFCM(thresholds, max_counter_value, max_degree,
+                     virtual_counters, sketch_degrees, init_fsd);
 }
 
 void EMFSD_next_epoch(void *ptr) {

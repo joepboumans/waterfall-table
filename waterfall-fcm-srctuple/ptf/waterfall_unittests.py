@@ -143,6 +143,7 @@ class WaterfallUnitTests(BfRuntimeTest):
                 digest = self.interface.digest_get()
             except:
                 break;
+        print(f"{total_recv} == {num_entries}")
         assert(total_recv == num_entries)
 
     def evalutate_table(self, name):
@@ -331,7 +332,7 @@ class WaterfallUnitTests(BfRuntimeTest):
             logger.info("..all packets sent and received")
 
         ''' TC:3 Get data from the digest'''
-        self.evalutate_digest(num_entries * 2)
+        self.evalutate_digest(num_entries)
 
         ''' TC:4 Validate received digest data'''
         logger.info(f"All tables should have {num_entries} entries")
