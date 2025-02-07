@@ -266,48 +266,44 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         data = swap4.make_data([], "WaterfallIngress.do_swap4")
         swap4.entry_add(target, [key], [data])
 
-        num_entries_src = 1
-        num_entries_dst = 10
+        num_entries_src = 10
         total_pkts_sends = 0
         seed = 1001
         random.seed(seed)
         src_ip_list = self.generate_random_ip_list(num_entries_src, seed)
-        dst_ip_list = self.generate_random_ip_list(num_entries_dst, seed + 1)
         in_tuples = {}
 
-        NUM_FLOWS = num_entries_src * num_entries_dst            # number of sample flows
+        NUM_FLOWS = num_entries_src             # number of sample flows
         MAX_FLOW_SIZE = 100_000          # max size of flows
         fsd = [0] * (MAX_FLOW_SIZE + 1)
 
-        logger.info(f"Start sending {num_entries_src * num_entries_dst} entries")
+        logger.info(f"Start sending {num_entries_src } entries")
         for src_ip in src_ip_list:
-            for dst_ip in dst_ip_list:
-                src_addr = getattr(src_ip, "ip")
-                dst_addr = getattr(dst_ip, "ip")
-                src_port = random.randrange(0, 0xFFFF)
-                dst_port = random.randrange(0, 0xFFFF)
-                flow_size = int(min(MAX_FLOW_SIZE, max(MAX_FLOW_SIZE * abs(random.gauss(mu=0, sigma=0.0001)), 1.0)))
+            src_addr = getattr(src_ip, "ip")
+            src_port = random.randrange(0, 0xFFFF)
+            dst_port = random.randrange(0, 0xFFFF)
+            flow_size = int(min(MAX_FLOW_SIZE, max(MAX_FLOW_SIZE * abs(random.gauss(mu=0, sigma=0.0001)), 1.0)))
 
-                pkt_in = testutils.simple_tcp_packet(ip_src=src_addr, ip_dst=dst_addr, tcp_sport=src_port, tcp_dport=dst_port)
-                testutils.send_packet(self, ig_port, pkt_in)
-                # testutils.verify_packet(self, pkt_in, hwports[ig_port])
-                testutils.verify_packet(self, pkt_in, eg_port)
-                total_pkts_sends += flow_size
+            pkt_in = testutils.simple_tcp_packet(ip_src=src_addr, tcp_sport=src_port, tcp_dport=dst_port)
+            testutils.send_packet(self, ig_port, pkt_in)
+            # testutils.verify_packet(self, pkt_in, hwports[ig_port])
+            testutils.verify_packet(self, pkt_in, eg_port)
+            total_pkts_sends += flow_size
 
-                raw_src_addr = [int(x) for x in src_addr.split('.')]
-                # logger.info(f"{raw_src_addr = } : {raw_dst_addr = } | {raw_src_port = } {raw_dst_port = } | {raw_protocol = }")
+            raw_src_addr = [int(x) for x in src_addr.split('.')]
+            # logger.info(f"{raw_src_addr = } : {raw_dst_addr = } | {raw_src_port = } {raw_dst_port = } | {raw_protocol = }")
 
-                tuple_list = raw_src_addr 
-                tuple_key = ".".join([str(x) for x in tuple_list])
-                in_tuples[tuple_key] = flow_size
-                fsd[flow_size] += 1
+            tuple_list = raw_src_addr 
+            tuple_key = ".".join([str(x) for x in tuple_list])
+            in_tuples[tuple_key] = flow_size
+            fsd[flow_size] += 1
 
-                print(f"Sent {flow_size} pkts with total {total_pkts_sends}", flush=True)
-                # time.sleep(0.5)
+            print(f"Sent {flow_size} pkts with total {total_pkts_sends}", flush=True)
+            # time.sleep(0.5)
 
         logger.info(f"...done sending {total_pkts_sends} packets send")
         ''' TC:3 Look for data in digest'''
-        tuples = self.evaluate_digest(num_entries_src * num_entries_dst)
+        tuples = self.evaluate_digest(num_entries_src)
 
         register_pktcount = self.num_pkt
         # check all packets are sent
