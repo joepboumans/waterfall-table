@@ -685,9 +685,9 @@ void *EM_WFCM_new(uint32_t *s1_1, uint32_t *s1_2, uint32_t *s2_1,
 
   std::cout << "[WaterfallFcm CTypes] Checking vector with "
             << tuples_vec.size() << std::endl;
-  /*for (size_t i = 0; i < tuples_vec.size(); i++) {*/
-  /*  std::cout << i << " : " << tuples_vec.at(i) << " ";*/
-  /*}*/
+  for (size_t i = 0; i < tuples_vec.size(); i++) {
+    std::cout << i << " : " << tuples_vec.at(i) << " ";
+  }
   std::cout << std::endl;
   std::cout << "[WaterfallFCM] Calculate initial degrees from Waterfall..."
             << std::endl;

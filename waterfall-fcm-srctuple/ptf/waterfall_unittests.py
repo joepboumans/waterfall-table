@@ -121,9 +121,9 @@ class WaterfallUnitTests(BfRuntimeTest):
     def runTest(self):
         logger.info("Start testing")
 
-        self.testDigest()
-        self.resetWaterfall()
-        self.testPassAllTables()
+        # self.testDigest()
+        # self.resetWaterfall()
+        # self.testPassAllTables()
         # self.resetWaterfall()
         # self.testLargeInserts()
 

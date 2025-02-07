@@ -50,8 +50,8 @@ class EM_WFCM(object):
         # Needs separate list per depth as passing to c++ does not work well with c_uint32** 
         stage1_1 = Stage1()
         for i in range(len(stage1_1)):
-            # if s1[0][i] != 0:
-            #     print(f"{i}:{s1[0][i]} ", end="")
+            if s1[0][i] != 0:
+                print(f"{i}:{s1[0][i]} ", end="")
             if i < len(s1[0]):
                 stage1_1[i] = s1[0][i]
             else:
@@ -60,8 +60,8 @@ class EM_WFCM(object):
 
         stage1_2 = Stage1()
         for i in range(len(stage1_2)):
-            # if s1[1][i] != 0:
-            #     print(f"{i}:{s1[0][i]} ", end="")
+            if s1[1][i] != 0:
+                print(f"{i}:{s1[0][i]} ", end="")
             if i < len(s1[1]):
                 stage1_2[i] = s1[1][i]
             else:

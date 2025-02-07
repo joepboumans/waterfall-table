@@ -131,7 +131,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         logger.info("Start testing")
 
         self.testWaterfallFcm()
-        # self.resetWaterfall()
+        self.resetWaterfall()
 
     def evaluate_digest(self, num_entries):
         learn_filter = self.learn_filter
@@ -230,24 +230,36 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         data = swap1.make_data([], "WaterfallIngress.do_swap1")
         swap1.entry_add(target, [key], [data])
 
-        key = swap2.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0)])
+        key = swap2.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0), gc.KeyTuple('ig_md.found', False)])
         data = swap2.make_data([], "WaterfallIngress.lookup2")
+        swap2.entry_add(target, [key], [data])
+
+        key = swap2.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0), gc.KeyTuple('ig_md.found', True)])
+        data = swap2.make_data([], "WaterfallIngress.no_swap2")
         swap2.entry_add(target, [key], [data])
 
         key = swap2.make_key([ gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
         data = swap2.make_data([], "WaterfallIngress.do_swap2")
         swap2.entry_add(target, [key], [data])
 
-        key = swap3.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0)])
+        key = swap3.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0), gc.KeyTuple('ig_md.found', False)])
         data = swap3.make_data([], "WaterfallIngress.lookup3")
+        swap3.entry_add(target, [key], [data])
+
+        key = swap3.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0), gc.KeyTuple('ig_md.found', True)])
+        data = swap3.make_data([], "WaterfallIngress.no_swap3")
         swap3.entry_add(target, [key], [data])
 
         key = swap3.make_key([ gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
         data = swap3.make_data([], "WaterfallIngress.do_swap3")
         swap3.entry_add(target, [key], [data])
 
-        key = swap4.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0)])
+        key = swap4.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0), gc.KeyTuple('ig_md.found', False)])
         data = swap4.make_data([], "WaterfallIngress.lookup4")
+        swap4.entry_add(target, [key], [data])
+
+        key = swap4.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0), gc.KeyTuple('ig_md.found', True)])
+        data = swap4.make_data([], "WaterfallIngress.no_swap4")
         swap4.entry_add(target, [key], [data])
 
         key = swap4.make_key([ gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
@@ -274,7 +286,6 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
                 dst_addr = getattr(dst_ip, "ip")
                 src_port = random.randrange(0, 0xFFFF)
                 dst_port = random.randrange(0, 0xFFFF)
-                # flow_size = random.randint(1, MAX_FLOW_SIZE)
                 flow_size = int(min(MAX_FLOW_SIZE, max(MAX_FLOW_SIZE * abs(random.gauss(mu=0, sigma=0.0001)), 1.0)))
 
                 pkt_in = testutils.simple_tcp_packet(ip_src=src_addr, ip_dst=dst_addr, tcp_sport=src_port, tcp_dport=dst_port)
@@ -291,7 +302,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
                 in_tuples[tuple_key] = flow_size
                 fsd[flow_size] += 1
 
-                # print(f"Sent {flow_size} pkts with total {total_pkts_sends}", flush=True)
+                print(f"Sent {flow_size} pkts with total {total_pkts_sends}", flush=True)
                 # time.sleep(0.5)
 
         logger.info(f"...done sending {total_pkts_sends} packets send")
@@ -355,11 +366,6 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         fcm_table[1].append([0] * SKETCH_W1)
         fcm_table[1].append([0] * SKETCH_W2)
         fcm_table[1].append([0] * SKETCH_W3)
-
-
-        # for fcm_d in fcm_table:
-        #     for st in fcm_d:
-        #         logger.info(f"Stage with size {len(st)}")
 
         # call the register values and get flow size estimation
         logger.info("[INFO-FCM] Start query processing...")
