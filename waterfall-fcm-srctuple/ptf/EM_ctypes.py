@@ -27,8 +27,8 @@ Stage3 = c_uint32 * SKETCH_W3
 FlowTuple = c_uint8 * 8 # src_addr + dst_addr
 
 class EM_FSD(object):
-    lib = cdll.LoadLibrary(f"{os.path.dirname(__file__)}/EM/lib/libEM_FSD.so")
-    lib.EMFSD_new.restype = c_void_p
+    lib = cdll.LoadLibrary(f"{os.path.dirname(__file__)}/EM/lib/libEM_WFCM.so")
+    lib.EM_WFCM_new.restype = c_void_p
 
     lib.get_ns.restype = c_void_p
     lib.get_ns.argtypes = [c_void_p]
@@ -102,10 +102,10 @@ class EM_FSD(object):
                 stage3_2[i] = 0
         print("[Waterfall - py ctypes] S3_2 done")
 
-        self.obj = c_void_p(EM_FSD.lib.EMFSD_new(stage1_1, stage1_2, stage2_1, stage2_2, stage3_1, stage3_2, tuples, len(tuples)))
+        self.obj = c_void_p(EM_FSD.lib.EM_WFCM_new(stage1_1, stage1_2, stage2_1, stage2_2, stage3_1, stage3_2, tuples, len(tuples)))
 
     def next_epoch(self):
-        EM_FSD.lib.EMFSD_next_epoch(self.obj)
+        EM_FSD.lib.EM_WFCM_next_epoch(self.obj)
 
     def get_ns(self, ns):
         c_ns = EM_FSD.lib.get_ns(self.obj)
