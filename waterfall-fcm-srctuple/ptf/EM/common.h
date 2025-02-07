@@ -120,15 +120,15 @@ struct TUPLE {
     return *this;
   }
 
-  auto operator<=>(const TUPLE &) const = default;
-  bool operator==(const TUPLE &rhs) const {
-    for (size_t i = 0; i < this->sz; i++) {
-      if (this->num_array[i] != rhs.num_array[i]) {
-        return false;
-      }
-    }
-    return true;
-  }
+  /*auto operator<=>(const TUPLE &) const = default;*/
+  /*bool operator==(const TUPLE &rhs) const {*/
+  /*  for (size_t i = 0; i < this->sz; i++) {*/
+  /*    if (this->num_array[i] != rhs.num_array[i]) {*/
+  /*      return false;*/
+  /*    }*/
+  /*  }*/
+  /*  return true;*/
+  /*}*/
 };
 
 /*struct TupleHash {*/

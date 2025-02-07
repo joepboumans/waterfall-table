@@ -15,7 +15,7 @@ from utils import *
 
 from fcm_utils import *
 
-from EM_ctypes import EM_FSD
+from EM_ctypes import EM_WFCM
 
 DEBUGGING = False               # debugging? (True -> yes)
 FROM_HW = True                  # From Tofino hardware model, must be True.
@@ -361,7 +361,6 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         #     for st in fcm_d:
         #         logger.info(f"Stage with size {len(st)}")
 
-        return
         # call the register values and get flow size estimation
         logger.info("[INFO-FCM] Start query processing...")
         ARE = 0
@@ -472,7 +471,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         s1 = [fcm_table[0][0], fcm_table[1][0]]
         s2 = [fcm_table[0][1], fcm_table[1][1]]
         s3 = [fcm_table[0][2], fcm_table[1][2]]
-        em_fsd = EM_FSD(s1, s2, s3, tuples.values())
+        em_fsd = EM_WFCM(s1, s2, s3, tuples.values())
         ns = em_fsd.run_em(1)
         # logger.info(fsd)
         logger.info(f"{ns[-1]} - sz {len(ns)}, {fsd[-1]} - sz {len(fsd)}")

@@ -642,9 +642,9 @@ inline uint32_t hashing(TUPLE tuple, uint32_t depth) {
 }
 
 extern "C" {
-void *EMFSD_new(uint32_t *s1_1, uint32_t *s1_2, uint32_t *s2_1, uint32_t *s2_2,
-                uint32_t *s3_1, uint32_t *s3_2, TUPLE *tuples,
-                uint32_t tuples_sz) {
+void *EM_WFCM_new(uint32_t *s1_1, uint32_t *s1_2, uint32_t *s2_1,
+                  uint32_t *s2_2, uint32_t *s3_1, uint32_t *s3_2, TUPLE *tuples,
+                  uint32_t tuples_sz) {
 
   std::cout << "[WaterfallFcm CTypes] Start parsing python to c" << std::endl;
   vector<uint32_t> stages_sz = {W1, W2, W3};

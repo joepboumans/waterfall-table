@@ -24,9 +24,9 @@ Stage_szes = c_uint32 * NUM_STAGES
 Stage1 = c_uint32 * SKETCH_W1
 Stage2 = c_uint32 * SKETCH_W2
 Stage3 = c_uint32 * SKETCH_W3
-FlowTuple = c_uint8 * 8 # src_addr + dst_addr
+Tuple = c_uint8 * 4 # src_addr
 
-class EM_FSD(object):
+class EM_WFCM(object):
     lib = cdll.LoadLibrary(f"{os.path.dirname(__file__)}/EM/lib/libEM_WFCM.so")
     lib.EM_WFCM_new.restype = c_void_p
 
@@ -39,11 +39,11 @@ class EM_FSD(object):
 
     def __init__(self, s1, s2, s3, in_tuples):
         # logger.info(in_tuples)
-        Tuples = FlowTuple * len(in_tuples)
+        Tuples = Tuple * len(in_tuples)
         tuples = Tuples()
         in2Tuples = []
         for val in in_tuples:
-            in2Tuples.append(FlowTuple(*list(val)))
+            in2Tuples.append(Tuple(*list(val)))
         for i in range(len(in2Tuples)):
             tuples[i] = in2Tuples[i]
 
@@ -102,15 +102,15 @@ class EM_FSD(object):
                 stage3_2[i] = 0
         print("[Waterfall - py ctypes] S3_2 done")
 
-        self.obj = c_void_p(EM_FSD.lib.EM_WFCM_new(stage1_1, stage1_2, stage2_1, stage2_2, stage3_1, stage3_2, tuples, len(tuples)))
+        self.obj = c_void_p(EM_WFCM.lib.EM_WFCM_new(stage1_1, stage1_2, stage2_1, stage2_2, stage3_1, stage3_2, tuples, len(tuples)))
 
     def next_epoch(self):
-        EM_FSD.lib.EM_WFCM_next_epoch(self.obj)
+        EM_WFCM.lib.EM_WFCM_next_epoch(self.obj)
 
     def get_ns(self, ns):
-        c_ns = EM_FSD.lib.get_ns(self.obj)
-        for i in range(EM_FSD.lib.vector_size(c_ns)):
-            x = EM_FSD.lib.vector_get(c_ns, i)
+        c_ns = EM_WFCM.lib.get_ns(self.obj)
+        for i in range(EM_WFCM.lib.vector_size(c_ns)):
+            x = EM_WFCM.lib.vector_get(c_ns, i)
             ns.append(x)
         return ns
 
@@ -130,13 +130,13 @@ if __name__ == "__main__":
     s1 = [ [ 255,2,3 ], [ 255,12,13 ] ]
     s2 = [ [ 12,13,14 ], [ 12,13,14 ] ]
     s3 = [ [ 103,104,105 ], [ 13,14,15 ] ]
-    test_tuple = [ 1, 2, 3, 4, 5, 6, 7, 8]
-    test_tuple2 = [ 12, 13, 14, 15, 16, 17, 18, 19]
-    test_tuple3 = [ 1, 2, 3, 4, 5, 6, 7, 8]
-    tuples = [FlowTuple(*[i for i in range(1,9)]) for _ in range(1, 4)]
-    t1 = FlowTuple(*test_tuple)
-    t2 = FlowTuple(*test_tuple2)
-    t3 = FlowTuple(*test_tuple3)
+    test_tuple = [ 1, 2, 3, 4]
+    test_tuple2 = [ 12, 13, 14, 15]
+    test_tuple3 = [ 1, 2, 3, 4,]
+    tuples = [Tuple(*[i for i in range(1,5)]) for _ in range(1, 4)]
+    t1 = Tuple(*test_tuple)
+    t2 = Tuple(*test_tuple2)
+    t3 = Tuple(*test_tuple3)
     tuples = [ t1, t2, t3]
-    f = EM_FSD(s1, s2, s3, tuples)
+    f = EM_WFCM(s1, s2, s3, tuples)
     f.run_em(5)

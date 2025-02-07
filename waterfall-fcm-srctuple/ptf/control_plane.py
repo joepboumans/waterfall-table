@@ -7,7 +7,7 @@ import argparse
 
 from collections import defaultdict
 
-from EM_ctypes import EM_FSD
+from EM_ctypes import EM_WFCM
 
 sys.path.append('/home/onie/sde/bf-sde-9.11.0/install/lib/python3.8/site-packages/tofino/')
 sys.path.append('/home/onie/sde/bf-sde-9.11.0/install/lib/python3.8/site-packages/tofino/bfrt_grpc/')
@@ -254,7 +254,7 @@ class BfRt_interface():
         s1 = [fcm_tables[0], fcm_tables[3]]
         s2 = [fcm_tables[1], fcm_tables[4]]
         s3 = [fcm_tables[2], fcm_tables[5]]
-        em_fsd = EM_FSD(s1, s2, s3, self.tuples)
+        em_fsd = EM_WFCM(s1, s2, s3, self.tuples)
 
         for i in range(iters):
             self.ns = em_fsd.run_em(1)
@@ -321,7 +321,7 @@ class BfRt_interface():
         print(f"[WaterfallFcm - verify sim] Start estimation")
 
 
-        em_fsd = EM_FSD(s1, s2, s3, in_tuples)
+        em_fsd = EM_WFCM(s1, s2, s3, in_tuples)
 
         for i in range(iters):
             self.ns = em_fsd.run_em(1)
