@@ -48,7 +48,7 @@ struct TUPLE {
             tuple.num_array[6], tuple.num_array[7]);
 
     if (tuple.sz == 4) {
-      return os << srcIp << "\tsz " << tuple.sz;
+      return os << srcIp << "\tsz " << int(tuple.sz);
     } else if (tuple.sz == 8) {
       return os << srcIp << "|" << dstIp << "\tsz " << tuple.sz;
     }

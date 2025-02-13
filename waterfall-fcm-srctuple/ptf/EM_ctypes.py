@@ -24,7 +24,7 @@ Stage_szes = c_uint32 * NUM_STAGES
 Stage1 = c_uint32 * SKETCH_W1
 Stage2 = c_uint32 * SKETCH_W2
 Stage3 = c_uint32 * SKETCH_W3
-Tuple = c_uint8 * 4 # src_addr
+Tuple = c_uint8 * 14 # Tuple is not resized for different flow types (FiveTuple + sz)
 
 class EM_WFCM(object):
     lib = cdll.LoadLibrary(f"{os.path.dirname(__file__)}/EM/lib/libEM_WFCM.so")
@@ -38,7 +38,7 @@ class EM_WFCM(object):
     lib.vector_get.argtypes = [c_void_p, c_size_t]
 
     def __init__(self, s1, s2, s3, in_tuples):
-        # logger.info(in_tuples)
+        logger.info(in_tuples)
         Tuples = Tuple * len(in_tuples)
         tuples = Tuples()
         in2Tuples = []
