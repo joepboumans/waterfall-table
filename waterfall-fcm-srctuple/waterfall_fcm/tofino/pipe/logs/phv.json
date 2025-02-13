@@ -1,5 +1,5 @@
 {
-    "build_date": "Thu Feb  6 16:06:39 2025",
+    "build_date": "Thu Feb 13 11:08:39 2025",
     "compiler_version": "9.11.0",
     "constraint_reasons": [
         "Solitary (ALU): This field cannot be packed with anything else due to ALU operation.",
@@ -3334,7 +3334,7 @@
             "gress": "egress",
             "phv_deparser_group_number": 3,
             "phv_mau_group_number": 3,
-            "phv_number": 338,
+            "phv_number": 340,
             "slices": [
                 {
                     "field_slice": {
@@ -3344,7 +3344,7 @@
                             "msb": 79
                         }
                     },
-                    "phv_number": 338,
+                    "phv_number": 340,
                     "reads": [
                         {
                             "location": {
@@ -3652,7 +3652,7 @@
             "gress": "egress",
             "phv_deparser_group_number": 3,
             "phv_mau_group_number": 3,
-            "phv_number": 339,
+            "phv_number": 341,
             "slices": [
                 {
                     "field_slice": {
@@ -3662,7 +3662,7 @@
                             "msb": 79
                         }
                     },
-                    "phv_number": 339,
+                    "phv_number": 341,
                     "reads": [
                         {
                             "location": {
@@ -3885,22 +3885,22 @@
             ]
         },
         {
-            "bit_width": 16,
+            "bit_width": 8,
             "container_type": "tagalong",
             "gress": "egress",
             "phv_deparser_group_number": 3,
             "phv_mau_group_number": 3,
-            "phv_number": 342,
+            "phv_number": 302,
             "slices": [
                 {
                     "field_slice": {
                         "field_name": "hdr.ethernet.dst_addr",
                         "slice_info": {
-                            "lsb": 32,
+                            "lsb": 40,
                             "msb": 47
                         }
                     },
-                    "phv_number": 342,
+                    "phv_number": 302,
                     "reads": [
                         {
                             "location": {
@@ -3911,7 +3911,48 @@
                     ],
                     "slice_info": {
                         "lsb": 0,
-                        "msb": 15
+                        "msb": 7
+                    },
+                    "writes": [
+                        {
+                            "location": {
+                                "detail": "ibuf",
+                                "state": "start",
+                                "type": "parser"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "bit_width": 8,
+            "container_type": "tagalong",
+            "gress": "egress",
+            "phv_deparser_group_number": 3,
+            "phv_mau_group_number": 3,
+            "phv_number": 301,
+            "slices": [
+                {
+                    "field_slice": {
+                        "field_name": "hdr.ethernet.dst_addr",
+                        "slice_info": {
+                            "lsb": 32,
+                            "msb": 39
+                        }
+                    },
+                    "phv_number": 301,
+                    "reads": [
+                        {
+                            "location": {
+                                "detail": "pkt",
+                                "type": "deparser"
+                            }
+                        }
+                    ],
+                    "slice_info": {
+                        "lsb": 0,
+                        "msb": 7
                     },
                     "writes": [
                         {
@@ -3972,7 +4013,7 @@
             "gress": "egress",
             "phv_deparser_group_number": 3,
             "phv_mau_group_number": 3,
-            "phv_number": 341,
+            "phv_number": 343,
             "slices": [
                 {
                     "field_slice": {
@@ -3982,7 +4023,7 @@
                             "msb": 47
                         }
                     },
-                    "phv_number": 341,
+                    "phv_number": 343,
                     "reads": [
                         {
                             "location": {
@@ -4054,7 +4095,7 @@
             "gress": "egress",
             "phv_deparser_group_number": 3,
             "phv_mau_group_number": 3,
-            "phv_number": 340,
+            "phv_number": 342,
             "slices": [
                 {
                     "field_slice": {
@@ -4064,7 +4105,7 @@
                             "msb": 15
                         }
                     },
-                    "phv_number": 340,
+                    "phv_number": 342,
                     "reads": [
                         {
                             "location": {
@@ -4435,52 +4476,11 @@
             "gress": "egress",
             "phv_deparser_group_number": 1,
             "phv_mau_group_number": 1,
-            "phv_number": 21,
-            "slices": [
-                {
-                    "field_slice": {
-                        "field_name": "hdr.ipv4.src_addr",
-                        "slice_info": {
-                            "lsb": 0,
-                            "msb": 31
-                        }
-                    },
-                    "phv_number": 21,
-                    "reads": [
-                        {
-                            "location": {
-                                "detail": "pkt",
-                                "type": "deparser"
-                            }
-                        }
-                    ],
-                    "slice_info": {
-                        "lsb": 0,
-                        "msb": 31
-                    },
-                    "writes": [
-                        {
-                            "location": {
-                                "detail": "ibuf",
-                                "state": "parse_ipv4",
-                                "type": "parser"
-                            }
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "bit_width": 32,
-            "container_type": "normal",
-            "gress": "egress",
-            "phv_deparser_group_number": 1,
-            "phv_mau_group_number": 1,
             "phv_number": 20,
             "slices": [
                 {
                     "field_slice": {
-                        "field_name": "hdr.ipv4.dst_addr",
+                        "field_name": "hdr.ipv4.src_addr",
                         "slice_info": {
                             "lsb": 0,
                             "msb": 31
@@ -4512,12 +4512,94 @@
             ]
         },
         {
+            "bit_width": 16,
+            "container_type": "tagalong",
+            "gress": "egress",
+            "phv_deparser_group_number": 3,
+            "phv_mau_group_number": 3,
+            "phv_number": 339,
+            "slices": [
+                {
+                    "field_slice": {
+                        "field_name": "hdr.ipv4.dst_addr",
+                        "slice_info": {
+                            "lsb": 16,
+                            "msb": 31
+                        }
+                    },
+                    "phv_number": 339,
+                    "reads": [
+                        {
+                            "location": {
+                                "detail": "pkt",
+                                "type": "deparser"
+                            }
+                        }
+                    ],
+                    "slice_info": {
+                        "lsb": 0,
+                        "msb": 15
+                    },
+                    "writes": [
+                        {
+                            "location": {
+                                "detail": "ibuf",
+                                "state": "parse_ipv4",
+                                "type": "parser"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "bit_width": 16,
+            "container_type": "tagalong",
+            "gress": "egress",
+            "phv_deparser_group_number": 3,
+            "phv_mau_group_number": 3,
+            "phv_number": 338,
+            "slices": [
+                {
+                    "field_slice": {
+                        "field_name": "hdr.ipv4.dst_addr",
+                        "slice_info": {
+                            "lsb": 0,
+                            "msb": 15
+                        }
+                    },
+                    "phv_number": 338,
+                    "reads": [
+                        {
+                            "location": {
+                                "detail": "pkt",
+                                "type": "deparser"
+                            }
+                        }
+                    ],
+                    "slice_info": {
+                        "lsb": 0,
+                        "msb": 15
+                    },
+                    "writes": [
+                        {
+                            "location": {
+                                "detail": "ibuf",
+                                "state": "parse_ipv4",
+                                "type": "parser"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "bit_width": 32,
             "container_type": "normal",
             "gress": "egress",
             "phv_deparser_group_number": 1,
             "phv_mau_group_number": 1,
-            "phv_number": 22,
+            "phv_number": 21,
             "slices": [
                 {
                     "field_slice": {
@@ -4527,7 +4609,7 @@
                             "msb": 31
                         }
                     },
-                    "phv_number": 22,
+                    "phv_number": 21,
                     "reads": [],
                     "slice_info": {
                         "lsb": 0,
@@ -4553,7 +4635,7 @@
             "gress": "egress",
             "phv_deparser_group_number": 1,
             "phv_mau_group_number": 1,
-            "phv_number": 23,
+            "phv_number": 22,
             "slices": [
                 {
                     "field_slice": {
@@ -4563,7 +4645,7 @@
                             "msb": 31
                         }
                     },
-                    "phv_number": 23,
+                    "phv_number": 22,
                     "reads": [],
                     "slice_info": {
                         "lsb": 0,
@@ -12661,7 +12743,7 @@
                             "msb": 79
                         }
                     },
-                    "phv_number": 338,
+                    "phv_number": 340,
                     "reads": [
                         {
                             "location": {
@@ -13032,7 +13114,7 @@
                             "msb": 79
                         }
                     },
-                    "phv_number": 339,
+                    "phv_number": 341,
                     "reads": [
                         {
                             "location": {
@@ -13952,8 +14034,15 @@
                 {
                     "field_name": "hdr.ethernet.dst_addr",
                     "slice_info": {
-                        "lsb": 32,
+                        "lsb": 40,
                         "msb": 47
+                    }
+                },
+                {
+                    "field_name": "hdr.ethernet.dst_addr",
+                    "slice_info": {
+                        "lsb": 32,
+                        "msb": 39
                     }
                 },
                 {
@@ -13969,11 +14058,11 @@
                     "field_slice": {
                         "field_name": "hdr.ethernet.dst_addr",
                         "slice_info": {
-                            "lsb": 32,
+                            "lsb": 40,
                             "msb": 47
                         }
                     },
-                    "phv_number": 342,
+                    "phv_number": 302,
                     "reads": [
                         {
                             "location": {
@@ -13984,7 +14073,38 @@
                     ],
                     "slice_info": {
                         "lsb": 0,
-                        "msb": 15
+                        "msb": 7
+                    },
+                    "writes": [
+                        {
+                            "location": {
+                                "detail": "ibuf",
+                                "state": "start",
+                                "type": "parser"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "field_slice": {
+                        "field_name": "hdr.ethernet.dst_addr",
+                        "slice_info": {
+                            "lsb": 32,
+                            "msb": 39
+                        }
+                    },
+                    "phv_number": 301,
+                    "reads": [
+                        {
+                            "location": {
+                                "detail": "pkt",
+                                "type": "deparser"
+                            }
+                        }
+                    ],
+                    "slice_info": {
+                        "lsb": 0,
+                        "msb": 7
                     },
                     "writes": [
                         {
@@ -14131,7 +14251,7 @@
                             "msb": 47
                         }
                     },
-                    "phv_number": 341,
+                    "phv_number": 343,
                     "reads": [
                         {
                             "location": {
@@ -14282,7 +14402,7 @@
                             "msb": 15
                         }
                     },
-                    "phv_number": 340,
+                    "phv_number": 342,
                     "reads": [
                         {
                             "location": {
@@ -15574,7 +15694,7 @@
                             "msb": 31
                         }
                     },
-                    "phv_number": 21,
+                    "phv_number": 20,
                     "reads": [
                         {
                             "location": {
@@ -15671,8 +15791,15 @@
                 {
                     "field_name": "hdr.ipv4.dst_addr",
                     "slice_info": {
-                        "lsb": 0,
+                        "lsb": 16,
                         "msb": 31
+                    }
+                },
+                {
+                    "field_name": "hdr.ipv4.dst_addr",
+                    "slice_info": {
+                        "lsb": 0,
+                        "msb": 15
                     }
                 }
             ],
@@ -15681,11 +15808,11 @@
                     "field_slice": {
                         "field_name": "hdr.ipv4.dst_addr",
                         "slice_info": {
-                            "lsb": 0,
+                            "lsb": 16,
                             "msb": 31
                         }
                     },
-                    "phv_number": 20,
+                    "phv_number": 339,
                     "reads": [
                         {
                             "location": {
@@ -15696,7 +15823,38 @@
                     ],
                     "slice_info": {
                         "lsb": 0,
-                        "msb": 31
+                        "msb": 15
+                    },
+                    "writes": [
+                        {
+                            "location": {
+                                "detail": "ibuf",
+                                "state": "parse_ipv4",
+                                "type": "parser"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "field_slice": {
+                        "field_name": "hdr.ipv4.dst_addr",
+                        "slice_info": {
+                            "lsb": 0,
+                            "msb": 15
+                        }
+                    },
+                    "phv_number": 338,
+                    "reads": [
+                        {
+                            "location": {
+                                "detail": "pkt",
+                                "type": "deparser"
+                            }
+                        }
+                    ],
+                    "slice_info": {
+                        "lsb": 0,
+                        "msb": 15
                     },
                     "writes": [
                         {
@@ -17670,7 +17828,7 @@
                             "msb": 31
                         }
                     },
-                    "phv_number": 22,
+                    "phv_number": 21,
                     "reads": [],
                     "slice_info": {
                         "lsb": 0,
@@ -17736,7 +17894,7 @@
                             "msb": 31
                         }
                     },
-                    "phv_number": 23,
+                    "phv_number": 22,
                     "reads": [],
                     "slice_info": {
                         "lsb": 0,
@@ -19256,7 +19414,7 @@
             "num_containers": 64
         }
     ],
-    "run_id": "e8c50ffae3064924",
+    "run_id": "5c5916958a224d15",
     "schema_version": "3.0.0",
     "structures": [
         {

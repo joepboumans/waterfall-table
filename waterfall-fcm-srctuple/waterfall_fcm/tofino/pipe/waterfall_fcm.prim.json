@@ -720,7 +720,7 @@
                 "name" : "hash_eg_md.hash_meta_d1",
                 "algorithm" : "crc_32"
               },
-              "hash_inputs" : ["hdr.ipv4.src_addr", "hdr.ipv4.dst_addr"]
+              "hash_inputs" : ["hdr.ipv4.src_addr"]
             }
           ]
         }
@@ -743,7 +743,7 @@
                 "name" : "hash_eg_md.hash_meta_d2",
                 "algorithm" : "crc_32"
               },
-              "hash_inputs" : ["hdr.ipv4.src_addr", "hdr.ipv4.dst_addr"]
+              "hash_inputs" : ["hdr.ipv4.src_addr"]
             }
           ]
         }

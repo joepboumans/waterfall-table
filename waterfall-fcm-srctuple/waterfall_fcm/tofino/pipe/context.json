@@ -1,5 +1,5 @@
 {
-  "build_date": "Thu Feb  6 16:06:39 2025",
+  "build_date": "Thu Feb 13 11:08:39 2025",
   "schema_version": "1.12.4",
   "compiler_version": "9.11.0 (fdd358c)",
   "target": "tofino",
@@ -151,42 +151,42 @@
         "parser_state_id": 3
       },
       {
-        "parser_name": "parse_ipv4.$split_0",
+        "parser_name": "parse_ipv4",
         "match_registers": [],
         "tcam_rows": [ 250 ],
         "uses_pvs": false,
-        "parser_state_id": 4
+        "parser_state_id": 3
       },
       {
-        "parser_name": "parse_ipv4.$split_0",
+        "parser_name": "parse_ipv4",
         "match_registers": [],
         "tcam_rows": [ 249 ],
         "uses_pvs": false,
-        "parser_state_id": 4
+        "parser_state_id": 3
       },
       {
-        "parser_name": "parse_ipv4.$split_0",
+        "parser_name": "parse_tcp",
         "match_registers": [],
         "tcam_rows": [ 248 ],
         "uses_pvs": false,
         "parser_state_id": 4
       },
       {
-        "parser_name": "parse_tcp",
+        "parser_name": "parse_tcp.$split_0",
         "match_registers": [],
         "tcam_rows": [ 247 ],
         "uses_pvs": false,
         "parser_state_id": 5
       },
       {
-        "parser_name": "parse_tcp.$split_0",
+        "parser_name": "parse_udp",
         "match_registers": [],
         "tcam_rows": [ 246 ],
         "uses_pvs": false,
         "parser_state_id": 6
       },
       {
-        "parser_name": "parse_udp",
+        "parser_name": "min_parse_depth_accept_initial",
         "match_registers": [],
         "tcam_rows": [ 245 ],
         "uses_pvs": false,
@@ -197,10 +197,10 @@
         "match_registers": [],
         "tcam_rows": [ 244 ],
         "uses_pvs": false,
-        "parser_state_id": 8
+        "parser_state_id": 7
       },
       {
-        "parser_name": "min_parse_depth_accept_initial",
+        "parser_name": "min_parse_depth_accept_loop.$split_0",
         "match_registers": [],
         "tcam_rows": [ 243 ],
         "uses_pvs": false,
@@ -211,10 +211,10 @@
         "match_registers": [],
         "tcam_rows": [ 242 ],
         "uses_pvs": false,
-        "parser_state_id": 9
+        "parser_state_id": 8
       },
       {
-        "parser_name": "min_parse_depth_accept_loop.$split_0",
+        "parser_name": "min_parse_depth_accept_loop.$it1.$split_0",
         "match_registers": [],
         "tcam_rows": [ 241 ],
         "uses_pvs": false,
@@ -225,17 +225,17 @@
         "match_registers": [],
         "tcam_rows": [ 240 ],
         "uses_pvs": false,
-        "parser_state_id": 10
+        "parser_state_id": 9
       },
       {
-        "parser_name": "min_parse_depth_accept_loop.$it1.$split_0",
+        "parser_name": "min_parse_depth_accept_loop.$it2",
         "match_registers": [],
         "tcam_rows": [ 239 ],
         "uses_pvs": false,
         "parser_state_id": 10
       },
       {
-        "parser_name": "min_parse_depth_accept_loop.$it2",
+        "parser_name": "min_parse_depth_reject_initial",
         "match_registers": [],
         "tcam_rows": [ 238 ],
         "uses_pvs": false,
@@ -246,17 +246,17 @@
         "match_registers": [],
         "tcam_rows": [ 237 ],
         "uses_pvs": false,
-        "parser_state_id": 12
+        "parser_state_id": 11
       },
       {
-        "parser_name": "min_parse_depth_reject_initial",
+        "parser_name": "min_parse_depth_reject_loop",
         "match_registers": [],
         "tcam_rows": [ 236 ],
         "uses_pvs": false,
         "parser_state_id": 12
       },
       {
-        "parser_name": "min_parse_depth_reject_loop",
+        "parser_name": "min_parse_depth_reject_loop.$split_0",
         "match_registers": [],
         "tcam_rows": [ 235 ],
         "uses_pvs": false,
@@ -267,14 +267,7 @@
         "match_registers": [],
         "tcam_rows": [ 234 ],
         "uses_pvs": false,
-        "parser_state_id": 14
-      },
-      {
-        "parser_name": "min_parse_depth_reject_loop.$split_0",
-        "match_registers": [],
-        "tcam_rows": [ 233 ],
-        "uses_pvs": false,
-        "parser_state_id": 14
+        "parser_state_id": 13
       }
     ]
   },
@@ -1016,27 +1009,6 @@
           "container_type": "normal",
           "records": [
             {
-              "position_offset": 41,
-              "field_name": "hdr.ipv4.dst_addr",
-              "field_msb": 31,
-              "field_lsb": 0,
-              "field_width": 4,
-              "phv_msb": 31,
-              "phv_lsb": 0,
-              "is_compiler_generated": false,
-              "is_pov": false,
-              "live_start": "parser",
-              "live_end": "deparser",
-              "mutually_exclusive_with": []
-            }
-          ],
-          "word_bit_width": 32
-        },
-        {
-          "phv_number": 21,
-          "container_type": "normal",
-          "records": [
-            {
               "position_offset": 54,
               "field_name": "hdr.ipv4.src_addr",
               "field_msb": 31,
@@ -1689,6 +1661,42 @@
           "word_bit_width": 8
         },
         {
+          "phv_number": 301,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 26,
+              "field_name": "hdr.ethernet.dst_addr",
+              "field_msb": 39,
+              "field_lsb": 32,
+              "field_width": 6,
+              "phv_msb": 7,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 8
+        },
+        {
+          "phv_number": 302,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 26,
+              "field_name": "hdr.ethernet.dst_addr",
+              "field_msb": 47,
+              "field_lsb": 40,
+              "field_width": 6,
+              "phv_msb": 7,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 8
+        },
+        {
           "phv_number": 320,
           "container_type": "tagalong",
           "records": [
@@ -1845,6 +1853,42 @@
           "container_type": "tagalong",
           "records": [
             {
+              "position_offset": 41,
+              "field_name": "hdr.ipv4.dst_addr",
+              "field_msb": 15,
+              "field_lsb": 0,
+              "field_width": 4,
+              "phv_msb": 15,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 16
+        },
+        {
+          "phv_number": 339,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 41,
+              "field_name": "hdr.ipv4.dst_addr",
+              "field_msb": 31,
+              "field_lsb": 16,
+              "field_width": 4,
+              "phv_msb": 15,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 16
+        },
+        {
+          "phv_number": 340,
+          "container_type": "tagalong",
+          "records": [
+            {
               "position_offset": 73,
               "field_name": "hdr.min_parse_depth_padding_0$1.packet_payload",
               "field_msb": 79,
@@ -1859,7 +1903,7 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 339,
+          "phv_number": 341,
           "container_type": "tagalong",
           "records": [
             {
@@ -1877,7 +1921,7 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 340,
+          "phv_number": 342,
           "container_type": "tagalong",
           "records": [
             {
@@ -1895,30 +1939,12 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 341,
+          "phv_number": 343,
           "container_type": "tagalong",
           "records": [
             {
               "position_offset": 34,
               "field_name": "hdr.ethernet.src_addr",
-              "field_msb": 47,
-              "field_lsb": 32,
-              "field_width": 6,
-              "phv_msb": 15,
-              "phv_lsb": 0,
-              "is_compiler_generated": false,
-              "is_pov": false
-            }
-          ],
-          "word_bit_width": 16
-        },
-        {
-          "phv_number": 342,
-          "container_type": "tagalong",
-          "records": [
-            {
-              "position_offset": 26,
-              "field_name": "hdr.ethernet.dst_addr",
               "field_msb": 47,
               "field_lsb": 32,
               "field_width": 6,
@@ -2775,27 +2801,6 @@
           "container_type": "normal",
           "records": [
             {
-              "position_offset": 41,
-              "field_name": "hdr.ipv4.dst_addr",
-              "field_msb": 31,
-              "field_lsb": 0,
-              "field_width": 4,
-              "phv_msb": 31,
-              "phv_lsb": 0,
-              "is_compiler_generated": false,
-              "is_pov": false,
-              "live_start": "parser",
-              "live_end": "deparser",
-              "mutually_exclusive_with": []
-            }
-          ],
-          "word_bit_width": 32
-        },
-        {
-          "phv_number": 21,
-          "container_type": "normal",
-          "records": [
-            {
               "position_offset": 54,
               "field_name": "hdr.ipv4.src_addr",
               "field_msb": 31,
@@ -2813,7 +2818,7 @@
           "word_bit_width": 32
         },
         {
-          "phv_number": 22,
+          "phv_number": 21,
           "container_type": "normal",
           "records": [
             {
@@ -2834,7 +2839,7 @@
           "word_bit_width": 32
         },
         {
-          "phv_number": 23,
+          "phv_number": 22,
           "container_type": "normal",
           "records": [
             {
@@ -3490,6 +3495,42 @@
           "word_bit_width": 8
         },
         {
+          "phv_number": 301,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 26,
+              "field_name": "hdr.ethernet.dst_addr",
+              "field_msb": 39,
+              "field_lsb": 32,
+              "field_width": 6,
+              "phv_msb": 7,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 8
+        },
+        {
+          "phv_number": 302,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 26,
+              "field_name": "hdr.ethernet.dst_addr",
+              "field_msb": 47,
+              "field_lsb": 40,
+              "field_width": 6,
+              "phv_msb": 7,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 8
+        },
+        {
           "phv_number": 320,
           "container_type": "tagalong",
           "records": [
@@ -3646,6 +3687,42 @@
           "container_type": "tagalong",
           "records": [
             {
+              "position_offset": 41,
+              "field_name": "hdr.ipv4.dst_addr",
+              "field_msb": 15,
+              "field_lsb": 0,
+              "field_width": 4,
+              "phv_msb": 15,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 16
+        },
+        {
+          "phv_number": 339,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 41,
+              "field_name": "hdr.ipv4.dst_addr",
+              "field_msb": 31,
+              "field_lsb": 16,
+              "field_width": 4,
+              "phv_msb": 15,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 16
+        },
+        {
+          "phv_number": 340,
+          "container_type": "tagalong",
+          "records": [
+            {
               "position_offset": 73,
               "field_name": "hdr.min_parse_depth_padding_0$1.packet_payload",
               "field_msb": 79,
@@ -3660,7 +3737,7 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 339,
+          "phv_number": 341,
           "container_type": "tagalong",
           "records": [
             {
@@ -3678,7 +3755,7 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 340,
+          "phv_number": 342,
           "container_type": "tagalong",
           "records": [
             {
@@ -3696,30 +3773,12 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 341,
+          "phv_number": 343,
           "container_type": "tagalong",
           "records": [
             {
               "position_offset": 34,
               "field_name": "hdr.ethernet.src_addr",
-              "field_msb": 47,
-              "field_lsb": 32,
-              "field_width": 6,
-              "phv_msb": 15,
-              "phv_lsb": 0,
-              "is_compiler_generated": false,
-              "is_pov": false
-            }
-          ],
-          "word_bit_width": 16
-        },
-        {
-          "phv_number": 342,
-          "container_type": "tagalong",
-          "records": [
-            {
-              "position_offset": 26,
-              "field_name": "hdr.ethernet.dst_addr",
               "field_msb": 47,
               "field_lsb": 32,
               "field_width": 6,
@@ -4597,27 +4656,6 @@
           "container_type": "normal",
           "records": [
             {
-              "position_offset": 41,
-              "field_name": "hdr.ipv4.dst_addr",
-              "field_msb": 31,
-              "field_lsb": 0,
-              "field_width": 4,
-              "phv_msb": 31,
-              "phv_lsb": 0,
-              "is_compiler_generated": false,
-              "is_pov": false,
-              "live_start": "parser",
-              "live_end": "deparser",
-              "mutually_exclusive_with": []
-            }
-          ],
-          "word_bit_width": 32
-        },
-        {
-          "phv_number": 21,
-          "container_type": "normal",
-          "records": [
-            {
               "position_offset": 54,
               "field_name": "hdr.ipv4.src_addr",
               "field_msb": 31,
@@ -4635,7 +4673,7 @@
           "word_bit_width": 32
         },
         {
-          "phv_number": 22,
+          "phv_number": 21,
           "container_type": "normal",
           "records": [
             {
@@ -4656,7 +4694,7 @@
           "word_bit_width": 32
         },
         {
-          "phv_number": 23,
+          "phv_number": 22,
           "container_type": "normal",
           "records": [
             {
@@ -5312,6 +5350,42 @@
           "word_bit_width": 8
         },
         {
+          "phv_number": 301,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 26,
+              "field_name": "hdr.ethernet.dst_addr",
+              "field_msb": 39,
+              "field_lsb": 32,
+              "field_width": 6,
+              "phv_msb": 7,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 8
+        },
+        {
+          "phv_number": 302,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 26,
+              "field_name": "hdr.ethernet.dst_addr",
+              "field_msb": 47,
+              "field_lsb": 40,
+              "field_width": 6,
+              "phv_msb": 7,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 8
+        },
+        {
           "phv_number": 320,
           "container_type": "tagalong",
           "records": [
@@ -5468,6 +5542,42 @@
           "container_type": "tagalong",
           "records": [
             {
+              "position_offset": 41,
+              "field_name": "hdr.ipv4.dst_addr",
+              "field_msb": 15,
+              "field_lsb": 0,
+              "field_width": 4,
+              "phv_msb": 15,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 16
+        },
+        {
+          "phv_number": 339,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 41,
+              "field_name": "hdr.ipv4.dst_addr",
+              "field_msb": 31,
+              "field_lsb": 16,
+              "field_width": 4,
+              "phv_msb": 15,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 16
+        },
+        {
+          "phv_number": 340,
+          "container_type": "tagalong",
+          "records": [
+            {
               "position_offset": 73,
               "field_name": "hdr.min_parse_depth_padding_0$1.packet_payload",
               "field_msb": 79,
@@ -5482,7 +5592,7 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 339,
+          "phv_number": 341,
           "container_type": "tagalong",
           "records": [
             {
@@ -5500,7 +5610,7 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 340,
+          "phv_number": 342,
           "container_type": "tagalong",
           "records": [
             {
@@ -5518,30 +5628,12 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 341,
+          "phv_number": 343,
           "container_type": "tagalong",
           "records": [
             {
               "position_offset": 34,
               "field_name": "hdr.ethernet.src_addr",
-              "field_msb": 47,
-              "field_lsb": 32,
-              "field_width": 6,
-              "phv_msb": 15,
-              "phv_lsb": 0,
-              "is_compiler_generated": false,
-              "is_pov": false
-            }
-          ],
-          "word_bit_width": 16
-        },
-        {
-          "phv_number": 342,
-          "container_type": "tagalong",
-          "records": [
-            {
-              "position_offset": 26,
-              "field_name": "hdr.ethernet.dst_addr",
               "field_msb": 47,
               "field_lsb": 32,
               "field_width": 6,
@@ -6440,27 +6532,6 @@
           "container_type": "normal",
           "records": [
             {
-              "position_offset": 41,
-              "field_name": "hdr.ipv4.dst_addr",
-              "field_msb": 31,
-              "field_lsb": 0,
-              "field_width": 4,
-              "phv_msb": 31,
-              "phv_lsb": 0,
-              "is_compiler_generated": false,
-              "is_pov": false,
-              "live_start": "parser",
-              "live_end": "deparser",
-              "mutually_exclusive_with": []
-            }
-          ],
-          "word_bit_width": 32
-        },
-        {
-          "phv_number": 21,
-          "container_type": "normal",
-          "records": [
-            {
               "position_offset": 54,
               "field_name": "hdr.ipv4.src_addr",
               "field_msb": 31,
@@ -6478,7 +6549,7 @@
           "word_bit_width": 32
         },
         {
-          "phv_number": 22,
+          "phv_number": 21,
           "container_type": "normal",
           "records": [
             {
@@ -6499,7 +6570,7 @@
           "word_bit_width": 32
         },
         {
-          "phv_number": 23,
+          "phv_number": 22,
           "container_type": "normal",
           "records": [
             {
@@ -7155,6 +7226,42 @@
           "word_bit_width": 8
         },
         {
+          "phv_number": 301,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 26,
+              "field_name": "hdr.ethernet.dst_addr",
+              "field_msb": 39,
+              "field_lsb": 32,
+              "field_width": 6,
+              "phv_msb": 7,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 8
+        },
+        {
+          "phv_number": 302,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 26,
+              "field_name": "hdr.ethernet.dst_addr",
+              "field_msb": 47,
+              "field_lsb": 40,
+              "field_width": 6,
+              "phv_msb": 7,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 8
+        },
+        {
           "phv_number": 320,
           "container_type": "tagalong",
           "records": [
@@ -7311,6 +7418,42 @@
           "container_type": "tagalong",
           "records": [
             {
+              "position_offset": 41,
+              "field_name": "hdr.ipv4.dst_addr",
+              "field_msb": 15,
+              "field_lsb": 0,
+              "field_width": 4,
+              "phv_msb": 15,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 16
+        },
+        {
+          "phv_number": 339,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 41,
+              "field_name": "hdr.ipv4.dst_addr",
+              "field_msb": 31,
+              "field_lsb": 16,
+              "field_width": 4,
+              "phv_msb": 15,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 16
+        },
+        {
+          "phv_number": 340,
+          "container_type": "tagalong",
+          "records": [
+            {
               "position_offset": 73,
               "field_name": "hdr.min_parse_depth_padding_0$1.packet_payload",
               "field_msb": 79,
@@ -7325,7 +7468,7 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 339,
+          "phv_number": 341,
           "container_type": "tagalong",
           "records": [
             {
@@ -7343,7 +7486,7 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 340,
+          "phv_number": 342,
           "container_type": "tagalong",
           "records": [
             {
@@ -7361,30 +7504,12 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 341,
+          "phv_number": 343,
           "container_type": "tagalong",
           "records": [
             {
               "position_offset": 34,
               "field_name": "hdr.ethernet.src_addr",
-              "field_msb": 47,
-              "field_lsb": 32,
-              "field_width": 6,
-              "phv_msb": 15,
-              "phv_lsb": 0,
-              "is_compiler_generated": false,
-              "is_pov": false
-            }
-          ],
-          "word_bit_width": 16
-        },
-        {
-          "phv_number": 342,
-          "container_type": "tagalong",
-          "records": [
-            {
-              "position_offset": 26,
-              "field_name": "hdr.ethernet.dst_addr",
               "field_msb": 47,
               "field_lsb": 32,
               "field_width": 6,
@@ -8318,27 +8443,6 @@
           "container_type": "normal",
           "records": [
             {
-              "position_offset": 41,
-              "field_name": "hdr.ipv4.dst_addr",
-              "field_msb": 31,
-              "field_lsb": 0,
-              "field_width": 4,
-              "phv_msb": 31,
-              "phv_lsb": 0,
-              "is_compiler_generated": false,
-              "is_pov": false,
-              "live_start": "parser",
-              "live_end": "deparser",
-              "mutually_exclusive_with": []
-            }
-          ],
-          "word_bit_width": 32
-        },
-        {
-          "phv_number": 21,
-          "container_type": "normal",
-          "records": [
-            {
               "position_offset": 54,
               "field_name": "hdr.ipv4.src_addr",
               "field_msb": 31,
@@ -8356,7 +8460,7 @@
           "word_bit_width": 32
         },
         {
-          "phv_number": 22,
+          "phv_number": 21,
           "container_type": "normal",
           "records": [
             {
@@ -9012,6 +9116,42 @@
           "word_bit_width": 8
         },
         {
+          "phv_number": 301,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 26,
+              "field_name": "hdr.ethernet.dst_addr",
+              "field_msb": 39,
+              "field_lsb": 32,
+              "field_width": 6,
+              "phv_msb": 7,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 8
+        },
+        {
+          "phv_number": 302,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 26,
+              "field_name": "hdr.ethernet.dst_addr",
+              "field_msb": 47,
+              "field_lsb": 40,
+              "field_width": 6,
+              "phv_msb": 7,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 8
+        },
+        {
           "phv_number": 320,
           "container_type": "tagalong",
           "records": [
@@ -9168,6 +9308,42 @@
           "container_type": "tagalong",
           "records": [
             {
+              "position_offset": 41,
+              "field_name": "hdr.ipv4.dst_addr",
+              "field_msb": 15,
+              "field_lsb": 0,
+              "field_width": 4,
+              "phv_msb": 15,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 16
+        },
+        {
+          "phv_number": 339,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 41,
+              "field_name": "hdr.ipv4.dst_addr",
+              "field_msb": 31,
+              "field_lsb": 16,
+              "field_width": 4,
+              "phv_msb": 15,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 16
+        },
+        {
+          "phv_number": 340,
+          "container_type": "tagalong",
+          "records": [
+            {
               "position_offset": 73,
               "field_name": "hdr.min_parse_depth_padding_0$1.packet_payload",
               "field_msb": 79,
@@ -9182,7 +9358,7 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 339,
+          "phv_number": 341,
           "container_type": "tagalong",
           "records": [
             {
@@ -9200,7 +9376,7 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 340,
+          "phv_number": 342,
           "container_type": "tagalong",
           "records": [
             {
@@ -9218,30 +9394,12 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 341,
+          "phv_number": 343,
           "container_type": "tagalong",
           "records": [
             {
               "position_offset": 34,
               "field_name": "hdr.ethernet.src_addr",
-              "field_msb": 47,
-              "field_lsb": 32,
-              "field_width": 6,
-              "phv_msb": 15,
-              "phv_lsb": 0,
-              "is_compiler_generated": false,
-              "is_pov": false
-            }
-          ],
-          "word_bit_width": 16
-        },
-        {
-          "phv_number": 342,
-          "container_type": "tagalong",
-          "records": [
-            {
-              "position_offset": 26,
-              "field_name": "hdr.ethernet.dst_addr",
               "field_msb": 47,
               "field_lsb": 32,
               "field_width": 6,
@@ -10119,27 +10277,6 @@
           "container_type": "normal",
           "records": [
             {
-              "position_offset": 41,
-              "field_name": "hdr.ipv4.dst_addr",
-              "field_msb": 31,
-              "field_lsb": 0,
-              "field_width": 4,
-              "phv_msb": 31,
-              "phv_lsb": 0,
-              "is_compiler_generated": false,
-              "is_pov": false,
-              "live_start": "parser",
-              "live_end": "deparser",
-              "mutually_exclusive_with": []
-            }
-          ],
-          "word_bit_width": 32
-        },
-        {
-          "phv_number": 21,
-          "container_type": "normal",
-          "records": [
-            {
               "position_offset": 54,
               "field_name": "hdr.ipv4.src_addr",
               "field_msb": 31,
@@ -10157,7 +10294,7 @@
           "word_bit_width": 32
         },
         {
-          "phv_number": 22,
+          "phv_number": 21,
           "container_type": "normal",
           "records": [
             {
@@ -10813,6 +10950,42 @@
           "word_bit_width": 8
         },
         {
+          "phv_number": 301,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 26,
+              "field_name": "hdr.ethernet.dst_addr",
+              "field_msb": 39,
+              "field_lsb": 32,
+              "field_width": 6,
+              "phv_msb": 7,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 8
+        },
+        {
+          "phv_number": 302,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 26,
+              "field_name": "hdr.ethernet.dst_addr",
+              "field_msb": 47,
+              "field_lsb": 40,
+              "field_width": 6,
+              "phv_msb": 7,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 8
+        },
+        {
           "phv_number": 320,
           "container_type": "tagalong",
           "records": [
@@ -10969,6 +11142,42 @@
           "container_type": "tagalong",
           "records": [
             {
+              "position_offset": 41,
+              "field_name": "hdr.ipv4.dst_addr",
+              "field_msb": 15,
+              "field_lsb": 0,
+              "field_width": 4,
+              "phv_msb": 15,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 16
+        },
+        {
+          "phv_number": 339,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 41,
+              "field_name": "hdr.ipv4.dst_addr",
+              "field_msb": 31,
+              "field_lsb": 16,
+              "field_width": 4,
+              "phv_msb": 15,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 16
+        },
+        {
+          "phv_number": 340,
+          "container_type": "tagalong",
+          "records": [
+            {
               "position_offset": 73,
               "field_name": "hdr.min_parse_depth_padding_0$1.packet_payload",
               "field_msb": 79,
@@ -10983,7 +11192,7 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 339,
+          "phv_number": 341,
           "container_type": "tagalong",
           "records": [
             {
@@ -11001,7 +11210,7 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 340,
+          "phv_number": 342,
           "container_type": "tagalong",
           "records": [
             {
@@ -11019,30 +11228,12 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 341,
+          "phv_number": 343,
           "container_type": "tagalong",
           "records": [
             {
               "position_offset": 34,
               "field_name": "hdr.ethernet.src_addr",
-              "field_msb": 47,
-              "field_lsb": 32,
-              "field_width": 6,
-              "phv_msb": 15,
-              "phv_lsb": 0,
-              "is_compiler_generated": false,
-              "is_pov": false
-            }
-          ],
-          "word_bit_width": 16
-        },
-        {
-          "phv_number": 342,
-          "container_type": "tagalong",
-          "records": [
-            {
-              "position_offset": 26,
-              "field_name": "hdr.ethernet.dst_addr",
               "field_msb": 47,
               "field_lsb": 32,
               "field_width": 6,
@@ -11920,27 +12111,6 @@
           "container_type": "normal",
           "records": [
             {
-              "position_offset": 41,
-              "field_name": "hdr.ipv4.dst_addr",
-              "field_msb": 31,
-              "field_lsb": 0,
-              "field_width": 4,
-              "phv_msb": 31,
-              "phv_lsb": 0,
-              "is_compiler_generated": false,
-              "is_pov": false,
-              "live_start": "parser",
-              "live_end": "deparser",
-              "mutually_exclusive_with": []
-            }
-          ],
-          "word_bit_width": 32
-        },
-        {
-          "phv_number": 21,
-          "container_type": "normal",
-          "records": [
-            {
               "position_offset": 54,
               "field_name": "hdr.ipv4.src_addr",
               "field_msb": 31,
@@ -12593,6 +12763,42 @@
           "word_bit_width": 8
         },
         {
+          "phv_number": 301,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 26,
+              "field_name": "hdr.ethernet.dst_addr",
+              "field_msb": 39,
+              "field_lsb": 32,
+              "field_width": 6,
+              "phv_msb": 7,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 8
+        },
+        {
+          "phv_number": 302,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 26,
+              "field_name": "hdr.ethernet.dst_addr",
+              "field_msb": 47,
+              "field_lsb": 40,
+              "field_width": 6,
+              "phv_msb": 7,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 8
+        },
+        {
           "phv_number": 320,
           "container_type": "tagalong",
           "records": [
@@ -12749,6 +12955,42 @@
           "container_type": "tagalong",
           "records": [
             {
+              "position_offset": 41,
+              "field_name": "hdr.ipv4.dst_addr",
+              "field_msb": 15,
+              "field_lsb": 0,
+              "field_width": 4,
+              "phv_msb": 15,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 16
+        },
+        {
+          "phv_number": 339,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 41,
+              "field_name": "hdr.ipv4.dst_addr",
+              "field_msb": 31,
+              "field_lsb": 16,
+              "field_width": 4,
+              "phv_msb": 15,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 16
+        },
+        {
+          "phv_number": 340,
+          "container_type": "tagalong",
+          "records": [
+            {
               "position_offset": 73,
               "field_name": "hdr.min_parse_depth_padding_0$1.packet_payload",
               "field_msb": 79,
@@ -12763,7 +13005,7 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 339,
+          "phv_number": 341,
           "container_type": "tagalong",
           "records": [
             {
@@ -12781,7 +13023,7 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 340,
+          "phv_number": 342,
           "container_type": "tagalong",
           "records": [
             {
@@ -12799,30 +13041,12 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 341,
+          "phv_number": 343,
           "container_type": "tagalong",
           "records": [
             {
               "position_offset": 34,
               "field_name": "hdr.ethernet.src_addr",
-              "field_msb": 47,
-              "field_lsb": 32,
-              "field_width": 6,
-              "phv_msb": 15,
-              "phv_lsb": 0,
-              "is_compiler_generated": false,
-              "is_pov": false
-            }
-          ],
-          "word_bit_width": 16
-        },
-        {
-          "phv_number": 342,
-          "container_type": "tagalong",
-          "records": [
-            {
-              "position_offset": 26,
-              "field_name": "hdr.ethernet.dst_addr",
               "field_msb": 47,
               "field_lsb": 32,
               "field_width": 6,
@@ -13679,27 +13903,6 @@
           "container_type": "normal",
           "records": [
             {
-              "position_offset": 41,
-              "field_name": "hdr.ipv4.dst_addr",
-              "field_msb": 31,
-              "field_lsb": 0,
-              "field_width": 4,
-              "phv_msb": 31,
-              "phv_lsb": 0,
-              "is_compiler_generated": false,
-              "is_pov": false,
-              "live_start": "parser",
-              "live_end": "deparser",
-              "mutually_exclusive_with": []
-            }
-          ],
-          "word_bit_width": 32
-        },
-        {
-          "phv_number": 21,
-          "container_type": "normal",
-          "records": [
-            {
               "position_offset": 54,
               "field_name": "hdr.ipv4.src_addr",
               "field_msb": 31,
@@ -14352,6 +14555,42 @@
           "word_bit_width": 8
         },
         {
+          "phv_number": 301,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 26,
+              "field_name": "hdr.ethernet.dst_addr",
+              "field_msb": 39,
+              "field_lsb": 32,
+              "field_width": 6,
+              "phv_msb": 7,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 8
+        },
+        {
+          "phv_number": 302,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 26,
+              "field_name": "hdr.ethernet.dst_addr",
+              "field_msb": 47,
+              "field_lsb": 40,
+              "field_width": 6,
+              "phv_msb": 7,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 8
+        },
+        {
           "phv_number": 320,
           "container_type": "tagalong",
           "records": [
@@ -14508,6 +14747,42 @@
           "container_type": "tagalong",
           "records": [
             {
+              "position_offset": 41,
+              "field_name": "hdr.ipv4.dst_addr",
+              "field_msb": 15,
+              "field_lsb": 0,
+              "field_width": 4,
+              "phv_msb": 15,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 16
+        },
+        {
+          "phv_number": 339,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 41,
+              "field_name": "hdr.ipv4.dst_addr",
+              "field_msb": 31,
+              "field_lsb": 16,
+              "field_width": 4,
+              "phv_msb": 15,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 16
+        },
+        {
+          "phv_number": 340,
+          "container_type": "tagalong",
+          "records": [
+            {
               "position_offset": 73,
               "field_name": "hdr.min_parse_depth_padding_0$1.packet_payload",
               "field_msb": 79,
@@ -14522,7 +14797,7 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 339,
+          "phv_number": 341,
           "container_type": "tagalong",
           "records": [
             {
@@ -14540,7 +14815,7 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 340,
+          "phv_number": 342,
           "container_type": "tagalong",
           "records": [
             {
@@ -14558,30 +14833,12 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 341,
+          "phv_number": 343,
           "container_type": "tagalong",
           "records": [
             {
               "position_offset": 34,
               "field_name": "hdr.ethernet.src_addr",
-              "field_msb": 47,
-              "field_lsb": 32,
-              "field_width": 6,
-              "phv_msb": 15,
-              "phv_lsb": 0,
-              "is_compiler_generated": false,
-              "is_pov": false
-            }
-          ],
-          "word_bit_width": 16
-        },
-        {
-          "phv_number": 342,
-          "container_type": "tagalong",
-          "records": [
-            {
-              "position_offset": 26,
-              "field_name": "hdr.ethernet.dst_addr",
               "field_msb": 47,
               "field_lsb": 32,
               "field_width": 6,
@@ -15459,27 +15716,6 @@
           "container_type": "normal",
           "records": [
             {
-              "position_offset": 41,
-              "field_name": "hdr.ipv4.dst_addr",
-              "field_msb": 31,
-              "field_lsb": 0,
-              "field_width": 4,
-              "phv_msb": 31,
-              "phv_lsb": 0,
-              "is_compiler_generated": false,
-              "is_pov": false,
-              "live_start": "parser",
-              "live_end": "deparser",
-              "mutually_exclusive_with": []
-            }
-          ],
-          "word_bit_width": 32
-        },
-        {
-          "phv_number": 21,
-          "container_type": "normal",
-          "records": [
-            {
               "position_offset": 54,
               "field_name": "hdr.ipv4.src_addr",
               "field_msb": 31,
@@ -16132,6 +16368,42 @@
           "word_bit_width": 8
         },
         {
+          "phv_number": 301,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 26,
+              "field_name": "hdr.ethernet.dst_addr",
+              "field_msb": 39,
+              "field_lsb": 32,
+              "field_width": 6,
+              "phv_msb": 7,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 8
+        },
+        {
+          "phv_number": 302,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 26,
+              "field_name": "hdr.ethernet.dst_addr",
+              "field_msb": 47,
+              "field_lsb": 40,
+              "field_width": 6,
+              "phv_msb": 7,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 8
+        },
+        {
           "phv_number": 320,
           "container_type": "tagalong",
           "records": [
@@ -16288,6 +16560,42 @@
           "container_type": "tagalong",
           "records": [
             {
+              "position_offset": 41,
+              "field_name": "hdr.ipv4.dst_addr",
+              "field_msb": 15,
+              "field_lsb": 0,
+              "field_width": 4,
+              "phv_msb": 15,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 16
+        },
+        {
+          "phv_number": 339,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 41,
+              "field_name": "hdr.ipv4.dst_addr",
+              "field_msb": 31,
+              "field_lsb": 16,
+              "field_width": 4,
+              "phv_msb": 15,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 16
+        },
+        {
+          "phv_number": 340,
+          "container_type": "tagalong",
+          "records": [
+            {
               "position_offset": 73,
               "field_name": "hdr.min_parse_depth_padding_0$1.packet_payload",
               "field_msb": 79,
@@ -16302,7 +16610,7 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 339,
+          "phv_number": 341,
           "container_type": "tagalong",
           "records": [
             {
@@ -16320,7 +16628,7 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 340,
+          "phv_number": 342,
           "container_type": "tagalong",
           "records": [
             {
@@ -16338,30 +16646,12 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 341,
+          "phv_number": 343,
           "container_type": "tagalong",
           "records": [
             {
               "position_offset": 34,
               "field_name": "hdr.ethernet.src_addr",
-              "field_msb": 47,
-              "field_lsb": 32,
-              "field_width": 6,
-              "phv_msb": 15,
-              "phv_lsb": 0,
-              "is_compiler_generated": false,
-              "is_pov": false
-            }
-          ],
-          "word_bit_width": 16
-        },
-        {
-          "phv_number": 342,
-          "container_type": "tagalong",
-          "records": [
-            {
-              "position_offset": 26,
-              "field_name": "hdr.ethernet.dst_addr",
               "field_msb": 47,
               "field_lsb": 32,
               "field_width": 6,
@@ -17197,27 +17487,6 @@
           "container_type": "normal",
           "records": [
             {
-              "position_offset": 41,
-              "field_name": "hdr.ipv4.dst_addr",
-              "field_msb": 31,
-              "field_lsb": 0,
-              "field_width": 4,
-              "phv_msb": 31,
-              "phv_lsb": 0,
-              "is_compiler_generated": false,
-              "is_pov": false,
-              "live_start": "parser",
-              "live_end": "deparser",
-              "mutually_exclusive_with": []
-            }
-          ],
-          "word_bit_width": 32
-        },
-        {
-          "phv_number": 21,
-          "container_type": "normal",
-          "records": [
-            {
               "position_offset": 54,
               "field_name": "hdr.ipv4.src_addr",
               "field_msb": 31,
@@ -17870,6 +18139,42 @@
           "word_bit_width": 8
         },
         {
+          "phv_number": 301,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 26,
+              "field_name": "hdr.ethernet.dst_addr",
+              "field_msb": 39,
+              "field_lsb": 32,
+              "field_width": 6,
+              "phv_msb": 7,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 8
+        },
+        {
+          "phv_number": 302,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 26,
+              "field_name": "hdr.ethernet.dst_addr",
+              "field_msb": 47,
+              "field_lsb": 40,
+              "field_width": 6,
+              "phv_msb": 7,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 8
+        },
+        {
           "phv_number": 320,
           "container_type": "tagalong",
           "records": [
@@ -18026,6 +18331,42 @@
           "container_type": "tagalong",
           "records": [
             {
+              "position_offset": 41,
+              "field_name": "hdr.ipv4.dst_addr",
+              "field_msb": 15,
+              "field_lsb": 0,
+              "field_width": 4,
+              "phv_msb": 15,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 16
+        },
+        {
+          "phv_number": 339,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 41,
+              "field_name": "hdr.ipv4.dst_addr",
+              "field_msb": 31,
+              "field_lsb": 16,
+              "field_width": 4,
+              "phv_msb": 15,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 16
+        },
+        {
+          "phv_number": 340,
+          "container_type": "tagalong",
+          "records": [
+            {
               "position_offset": 73,
               "field_name": "hdr.min_parse_depth_padding_0$1.packet_payload",
               "field_msb": 79,
@@ -18040,7 +18381,7 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 339,
+          "phv_number": 341,
           "container_type": "tagalong",
           "records": [
             {
@@ -18058,7 +18399,7 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 340,
+          "phv_number": 342,
           "container_type": "tagalong",
           "records": [
             {
@@ -18076,30 +18417,12 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 341,
+          "phv_number": 343,
           "container_type": "tagalong",
           "records": [
             {
               "position_offset": 34,
               "field_name": "hdr.ethernet.src_addr",
-              "field_msb": 47,
-              "field_lsb": 32,
-              "field_width": 6,
-              "phv_msb": 15,
-              "phv_lsb": 0,
-              "is_compiler_generated": false,
-              "is_pov": false
-            }
-          ],
-          "word_bit_width": 16
-        },
-        {
-          "phv_number": 342,
-          "container_type": "tagalong",
-          "records": [
-            {
-              "position_offset": 26,
-              "field_name": "hdr.ethernet.dst_addr",
               "field_msb": 47,
               "field_lsb": 32,
               "field_width": 6,
@@ -18900,27 +19223,6 @@
           "container_type": "normal",
           "records": [
             {
-              "position_offset": 41,
-              "field_name": "hdr.ipv4.dst_addr",
-              "field_msb": 31,
-              "field_lsb": 0,
-              "field_width": 4,
-              "phv_msb": 31,
-              "phv_lsb": 0,
-              "is_compiler_generated": false,
-              "is_pov": false,
-              "live_start": "parser",
-              "live_end": "deparser",
-              "mutually_exclusive_with": []
-            }
-          ],
-          "word_bit_width": 32
-        },
-        {
-          "phv_number": 21,
-          "container_type": "normal",
-          "records": [
-            {
               "position_offset": 54,
               "field_name": "hdr.ipv4.src_addr",
               "field_msb": 31,
@@ -19573,6 +19875,42 @@
           "word_bit_width": 8
         },
         {
+          "phv_number": 301,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 26,
+              "field_name": "hdr.ethernet.dst_addr",
+              "field_msb": 39,
+              "field_lsb": 32,
+              "field_width": 6,
+              "phv_msb": 7,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 8
+        },
+        {
+          "phv_number": 302,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 26,
+              "field_name": "hdr.ethernet.dst_addr",
+              "field_msb": 47,
+              "field_lsb": 40,
+              "field_width": 6,
+              "phv_msb": 7,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 8
+        },
+        {
           "phv_number": 320,
           "container_type": "tagalong",
           "records": [
@@ -19729,6 +20067,42 @@
           "container_type": "tagalong",
           "records": [
             {
+              "position_offset": 41,
+              "field_name": "hdr.ipv4.dst_addr",
+              "field_msb": 15,
+              "field_lsb": 0,
+              "field_width": 4,
+              "phv_msb": 15,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 16
+        },
+        {
+          "phv_number": 339,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 41,
+              "field_name": "hdr.ipv4.dst_addr",
+              "field_msb": 31,
+              "field_lsb": 16,
+              "field_width": 4,
+              "phv_msb": 15,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 16
+        },
+        {
+          "phv_number": 340,
+          "container_type": "tagalong",
+          "records": [
+            {
               "position_offset": 73,
               "field_name": "hdr.min_parse_depth_padding_0$1.packet_payload",
               "field_msb": 79,
@@ -19743,7 +20117,7 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 339,
+          "phv_number": 341,
           "container_type": "tagalong",
           "records": [
             {
@@ -19761,7 +20135,7 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 340,
+          "phv_number": 342,
           "container_type": "tagalong",
           "records": [
             {
@@ -19779,30 +20153,12 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 341,
+          "phv_number": 343,
           "container_type": "tagalong",
           "records": [
             {
               "position_offset": 34,
               "field_name": "hdr.ethernet.src_addr",
-              "field_msb": 47,
-              "field_lsb": 32,
-              "field_width": 6,
-              "phv_msb": 15,
-              "phv_lsb": 0,
-              "is_compiler_generated": false,
-              "is_pov": false
-            }
-          ],
-          "word_bit_width": 16
-        },
-        {
-          "phv_number": 342,
-          "container_type": "tagalong",
-          "records": [
-            {
-              "position_offset": 26,
-              "field_name": "hdr.ethernet.dst_addr",
               "field_msb": 47,
               "field_lsb": 32,
               "field_width": 6,
@@ -20603,27 +20959,6 @@
           "container_type": "normal",
           "records": [
             {
-              "position_offset": 41,
-              "field_name": "hdr.ipv4.dst_addr",
-              "field_msb": 31,
-              "field_lsb": 0,
-              "field_width": 4,
-              "phv_msb": 31,
-              "phv_lsb": 0,
-              "is_compiler_generated": false,
-              "is_pov": false,
-              "live_start": "parser",
-              "live_end": "deparser",
-              "mutually_exclusive_with": []
-            }
-          ],
-          "word_bit_width": 32
-        },
-        {
-          "phv_number": 21,
-          "container_type": "normal",
-          "records": [
-            {
               "position_offset": 54,
               "field_name": "hdr.ipv4.src_addr",
               "field_msb": 31,
@@ -21276,6 +21611,42 @@
           "word_bit_width": 8
         },
         {
+          "phv_number": 301,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 26,
+              "field_name": "hdr.ethernet.dst_addr",
+              "field_msb": 39,
+              "field_lsb": 32,
+              "field_width": 6,
+              "phv_msb": 7,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 8
+        },
+        {
+          "phv_number": 302,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 26,
+              "field_name": "hdr.ethernet.dst_addr",
+              "field_msb": 47,
+              "field_lsb": 40,
+              "field_width": 6,
+              "phv_msb": 7,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 8
+        },
+        {
           "phv_number": 320,
           "container_type": "tagalong",
           "records": [
@@ -21432,6 +21803,42 @@
           "container_type": "tagalong",
           "records": [
             {
+              "position_offset": 41,
+              "field_name": "hdr.ipv4.dst_addr",
+              "field_msb": 15,
+              "field_lsb": 0,
+              "field_width": 4,
+              "phv_msb": 15,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 16
+        },
+        {
+          "phv_number": 339,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 41,
+              "field_name": "hdr.ipv4.dst_addr",
+              "field_msb": 31,
+              "field_lsb": 16,
+              "field_width": 4,
+              "phv_msb": 15,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 16
+        },
+        {
+          "phv_number": 340,
+          "container_type": "tagalong",
+          "records": [
+            {
               "position_offset": 73,
               "field_name": "hdr.min_parse_depth_padding_0$1.packet_payload",
               "field_msb": 79,
@@ -21446,7 +21853,7 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 339,
+          "phv_number": 341,
           "container_type": "tagalong",
           "records": [
             {
@@ -21464,7 +21871,7 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 340,
+          "phv_number": 342,
           "container_type": "tagalong",
           "records": [
             {
@@ -21482,30 +21889,12 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 341,
+          "phv_number": 343,
           "container_type": "tagalong",
           "records": [
             {
               "position_offset": 34,
               "field_name": "hdr.ethernet.src_addr",
-              "field_msb": 47,
-              "field_lsb": 32,
-              "field_width": 6,
-              "phv_msb": 15,
-              "phv_lsb": 0,
-              "is_compiler_generated": false,
-              "is_pov": false
-            }
-          ],
-          "word_bit_width": 16
-        },
-        {
-          "phv_number": 342,
-          "container_type": "tagalong",
-          "records": [
-            {
-              "position_offset": 26,
-              "field_name": "hdr.ethernet.dst_addr",
               "field_msb": 47,
               "field_lsb": 32,
               "field_width": 6,
@@ -22348,27 +22737,6 @@
           "container_type": "normal",
           "records": [
             {
-              "position_offset": 41,
-              "field_name": "hdr.ipv4.dst_addr",
-              "field_msb": 31,
-              "field_lsb": 0,
-              "field_width": 4,
-              "phv_msb": 31,
-              "phv_lsb": 0,
-              "is_compiler_generated": false,
-              "is_pov": false,
-              "live_start": "parser",
-              "live_end": "deparser",
-              "mutually_exclusive_with": []
-            }
-          ],
-          "word_bit_width": 32
-        },
-        {
-          "phv_number": 21,
-          "container_type": "normal",
-          "records": [
-            {
               "position_offset": 54,
               "field_name": "hdr.ipv4.src_addr",
               "field_msb": 31,
@@ -23021,6 +23389,42 @@
           "word_bit_width": 8
         },
         {
+          "phv_number": 301,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 26,
+              "field_name": "hdr.ethernet.dst_addr",
+              "field_msb": 39,
+              "field_lsb": 32,
+              "field_width": 6,
+              "phv_msb": 7,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 8
+        },
+        {
+          "phv_number": 302,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 26,
+              "field_name": "hdr.ethernet.dst_addr",
+              "field_msb": 47,
+              "field_lsb": 40,
+              "field_width": 6,
+              "phv_msb": 7,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 8
+        },
+        {
           "phv_number": 320,
           "container_type": "tagalong",
           "records": [
@@ -23177,6 +23581,42 @@
           "container_type": "tagalong",
           "records": [
             {
+              "position_offset": 41,
+              "field_name": "hdr.ipv4.dst_addr",
+              "field_msb": 15,
+              "field_lsb": 0,
+              "field_width": 4,
+              "phv_msb": 15,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 16
+        },
+        {
+          "phv_number": 339,
+          "container_type": "tagalong",
+          "records": [
+            {
+              "position_offset": 41,
+              "field_name": "hdr.ipv4.dst_addr",
+              "field_msb": 31,
+              "field_lsb": 16,
+              "field_width": 4,
+              "phv_msb": 15,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false
+            }
+          ],
+          "word_bit_width": 16
+        },
+        {
+          "phv_number": 340,
+          "container_type": "tagalong",
+          "records": [
+            {
               "position_offset": 73,
               "field_name": "hdr.min_parse_depth_padding_0$1.packet_payload",
               "field_msb": 79,
@@ -23191,7 +23631,7 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 339,
+          "phv_number": 341,
           "container_type": "tagalong",
           "records": [
             {
@@ -23209,7 +23649,7 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 340,
+          "phv_number": 342,
           "container_type": "tagalong",
           "records": [
             {
@@ -23227,30 +23667,12 @@
           "word_bit_width": 16
         },
         {
-          "phv_number": 341,
+          "phv_number": 343,
           "container_type": "tagalong",
           "records": [
             {
               "position_offset": 34,
               "field_name": "hdr.ethernet.src_addr",
-              "field_msb": 47,
-              "field_lsb": 32,
-              "field_width": 6,
-              "phv_msb": 15,
-              "phv_lsb": 0,
-              "is_compiler_generated": false,
-              "is_pov": false
-            }
-          ],
-          "word_bit_width": 16
-        },
-        {
-          "phv_number": 342,
-          "container_type": "tagalong",
-          "records": [
-            {
-              "position_offset": 26,
-              "field_name": "hdr.ethernet.dst_addr",
               "field_msb": 47,
               "field_lsb": 32,
               "field_width": 6,
@@ -24266,7 +24688,7 @@
                 "name": "hash_eg_md.hash_meta_d2",
                 "algorithm": "crc_32"
               },
-              "hash_inputs": [ "hdr.ipv4.src_addr", "hdr.ipv4.dst_addr" ]
+              "hash_inputs": [ "hdr.ipv4.src_addr" ]
             }
           ],
           "direct_resources": [],
@@ -24385,7 +24807,7 @@
                 "name": "hash_eg_md.hash_meta_d1",
                 "algorithm": "crc_32"
               },
-              "hash_inputs": [ "hdr.ipv4.src_addr", "hdr.ipv4.dst_addr" ]
+              "hash_inputs": [ "hdr.ipv4.src_addr" ]
             }
           ],
           "direct_resources": [],
@@ -32226,17 +32648,17 @@
     {
       "fully_qualified_name": "mau[0].dp.match_input_xbar_din_power_ctl",
       "name": "stage_0_match_input_xbar_din_power_ctl",
-      "value": "0000000100000000000000300000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+      "value": "0000000100000000000000100000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
     },
     {
       "fully_qualified_name": "mau[0].dp.xbar_hash.hash.hash_seed",
       "name": "stage_0_hash_seed",
-      "value": "00000004000000000000000100000004000000000000000400000005000000000000000500000004000000040000000400000004000000010000000400000004000000000000000400000001000000000000000100000005000000000000000000000005000000010000000500000001000000000000000400000004000000010000000000000001000000010000000000000001000000000000000000000000000000010000000000000001000000010000000000000001000000000000000000000000000000000000000000000000"
+      "value": "00000000000000000000000500000004000000040000000000000001000000000000000500000004000000040000000400000004000000010000000400000004000000000000000000000004000000000000000000000000000000040000000000000005000000000000000100000001000000000000000500000000000000000000000100000000000000000000000100000001000000010000000100000001000000000000000000000001000000010000000100000000000000000000000100000000000000000000000000000000"
     },
     {
       "fully_qualified_name": "mau[0].dp.xbar_hash.hash.parity_group_mask",
       "name": "stage_0_parity_group_mask",
-      "value": "00000005000000000000000200000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+      "value": "00000005000000000000000200000000000000080000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
     },
     {
       "fully_qualified_name": "mau[0].rams.map_alu.meter_group[3].meter.meter_ctl",
@@ -32246,7 +32668,7 @@
     {
       "fully_qualified_name": "mau[1].dp.match_input_xbar_din_power_ctl",
       "name": "stage_1_match_input_xbar_din_power_ctl",
-      "value": "0000000000000000000000800000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+      "value": "0000000000000000000000400000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
     },
     {
       "fully_qualified_name": "mau[1].dp.xbar_hash.hash.parity_group_mask",
@@ -32261,7 +32683,7 @@
     {
       "fully_qualified_name": "mau[2].dp.match_input_xbar_din_power_ctl",
       "name": "stage_2_match_input_xbar_din_power_ctl",
-      "value": "00000020000000000000008400000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+      "value": "00000020000000000000004400000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
     },
     {
       "fully_qualified_name": "mau[2].dp.xbar_hash.hash.parity_group_mask",
@@ -32276,7 +32698,7 @@
     {
       "fully_qualified_name": "mau[3].dp.match_input_xbar_din_power_ctl",
       "name": "stage_3_match_input_xbar_din_power_ctl",
-      "value": "0000000400000000000000c40000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+      "value": "0000000400000000000000640000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
     },
     {
       "fully_qualified_name": "mau[3].dp.xbar_hash.hash.hash_seed",
@@ -32301,7 +32723,7 @@
     {
       "fully_qualified_name": "mau[4].dp.match_input_xbar_din_power_ctl",
       "name": "stage_4_match_input_xbar_din_power_ctl",
-      "value": "0000004000000000000000410000000000000028000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+      "value": "0000004000000000000000210000000000000028000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
     },
     {
       "fully_qualified_name": "mau[4].dp.xbar_hash.hash.parity_group_mask",
@@ -32316,7 +32738,7 @@
     {
       "fully_qualified_name": "mau[5].dp.match_input_xbar_din_power_ctl",
       "name": "stage_5_match_input_xbar_din_power_ctl",
-      "value": "0000000800000000000000410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+      "value": "0000000800000000000000210000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
     },
     {
       "fully_qualified_name": "mau[5].dp.xbar_hash.hash.hash_seed",
@@ -32412,13 +32834,6 @@
               "bit_width": 32,
               "optional": true,
               "is_constant": false
-            },
-            {
-              "name": "hdr.ipv4.dst_addr",
-              "start_bit": 0,
-              "bit_width": 32,
-              "optional": true,
-              "is_constant": false
             }
           ],
           "crossbar_configuration": [
@@ -32426,385 +32841,193 @@
               "stage_number": 0,
               "crossbar": [
                 {
-                  "byte_number": 32,
-                  "bit_in_byte": 0,
-                  "name": "hdr.ipv4.dst_addr",
-                  "field_bit": 0
-                },
-                {
-                  "byte_number": 32,
-                  "bit_in_byte": 1,
-                  "name": "hdr.ipv4.dst_addr",
-                  "field_bit": 1
-                },
-                {
-                  "byte_number": 32,
-                  "bit_in_byte": 2,
-                  "name": "hdr.ipv4.dst_addr",
-                  "field_bit": 2
-                },
-                {
-                  "byte_number": 32,
-                  "bit_in_byte": 3,
-                  "name": "hdr.ipv4.dst_addr",
-                  "field_bit": 3
-                },
-                {
-                  "byte_number": 32,
-                  "bit_in_byte": 4,
-                  "name": "hdr.ipv4.dst_addr",
-                  "field_bit": 4
-                },
-                {
-                  "byte_number": 32,
-                  "bit_in_byte": 5,
-                  "name": "hdr.ipv4.dst_addr",
-                  "field_bit": 5
-                },
-                {
-                  "byte_number": 32,
-                  "bit_in_byte": 6,
-                  "name": "hdr.ipv4.dst_addr",
-                  "field_bit": 6
-                },
-                {
-                  "byte_number": 32,
-                  "bit_in_byte": 7,
-                  "name": "hdr.ipv4.dst_addr",
-                  "field_bit": 7
-                },
-                {
-                  "byte_number": 33,
-                  "bit_in_byte": 0,
-                  "name": "hdr.ipv4.dst_addr",
-                  "field_bit": 8
-                },
-                {
-                  "byte_number": 33,
-                  "bit_in_byte": 1,
-                  "name": "hdr.ipv4.dst_addr",
-                  "field_bit": 9
-                },
-                {
-                  "byte_number": 33,
-                  "bit_in_byte": 2,
-                  "name": "hdr.ipv4.dst_addr",
-                  "field_bit": 10
-                },
-                {
-                  "byte_number": 33,
-                  "bit_in_byte": 3,
-                  "name": "hdr.ipv4.dst_addr",
-                  "field_bit": 11
-                },
-                {
-                  "byte_number": 33,
-                  "bit_in_byte": 4,
-                  "name": "hdr.ipv4.dst_addr",
-                  "field_bit": 12
-                },
-                {
-                  "byte_number": 33,
-                  "bit_in_byte": 5,
-                  "name": "hdr.ipv4.dst_addr",
-                  "field_bit": 13
-                },
-                {
-                  "byte_number": 33,
-                  "bit_in_byte": 6,
-                  "name": "hdr.ipv4.dst_addr",
-                  "field_bit": 14
-                },
-                {
-                  "byte_number": 33,
-                  "bit_in_byte": 7,
-                  "name": "hdr.ipv4.dst_addr",
-                  "field_bit": 15
-                },
-                {
-                  "byte_number": 34,
-                  "bit_in_byte": 0,
-                  "name": "hdr.ipv4.dst_addr",
-                  "field_bit": 16
-                },
-                {
-                  "byte_number": 34,
-                  "bit_in_byte": 1,
-                  "name": "hdr.ipv4.dst_addr",
-                  "field_bit": 17
-                },
-                {
-                  "byte_number": 34,
-                  "bit_in_byte": 2,
-                  "name": "hdr.ipv4.dst_addr",
-                  "field_bit": 18
-                },
-                {
-                  "byte_number": 34,
-                  "bit_in_byte": 3,
-                  "name": "hdr.ipv4.dst_addr",
-                  "field_bit": 19
-                },
-                {
-                  "byte_number": 34,
-                  "bit_in_byte": 4,
-                  "name": "hdr.ipv4.dst_addr",
-                  "field_bit": 20
-                },
-                {
-                  "byte_number": 34,
-                  "bit_in_byte": 5,
-                  "name": "hdr.ipv4.dst_addr",
-                  "field_bit": 21
-                },
-                {
-                  "byte_number": 34,
-                  "bit_in_byte": 6,
-                  "name": "hdr.ipv4.dst_addr",
-                  "field_bit": 22
-                },
-                {
-                  "byte_number": 34,
-                  "bit_in_byte": 7,
-                  "name": "hdr.ipv4.dst_addr",
-                  "field_bit": 23
-                },
-                {
-                  "byte_number": 35,
-                  "bit_in_byte": 0,
-                  "name": "hdr.ipv4.dst_addr",
-                  "field_bit": 24
-                },
-                {
-                  "byte_number": 35,
-                  "bit_in_byte": 1,
-                  "name": "hdr.ipv4.dst_addr",
-                  "field_bit": 25
-                },
-                {
-                  "byte_number": 35,
-                  "bit_in_byte": 2,
-                  "name": "hdr.ipv4.dst_addr",
-                  "field_bit": 26
-                },
-                {
-                  "byte_number": 35,
-                  "bit_in_byte": 3,
-                  "name": "hdr.ipv4.dst_addr",
-                  "field_bit": 27
-                },
-                {
-                  "byte_number": 35,
-                  "bit_in_byte": 4,
-                  "name": "hdr.ipv4.dst_addr",
-                  "field_bit": 28
-                },
-                {
-                  "byte_number": 35,
-                  "bit_in_byte": 5,
-                  "name": "hdr.ipv4.dst_addr",
-                  "field_bit": 29
-                },
-                {
-                  "byte_number": 35,
-                  "bit_in_byte": 6,
-                  "name": "hdr.ipv4.dst_addr",
-                  "field_bit": 30
-                },
-                {
-                  "byte_number": 35,
-                  "bit_in_byte": 7,
-                  "name": "hdr.ipv4.dst_addr",
-                  "field_bit": 31
-                },
-                {
-                  "byte_number": 36,
+                  "byte_number": 24,
                   "bit_in_byte": 0,
                   "name": "hdr.ipv4.src_addr",
                   "field_bit": 0
                 },
                 {
-                  "byte_number": 36,
+                  "byte_number": 24,
                   "bit_in_byte": 1,
                   "name": "hdr.ipv4.src_addr",
                   "field_bit": 1
                 },
                 {
-                  "byte_number": 36,
+                  "byte_number": 24,
                   "bit_in_byte": 2,
                   "name": "hdr.ipv4.src_addr",
                   "field_bit": 2
                 },
                 {
-                  "byte_number": 36,
+                  "byte_number": 24,
                   "bit_in_byte": 3,
                   "name": "hdr.ipv4.src_addr",
                   "field_bit": 3
                 },
                 {
-                  "byte_number": 36,
+                  "byte_number": 24,
                   "bit_in_byte": 4,
                   "name": "hdr.ipv4.src_addr",
                   "field_bit": 4
                 },
                 {
-                  "byte_number": 36,
+                  "byte_number": 24,
                   "bit_in_byte": 5,
                   "name": "hdr.ipv4.src_addr",
                   "field_bit": 5
                 },
                 {
-                  "byte_number": 36,
+                  "byte_number": 24,
                   "bit_in_byte": 6,
                   "name": "hdr.ipv4.src_addr",
                   "field_bit": 6
                 },
                 {
-                  "byte_number": 36,
+                  "byte_number": 24,
                   "bit_in_byte": 7,
                   "name": "hdr.ipv4.src_addr",
                   "field_bit": 7
                 },
                 {
-                  "byte_number": 37,
+                  "byte_number": 25,
                   "bit_in_byte": 0,
                   "name": "hdr.ipv4.src_addr",
                   "field_bit": 8
                 },
                 {
-                  "byte_number": 37,
+                  "byte_number": 25,
                   "bit_in_byte": 1,
                   "name": "hdr.ipv4.src_addr",
                   "field_bit": 9
                 },
                 {
-                  "byte_number": 37,
+                  "byte_number": 25,
                   "bit_in_byte": 2,
                   "name": "hdr.ipv4.src_addr",
                   "field_bit": 10
                 },
                 {
-                  "byte_number": 37,
+                  "byte_number": 25,
                   "bit_in_byte": 3,
                   "name": "hdr.ipv4.src_addr",
                   "field_bit": 11
                 },
                 {
-                  "byte_number": 37,
+                  "byte_number": 25,
                   "bit_in_byte": 4,
                   "name": "hdr.ipv4.src_addr",
                   "field_bit": 12
                 },
                 {
-                  "byte_number": 37,
+                  "byte_number": 25,
                   "bit_in_byte": 5,
                   "name": "hdr.ipv4.src_addr",
                   "field_bit": 13
                 },
                 {
-                  "byte_number": 37,
+                  "byte_number": 25,
                   "bit_in_byte": 6,
                   "name": "hdr.ipv4.src_addr",
                   "field_bit": 14
                 },
                 {
-                  "byte_number": 37,
+                  "byte_number": 25,
                   "bit_in_byte": 7,
                   "name": "hdr.ipv4.src_addr",
                   "field_bit": 15
                 },
                 {
-                  "byte_number": 38,
+                  "byte_number": 26,
                   "bit_in_byte": 0,
                   "name": "hdr.ipv4.src_addr",
                   "field_bit": 16
                 },
                 {
-                  "byte_number": 38,
+                  "byte_number": 26,
                   "bit_in_byte": 1,
                   "name": "hdr.ipv4.src_addr",
                   "field_bit": 17
                 },
                 {
-                  "byte_number": 38,
+                  "byte_number": 26,
                   "bit_in_byte": 2,
                   "name": "hdr.ipv4.src_addr",
                   "field_bit": 18
                 },
                 {
-                  "byte_number": 38,
+                  "byte_number": 26,
                   "bit_in_byte": 3,
                   "name": "hdr.ipv4.src_addr",
                   "field_bit": 19
                 },
                 {
-                  "byte_number": 38,
+                  "byte_number": 26,
                   "bit_in_byte": 4,
                   "name": "hdr.ipv4.src_addr",
                   "field_bit": 20
                 },
                 {
-                  "byte_number": 38,
+                  "byte_number": 26,
                   "bit_in_byte": 5,
                   "name": "hdr.ipv4.src_addr",
                   "field_bit": 21
                 },
                 {
-                  "byte_number": 38,
+                  "byte_number": 26,
                   "bit_in_byte": 6,
                   "name": "hdr.ipv4.src_addr",
                   "field_bit": 22
                 },
                 {
-                  "byte_number": 38,
+                  "byte_number": 26,
                   "bit_in_byte": 7,
                   "name": "hdr.ipv4.src_addr",
                   "field_bit": 23
                 },
                 {
-                  "byte_number": 39,
+                  "byte_number": 27,
                   "bit_in_byte": 0,
                   "name": "hdr.ipv4.src_addr",
                   "field_bit": 24
                 },
                 {
-                  "byte_number": 39,
+                  "byte_number": 27,
                   "bit_in_byte": 1,
                   "name": "hdr.ipv4.src_addr",
                   "field_bit": 25
                 },
                 {
-                  "byte_number": 39,
+                  "byte_number": 27,
                   "bit_in_byte": 2,
                   "name": "hdr.ipv4.src_addr",
                   "field_bit": 26
                 },
                 {
-                  "byte_number": 39,
+                  "byte_number": 27,
                   "bit_in_byte": 3,
                   "name": "hdr.ipv4.src_addr",
                   "field_bit": 27
                 },
                 {
-                  "byte_number": 39,
+                  "byte_number": 27,
                   "bit_in_byte": 4,
                   "name": "hdr.ipv4.src_addr",
                   "field_bit": 28
                 },
                 {
-                  "byte_number": 39,
+                  "byte_number": 27,
                   "bit_in_byte": 5,
                   "name": "hdr.ipv4.src_addr",
                   "field_bit": 29
                 },
                 {
-                  "byte_number": 39,
+                  "byte_number": 27,
                   "bit_in_byte": 6,
                   "name": "hdr.ipv4.src_addr",
                   "field_bit": 30
                 },
                 {
-                  "byte_number": 39,
+                  "byte_number": 27,
                   "bit_in_byte": 7,
                   "name": "hdr.ipv4.src_addr",
                   "field_bit": 31
@@ -32893,13 +33116,6 @@
               "bit_width": 32,
               "optional": true,
               "is_constant": false
-            },
-            {
-              "name": "hdr.ipv4.dst_addr",
-              "start_bit": 0,
-              "bit_width": 32,
-              "optional": true,
-              "is_constant": false
             }
           ],
           "crossbar_configuration": [
@@ -32909,383 +33125,191 @@
                 {
                   "byte_number": 16,
                   "bit_in_byte": 0,
-                  "name": "hdr.ipv4.dst_addr",
+                  "name": "hdr.ipv4.src_addr",
                   "field_bit": 0
                 },
                 {
                   "byte_number": 16,
                   "bit_in_byte": 1,
-                  "name": "hdr.ipv4.dst_addr",
+                  "name": "hdr.ipv4.src_addr",
                   "field_bit": 1
                 },
                 {
                   "byte_number": 16,
                   "bit_in_byte": 2,
-                  "name": "hdr.ipv4.dst_addr",
+                  "name": "hdr.ipv4.src_addr",
                   "field_bit": 2
                 },
                 {
                   "byte_number": 16,
                   "bit_in_byte": 3,
-                  "name": "hdr.ipv4.dst_addr",
+                  "name": "hdr.ipv4.src_addr",
                   "field_bit": 3
                 },
                 {
                   "byte_number": 16,
                   "bit_in_byte": 4,
-                  "name": "hdr.ipv4.dst_addr",
+                  "name": "hdr.ipv4.src_addr",
                   "field_bit": 4
                 },
                 {
                   "byte_number": 16,
                   "bit_in_byte": 5,
-                  "name": "hdr.ipv4.dst_addr",
+                  "name": "hdr.ipv4.src_addr",
                   "field_bit": 5
                 },
                 {
                   "byte_number": 16,
                   "bit_in_byte": 6,
-                  "name": "hdr.ipv4.dst_addr",
+                  "name": "hdr.ipv4.src_addr",
                   "field_bit": 6
                 },
                 {
                   "byte_number": 16,
                   "bit_in_byte": 7,
-                  "name": "hdr.ipv4.dst_addr",
+                  "name": "hdr.ipv4.src_addr",
                   "field_bit": 7
                 },
                 {
                   "byte_number": 17,
                   "bit_in_byte": 0,
-                  "name": "hdr.ipv4.dst_addr",
+                  "name": "hdr.ipv4.src_addr",
                   "field_bit": 8
                 },
                 {
                   "byte_number": 17,
                   "bit_in_byte": 1,
-                  "name": "hdr.ipv4.dst_addr",
+                  "name": "hdr.ipv4.src_addr",
                   "field_bit": 9
                 },
                 {
                   "byte_number": 17,
                   "bit_in_byte": 2,
-                  "name": "hdr.ipv4.dst_addr",
+                  "name": "hdr.ipv4.src_addr",
                   "field_bit": 10
                 },
                 {
                   "byte_number": 17,
                   "bit_in_byte": 3,
-                  "name": "hdr.ipv4.dst_addr",
+                  "name": "hdr.ipv4.src_addr",
                   "field_bit": 11
                 },
                 {
                   "byte_number": 17,
                   "bit_in_byte": 4,
-                  "name": "hdr.ipv4.dst_addr",
+                  "name": "hdr.ipv4.src_addr",
                   "field_bit": 12
                 },
                 {
                   "byte_number": 17,
                   "bit_in_byte": 5,
-                  "name": "hdr.ipv4.dst_addr",
+                  "name": "hdr.ipv4.src_addr",
                   "field_bit": 13
                 },
                 {
                   "byte_number": 17,
                   "bit_in_byte": 6,
-                  "name": "hdr.ipv4.dst_addr",
+                  "name": "hdr.ipv4.src_addr",
                   "field_bit": 14
                 },
                 {
                   "byte_number": 17,
                   "bit_in_byte": 7,
-                  "name": "hdr.ipv4.dst_addr",
+                  "name": "hdr.ipv4.src_addr",
                   "field_bit": 15
                 },
                 {
                   "byte_number": 18,
                   "bit_in_byte": 0,
-                  "name": "hdr.ipv4.dst_addr",
+                  "name": "hdr.ipv4.src_addr",
                   "field_bit": 16
                 },
                 {
                   "byte_number": 18,
                   "bit_in_byte": 1,
-                  "name": "hdr.ipv4.dst_addr",
+                  "name": "hdr.ipv4.src_addr",
                   "field_bit": 17
                 },
                 {
                   "byte_number": 18,
                   "bit_in_byte": 2,
-                  "name": "hdr.ipv4.dst_addr",
+                  "name": "hdr.ipv4.src_addr",
                   "field_bit": 18
                 },
                 {
                   "byte_number": 18,
                   "bit_in_byte": 3,
-                  "name": "hdr.ipv4.dst_addr",
+                  "name": "hdr.ipv4.src_addr",
                   "field_bit": 19
                 },
                 {
                   "byte_number": 18,
                   "bit_in_byte": 4,
-                  "name": "hdr.ipv4.dst_addr",
+                  "name": "hdr.ipv4.src_addr",
                   "field_bit": 20
                 },
                 {
                   "byte_number": 18,
                   "bit_in_byte": 5,
-                  "name": "hdr.ipv4.dst_addr",
+                  "name": "hdr.ipv4.src_addr",
                   "field_bit": 21
                 },
                 {
                   "byte_number": 18,
                   "bit_in_byte": 6,
-                  "name": "hdr.ipv4.dst_addr",
+                  "name": "hdr.ipv4.src_addr",
                   "field_bit": 22
                 },
                 {
                   "byte_number": 18,
                   "bit_in_byte": 7,
-                  "name": "hdr.ipv4.dst_addr",
+                  "name": "hdr.ipv4.src_addr",
                   "field_bit": 23
                 },
                 {
                   "byte_number": 19,
                   "bit_in_byte": 0,
-                  "name": "hdr.ipv4.dst_addr",
+                  "name": "hdr.ipv4.src_addr",
                   "field_bit": 24
                 },
                 {
                   "byte_number": 19,
                   "bit_in_byte": 1,
-                  "name": "hdr.ipv4.dst_addr",
+                  "name": "hdr.ipv4.src_addr",
                   "field_bit": 25
                 },
                 {
                   "byte_number": 19,
                   "bit_in_byte": 2,
-                  "name": "hdr.ipv4.dst_addr",
+                  "name": "hdr.ipv4.src_addr",
                   "field_bit": 26
                 },
                 {
                   "byte_number": 19,
                   "bit_in_byte": 3,
-                  "name": "hdr.ipv4.dst_addr",
+                  "name": "hdr.ipv4.src_addr",
                   "field_bit": 27
                 },
                 {
                   "byte_number": 19,
                   "bit_in_byte": 4,
-                  "name": "hdr.ipv4.dst_addr",
+                  "name": "hdr.ipv4.src_addr",
                   "field_bit": 28
                 },
                 {
                   "byte_number": 19,
                   "bit_in_byte": 5,
-                  "name": "hdr.ipv4.dst_addr",
+                  "name": "hdr.ipv4.src_addr",
                   "field_bit": 29
                 },
                 {
                   "byte_number": 19,
                   "bit_in_byte": 6,
-                  "name": "hdr.ipv4.dst_addr",
+                  "name": "hdr.ipv4.src_addr",
                   "field_bit": 30
                 },
                 {
                   "byte_number": 19,
-                  "bit_in_byte": 7,
-                  "name": "hdr.ipv4.dst_addr",
-                  "field_bit": 31
-                },
-                {
-                  "byte_number": 20,
-                  "bit_in_byte": 0,
-                  "name": "hdr.ipv4.src_addr",
-                  "field_bit": 0
-                },
-                {
-                  "byte_number": 20,
-                  "bit_in_byte": 1,
-                  "name": "hdr.ipv4.src_addr",
-                  "field_bit": 1
-                },
-                {
-                  "byte_number": 20,
-                  "bit_in_byte": 2,
-                  "name": "hdr.ipv4.src_addr",
-                  "field_bit": 2
-                },
-                {
-                  "byte_number": 20,
-                  "bit_in_byte": 3,
-                  "name": "hdr.ipv4.src_addr",
-                  "field_bit": 3
-                },
-                {
-                  "byte_number": 20,
-                  "bit_in_byte": 4,
-                  "name": "hdr.ipv4.src_addr",
-                  "field_bit": 4
-                },
-                {
-                  "byte_number": 20,
-                  "bit_in_byte": 5,
-                  "name": "hdr.ipv4.src_addr",
-                  "field_bit": 5
-                },
-                {
-                  "byte_number": 20,
-                  "bit_in_byte": 6,
-                  "name": "hdr.ipv4.src_addr",
-                  "field_bit": 6
-                },
-                {
-                  "byte_number": 20,
-                  "bit_in_byte": 7,
-                  "name": "hdr.ipv4.src_addr",
-                  "field_bit": 7
-                },
-                {
-                  "byte_number": 21,
-                  "bit_in_byte": 0,
-                  "name": "hdr.ipv4.src_addr",
-                  "field_bit": 8
-                },
-                {
-                  "byte_number": 21,
-                  "bit_in_byte": 1,
-                  "name": "hdr.ipv4.src_addr",
-                  "field_bit": 9
-                },
-                {
-                  "byte_number": 21,
-                  "bit_in_byte": 2,
-                  "name": "hdr.ipv4.src_addr",
-                  "field_bit": 10
-                },
-                {
-                  "byte_number": 21,
-                  "bit_in_byte": 3,
-                  "name": "hdr.ipv4.src_addr",
-                  "field_bit": 11
-                },
-                {
-                  "byte_number": 21,
-                  "bit_in_byte": 4,
-                  "name": "hdr.ipv4.src_addr",
-                  "field_bit": 12
-                },
-                {
-                  "byte_number": 21,
-                  "bit_in_byte": 5,
-                  "name": "hdr.ipv4.src_addr",
-                  "field_bit": 13
-                },
-                {
-                  "byte_number": 21,
-                  "bit_in_byte": 6,
-                  "name": "hdr.ipv4.src_addr",
-                  "field_bit": 14
-                },
-                {
-                  "byte_number": 21,
-                  "bit_in_byte": 7,
-                  "name": "hdr.ipv4.src_addr",
-                  "field_bit": 15
-                },
-                {
-                  "byte_number": 22,
-                  "bit_in_byte": 0,
-                  "name": "hdr.ipv4.src_addr",
-                  "field_bit": 16
-                },
-                {
-                  "byte_number": 22,
-                  "bit_in_byte": 1,
-                  "name": "hdr.ipv4.src_addr",
-                  "field_bit": 17
-                },
-                {
-                  "byte_number": 22,
-                  "bit_in_byte": 2,
-                  "name": "hdr.ipv4.src_addr",
-                  "field_bit": 18
-                },
-                {
-                  "byte_number": 22,
-                  "bit_in_byte": 3,
-                  "name": "hdr.ipv4.src_addr",
-                  "field_bit": 19
-                },
-                {
-                  "byte_number": 22,
-                  "bit_in_byte": 4,
-                  "name": "hdr.ipv4.src_addr",
-                  "field_bit": 20
-                },
-                {
-                  "byte_number": 22,
-                  "bit_in_byte": 5,
-                  "name": "hdr.ipv4.src_addr",
-                  "field_bit": 21
-                },
-                {
-                  "byte_number": 22,
-                  "bit_in_byte": 6,
-                  "name": "hdr.ipv4.src_addr",
-                  "field_bit": 22
-                },
-                {
-                  "byte_number": 22,
-                  "bit_in_byte": 7,
-                  "name": "hdr.ipv4.src_addr",
-                  "field_bit": 23
-                },
-                {
-                  "byte_number": 23,
-                  "bit_in_byte": 0,
-                  "name": "hdr.ipv4.src_addr",
-                  "field_bit": 24
-                },
-                {
-                  "byte_number": 23,
-                  "bit_in_byte": 1,
-                  "name": "hdr.ipv4.src_addr",
-                  "field_bit": 25
-                },
-                {
-                  "byte_number": 23,
-                  "bit_in_byte": 2,
-                  "name": "hdr.ipv4.src_addr",
-                  "field_bit": 26
-                },
-                {
-                  "byte_number": 23,
-                  "bit_in_byte": 3,
-                  "name": "hdr.ipv4.src_addr",
-                  "field_bit": 27
-                },
-                {
-                  "byte_number": 23,
-                  "bit_in_byte": 4,
-                  "name": "hdr.ipv4.src_addr",
-                  "field_bit": 28
-                },
-                {
-                  "byte_number": 23,
-                  "bit_in_byte": 5,
-                  "name": "hdr.ipv4.src_addr",
-                  "field_bit": 29
-                },
-                {
-                  "byte_number": 23,
-                  "bit_in_byte": 6,
-                  "name": "hdr.ipv4.src_addr",
-                  "field_bit": 30
-                },
-                {
-                  "byte_number": 23,
                   "bit_in_byte": 7,
                   "name": "hdr.ipv4.src_addr",
                   "field_bit": 31
@@ -34407,7 +34431,7 @@
       "hash_bit_width": 32
     }
   ],
-  "run_id": "e8c50ffae3064924",
+  "run_id": "5c5916958a224d15",
   "driver_options": {
     "hash_parity_enabled": false,
     "high_availability_enabled": true,

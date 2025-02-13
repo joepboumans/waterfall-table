@@ -1,11 +1,11 @@
 {
     "program_name": "waterfall_fcm.p4", 
-    "build_date": "Thu Feb  6 16:06:39 2025", 
-    "run_id": "e8c50ffae3064924", 
+    "build_date": "Thu Feb 13 11:08:39 2025", 
+    "run_id": "5c5916958a224d15", 
     "compiler_version": "9.11.0", 
     "schema_version": "1.1.0", 
     "target": "tofino", 
-    "compilation_time": "39.08804154396057", 
+    "compilation_time": "39.88197040557861", 
     "phv": {
         "normal": [
             {
@@ -22,22 +22,22 @@
             }, 
             {
                 "bit_width": 32, 
-                "containers_occupied": 16, 
-                "bits_occupied": 512, 
+                "containers_occupied": 15, 
+                "bits_occupied": 480, 
                 "bits_overlaid": 48
             }
         ], 
         "tagalong": [
             {
                 "bit_width": 8, 
-                "containers_occupied": 9, 
-                "bits_occupied": 72, 
+                "containers_occupied": 11, 
+                "bits_occupied": 88, 
                 "bits_overlaid": 32
             }, 
             {
                 "bit_width": 16, 
-                "containers_occupied": 20, 
-                "bits_occupied": 320, 
+                "containers_occupied": 21, 
+                "bits_occupied": 336, 
                 "bits_overlaid": 64
             }, 
             {
@@ -53,7 +53,7 @@
             "tcam_rows": 13
         }, 
         "egress": {
-            "tcam_rows": 23
+            "tcam_rows": 22
         }
     }, 
     "mau": {
@@ -62,7 +62,7 @@
         "map_rams": 160, 
         "logical_tables": 22, 
         "action_bus_bytes": 53, 
-        "exact_crossbar_bytes": 102, 
+        "exact_crossbar_bytes": 94, 
         "ternary_crossbar_bytes": 0, 
         "latency": [
             {

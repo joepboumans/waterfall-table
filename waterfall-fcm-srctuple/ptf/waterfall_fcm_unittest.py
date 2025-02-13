@@ -159,7 +159,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
             except:
                 break;
         logger.info(f"Received {total_recv} of {num_entries} packets and {len(tuples)} of unique tuples")
-        # assert(total_recv == num_entries)
+        assert(total_recv == num_entries)
         return tuples
 
     def evaluate_table(self, tables, name):
@@ -196,8 +196,6 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
     def testWaterfallFcm(self):
         ig_port = swports[0]
         eg_port = swports[1]
-        # ig_port = 132 # hwports can be 132, 140, 148, 156
-        # eg_port = hwports[ig_port]
         target = self.target
 
         forward = self.forward
@@ -294,7 +292,6 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
             total_pkts_sends += flow_size
 
             raw_src_addr = [int(x) for x in src_addr.split('.')]
-            # logger.info(f"{raw_src_addr = } : {raw_dst_addr = } | {raw_src_port = } {raw_dst_port = } | {raw_protocol = }")
 
             tuple_list = raw_src_addr 
             tuple_key = ".".join([str(x) for x in tuple_list])
@@ -302,7 +299,6 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
             fsd[flow_size] += 1
 
             print(f"Sent {flow_size} pkts with total {total_pkts_sends}", flush=True)
-            # time.sleep(0.5)
 
         logger.info(f"...done sending {total_pkts_sends} packets send")
         ''' TC:3 Look for data in digest'''
@@ -320,18 +316,6 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
                     {"from_hw": FROM_HW})
             data, _ = next(resp_pktcount)
             data_dict = data.to_dict()
-            
-            # for src_ip in src_ip_list:
-            #     for dst_ip in dst_ip_list:
-            #         src_addr = getattr(src_ip, "ip")
-            #         dst_addr = getattr(dst_ip, "ip")
-            #         src_port = 88 #random.randrange(0, 0xFFFF)
-            #         dst_port = 1024 #random.randrange(0, 0xFFFF)
-            #         # flow_size = random.randint(1, MAX_FLOW_SIZE)
-            #         flow_size = 100
-            #
-            #         pkt_in = testutils.simple_tcp_packet(ip_src=src_addr, ip_dst=dst_addr, tcp_sport=src_port, tcp_dport=dst_port)
-            #         testutils.send_packet(self, ig_port, pkt_in, count=flow_size)
 
             logger.info("[INFO-FCM] Sent : %d, Received : %d\t\t wait 1s more...", total_pkts_sends, data_dict["FcmEgress.num_pkt.f1"][0])
             if (data_dict["FcmEgress.num_pkt.f1"][0] >= (total_pkts_sends - 100 ) or iters >= 100):
@@ -365,20 +349,6 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         fcm_table[1].append([0] * SKETCH_W1)
         fcm_table[1].append([0] * SKETCH_W2)
         fcm_table[1].append([0] * SKETCH_W3)
-
-        hash_d1 = 190204
-        register_l1_d1 = fcm_l1_d1
-        resp_l1_d1 = register_l1_d1.entry_get(target,
-                [register_l1_d1.make_key([gc.KeyTuple('$REGISTER_INDEX', hash_d1)])],
-                {"from_hw": FROM_HW})
-        data_d1, _ = next(resp_l1_d1)
-        data_d1_dict = data_d1.to_dict()
-        val_s1_d1 = data_d1_dict["FcmEgress.fcmsketch.sketch_reg_l1_d1.f1"][0]
-        val_d1 = val_s1_d1
-
-
-        fcm_table[0][0][hash_d1] = val_s1_d1
-        logger.info(f"Store s1 value {val_s1_d1} in {hash_d1 % SKETCH_W1}")
 
         # call the register values and get flow size estimation
         logger.info("[INFO-FCM] Start query processing...")

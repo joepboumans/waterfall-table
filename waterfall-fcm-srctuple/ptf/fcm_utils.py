@@ -48,10 +48,7 @@ def fcm_crc32(msg="192.168.1.1"):
     msg_val = b''
     for i in range(len(msg_arr)):
         msg_val =  msg_val + struct.pack("B", int(msg_arr[i])) 
-    print(msg_val.hex())
     n = zlib.crc32(msg_val)
-    print(n)
-    print(n.to_bytes(4, 'big').hex())
     return n + (1<<32) if n < 0 else n
 
 # Caclulates the hash for CRC32 algorithm of Tofino
@@ -63,9 +60,6 @@ def fcm_crc32_init_val(msg="192.168.1.1", init_val=0):
         msg_val =  msg_val + struct.pack("B", int(msg_arr[i])) 
     # msg_val = b'\xc0\xa8\x01\x01'
     n = zlib.crc32(msg_val, init_val)
-    print(msg_val.hex())
-    print(n)
-    print(n.to_bytes(4, 'big').hex())
     return n + (1<<32) if n < 0 else n
 
 # print("util directory - test : %f" % lc_cardinality(10000, 524288))

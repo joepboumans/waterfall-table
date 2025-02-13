@@ -1854,59 +1854,6 @@
               }
             ]
           }
-        },
-        {
-          "mandatory" : false,
-          "read_only" : false,
-          "singleton" : {
-            "id" : 2,
-            "name" : "hdr.ipv4.dst_addr",
-            "repeated" : true,
-            "annotations" : [],
-            "container" : [
-              {
-                "mandatory" : false,
-                "read_only" : false,
-                "singleton" : {
-                  "id" : 65583,
-                  "name" : "start_bit",
-                  "repeated" : false,
-                  "annotations" : [],
-                  "type" : {
-                    "type" : "uint64",
-                    "default_value" : 0
-                  }
-                }
-              },
-              {
-                "mandatory" : false,
-                "read_only" : false,
-                "singleton" : {
-                  "id" : 65584,
-                  "name" : "length",
-                  "repeated" : false,
-                  "annotations" : [],
-                  "type" : {
-                    "type" : "uint64",
-                    "default_value" : 32
-                  }
-                }
-              },
-              {
-                "mandatory" : true,
-                "read_only" : false,
-                "singleton" : {
-                  "id" : 65585,
-                  "name" : "order",
-                  "repeated" : false,
-                  "annotations" : [],
-                  "type" : {
-                    "type" : "uint64"
-                  }
-                }
-              }
-            ]
-          }
         }
       ],
       "supported_operations" : [],
@@ -1923,18 +1870,6 @@
         {
           "id" : 1,
           "name" : "hdr.ipv4.src_addr",
-          "repeated" : false,
-          "annotations" : [],
-          "mandatory" : false,
-          "match_type" : "Exact",
-          "type" : {
-            "type" : "bytes",
-            "width" : 32
-          }
-        },
-        {
-          "id" : 2,
-          "name" : "hdr.ipv4.dst_addr",
           "repeated" : false,
           "annotations" : [],
           "mandatory" : false,
@@ -2184,59 +2119,6 @@
               }
             ]
           }
-        },
-        {
-          "mandatory" : false,
-          "read_only" : false,
-          "singleton" : {
-            "id" : 2,
-            "name" : "hdr.ipv4.dst_addr",
-            "repeated" : true,
-            "annotations" : [],
-            "container" : [
-              {
-                "mandatory" : false,
-                "read_only" : false,
-                "singleton" : {
-                  "id" : 65583,
-                  "name" : "start_bit",
-                  "repeated" : false,
-                  "annotations" : [],
-                  "type" : {
-                    "type" : "uint64",
-                    "default_value" : 0
-                  }
-                }
-              },
-              {
-                "mandatory" : false,
-                "read_only" : false,
-                "singleton" : {
-                  "id" : 65584,
-                  "name" : "length",
-                  "repeated" : false,
-                  "annotations" : [],
-                  "type" : {
-                    "type" : "uint64",
-                    "default_value" : 32
-                  }
-                }
-              },
-              {
-                "mandatory" : true,
-                "read_only" : false,
-                "singleton" : {
-                  "id" : 65585,
-                  "name" : "order",
-                  "repeated" : false,
-                  "annotations" : [],
-                  "type" : {
-                    "type" : "uint64"
-                  }
-                }
-              }
-            ]
-          }
         }
       ],
       "supported_operations" : [],
@@ -2253,18 +2135,6 @@
         {
           "id" : 1,
           "name" : "hdr.ipv4.src_addr",
-          "repeated" : false,
-          "annotations" : [],
-          "mandatory" : false,
-          "match_type" : "Exact",
-          "type" : {
-            "type" : "bytes",
-            "width" : 32
-          }
-        },
-        {
-          "id" : 2,
-          "name" : "hdr.ipv4.dst_addr",
           "repeated" : false,
           "annotations" : [],
           "mandatory" : false,

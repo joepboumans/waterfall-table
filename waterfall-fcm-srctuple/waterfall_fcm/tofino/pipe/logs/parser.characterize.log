@@ -41,16 +41,15 @@ Extractor usage:
 |parse_tcp                |*           |1      |4       |3       |8                 |       |
 |parse_udp                |*           |1      |2       |1       |4                 |       |
 +-------------------------+------------+-------+--------+--------+------------------+-------+
-Number of states on egress: 15
+Number of states on egress: 14
 
-Number of matches on egress: 23
+Number of matches on egress: 22
 
-Longest path (9 states) on egress:
+Longest path (8 states) on egress:
     $entry_point
     start.$oob_stall_0
     start.$split_0
     parse_ipv4
-    parse_ipv4.$split_0
     min_parse_depth_accept_initial
     min_parse_depth_accept_loop.$split_0
     min_parse_depth_accept_loop.$it1.$split_0
@@ -62,15 +61,15 @@ Shortest path (4 states) on egress:
     start.$split_0
     min_parse_depth_reject_initial
 
-Average rate: 8.11111 Bps
-Min packet size at 100 Gbps: 93 B (20 B payload)
-Max data rate for min-sized packets: 78.08 Gbps / 133.699 MPps
+Average rate: 9.125 Bps
+Min packet size at 100 Gbps: 82 B (9 B payload)
+Max data rate for min-sized packets: 89.06 Gbps / 152.5 MPps
 
 Extractor usage:
 +-------------------------------------------+--------+-------+--------+--------+------------------+-------+
 |State                                      |Match   |8-bit  |16-bit  |32-bit  |Total Extractors  |Other  |
 +-------------------------------------------+--------+-------+--------+--------+------------------+-------+
-|$entry_point                               |*       |1      |2       |0       |3                 |       |
+|$entry_point                               |*       |3      |1       |0       |4                 |       |
 |start.$oob_stall_0                         |*       |0      |0       |0       |0                 |       |
 |start.$split_0                             |0x0800  |0      |2       |2       |4                 |       |
 |-                                          |0x****  |0      |2       |2       |4                 |       |
@@ -79,10 +78,9 @@ Extractor usage:
 |min_parse_depth_reject_loop                |*       |0      |0       |0       |0                 |       |
 |min_parse_depth_reject_loop.$split_0       |0x0     |0      |0       |0       |0                 |       |
 |-                                          |0b**    |0      |0       |0       |0                 |       |
-|parse_ipv4                                 |*       |1      |0       |4       |5                 |       |
-|parse_ipv4.$split_0                        |0x06    |0      |0       |1       |1                 |       |
-|-                                          |0x11    |0      |0       |1       |1                 |       |
-|-                                          |0x**    |0      |0       |1       |1                 |       |
+|parse_ipv4                                 |0x06    |1      |2       |4       |7                 |       |
+|-                                          |0x11    |1      |2       |4       |7                 |       |
+|-                                          |0x**    |1      |2       |4       |7                 |       |
 |min_parse_depth_accept_initial             |0x0     |4      |2       |1       |7                 |       |
 |-                                          |0b**    |0      |0       |0       |0                 |       |
 |min_parse_depth_accept_loop.$split_0       |0x0     |2      |4       |0       |6                 |       |

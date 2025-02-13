@@ -1879,32 +1879,6 @@
                 {
                     "file": "fcm/fcm.p4",
                     "line": 227,
-                    "column": 63
-                },
-                {
-                    "file": "fcm/fcm.p4",
-                    "line": 231,
-                    "column": 63
-                },
-                {
-                    "file": "fcm/fcm.p4",
-                    "line": 383,
-                    "column": 20
-                }
-            ],
-            "symbol_name": "FcmEgress.hdr.ipv4.dst_addr",
-            "declaration": {
-                "file": "fcm/fcm.p4",
-                "line": 355,
-                "column": 24
-            },
-            "symbol_type": "Parameter_Type_Struct"
-        },
-        {
-            "references": [
-                {
-                    "file": "fcm/fcm.p4",
-                    "line": 227,
                     "column": 44
                 },
                 {

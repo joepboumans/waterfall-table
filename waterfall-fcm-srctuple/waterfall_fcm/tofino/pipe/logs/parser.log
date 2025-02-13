@@ -16,9 +16,6 @@ egress::min_parse_depth_accept_loop.$it1 is split into 2 states:
 egress::min_parse_depth_accept_loop is split into 2 states:
   egress::min_parse_depth_accept_loop
   egress::min_parse_depth_accept_loop.$split_0
-egress::parse_ipv4 is split into 2 states:
-  egress::parse_ipv4
-  egress::parse_ipv4.$split_0
 egress::min_parse_depth_reject_loop is split into 2 states:
   egress::min_parse_depth_reject_loop
   egress::min_parse_depth_reject_loop.$split_0
@@ -29,7 +26,7 @@ allocated { $byte1 } to {  [ ingress::start : inbuf bit[0] ig_intr_md.resubmit_f
 allocated { $half } to {  [ ingress::parse_ethernet.$split_0 : inbuf bit[0..15] hdr.ethernet/ethernet.ether_type; ] }
 allocated { $byte1 } to {  [ ingress::parse_ipv4.$split_0 : inbuf bit[-56..-49] hdr.ipv4/ipv4.protocol; ] }
 allocated { $half } to {  [ egress::start.$split_0 : inbuf bit[80..95] hdr.ethernet/ethernet.ether_type; ] }
-allocated { $byte1 } to {  [ egress::parse_ipv4.$split_0 : inbuf bit[-56..-49] hdr.ipv4/ipv4.protocol; ] }
+allocated { $byte1 } to {  [ egress::parse_ipv4 : inbuf bit[72..79] hdr.ipv4/ipv4.protocol; ] }
 allocated { $half } to {  [ egress::parse_tcp.$split_0 : inbuf bit[-304..-289] hdr.ipv4/ipv4.total_len; ] }
 allocated { $half } to {  [ egress::parse_udp : inbuf bit[16..31] hdr.udp/udp.dst_port; ] }
 ComputeLoweredParserIR preorder on Header : header ingress_intrinsic_metadata_t @__intrinsic_metadata {

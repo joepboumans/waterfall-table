@@ -1,6 +1,6 @@
 version:
   version: 1.0.1
-  run_id: "e8c50ffae3064924"
+  run_id: "5c5916958a224d15"
   target: Tofino
 phv ingress:
   ig_intr_md.resubmit_flag: {  stage 0..9: H1(15) } 
@@ -126,18 +126,19 @@ phv egress:
   hdr.min_parse_depth_padding_0$1.packet_payload.16-31: TH3
   hdr.min_parse_depth_padding_0$1.packet_payload.32-47: TH4
   hdr.min_parse_depth_padding_0$1.packet_payload.48-63: TH5
-  hdr.min_parse_depth_padding_0$1.packet_payload.64-79: TH18
+  hdr.min_parse_depth_padding_0$1.packet_payload.64-79: TH20
   hdr.min_parse_depth_padding_0$1.packet_payload.80-87: TB1
   hdr.min_parse_depth_padding_0$2.packet_payload.0-31: TW12
   hdr.min_parse_depth_padding_0$2.packet_payload.32-63: TW13
-  hdr.min_parse_depth_padding_0$2.packet_payload.64-79: TH19
+  hdr.min_parse_depth_padding_0$2.packet_payload.64-79: TH21
   hdr.min_parse_depth_padding_0$2.packet_payload.80-87: TB2
   eg_intr_md.egress_port: H16(0..8)
   hdr.ethernet.dst_addr.0-31: TW15
-  hdr.ethernet.dst_addr.32-47: TH22
+  hdr.ethernet.dst_addr.32-39: TB13
+  hdr.ethernet.dst_addr.40-47: TB14
   hdr.ethernet.src_addr.0-31: TW14
-  hdr.ethernet.src_addr.32-47: TH21
-  hdr.ethernet.ether_type: TH20
+  hdr.ethernet.src_addr.32-47: TH23
+  hdr.ethernet.ether_type: TH22
   hdr.ipv4.version: TW0(28..31)
   hdr.ipv4.ihl: TW0(24..27)
   hdr.ipv4.diffserv: TW0(16..23)
@@ -148,8 +149,9 @@ phv egress:
   hdr.ipv4.ttl: TW1(24..31)
   hdr.ipv4.protocol: TW1(16..23)
   hdr.ipv4.hdr_checksum: TW1(0..15)
-  hdr.ipv4.src_addr: W21
-  hdr.ipv4.dst_addr: W20
+  hdr.ipv4.src_addr: W20
+  hdr.ipv4.dst_addr.0-15: TH18
+  hdr.ipv4.dst_addr.16-31: TH19
   hdr.tcp.src_port: TH1
   hdr.tcp.dst_port: TH0
   hdr.tcp.seq_no: TW13
@@ -165,8 +167,8 @@ phv egress:
   hdr.udp.dst_port: TH0
   hdr.udp.hdr_length: TW3(16..31)
   hdr.udp.checksum: TW3(0..15)
-  eg_md.hash_meta_d1: {  stage 1..5: W22 } 
-  eg_md.hash_meta_d2: {  stage 1..3: W23 } 
+  eg_md.hash_meta_d1: {  stage 1..5: W21 } 
+  eg_md.hash_meta_d2: {  stage 1..3: W22 } 
   eg_md.result_d1: {  stage 4..5: W16 } 
   eg_md.result_d2: {  stage 2..3: W18 } 
   $tmp24: {  stage 1..4: W17 } 
@@ -201,12 +203,10 @@ phv egress:
     W19:
     - { name : $tmp25, live_start : 1, live_end : 2, mutually_exclusive_with: [  ] }
     W20:
-    - { name : hdr.ipv4.dst_addr, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
-    W21:
     - { name : hdr.ipv4.src_addr, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
-    W22:
+    W21:
     - { name : eg_md.hash_meta_d1, live_start : 1, live_end : 5, mutually_exclusive_with: [  ] }
-    W23:
+    W22:
     - { name : eg_md.hash_meta_d2, live_start : 1, live_end : 3, mutually_exclusive_with: [  ] }
 parser ingress:
   start: $entry_point
@@ -402,7 +402,7 @@ deparser ingress:
       - B0  # ingress::$tmp3
 parser egress:
   start: $entry_point
-  init_zero: [ W22, W23, W16, W18, W17, W19, B17, B16 ]
+  init_zero: [ W21, W22, W16, W18, W17, W19, B17, B16 ]
   bitwise_or: [ B16, B17 ]
   hdr_len_adj: 27
   meta_opt: 8191
@@ -412,7 +412,8 @@ parser egress:
         counter:
           imm: 24
         0..1: H16  # bit[7..15] -> H16 bit[8..0]: egress::eg_intr_md.egress_port
-        27..28: TH22  # egress::hdr.ethernet.dst_addr[47:32].32-47
+        27: TB14  # egress::hdr.ethernet.dst_addr[47:40].40-47
+        28: TB13  # egress::hdr.ethernet.dst_addr[39:32].32-39
         B17: 1  # value 1 -> B17 bit[0]: egress::hdr.ethernet.$valid
         intr_md: 9
         shift: 29
@@ -427,22 +428,24 @@ parser egress:
       match: [ half ]
       0x0800:
         0..3: TW15  # egress::hdr.ethernet.dst_addr[31:0].0-31
-        4..5: TH21  # egress::hdr.ethernet.src_addr[47:32].32-47
+        4..5: TH23  # egress::hdr.ethernet.src_addr[47:32].32-47
         6..9: TW14  # egress::hdr.ethernet.src_addr[31:0].0-31
-        10..11: TH20  # egress::hdr.ethernet.ether_type
+        10..11: TH22  # egress::hdr.ethernet.ether_type
+        load: { byte1 : 21 }
         shift: 12
-        buf_req: 12
+        buf_req: 22
         next: parse_ipv4
       0x****:
         0..3: TW15  # egress::hdr.ethernet.dst_addr[31:0].0-31
-        4..5: TH21  # egress::hdr.ethernet.src_addr[47:32].32-47
+        4..5: TH23  # egress::hdr.ethernet.src_addr[47:32].32-47
         6..9: TW14  # egress::hdr.ethernet.src_addr[31:0].0-31
-        10..11: TH20  # egress::hdr.ethernet.ether_type
+        10..11: TH22  # egress::hdr.ethernet.ether_type
         shift: 12
         buf_req: 12
         next: min_parse_depth_reject_initial
     parse_ipv4:
-      *:
+      match: [ byte1 ]
+      0x06:
         counter: dec 20
         0..3: TW0
             # - bit[0..3] -> TW0 bit[31..28]: egress::hdr.ipv4.version
@@ -457,29 +460,58 @@ parser egress:
             # - bit[64..71] -> TW1 bit[31..24]: egress::hdr.ipv4.ttl
             # - bit[72..79] -> TW1 bit[23..16]: egress::hdr.ipv4.protocol
             # - bit[80..95] -> TW1 bit[15..0]: egress::hdr.ipv4.hdr_checksum
-        12..15: W21  # egress::hdr.ipv4.src_addr
+        12..15: W20  # egress::hdr.ipv4.src_addr
+        16..17: TH19  # egress::hdr.ipv4.dst_addr[31:16].16-31
+        18..19: TH18  # egress::hdr.ipv4.dst_addr[15:0].0-15
         B17: 2  # value 1 -> B17 bit[1]: egress::hdr.ipv4.$valid
-        load: { byte1 : 9, half : 2..3 }
-        shift: 16
-        buf_req: 16
-        next: parse_ipv4.$split_0
-    parse_ipv4.$split_0:
-      match: [ byte1 ]
-      0x06:
-        0..3: W20  # egress::hdr.ipv4.dst_addr
-        shift: 4
-        buf_req: 4
+        load: { half : 2..3 }
+        shift: 20
+        buf_req: 20
         next: parse_tcp
       0x11:
-        0..3: W20  # egress::hdr.ipv4.dst_addr
-        load: { half : 6..7 }
-        shift: 4
-        buf_req: 8
+        counter: dec 20
+        0..3: TW0
+            # - bit[0..3] -> TW0 bit[31..28]: egress::hdr.ipv4.version
+            # - bit[4..7] -> TW0 bit[27..24]: egress::hdr.ipv4.ihl
+            # - bit[8..15] -> TW0 bit[23..16]: egress::hdr.ipv4.diffserv
+            # - bit[16..31] -> TW0 bit[15..0]: egress::hdr.ipv4.total_len
+        4..7: TW2
+            # - bit[32..47] -> TW2 bit[31..16]: egress::hdr.ipv4.identification
+            # - bit[48..50] -> TW2 bit[15..13]: egress::hdr.ipv4.flags
+            # - bit[51..63] -> TW2 bit[12..0]: egress::hdr.ipv4.frag_offset
+        8..11: TW1
+            # - bit[64..71] -> TW1 bit[31..24]: egress::hdr.ipv4.ttl
+            # - bit[72..79] -> TW1 bit[23..16]: egress::hdr.ipv4.protocol
+            # - bit[80..95] -> TW1 bit[15..0]: egress::hdr.ipv4.hdr_checksum
+        12..15: W20  # egress::hdr.ipv4.src_addr
+        16..17: TH19  # egress::hdr.ipv4.dst_addr[31:16].16-31
+        18..19: TH18  # egress::hdr.ipv4.dst_addr[15:0].0-15
+        B17: 2  # value 1 -> B17 bit[1]: egress::hdr.ipv4.$valid
+        load: { half : 22..23 }
+        shift: 20
+        buf_req: 24
         next: parse_udp
       0x**:
-        0..3: W20  # egress::hdr.ipv4.dst_addr
-        shift: 4
-        buf_req: 4
+        counter: dec 20
+        0..3: TW0
+            # - bit[0..3] -> TW0 bit[31..28]: egress::hdr.ipv4.version
+            # - bit[4..7] -> TW0 bit[27..24]: egress::hdr.ipv4.ihl
+            # - bit[8..15] -> TW0 bit[23..16]: egress::hdr.ipv4.diffserv
+            # - bit[16..31] -> TW0 bit[15..0]: egress::hdr.ipv4.total_len
+        4..7: TW2
+            # - bit[32..47] -> TW2 bit[31..16]: egress::hdr.ipv4.identification
+            # - bit[48..50] -> TW2 bit[15..13]: egress::hdr.ipv4.flags
+            # - bit[51..63] -> TW2 bit[12..0]: egress::hdr.ipv4.frag_offset
+        8..11: TW1
+            # - bit[64..71] -> TW1 bit[31..24]: egress::hdr.ipv4.ttl
+            # - bit[72..79] -> TW1 bit[23..16]: egress::hdr.ipv4.protocol
+            # - bit[80..95] -> TW1 bit[15..0]: egress::hdr.ipv4.hdr_checksum
+        12..15: W20  # egress::hdr.ipv4.src_addr
+        16..17: TH19  # egress::hdr.ipv4.dst_addr[31:16].16-31
+        18..19: TH18  # egress::hdr.ipv4.dst_addr[15:0].0-15
+        B17: 2  # value 1 -> B17 bit[1]: egress::hdr.ipv4.$valid
+        shift: 20
+        buf_req: 20
         next: min_parse_depth_accept_initial
     parse_tcp:
       *:
@@ -541,7 +573,7 @@ parser egress:
       0x0:
         counter: dec 11
         0: TB1  # egress::hdr.min_parse_depth_padding_0[1].packet_payload[87:80].80-87
-        1..2: TH18  # egress::hdr.min_parse_depth_padding_0[1].packet_payload[79:64].64-79
+        1..2: TH20  # egress::hdr.min_parse_depth_padding_0[1].packet_payload[79:64].64-79
         3..4: TH5  # egress::hdr.min_parse_depth_padding_0[1].packet_payload[63:48].48-63
         5..6: TH4  # egress::hdr.min_parse_depth_padding_0[1].packet_payload[47:32].32-47
         7..8: TH3  # egress::hdr.min_parse_depth_padding_0[1].packet_payload[31:16].16-31
@@ -568,7 +600,7 @@ parser egress:
       *:
         counter: dec 11
         0: TB2  # egress::hdr.min_parse_depth_padding_0[2].packet_payload[87:80].80-87
-        1..2: TH19  # egress::hdr.min_parse_depth_padding_0[2].packet_payload[79:64].64-79
+        1..2: TH21  # egress::hdr.min_parse_depth_padding_0[2].packet_payload[79:64].64-79
         3..6: TW13  # egress::hdr.min_parse_depth_padding_0[2].packet_payload[63:32].32-63
         7..10: TW12  # egress::hdr.min_parse_depth_padding_0[2].packet_payload[31:0].0-31
         B16: 1  # value 1 -> B16 bit[2..0]: egress::hdr.min_parse_depth_padding_0.$stkvalid
@@ -598,11 +630,12 @@ parser egress:
         next: end
 deparser egress:
   dictionary:
-    TH22: B17(0)  # egress::hdr.ethernet.dst_addr.32-47 if egress::hdr.ethernet.$valid
+    TB14: B17(0)  # egress::hdr.ethernet.dst_addr.40-47 if egress::hdr.ethernet.$valid
+    TB13: B17(0)  # egress::hdr.ethernet.dst_addr.32-39 if egress::hdr.ethernet.$valid
     TW15: B17(0)  # egress::hdr.ethernet.dst_addr.0-31 if egress::hdr.ethernet.$valid
-    TH21: B17(0)  # egress::hdr.ethernet.src_addr.32-47 if egress::hdr.ethernet.$valid
+    TH23: B17(0)  # egress::hdr.ethernet.src_addr.32-47 if egress::hdr.ethernet.$valid
     TW14: B17(0)  # egress::hdr.ethernet.src_addr.0-31 if egress::hdr.ethernet.$valid
-    TH20: B17(0)  # egress::hdr.ethernet.ether_type if egress::hdr.ethernet.$valid
+    TH22: B17(0)  # egress::hdr.ethernet.ether_type if egress::hdr.ethernet.$valid
     TW0: B17(1)
         # - bit[31..28]: egress::hdr.ipv4.version if egress::hdr.ipv4.$valid
         # - bit[27..24]: egress::hdr.ipv4.ihl if egress::hdr.ipv4.$valid
@@ -616,8 +649,9 @@ deparser egress:
         # - bit[31..24]: egress::hdr.ipv4.ttl if egress::hdr.ipv4.$valid
         # - bit[23..16]: egress::hdr.ipv4.protocol if egress::hdr.ipv4.$valid
         # - bit[15..0]: egress::hdr.ipv4.hdr_checksum if egress::hdr.ipv4.$valid
-    W21: B17(1)  # egress::hdr.ipv4.src_addr if egress::hdr.ipv4.$valid
-    W20: B17(1)  # egress::hdr.ipv4.dst_addr if egress::hdr.ipv4.$valid
+    W20: B17(1)  # egress::hdr.ipv4.src_addr if egress::hdr.ipv4.$valid
+    TH19: B17(1)  # egress::hdr.ipv4.dst_addr.16-31 if egress::hdr.ipv4.$valid
+    TH18: B17(1)  # egress::hdr.ipv4.dst_addr.0-15 if egress::hdr.ipv4.$valid
     TH1: B17(2)  # egress::hdr.tcp.src_port if egress::hdr.tcp.$valid
     TH0: B17(2)  # egress::hdr.tcp.dst_port if egress::hdr.tcp.$valid
     TW13: B17(2)  # egress::hdr.tcp.seq_no if egress::hdr.tcp.$valid
@@ -643,13 +677,13 @@ deparser egress:
     TH0: B16(2)  # egress::hdr.min_parse_depth_padding_0[0].packet_payload.32-47 if egress::hdr.min_parse_depth_padding_0[0].$valid
     TW3: B16(2)  # egress::hdr.min_parse_depth_padding_0[0].packet_payload.0-31 if egress::hdr.min_parse_depth_padding_0[0].$valid
     TB1: B16(1)  # egress::hdr.min_parse_depth_padding_0[1].packet_payload.80-87 if egress::hdr.min_parse_depth_padding_0[1].$valid
-    TH18: B16(1)  # egress::hdr.min_parse_depth_padding_0[1].packet_payload.64-79 if egress::hdr.min_parse_depth_padding_0[1].$valid
+    TH20: B16(1)  # egress::hdr.min_parse_depth_padding_0[1].packet_payload.64-79 if egress::hdr.min_parse_depth_padding_0[1].$valid
     TH5: B16(1)  # egress::hdr.min_parse_depth_padding_0[1].packet_payload.48-63 if egress::hdr.min_parse_depth_padding_0[1].$valid
     TH4: B16(1)  # egress::hdr.min_parse_depth_padding_0[1].packet_payload.32-47 if egress::hdr.min_parse_depth_padding_0[1].$valid
     TH3: B16(1)  # egress::hdr.min_parse_depth_padding_0[1].packet_payload.16-31 if egress::hdr.min_parse_depth_padding_0[1].$valid
     TH2: B16(1)  # egress::hdr.min_parse_depth_padding_0[1].packet_payload.0-15 if egress::hdr.min_parse_depth_padding_0[1].$valid
     TB2: B16(0)  # egress::hdr.min_parse_depth_padding_0[2].packet_payload.80-87 if egress::hdr.min_parse_depth_padding_0[2].$valid
-    TH19: B16(0)  # egress::hdr.min_parse_depth_padding_0[2].packet_payload.64-79 if egress::hdr.min_parse_depth_padding_0[2].$valid
+    TH21: B16(0)  # egress::hdr.min_parse_depth_padding_0[2].packet_payload.64-79 if egress::hdr.min_parse_depth_padding_0[2].$valid
     TW13: B16(0)  # egress::hdr.min_parse_depth_padding_0[2].packet_payload.32-63 if egress::hdr.min_parse_depth_padding_0[2].$valid
     TW12: B16(0)  # egress::hdr.min_parse_depth_padding_0[2].packet_payload.0-31 if egress::hdr.min_parse_depth_padding_0[2].$valid
   egress_unicast_port: H16(0..8)  # bit[8..0]: egress::eg_intr_md.egress_port
@@ -1309,18 +1343,18 @@ stage 0 egress:
       1: { hash: 0, mask: 0xffff, shift: 0 }
       2: { hash: 0, mask: 0xffff, shift: 0 }
     input_xbar:
-      exact group 1: { 0: hdr.ipv4.dst_addr, 32: hdr.ipv4.src_addr }
+      exact group 1: { 0: hdr.ipv4.src_addr }
       hash 2:
-        16..31: slice(stripe(crc_rev(0x82608edb, 0xfffffff0, 0xffffffff, 64, { 0: hdr.ipv4.dst_addr, 32: hdr.ipv4.src_addr }, { })), 0..15)
+        16..31: slice(stripe(crc_rev(0x82608edb, 0xfffffff0, 0xffffffff, 32, { 0: hdr.ipv4.src_addr }, { })), 0..15)
       hash group 0:
         table: [2]
-        seed: 0x8f340000
-      exact group 1: { 0: hdr.ipv4.dst_addr, 32: hdr.ipv4.src_addr }
+        seed: 0x2d000000
+      exact group 1: { 0: hdr.ipv4.src_addr }
       hash 2:
-        32..47: slice(stripe(crc_rev(0x82608edb, 0xfffffff0, 0xffffffff, 64, { 0: hdr.ipv4.dst_addr, 32: hdr.ipv4.src_addr }, { })), 16..31)
+        32..47: slice(stripe(crc_rev(0x82608edb, 0xfffffff0, 0xffffffff, 32, { 0: hdr.ipv4.src_addr }, { })), 16..31)
       hash group 0:
         table: [2]
-        seed: 0x2d1600000000
+        seed: 0x9cf900000000
     gateway:
       name: tbl_fcmsketch_fcm_hash_d2-gateway
       row: 0
@@ -1341,7 +1375,7 @@ stage 0 egress:
       - default_action: { allowed: true, is_constant: true }
       - handle: 0x2000001a
       - next_table: 0
-      - set W23(0..31), hash_dist(1, 2, 0..31)
+      - set W22(0..31), hash_dist(1, 2, 0..31)
     default_action: FcmEgress.fcmsketch.fcm_hash_d2
   hash_action tbl_fcmsketch_fcm_hash_d1 3:
     p4: { name: tbl_fcmsketch_fcm_hash_d1, hidden: true }
@@ -1351,18 +1385,18 @@ stage 0 egress:
       3: { hash: 2, mask: 0xffff, shift: 0 }
       4: { hash: 2, mask: 0xffff, shift: 0 }
     input_xbar:
-      exact group 2: { 0: hdr.ipv4.dst_addr, 32: hdr.ipv4.src_addr }
-      hash 4:
-        0..15: slice(stripe(crc_rev(0x82608edb, 0xffffffff, 0xffffffff, 64, { 0: hdr.ipv4.dst_addr, 32: hdr.ipv4.src_addr }, { })), 0..15)
+      exact group 1: { 64: hdr.ipv4.src_addr }
+      hash 3:
+        0..15: slice(stripe(crc_rev(0x82608edb, 0xffffffff, 0xffffffff, 32, { 0: hdr.ipv4.src_addr }, { })), 0..15)
       hash group 2:
-        table: [4]
-        seed: 0xdf69
-      exact group 2: { 0: hdr.ipv4.dst_addr, 32: hdr.ipv4.src_addr }
-      hash 4:
-        16..31: slice(stripe(crc_rev(0x82608edb, 0xffffffff, 0xffffffff, 64, { 0: hdr.ipv4.dst_addr, 32: hdr.ipv4.src_addr }, { })), 16..31)
+        table: [3]
+        seed: 0xdf1c
+      exact group 1: { 64: hdr.ipv4.src_addr }
+      hash 3:
+        16..31: slice(stripe(crc_rev(0x82608edb, 0xffffffff, 0xffffffff, 32, { 0: hdr.ipv4.src_addr }, { })), 16..31)
       hash group 2:
-        table: [4]
-        seed: 0x65220000
+        table: [3]
+        seed: 0x21440000
     gateway:
       name: tbl_fcmsketch_fcm_hash_d1-gateway
       row: 0
@@ -1383,7 +1417,7 @@ stage 0 egress:
       - default_action: { allowed: true, is_constant: true }
       - handle: 0x20000019
       - next_table: 0
-      - set W22(0..31), hash_dist(3, 4, 0..31)
+      - set W21(0..31), hash_dist(3, 4, 0..31)
     default_action: FcmEgress.fcmsketch.fcm_hash_d1
   ternary_match fcmsketch_tb_fcm_l1_to_l2_d2$precompute 4:
     p4: { name: fcmsketch_tb_fcm_l1_to_l2_d2$precompute, hidden: true }

@@ -1,11 +1,11 @@
 {
   "schema_version": "2.0.6",
   "target": "tofino",
-  "build_date": "Thu Feb  6 16:06:39 2025",
+  "build_date": "Thu Feb 13 11:08:39 2025",
   "compiler_version": "9.11.0 (fdd358c)",
   "compilation_succeeded": true,
-  "compilation_time": "39.08804154396057",
-  "run_id": "e8c50ffae3064924",
+  "compilation_time": "39.88197040557861",
+  "run_id": "5c5916958a224d15",
   "architecture": "tna",
   "architectureConfig": {
     "name": "64q",
@@ -71,27 +71,9 @@
                 "graph_format": ".dot"
               },
               {
-                "path": "pipe/graphs/program_graph.dot",
+                "path": "pipe/graphs/power_graph.dot",
                 "gress": "ingress",
                 "graph_type": "table",
-                "graph_format": ".dot"
-              },
-              {
-                "path": "pipe/graphs/WaterfallIngress.dot",
-                "gress": "ingress",
-                "graph_type": "control",
-                "graph_format": ".dot"
-              },
-              {
-                "path": "pipe/graphs/WaterfallIngressParser.dot",
-                "gress": "ingress",
-                "graph_type": "parser",
-                "graph_format": ".dot"
-              },
-              {
-                "path": "pipe/graphs/FcmEgressParser.dot",
-                "gress": "egress",
-                "graph_type": "parser",
                 "graph_format": ".dot"
               },
               {
@@ -101,7 +83,25 @@
                 "graph_format": ".dot"
               },
               {
-                "path": "pipe/graphs/power_graph.dot",
+                "path": "pipe/graphs/WaterfallIngressParser.dot",
+                "gress": "ingress",
+                "graph_type": "parser",
+                "graph_format": ".dot"
+              },
+              {
+                "path": "pipe/graphs/WaterfallIngress.dot",
+                "gress": "ingress",
+                "graph_type": "control",
+                "graph_format": ".dot"
+              },
+              {
+                "path": "pipe/graphs/FcmEgressParser.dot",
+                "gress": "egress",
+                "graph_type": "parser",
+                "graph_format": ".dot"
+              },
+              {
+                "path": "pipe/graphs/program_graph.dot",
                 "gress": "ingress",
                 "graph_type": "table",
                 "graph_format": ".dot"

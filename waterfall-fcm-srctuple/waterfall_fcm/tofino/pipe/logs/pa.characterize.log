@@ -1,8 +1,8 @@
 +---------------------------------------------------------------------+
 |  Log file: pa.characterize.log                                      |
 |  Compiler version: 9.11.0                                           |
-|  Created on: Thu Feb  6 16:06:39 2025                               |
-|  Run ID: e8c50ffae3064924                                           |
+|  Created on: Thu Feb 13 11:08:39 2025                               |
+|  Run ID: 5c5916958a224d15                                           |
 +---------------------------------------------------------------------+
 
 Program: waterfall_fcm.p4
@@ -45,13 +45,12 @@ Program: waterfall_fcm.p4
 |   phv19   |  egress |                                                        |       |  |   |   |   |    |   |    |   |    |   |    |   |    |    |   |
 |   [31:0]  |  egress |                      $tmp25[31:0]                      |  meta |  |   | W | ~ | R  |   |    |   |    |   |    |   |    |    |   |
 |   phv20   |  egress |                                                        |       |  |   |   |   |    |   |    |   |    |   |    |   |    |    |   |
-|   [31:0]  |  egress |                hdr.ipv4.dst_addr[31:0]                 |  pkt  |  | W | ~ | ~ | ~  | ~ | ~  | ~ | ~  | ~ | ~  | ~ | ~  | ~  | R |
-|   phv21   |  egress |                                                        |       |  |   |   |   |    |   |    |   |    |   |    |   |    |    |   |
 |   [31:0]  |  egress |                hdr.ipv4.src_addr[31:0]                 |  pkt  |  | W | ~ | ~ | ~  | ~ | ~  | ~ | ~  | ~ | ~  | ~ | ~  | ~  | R |
-|   phv22   |  egress |                                                        |       |  |   |   |   |    |   |    |   |    |   |    |   |    |    |   |
+|   phv21   |  egress |                                                        |       |  |   |   |   |    |   |    |   |    |   |    |   |    |    |   |
 |   [31:0]  |  egress |                eg_md.hash_meta_d1[31:0]                |  meta |  |   | W |   |    |   |    |   |    |   |    |   |    |    |   |
-|   phv23   |  egress |                                                        |       |  |   |   |   |    |   |    |   |    |   |    |   |    |    |   |
+|   phv22   |  egress |                                                        |       |  |   |   |   |    |   |    |   |    |   |    |   |    |    |   |
 |   [31:0]  |  egress |                eg_md.hash_meta_d2[31:0]                |  meta |  |   | W |   |    |   |    |   |    |   |    |   |    |    |   |
+|   phv23   |    -    |                                                        |       |  |   |   |   |    |   |    |   |    |   |    |   |    |    |   |
 |   phv24   |    -    |                                                        |       |  |   |   |   |    |   |    |   |    |   |    |   |    |    |   |
 |   phv25   |    -    |                                                        |       |  |   |   |   |    |   |    |   |    |   |    |   |    |    |   |
 |   phv26   |    -    |                                                        |       |  |   |   |   |    |   |    |   |    |   |    |   |    |    |   |
@@ -415,8 +414,10 @@ Program: waterfall_fcm.p4
 |   phv299  |    -    |                                                        |       |  |   |   |   |    |   |    |   |    |   |    |   |    |    |   |
 |   phv300  |  egress |                                                        |       |  |   |   |   |    |   |    |   |    |   |    |   |    |    |   |
 |    [7:0]  |  egress | hdr.min_parse_depth_padding_0[0].packet_payload[79:72] |  pkt  |  | W | ~ | ~ | ~  | ~ | ~  | ~ | ~  | ~ | ~  | ~ | ~  | ~  | R |
-|   phv301  |    -    |                                                        |       |  |   |   |   |    |   |    |   |    |   |    |   |    |    |   |
-|   phv302  |    -    |                                                        |       |  |   |   |   |    |   |    |   |    |   |    |   |    |    |   |
+|   phv301  |  egress |                                                        |       |  |   |   |   |    |   |    |   |    |   |    |   |    |    |   |
+|    [7:0]  |  egress |              hdr.ethernet.dst_addr[39:32]              |  pkt  |  | W | ~ | ~ | ~  | ~ | ~  | ~ | ~  | ~ | ~  | ~ | ~  | ~  | R |
+|   phv302  |  egress |                                                        |       |  |   |   |   |    |   |    |   |    |   |    |   |    |    |   |
+|    [7:0]  |  egress |              hdr.ethernet.dst_addr[47:40]              |  pkt  |  | W | ~ | ~ | ~  | ~ | ~  | ~ | ~  | ~ | ~  | ~ | ~  | ~  | R |
 |   phv303  |    -    |                                                        |       |  |   |   |   |    |   |    |   |    |   |    |   |    |    |   |
 |   phv304  |    -    |                                                        |       |  |   |   |   |    |   |    |   |    |   |    |   |    |    |   |
 |   phv305  |    -    |                                                        |       |  |   |   |   |    |   |    |   |    |   |    |   |    |    |   |
@@ -475,16 +476,17 @@ Program: waterfall_fcm.p4
 |   phv336  |    -    |                                                        |       |  |   |   |   |    |   |    |   |    |   |    |   |    |    |   |
 |   phv337  |    -    |                                                        |       |  |   |   |   |    |   |    |   |    |   |    |   |    |    |   |
 |   phv338  |  egress |                                                        |       |  |   |   |   |    |   |    |   |    |   |    |   |    |    |   |
-|   [15:0]  |  egress | hdr.min_parse_depth_padding_0[1].packet_payload[79:64] |  pkt  |  | W | ~ | ~ | ~  | ~ | ~  | ~ | ~  | ~ | ~  | ~ | ~  | ~  | R |
+|   [15:0]  |  egress |                hdr.ipv4.dst_addr[15:0]                 |  pkt  |  | W | ~ | ~ | ~  | ~ | ~  | ~ | ~  | ~ | ~  | ~ | ~  | ~  | R |
 |   phv339  |  egress |                                                        |       |  |   |   |   |    |   |    |   |    |   |    |   |    |    |   |
-|   [15:0]  |  egress | hdr.min_parse_depth_padding_0[2].packet_payload[79:64] |  pkt  |  | W | ~ | ~ | ~  | ~ | ~  | ~ | ~  | ~ | ~  | ~ | ~  | ~  | R |
+|   [15:0]  |  egress |                hdr.ipv4.dst_addr[31:16]                |  pkt  |  | W | ~ | ~ | ~  | ~ | ~  | ~ | ~  | ~ | ~  | ~ | ~  | ~  | R |
 |   phv340  |  egress |                                                        |       |  |   |   |   |    |   |    |   |    |   |    |   |    |    |   |
-|   [15:0]  |  egress |             hdr.ethernet.ether_type[15:0]              |  pkt  |  | W | ~ | ~ | ~  | ~ | ~  | ~ | ~  | ~ | ~  | ~ | ~  | ~  | R |
+|   [15:0]  |  egress | hdr.min_parse_depth_padding_0[1].packet_payload[79:64] |  pkt  |  | W | ~ | ~ | ~  | ~ | ~  | ~ | ~  | ~ | ~  | ~ | ~  | ~  | R |
 |   phv341  |  egress |                                                        |       |  |   |   |   |    |   |    |   |    |   |    |   |    |    |   |
-|   [15:0]  |  egress |              hdr.ethernet.src_addr[47:32]              |  pkt  |  | W | ~ | ~ | ~  | ~ | ~  | ~ | ~  | ~ | ~  | ~ | ~  | ~  | R |
+|   [15:0]  |  egress | hdr.min_parse_depth_padding_0[2].packet_payload[79:64] |  pkt  |  | W | ~ | ~ | ~  | ~ | ~  | ~ | ~  | ~ | ~  | ~ | ~  | ~  | R |
 |   phv342  |  egress |                                                        |       |  |   |   |   |    |   |    |   |    |   |    |   |    |    |   |
-|   [15:0]  |  egress |              hdr.ethernet.dst_addr[47:32]              |  pkt  |  | W | ~ | ~ | ~  | ~ | ~  | ~ | ~  | ~ | ~  | ~ | ~  | ~  | R |
-|   phv343  |    -    |                                                        |       |  |   |   |   |    |   |    |   |    |   |    |   |    |    |   |
+|   [15:0]  |  egress |             hdr.ethernet.ether_type[15:0]              |  pkt  |  | W | ~ | ~ | ~  | ~ | ~  | ~ | ~  | ~ | ~  | ~ | ~  | ~  | R |
+|   phv343  |  egress |                                                        |       |  |   |   |   |    |   |    |   |    |   |    |   |    |    |   |
+|   [15:0]  |  egress |              hdr.ethernet.src_addr[47:32]              |  pkt  |  | W | ~ | ~ | ~  | ~ | ~  | ~ | ~  | ~ | ~  | ~ | ~  | ~  | R |
 |   phv344  |    -    |                                                        |       |  |   |   |   |    |   |    |   |    |   |    |   |    |    |   |
 |   phv345  |    -    |                                                        |       |  |   |   |   |    |   |    |   |    |   |    |   |    |    |   |
 |   phv346  |    -    |                                                        |       |  |   |   |   |    |   |    |   |    |   |    |   |    |    |   |
@@ -512,9 +514,9 @@ Program: waterfall_fcm.p4
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-Containers used: 74
-Containers with data overlayed: 17  (22.97%)
-Containers shared: 25  (33.78%)
+Containers used: 76
+Containers with data overlayed: 17  (22.37%)
+Containers shared: 25  (32.89%)
 
 ------------------------
   Legend:
@@ -585,9 +587,8 @@ Containers shared: 25  (33.78%)
 |   egress  |   phv18   |      -      |      -      | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |
 |   egress  |   phv19   |      -      | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |
 |   egress  |   phv20   | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) |
-|   egress  |   phv21   | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) |
+|   egress  |   phv21   |      -      | 1 (32 bits) |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |
 |   egress  |   phv22   |      -      | 1 (32 bits) |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |
-|   egress  |   phv23   |      -      | 1 (32 bits) |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |
 |           |           |             |             |             |             |             |             |             |             |             |             |             |             |             |             |
 |  ingress  |   phv64   |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |  1 (8 bits) |
 |  ingress  |   phv65   |      -      |      -      |      -      |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |
@@ -630,6 +631,8 @@ Containers shared: 25  (33.78%)
 |  ingress  |   phv294  |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |
 |  ingress  |   phv295  |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |
 |   egress  |   phv300  |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |
+|   egress  |   phv301  |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |
+|   egress  |   phv302  |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |
 |           |           |             |             |             |             |             |             |             |             |             |             |             |             |             |             |
 |   egress  |   phv320  | 3 (16 bits) | 3 (16 bits) | 3 (16 bits) | 3 (16 bits) | 3 (16 bits) | 3 (16 bits) | 3 (16 bits) | 3 (16 bits) | 3 (16 bits) | 3 (16 bits) | 3 (16 bits) | 3 (16 bits) | 3 (16 bits) | 3 (16 bits) |
 |   egress  |   phv321  | 3 (16 bits) | 3 (16 bits) | 3 (16 bits) | 3 (16 bits) | 3 (16 bits) | 3 (16 bits) | 3 (16 bits) | 3 (16 bits) | 3 (16 bits) | 3 (16 bits) | 3 (16 bits) | 3 (16 bits) | 3 (16 bits) | 3 (16 bits) |
@@ -651,5 +654,6 @@ Containers shared: 25  (33.78%)
 |   egress  |   phv340  | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) |
 |   egress  |   phv341  | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) |
 |   egress  |   phv342  | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) |
+|   egress  |   phv343  | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) |
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
