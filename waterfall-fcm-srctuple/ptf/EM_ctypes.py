@@ -61,7 +61,7 @@ class EM_WFCM(object):
         stage1_2 = Stage1()
         for i in range(len(stage1_2)):
             if s1[1][i] != 0:
-                print(f"{i}:{s1[0][i]} ", end="")
+                print(f"{i}:{s1[1][i]} ", end="")
             if i < len(s1[1]):
                 stage1_2[i] = s1[1][i]
             else:

@@ -224,11 +224,11 @@ control FCMSketch (
 	//	actions
 	// +++++++++++++++++++
   action fcm_hash_d1() {
-    fcm_mdata.hash_meta_d1 = hash_d1.get({ hdr.ipv4.src_addr, hdr.ipv4.dst_addr});
+    fcm_mdata.hash_meta_d1 = hash_d1.get({ hdr.ipv4.src_addr});
   }
 
   action fcm_hash_d2() {
-    fcm_mdata.hash_meta_d2 = hash_d2.get({ hdr.ipv4.src_addr, hdr.ipv4.dst_addr});
+    fcm_mdata.hash_meta_d2 = hash_d2.get({ hdr.ipv4.src_addr});
   }
 
 	// action for level 1, depth 1, you can re-define the flow key identification

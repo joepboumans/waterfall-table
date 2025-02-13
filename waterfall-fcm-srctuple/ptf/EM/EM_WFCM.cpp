@@ -633,10 +633,10 @@ inline uint32_t hashing(TUPLE tuple, uint32_t depth) {
   uint32_t crc = 0;
   if (depth == 0) {
     crc = crc32(0L, Z_NULL, 0);
-    crc = crc32(crc, tuple.num_array, sizeof(tuple));
+    crc = crc32(crc, tuple.num_array, tuple.sz);
   } else {
     crc = 0xF0000000;
-    crc = crc32(crc, tuple.num_array, sizeof(tuple));
+    crc = crc32(crc, tuple.num_array, tuple.sz);
   }
   return crc % W1;
 }
@@ -681,6 +681,7 @@ void *EM_WFCM_new(uint32_t *s1_1, uint32_t *s1_2, uint32_t *s2_1,
   std::vector<TUPLE> tuples_vec(tuples_sz);
   for (size_t i = 0; i < tuples_sz; i++) {
     tuples_vec.at(i) = tuples[i];
+    tuples_vec.at(i).sz = TupleSize::SrcTuple;
   }
 
   std::cout << "[WaterfallFcm CTypes] Checking vector with "

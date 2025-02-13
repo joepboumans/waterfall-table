@@ -152,7 +152,6 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
                 recv_src_port = data_dict["src_port"]
                 recv_dst_port = data_dict["dst_port"]
                 recv_protocol = data_dict["protocol"]
-                recv_remain4 = data_dict["remain4"]
                 # logger.info(f"{recv_src_addr = } : {recv_dst_addr = } | {recv_src_port = } {recv_dst_port = } | {recv_protocol = } | {recv_remain4}")
                 raw_src_addr = [int(x) for x in recv_src_addr.split('.')]
                 raw_dst_addr = [int(x) for x in recv_dst_addr.split('.')]
@@ -244,7 +243,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         data = swap2.make_data([], "WaterfallIngress.lookup2")
         swap2.entry_add(target, [key], [data])
 
-        key = swap2.make_key([gc.KeyTuple('ig_md.out_remain1', low=0x1, high=0xFFFF), gc.KeyTuple('ig_intr_md.resubmit_flag', swap1
+        key = swap2.make_key([gc.KeyTuple('ig_md.out_remain1', low=0x1, high=0xFFFF), gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
         data = swap2.make_data([], "WaterfallIngress.do_swap2")
         swap2.entry_add(target, [key], [data])
 

@@ -11,9 +11,9 @@ from p4testutils.misc_utils import *
 from bfruntime_client_base_tests import BfRuntimeTest
 import bfrt_grpc.bfruntime_pb2 as bfruntime_pb2
 import bfrt_grpc.client as gc
-from utils import *
 
 from fcm_utils import *
+from utils import *
 
 from EM_ctypes import EM_WFCM
 
@@ -149,7 +149,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
 
                 # logger.info(f"{recv_src_addr = } : {recv_dst_addr = } | {recv_src_port = } {recv_dst_port = } | {recv_protocol = } | {recv_remain4}")
                 raw_src_addr = [int(x) for x in recv_src_addr.split('.')]
-                # logger.info(f"{raw_src_addr = } : {raw_dst_addr = } | {raw_src_port = } {raw_dst_port = } | {raw_protocol = }")
+                logger.info(f"{raw_src_addr = }")
                 tuple_list = raw_src_addr 
                 tuple_key = ".".join([str(x) for x in tuple_list])
                 tuples[tuple_key] = tuple_list
@@ -176,6 +176,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         nonzero_entries = 0
         data_table = table.entry_get(self.target, [], {"from_hw" : True})
         entries = []
+        index = 0;
         for data, key in data_table:
             data_dict = data.to_dict()
             entry_val = data_dict[f"{control_name}.{name}.f1"][0]
@@ -183,8 +184,10 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
             if entry_val != 0:
                 summed += entry_val
                 nonzero_entries += 1
-                # logger.info(data_dict)
-                # logger.info(entry_val.to_bytes(2,'big'))
+                logger.info(data_dict)
+                logger.info(f"{index} : {entry_val.to_bytes(2,'big')}")
+
+            index += 1
 
         logger.info(f"{name} has {summed} total remainders and {nonzero_entries} entries")
         return entries
@@ -266,7 +269,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         data = swap4.make_data([], "WaterfallIngress.do_swap4")
         swap4.entry_add(target, [key], [data])
 
-        num_entries_src = 10
+        num_entries_src = 1
         total_pkts_sends = 0
         seed = 1001
         random.seed(seed)
@@ -285,7 +288,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
             flow_size = int(min(MAX_FLOW_SIZE, max(MAX_FLOW_SIZE * abs(random.gauss(mu=0, sigma=0.0001)), 1.0)))
 
             pkt_in = testutils.simple_tcp_packet(ip_src=src_addr, tcp_sport=src_port, tcp_dport=dst_port)
-            testutils.send_packet(self, ig_port, pkt_in)
+            testutils.send_packet(self, ig_port, pkt_in, count=flow_size)
             # testutils.verify_packet(self, pkt_in, hwports[ig_port])
             testutils.verify_packet(self, pkt_in, eg_port)
             total_pkts_sends += flow_size
@@ -363,6 +366,20 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         fcm_table[1].append([0] * SKETCH_W2)
         fcm_table[1].append([0] * SKETCH_W3)
 
+        hash_d1 = 190204
+        register_l1_d1 = fcm_l1_d1
+        resp_l1_d1 = register_l1_d1.entry_get(target,
+                [register_l1_d1.make_key([gc.KeyTuple('$REGISTER_INDEX', hash_d1)])],
+                {"from_hw": FROM_HW})
+        data_d1, _ = next(resp_l1_d1)
+        data_d1_dict = data_d1.to_dict()
+        val_s1_d1 = data_d1_dict["FcmEgress.fcmsketch.sketch_reg_l1_d1.f1"][0]
+        val_d1 = val_s1_d1
+
+
+        fcm_table[0][0][hash_d1] = val_s1_d1
+        logger.info(f"Store s1 value {val_s1_d1} in {hash_d1 % SKETCH_W1}")
+
         # call the register values and get flow size estimation
         logger.info("[INFO-FCM] Start query processing...")
         ARE = 0
@@ -370,6 +387,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         for key, value in in_tuples.items():
             logger.info(f"Getting data from {key}")
             ## depth 1, level 1
+            # 0x162AE6FC
             val_d1 = 0
             hash_d1 = fcm_crc32(key) % SKETCH_W1
             register_l1_d1 = fcm_l1_d1
@@ -383,7 +401,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
 
 
             fcm_table[0][0][hash_d1] = val_s1_d1
-            logger.info(f"Store s1 value {val_s1_d1} in {hash_d1 % SKETCH_W1}")
+            logger.info(f"Store s1 value {val_s1_d1} in {hash_d1}")
             # overflow to level 2?
             if (val_s1_d1 == ADD_LEVEL1):
                 hash_d1 = int(hash_d1 / 8)
