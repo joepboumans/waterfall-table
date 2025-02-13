@@ -267,7 +267,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         data = swap4.make_data([], "WaterfallIngress.do_swap4")
         swap4.entry_add(target, [key], [data])
 
-        num_entries_src = 10
+        num_entries_src = 1000
         total_pkts_sends = 0
         seed = 1001
         random.seed(seed)
@@ -462,7 +462,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         s2 = [fcm_table[0][1], fcm_table[1][1]]
         s3 = [fcm_table[0][2], fcm_table[1][2]]
         em_fsd = EM_WFCM(s1, s2, s3, tuples.values())
-        ns = em_fsd.run_em(1)
+        ns = em_fsd.run_em(5)
         # logger.info(fsd)
         logger.info(f"{ns[-1]} - sz {len(ns)}, {fsd[-1]} - sz {len(fsd)}")
 
