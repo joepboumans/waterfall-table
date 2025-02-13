@@ -631,18 +631,10 @@ public:
 
 uint32_t hashing(TUPLE tuple, uint32_t depth) {
   uint32_t crc = 0;
-  std::cout << "Depth " << depth << " Hashing " << tuple << " ";
-  if (depth == 0) {
-    /*crc = 0xFFFFFFFF;*/
-    crc = crc32(0L, Z_NULL, 0);
-    std::cout << "Depth 0 initial crc " << crc << " ";
-    crc = crc32(crc, tuple.num_array, tuple.sz);
-    /*crc &= 0xFFFFFFFF;*/
-  } else {
+  if (depth == 1) {
     crc = 0xF0000000;
-    crc = crc32(crc, tuple.num_array, tuple.sz);
   }
-  std::cout << "returning " << crc % W1 << std::endl;
+  crc = crc32(crc, tuple.num_array, tuple.sz);
   return crc % W1;
 }
 

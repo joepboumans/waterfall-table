@@ -38,7 +38,7 @@ class EM_WFCM(object):
     lib.vector_get.argtypes = [c_void_p, c_size_t]
 
     def __init__(self, s1, s2, s3, in_tuples):
-        logger.info(in_tuples)
+        # logger.info(in_tuples)
         Tuples = Tuple * len(in_tuples)
         tuples = Tuples()
         in2Tuples = []
