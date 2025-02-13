@@ -634,9 +634,10 @@ uint32_t hashing(TUPLE tuple, uint32_t depth) {
   std::cout << "Depth " << depth << " Hashing " << tuple << " ";
   if (depth == 0) {
     /*crc = 0xFFFFFFFF;*/
-    /*std::cout << "Depth 0 initial crc " << crc << " ";*/
-    crc = crc32(0, tuple.num_array, tuple.sz);
-    crc &= 0xFFFFFFFF;
+    crc = crc32(0L, Z_NULL, 0);
+    std::cout << "Depth 0 initial crc " << crc << " ";
+    crc = crc32(crc, tuple.num_array, tuple.sz);
+    /*crc &= 0xFFFFFFFF;*/
   } else {
     crc = 0xF0000000;
     crc = crc32(crc, tuple.num_array, tuple.sz);
@@ -649,6 +650,12 @@ extern "C" {
 void *EM_WFCM_new(uint32_t *s1_1, uint32_t *s1_2, uint32_t *s2_1,
                   uint32_t *s2_2, uint32_t *s3_1, uint32_t *s3_2, TUPLE *tuples,
                   uint32_t tuples_sz) {
+  uint8_t data[4] = {0x12, 0x34, 0x56, 0x78}; // Same input as Python
+  uint32_t crc = crc32(0, data, 4);           // Initial value is 0
+
+  std::cout << "CRC32: " << crc % (8 * 8 * 8192) << std::endl;
+  std::cout << "CRC32: " << crc % (W1) << std::endl;
+  std::cout << "CRC32: " << crc % W1 << std::endl;
 
   std::cout << "[WaterfallFcm CTypes] Start parsing python to c" << std::endl;
   vector<uint32_t> stages_sz = {W1, W2, W3};

@@ -457,6 +457,8 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         logger.info(bcolors.OKBLUE + "[INFO-FCM] Flow Size - ARE = %2.8f" + bcolors.ENDC, (ARE / NUM_FLOWS))
         logger.info(bcolors.OKBLUE + "[INFO-FCM] Flow Size - AAE = %2.8f" + bcolors.ENDC, (AAE / NUM_FLOWS))
 
+        crc = fcm_crc32("18.52.86.120")
+        logger.info(crc % SKETCH_W1)
         logger.info("[WaterfallFcm] Start EM FSD...")
         s1 = [fcm_table[0][0], fcm_table[1][0]]
         s2 = [fcm_table[0][1], fcm_table[1][1]]
