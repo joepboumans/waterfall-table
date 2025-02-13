@@ -267,7 +267,7 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         data = swap4.make_data([], "WaterfallIngress.do_swap4")
         swap4.entry_add(target, [key], [data])
 
-        num_entries_src = 1
+        num_entries_src = 10
         total_pkts_sends = 0
         seed = 1001
         random.seed(seed)
