@@ -1,5 +1,5 @@
 define($trace /data/users/jboumans/equinix-chicago.20160121-130000.UTC.pcap)
-define($RATE 5Gbps)
+define($RATE 10Gbps)
 define($max_packets_in_queue 500000)
 define($replay_count -1)
 
@@ -7,8 +7,8 @@ define($replay_count -1)
 
 /* Can be whatever */
 /* Hotpot: b8:3f:d2:b0:d7:79, Grill: b8:3f:d2:9f:2e:9b Onie: 70:b3:d5:cc:ff:3c */
-define($INdstmac b8:3f:d2:b0:d7:79)
-define($INsrcmac b8:3f:d2:9f:2e:9b)
+define($INsrcmac b8:3f:d2:b0:d7:79)
+define($INdstmac b8:3f:d2:9f:2e:9b)
 
 define($ignore 0)
 define($bout 32)
