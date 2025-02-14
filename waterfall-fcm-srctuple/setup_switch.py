@@ -75,8 +75,8 @@ forward_tbl = p4.WaterfallIngress.forward
 # forward_tbl.add_with_hit(ingress_port=132, dst_port=140)
 # forward_tbl.add_with_hit(ingress_port=140, dst_port=148)
 # Hotpot only connect on 148 and 156
-forward_tbl.add_with_hit(ingress_port=148, dst_port=156)
-forward_tbl.add_with_hit(ingress_port=156, dst_port=148)
+forward_tbl.add_with_hit(ingress_port=132, dst_port=140)
+forward_tbl.add_with_hit(ingress_port=140, dst_port=132)
 
 print("populating resub table...")
 resub = p4.WaterfallIngress.resub
