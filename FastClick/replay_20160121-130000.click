@@ -21,15 +21,8 @@ define($txverbose 99)
 //switcharoo
 fdIN :: FromDump($trace, STOP true, BURST 1, TIMING false, TIMING_FNT "100", ACTIVE true)
 
-//tdIN :: ToDPDKDevice($txport, BLOCKING true, BURST $bout, VERBOSE $txverbose, IQUEUE $bout, NDESC 0, TCO 1)
-
-//tdIN :: ToDPDKDevice($txport)
-
 //switcharoo
 tdIN :: ToDPDKDevice($txport, BLOCKING true, BURST $bout, VERBOSE $txverbose, IQUEUE $bout, NDESC 0, TCO 0)
-
-//fdIN  -> tdIN;
-//fdIN -> BandwidthRatedUnqueue($RATE, LINK_RATE true, ACTIVE true) -> tdIN;
 
 elementclass Numberise { $magic |
     input -> Strip(14) -> check :: MarkIPHeader -> nPacket :: NumberPacket(42) -> StoreData(40, $magic) -> ResetIPChecksum -> Unstrip(14) -> output

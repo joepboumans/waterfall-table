@@ -117,9 +117,9 @@ bfrt.port.port.add(DEV_PORT=156, SPEED='BF_SPEED_100G', FEC='BF_FEC_TYP_REED_SOL
 #prt.add(DEV_PORT=440, SPEED="BF_SPEED_40G", FEC="BF_FEC_TYP_FC", PORT_ENABLE=1) # port x
 
 # Throttling
-bfrt.tf1.tm.port.sched_cfg.mod(dev_port=140, max_rate_enable=True)
-bfrt.tf1.tm.port.sched_shaping.mod(dev_port=132, unit='BPS', provisioning='MIN_ERROR', max_rate=9000000, max_burst_size=160)
-bfrt.tf1.tm.port.sched_shaping.mod(dev_port=140, unit='BPS', provisioning='MIN_ERROR', max_rate=9000000, max_burst_size=160)
+# bfrt.tf1.tm.port.sched_cfg.mod(dev_port=140, max_rate_enable=True)
+# bfrt.tf1.tm.port.sched_shaping.mod(dev_port=132, unit='BPS', provisioning='MIN_ERROR', max_rate=9000000, max_burst_size=160)
+# bfrt.tf1.tm.port.sched_shaping.mod(dev_port=140, unit='BPS', provisioning='MIN_ERROR', max_rate=9000000, max_burst_size=160)
 #bfrt.tf1.tm.port.sched_shaping.mod(dev_port=148, unit='PPS', provisioning='MIN_ERROR', max_rate=12, max_burst_size=2)
 #bfrt.tf1.tm.port.sched_shaping.mod(dev_port=156, unit='PPS', provisioning='MIN_ERROR', max_rate=12, max_burst_size=2)
 
