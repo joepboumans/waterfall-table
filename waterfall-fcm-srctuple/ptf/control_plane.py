@@ -54,7 +54,6 @@ class BfRt_interface():
 
         self.learn_filter = self.bfrt_info.learn_get("digest")
         self.learn_filter.info.data_field_annotation_add("src_addr", "ipv4")
-        self.learn_filter.info.data_field_annotation_add("dst_addr", "ipv4")
 
         # Get swap tables
         self.swap1 = self.bfrt_info.table_get("swap1")
@@ -369,8 +368,8 @@ def read_data_set(data_name):
             if i + 12 >= len(data):
                 break
 
-            # Read src and dst addr
-            tuples[data[i + 0:i + 8]] += 1
+            # Read src addr
+            tuples[data[i + 0:i + 4]] += 1
                 
             if first:
                 print(*tuples.keys())
