@@ -14,7 +14,7 @@ define($ignore 0)
 define($bout 32)
 
 /* Melanox grill: 0000:0a:00.1, 0000:0a:00.0 */
-define($txport 0)
+define($txport 1)
 define($quick false)
 define($txverbose 99)
 
