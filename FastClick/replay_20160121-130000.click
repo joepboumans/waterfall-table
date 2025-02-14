@@ -1,4 +1,4 @@
-define($trace /data-1/users/jboumans/equinix-chicago.20160121-130000.UTC.pcap)
+define($trace /data/users/jboumans/equinix-chicago.20160121-130000.UTC.pcap)
 define($RATE 5Gbps)
 define($max_packets_in_queue 500000)
 define($replay_count -1)

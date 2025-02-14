@@ -1,4 +1,4 @@
-define($trace /data-1/users/jboumans/single_burst_test.pcap)
+define($trace /data/users/jboumans/single_burst_test.pcap)
 define($RATE 1Gbps)
 define($max_packets_in_queue 500000)
 define($replay_count -1)

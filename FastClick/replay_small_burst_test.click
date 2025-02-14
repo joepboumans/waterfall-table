@@ -1,4 +1,4 @@
-define($trace /data-1/users/jboumans/small_burst_test.pcap)
+define($trace /data/users/jboumans/small_burst_test.pcap)
 
 define($txport 0)
 

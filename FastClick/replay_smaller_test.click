@@ -1,4 +1,4 @@
-define($trace /data-1/users/jboumans/smaller_test.pcap)
+define($trace /data/users/jboumans/smaller_test.pcap)
 define($RATE 1Mbps)
 define($max_packets_in_queue 500000)
 define($replay_count -1)

@@ -1,6 +1,6 @@
 //define($trace /home/rmaulana/test.pcap)
-//define($trace /data-1/users/rmaulana/equinix/split/equinix-split_00000_20160218143000.new.pcap)
-define($trace /data-1/users/rmaulana/equinix/equinix-chicago.dirA.20160218-133000.UTC.anon.pcap)
+//define($trace /data/users/rmaulana/equinix/split/equinix-split_00000_20160218143000.new.pcap)
+define($trace /data/users/rmaulana/equinix/equinix-chicago.dirA.20160218-133000.UTC.anon.pcap)
 
 define($txport 0)
 
