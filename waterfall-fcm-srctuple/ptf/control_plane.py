@@ -412,7 +412,7 @@ def main():
         bfrt_interface.verify_sim(input_tuples, 1)
     else:
         bfrt_interface.run()
-        bfrt_interface.verify(input_tuples, 5)
+        bfrt_interface.verify(input_tuples, 2)
 
 if __name__ == "__main__":
     main()
