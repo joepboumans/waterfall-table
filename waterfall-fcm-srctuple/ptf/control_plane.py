@@ -351,7 +351,7 @@ class BfRt_interface():
             if wmre_denom != 0:
                 wmre = wmre_nom / wmre_denom
 
-            print(f"[WaterfallFcm] WMRE : {wmre : .2f}")
+            print(f"[WaterfallFcm] WMRE : {wmre : .6f}")
 
         print(f"[WaterfallFcm] Finished EM FSD")
 
