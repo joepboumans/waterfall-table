@@ -6,9 +6,9 @@ define($replay_count -1)
 //d :: DPDKInfo(NB_SOCKET_MBUF  1048575) //Should be a bit more than 4 times the limit
 
 /* Can be whatever */
-define($INsrcmac b8:3f:d2:9f:2e:9b)
 /* Hotpot: b8:3f:d2:b0:d7:79, Grill: b8:3f:d2:9f:2e:9b Onie: 70:b3:d5:cc:ff:3c */
-define($INdstmac b8:3f:d2:b0:d7:79)
+define($INsrcmac b8:3f:d2:b0:d7:79)
+define($INdstmac b8:3f:d2:9f:2e:9b)
 
 define($ignore 0)
 define($bout 1)
