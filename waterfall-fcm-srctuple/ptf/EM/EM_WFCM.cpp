@@ -839,7 +839,7 @@ void *EM_WFCM_new(uint32_t *s1_1, uint32_t *s1_2, uint32_t *s2_1,
 
   std::cout << "[EM_WFCM] ...done!" << std::endl;
 
-  if (0) {
+  if (1) {
     // Print vc with thresholds
     for (size_t d = 0; d < DEPTH; d++) {
       for (size_t st = 0; st < virtual_counters[d].size(); st++) {
