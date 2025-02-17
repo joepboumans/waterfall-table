@@ -209,13 +209,7 @@ private:
       } else {
         if (sum > 600) { // 1000 for large data, 600 for small data
           flow_num_limit = 2;
-        } else if (sum > 250) // 500 for large data, 250 for small data
-          flow_num_limit = 3;
-        else if (sum > 100)
-          flow_num_limit = 3;
-        else if (sum > 50)
-          flow_num_limit = 3;
-        else
+        } else
           flow_num_limit = 3;
         /*if (sum > 600) { // 1000 for large data, 600 for small data*/
         /*  flow_num_limit = 2;*/
@@ -845,7 +839,7 @@ void *EM_WFCM_new(uint32_t *s1_1, uint32_t *s1_2, uint32_t *s2_1,
 
   std::cout << "[EM_WFCM] ...done!" << std::endl;
 
-  if (1) {
+  if (0) {
     // Print vc with thresholds
     for (size_t d = 0; d < DEPTH; d++) {
       for (size_t st = 0; st < virtual_counters[d].size(); st++) {
