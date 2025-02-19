@@ -248,6 +248,7 @@ class BfRt_interface():
         total_lf = self.total_received / len(in_tuples)
         print(f"[WaterfallFcm - verify] Total Load factor is {total_lf}")
 
+        return
         print(f"[WaterfallFcm - verify] Estimate Flow Size Distribution")
         fcm_tables = self._get_FCM_counters()
         s1 = [fcm_tables[0], fcm_tables[3]]
