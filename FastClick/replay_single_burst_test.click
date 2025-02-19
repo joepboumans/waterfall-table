@@ -34,7 +34,7 @@ elementclass Generator { $magic |
 }
 
 fdIN
--> replay0 :: ReplayUnqueue(STOP $replay_count, ACTIVE true)
 -> unqueue0 :: BandwidthRatedUnqueue($RATE, LINK_RATE true, ACTIVE true)
 -> gen0 :: Generator(\<5700>)
+-> replay0 :: ReplayUnqueue(STOP $replay_count, ACTIVE true)
 -> tdIN; StaticThreadSched(fdIN 0/1, unqueue0 0/1);
