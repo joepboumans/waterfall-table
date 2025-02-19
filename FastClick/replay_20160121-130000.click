@@ -1,7 +1,7 @@
 define($trace /data/users/jboumans/equinix-chicago.20160121-130000.UTC.pcap)
 define($RATE 10Gbps)
 define($max_packets_in_queue 500000)
-define($replay_count 10000)
+define($replay_count -1)
 
 //d :: DPDKInfo(NB_SOCKET_MBUF  1048575) //Should be a bit more than 4 times the limit
 
@@ -37,6 +37,6 @@ elementclass Generator { $magic |
 }
 
 fdIN
-//-> unqueue0 :: BandwidthRatedUnqueue($RATE, LINK_RATE true, ACTIVE true)
+-> unqueue0 :: BandwidthRatedUnqueue($RATE, LINK_RATE true, ACTIVE true)
 -> gen0 :: Generator(\<5700>)
--> tdIN; StaticThreadSched(fdIN 0/1);
+-> tdIN; StaticThreadSched(fdIN 0/1, unqueue0 0/1);
