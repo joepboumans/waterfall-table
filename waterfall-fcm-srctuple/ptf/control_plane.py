@@ -252,10 +252,10 @@ class BfRt_interface():
         print(f"[WaterfallFcm - verify] {recall = :.5f} {precision = :.5f} | {f1 = :.5f}")
 
         load_factor = len(self.tuples) / len(in_tuples)
-        print(f"[WaterfallFcm - verify] Load factor is {load_factor}")
+        print(f"[WaterfallFcm - verify] Load factor is {load_factor} with tuple having length {len(self.tuples)}")
 
         total_lf = self.total_received / len(in_tuples)
-        print(f"[WaterfallFcm - verify] Total Load factor is {total_lf}")
+        print(f"[WaterfallFcm - verify] Total Load factor is {total_lf} with total received {self.total_received}")
 
         return
         print(f"[WaterfallFcm - verify] Estimate Flow Size Distribution")

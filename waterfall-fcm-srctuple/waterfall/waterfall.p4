@@ -250,7 +250,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     ig_md.resubmit_md.type = RESUB;
     ig_md.resubmit_md.idx = ig_md.idx1;
     ig_md.resubmit_md.remain = hdr.ipv4.src_addr;
-
+    ig_intr_dprsr_md.digest_type = DIGEST;
   }
 
   action no_action() {
@@ -270,7 +270,6 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
   }
 
   action do_swap1() {
-    ig_intr_dprsr_md.digest_type = DIGEST;
     ig_md.out_remain1 = table_1_swap.execute(ig_md.idx1);
   }
 
