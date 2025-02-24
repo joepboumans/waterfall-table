@@ -249,7 +249,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     ig_intr_dprsr_md.resubmit_type = DPRSR_RESUB;
     ig_md.resubmit_md.type = RESUB;
     ig_md.resubmit_md.idx = ig_md.idx1;
-    ig_md.resubmit_md.remain = ig_md.remain1;
+    ig_md.resubmit_md.remain = hdr.ipv4.src_addr;
 
   }
 

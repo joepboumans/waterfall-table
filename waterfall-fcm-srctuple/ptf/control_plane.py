@@ -148,7 +148,15 @@ class BfRt_interface():
     def _read_digest(self):
         try:
             digest = self.interface.digest_get(1)
-            self.recieved_digests.append(digest)
+            # self.recieved_digests.append(digest)
+            data_list = self.learn_filter.make_data_list(digest)
+            self.total_received += len(data_list)
+            for data in data_list:
+                tuple_list = bytes(data["src_addr"].val)
+                if not self.tuples:
+                    self.tuples = {tuple_list}
+                else:
+                    self.tuples.add(tuple_list)
 
             self.recievedDigest += 1
             if self.recievedDigest % 1000 == 0:
@@ -199,25 +207,26 @@ class BfRt_interface():
             self._read_digest()
 
         print(f"Received {len(self.recieved_digests)} digest from switch")
+        print(f"Received {len(self.tuples)} tuples from switch")
         parsed_digest = 0
         prev_tuple_len = 0
-        for digest in self.recieved_digests:
-            data_list = self.learn_filter.make_data_list(digest)
-            self.total_received += len(data_list)
-            for data in data_list:
-                tuple_list = bytes(data["src_addr"].val)
-                if not self.tuples:
-                    self.tuples = {tuple_list}
-                else:
-                    self.tuples.add(tuple_list)
-
+        # for digest in self.recieved_digests:
+        #     data_list = self.learn_filter.make_data_list(digest)
+        #     self.total_received += len(data_list)
+        #     for data in data_list:
+        #         tuple_list = bytes(data["src_addr"].val)
+        #         if not self.tuples:
+        #             self.tuples = {tuple_list}
+        #         else:
+        #             self.tuples.add(tuple_list)
+        #
             # print(f"Found {len(data_list)} tuples with {len(self.tuples)} uniques")
             # print(f"{prev_tuple_len}; In total received {prev_tuple_len + len(data_list) - len(self.tuples)} tuples to many")
             # prev_tuple_len = len(self.tuples)
 
-            parsed_digest += 1
-            if parsed_digest % 1000 == 0:
-                print(f"Parsed {parsed_digest} of {self.recievedDigest} digests; Current tuples {len(self.tuples)}")
+            # parsed_digest += 1
+            # if parsed_digest % 1000 == 0:
+            #     print(f"Parsed {parsed_digest} of {self.recievedDigest} digests; Current tuples {len(self.tuples)}")
 
         for t in self.table_dict.keys():
             self.evaluate_table(self.table_dict, t)
