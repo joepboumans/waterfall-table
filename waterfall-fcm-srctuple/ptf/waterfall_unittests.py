@@ -24,59 +24,20 @@ if not len(logger.handlers):
     logger.addHandler(sh)
 
 class WaterfallUnitTests(BfRuntimeTest):
-    # Input a number of entries and verify if the resub and digest is working
     def setUp(self):
         logger.info("Starting setup")
         client_id = 0
         BfRuntimeTest.setUp(self, client_id)
         logger.info("\tfinished BfRuntimeSetup")
-        self.bfrt_info = self.interface.bfrt_info_get(project_name)
-
-        # Setup forwarding tables
-        self.forward = self.bfrt_info.table_get("forward")
-
-        # Get resubmission and port metadata tables
-        self.port_meta = self.bfrt_info.table_get("$PORT_METADATA")
-        self.resub = self.bfrt_info.table_get("resub")
-        # self.parse_resub = self.bfrt_info.table_get("parse_resub_hdr")
-
-        # Get digest/learn filter from gRPC
-        self.learn_filter = self.bfrt_info.learn_get("digest")
-        self.learn_filter.info.data_field_annotation_add("src_addr", "ipv4")
-
-        # Get Waterfall tables
-        self.table_1 = self.bfrt_info.table_get("table_1")
-        self.table_2 = self.bfrt_info.table_get("table_2")
-        self.table_3 = self.bfrt_info.table_get("table_3")
-        self.table_4 = self.bfrt_info.table_get("table_4")
-        self.table_dict = {"table_1" : self.table_1, "table_2" : self.table_2, "table_3" : self.table_3, "table_4" : self.table_4}
-
-        # Get swap tables
-        self.swap1 = self.bfrt_info.table_get("swap1")
-        self.swap2 = self.bfrt_info.table_get("swap2")
-        self.swap3 = self.bfrt_info.table_get("swap3")
-        self.swap4 = self.bfrt_info.table_get("swap4")
-        self.swap_dict = {"swap1" : self.swap1, "swap2" : self.swap2, "swap3" : self.swap3, "swap4" : self.swap4}
-
-        # self.set_remain2 = self.bfrt_info.table_get("set_remain2")
         self.target = gc.Target(device_id=0, pipe_id=0xffff)
+
+        self.setupWaterfall()
+        self.resetWaterfall()
+        self.setupWaterfall()
+
         logger.info("Finished setup")
 
-    def resetWaterfall(self):
-        logger.info("Resetting switch..")
-        self.forward.entry_del(self.target)
-        self.resub.entry_del(self.target)
-        # self.parse_resub.entry_del(self.target)
-        self.port_meta.entry_del(self.target)
-
-        for _, table in self.table_dict.items():
-            table.entry_del(self.target)
-
-        for _, swap in self.swap_dict.items():
-            swap.entry_del(self.target)
-        logger.info("...cleared all tables")
-
-        # self.set_remain2.entry_del(self.target)
+    def setupWaterfall(self):
         logger.info("Setting up tables...")
         self.bfrt_info = self.interface.bfrt_info_get(project_name)
 
@@ -93,22 +54,45 @@ class WaterfallUnitTests(BfRuntimeTest):
         self.learn_filter.info.data_field_annotation_add("src_addr", "ipv4")
 
         # Get Waterfall tables
-        self.table_1 = self.bfrt_info.table_get("table_1")
-        self.table_2 = self.bfrt_info.table_get("table_2")
-        self.table_3 = self.bfrt_info.table_get("table_3")
-        self.table_4 = self.bfrt_info.table_get("table_4")
-        self.table_dict = {"table_1" : self.table_1, "table_2" : self.table_2, "table_3" : self.table_3, "table_4" : self.table_4}
+        self.table_dict = {}
+        table_names = ["table_1", "table_2"]
+        for sname in table_names:
+            for loc in ["hi", "lo"]:
+                name = f"{sname}_{loc}"
+                table = self.bfrt_info.table_get(name)
+                self.table_dict.update({name : table})
+
+
 
         # Get swap tables
-        self.swap1 = self.bfrt_info.table_get("swap1")
-        self.swap2 = self.bfrt_info.table_get("swap2")
-        self.swap3 = self.bfrt_info.table_get("swap3")
-        self.swap4 = self.bfrt_info.table_get("swap4")
-        self.swap_dict = {"swap1" : self.swap1, "swap2" : self.swap2, "swap3" : self.swap3, "swap4" : self.swap4}
+        self.swap_dict = {}
+        swap_names = ["swap1", "swap2"]
+        for sname in swap_names:
+            for loc in ["hi", "lo"]:
+                name = f"{sname}_{loc}"
+                swap = self.bfrt_info.table_get(name)
+                self.swap_dict.update({name : swap})
 
-        # self.set_remain2 = self.bfrt_info.table_get("set_remain2")
         self.target = gc.Target(device_id=0, pipe_id=0xffff)
-        logger.info("... tables setup")
+        logger.info("...tables setup done!")
+
+    def clearWaterfall(self):
+        logger.info("Resetting switch..")
+        self.forward.entry_del(self.target)
+        self.resub.entry_del(self.target)
+        # self.parse_resub.entry_del(self.target)
+        self.port_meta.entry_del(self.target)
+
+        for _, table in self.table_dict.items():
+            table.entry_del(self.target)
+
+        for _, swap in self.swap_dict.items():
+            swap.entry_del(self.target)
+        logger.info("...cleared all tables")
+
+    def resetWaterfall(self):
+        self.clearWaterfall()
+        self.setupWaterfall()
 
     def tearDown(self):
         logger.info("Tearing down test")
@@ -209,37 +193,8 @@ class WaterfallUnitTests(BfRuntimeTest):
         data = parse_resub.make_data([], "WaterfallIngress.parse_hdr")
         parse_resub.entry_add(target, [key], [data])
 
-        key = swap1.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0)])
-        data = swap1.make_data([], "WaterfallIngress.lookup1")
-        swap1.entry_add(target, [key], [data])
-
-        key = swap1.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
-        data = swap1.make_data([], "WaterfallIngress.do_swap1")
-        swap1.entry_add(target, [key], [data])
-
-        key = swap2.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0), gc.KeyTuple('ig_md.found', False)])
-        data = swap2.make_data([], "WaterfallIngress.lookup2")
-        swap2.entry_add(target, [key], [data])
-
-        key = swap2.make_key([ gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
-        data = swap2.make_data([], "WaterfallIngress.do_swap2")
-        swap2.entry_add(target, [key], [data])
-
-        key = swap3.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0), gc.KeyTuple('ig_md.found', False)])
-        data = swap3.make_data([], "WaterfallIngress.lookup3")
-        swap3.entry_add(target, [key], [data])
-
-        key = swap3.make_key([ gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
-        data = swap3.make_data([], "WaterfallIngress.do_swap3")
-        swap3.entry_add(target, [key], [data])
-
-        key = swap4.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0), gc.KeyTuple('ig_md.found', False)])
-        data = swap4.make_data([], "WaterfallIngress.lookup4")
-        swap4.entry_add(target, [key], [data])
-
-        key = swap4.make_key([ gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
-        data = swap4.make_data([], "WaterfallIngress.do_swap4")
-        swap4.entry_add(target, [key], [data])
+        for name, table in self.swap_dict.items():
+            self.addSwapEntry(table, name)
 
         for ip_entry in ip_list:
             src_addr = getattr(ip_entry, "ip")
@@ -258,6 +213,19 @@ class WaterfallUnitTests(BfRuntimeTest):
         logger.info("Only Table 1 should have been filled")
         for key, data in self.table_dict.items():
             self.evalutate_table(key)
+
+
+    def addSwapEntry(self, table, name):
+        num = name.replace("swap", "")
+        logger.info(num)
+        key = table.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0), gc.KeyTuple('ig_md.found_hi', False), gc.KeyTuple('ig_md.found_lo', False)])
+        data = table.make_data([], f"WaterfallIngress.lookup{num}")
+        table.entry_add(self.target, [key], [data])
+
+        key = table.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
+        data = table.make_data([], f"WaterfallIngress.do_swap{num}")
+        table.entry_add(self.target, [key], [data])
+
     
     def testPassAllTables(self):
         ig_port = swports[0]
@@ -272,15 +240,8 @@ class WaterfallUnitTests(BfRuntimeTest):
         data = forward.make_data([gc.DataTuple('dst_port', eg_port)], "WaterfallIngress.hit")
         forward.entry_add(target, [key], [data])
 
-        swap1 = self.swap1
-        swap2 = self.swap2
-        swap3 = self.swap3
-        swap4 = self.swap4
-
         learn_filter = self.learn_filter
-
-        # set_remain2 = self.set_remain2
-
+        
         num_entries = 1
         seed = 1001
         ip_list = self.generate_random_ip_list(num_entries, seed)
@@ -289,57 +250,33 @@ class WaterfallUnitTests(BfRuntimeTest):
         logger.debug(f"\tresub - inserting table entry with port {ig_port}")
 
         # Resubmit even when the packet was found in tables
-        key = resub.make_key([gc.KeyTuple('ig_md.found', True)])
+        key = resub.make_key([gc.KeyTuple('ig_md.found_hi', True), gc.KeyTuple('ig_md.found_lo', True)])
         data = resub.make_data([], "WaterfallIngress.resubmit_hdr")
         resub.entry_add(target, [key], [data])
 
-        key = resub.make_key([gc.KeyTuple('ig_md.found', False)])
+        key = resub.make_key([gc.KeyTuple('ig_md.found_hi', False), gc.KeyTuple('ig_md.found_lo', False)])
         data = resub.make_data([], "WaterfallIngress.resubmit_hdr")
         resub.entry_add(target, [key], [data])
 
+        key = resub.make_key([gc.KeyTuple('ig_md.found_hi', True), gc.KeyTuple('ig_md.found_lo', False)])
+        data = resub.make_data([], "WaterfallIngress.resubmit_hdr")
+        resub.entry_add(target, [key], [data])
+
+        key = resub.make_key([gc.KeyTuple('ig_md.found_hi', False), gc.KeyTuple('ig_md.found_lo', True)])
+        data = resub.make_data([], "WaterfallIngress.resubmit_hdr")
+        resub.entry_add(target, [key], [data])
+
+        # parse_resub = self.parse_resub
         # key = parse_resub.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0)])
         # data = parse_resub.make_data([], "WaterfallIngress.no_action")
         # parse_resub.entry_add(target, [key], [data])
-
+        #
         # key = parse_resub.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
         # data = parse_resub.make_data([], "WaterfallIngress.parse_hdr")
         # parse_resub.entry_add(target, [key], [data])
 
-        key = swap1.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0)])
-        data = swap1.make_data([], "WaterfallIngress.lookup1")
-        swap1.entry_add(target, [key], [data])
-
-        key = swap1.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
-        data = swap1.make_data([], "WaterfallIngress.do_swap1")
-        swap1.entry_add(target, [key], [data])
-
-        # key = set_remain2.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
-        # data = set_remain2.make_data([], "WaterfallIngress.set_remain2out2")
-        # set_remain2.entry_add(target, [key], [data])
-
-        key = swap2.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0)])
-        data = swap2.make_data([], "WaterfallIngress.lookup2")
-        swap2.entry_add(target, [key], [data])
-
-        key = swap2.make_key([ gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
-        data = swap2.make_data([], "WaterfallIngress.do_swap2")
-        swap2.entry_add(target, [key], [data])
-
-        key = swap3.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0)])
-        data = swap3.make_data([], "WaterfallIngress.lookup3")
-        swap3.entry_add(target, [key], [data])
-
-        key = swap3.make_key([ gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
-        data = swap3.make_data([], "WaterfallIngress.do_swap3")
-        swap3.entry_add(target, [key], [data])
-
-        key = swap4.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0)])
-        data = swap4.make_data([], "WaterfallIngress.lookup4")
-        swap4.entry_add(target, [key], [data])
-
-        key = swap4.make_key([ gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
-        data = swap4.make_data([], "WaterfallIngress.do_swap4")
-        swap4.entry_add(target, [key], [data])
+        for name, table in self.swap_dict.items():
+            self.addSwapEntry(table, name)
 
         for ip_entry in ip_list:
             src_addr = getattr(ip_entry, "ip")
@@ -398,37 +335,8 @@ class WaterfallUnitTests(BfRuntimeTest):
         data = resub.make_data([], "WaterfallIngress.resubmit_hdr")
         resub.entry_add(target, [key], [data])
 
-        key = swap1.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0)])
-        data = swap1.make_data([], "WaterfallIngress.lookup1")
-        swap1.entry_add(target, [key], [data])
-
-        key = swap1.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
-        data = swap1.make_data([], "WaterfallIngress.do_swap1")
-        swap1.entry_add(target, [key], [data])
-
-        key = swap2.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0)])
-        data = swap2.make_data([], "WaterfallIngress.lookup2")
-        swap2.entry_add(target, [key], [data])
-
-        key = swap2.make_key([ gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
-        data = swap2.make_data([], "WaterfallIngress.do_swap2")
-        swap2.entry_add(target, [key], [data])
-
-        key = swap3.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0)])
-        data = swap3.make_data([], "WaterfallIngress.lookup3")
-        swap3.entry_add(target, [key], [data])
-
-        key = swap3.make_key([ gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
-        data = swap3.make_data([], "WaterfallIngress.do_swap3")
-        swap3.entry_add(target, [key], [data])
-
-        key = swap4.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0)])
-        data = swap4.make_data([], "WaterfallIngress.lookup4")
-        swap4.entry_add(target, [key], [data])
-
-        key = swap4.make_key([ gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
-        data = swap4.make_data([], "WaterfallIngress.do_swap4")
-        swap4.entry_add(target, [key], [data])
+        for name, table in self.swap_dict.items():
+            self.addSwapEntry(table, name)
 
         logger.info(f"Start sending {num_entries_src * num_entries_dst} entries")
         for src_ip in src_ip_list:

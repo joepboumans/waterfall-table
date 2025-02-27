@@ -68,18 +68,24 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         self.learn_filter.info.data_field_annotation_add("src_addr", "ipv4")
 
         # Get Waterfall tables
-        self.table_1 = self.bfrt_info.table_get("table_1") 
-        self.table_2 = self.bfrt_info.table_get("table_2")
-        self.table_3 = self.bfrt_info.table_get("table_3")
-        self.table_4 = self.bfrt_info.table_get("table_4")
-        self.table_dict = {"table_1" : self.table_1, "table_2" : self.table_2, "table_3" : self.table_3, "table_4" : self.table_4}
+        self.table_dict = {}
+        table_names = ["table_1", "table_2"]
+        for sname in table_names:
+            table_hi = self.bfrt_info.table_get(f"{sname}_hi")
+            table_lo = self.bfrt_info.table_get(f"{sname}_lo")
+            self.table_dict.update({sname : table_hi})
+            self.table_dict.update({sname : table_lo})
+
+
 
         # Get swap tables
-        self.swap1 = self.bfrt_info.table_get("swap1")
-        self.swap2 = self.bfrt_info.table_get("swap2")
-        self.swap3 = self.bfrt_info.table_get("swap3")
-        self.swap4 = self.bfrt_info.table_get("swap4")
-        self.swap_dict = {"swap1" : self.swap1, "swap2" : self.swap2, "swap3" : self.swap3, "swap4" : self.swap4}
+        self.swap_dict = {}
+        swap_names = ["swap1", "swap2"]
+        for sname in swap_names:
+            swap_hi = self.bfrt_info.table_get(f"{sname}_hi")
+            swap_lo = self.bfrt_info.table_get(f"{sname}_lo")
+            self.swap_dict.update({sname : swap_hi})
+            self.swap_dict.update({sname : swap_lo})
 
         # Get FCM counters
         self.fcm_l1_d1 = self.bfrt_info.table_get("sketch_reg_l1_d1")

@@ -1,5 +1,5 @@
 {
-    "build_date": "Thu Feb 27 12:10:44 2025",
+    "build_date": "Thu Feb 27 15:19:47 2025",
     "compiler_version": "9.11.0",
     "constraint_reasons": [
         "Solitary (ALU): This field cannot be packed with anything else due to ALU operation.",
@@ -43,7 +43,7 @@
                         {
                             "location": {
                                 "detail": "xbar",
-                                "stage": 2,
+                                "stage": 1,
                                 "type": "mau",
                                 "table": "WaterfallIngress.swap1_hi"
                             }
@@ -51,7 +51,7 @@
                         {
                             "location": {
                                 "detail": "xbar",
-                                "stage": 1,
+                                "stage": 2,
                                 "type": "mau",
                                 "table": "WaterfallIngress.swap1_lo"
                             }
@@ -124,6 +124,32 @@
                                 "detail": "ibuf",
                                 "state": "start",
                                 "type": "parser"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "field_slice": {
+                        "field_name": "ig_md.idx2",
+                        "slice_info": {
+                            "lsb": 0,
+                            "msb": 7
+                        }
+                    },
+                    "phv_number": 129,
+                    "reads": [],
+                    "slice_info": {
+                        "lsb": 0,
+                        "msb": 7
+                    },
+                    "writes": [
+                        {
+                            "location": {
+                                "detail": "vliw",
+                                "stage": 3,
+                                "type": "mau",
+                                "action": "waterfall368",
+                                "table": "tbl_waterfall368"
                             }
                         }
                     ]
@@ -1661,6 +1687,22 @@
                         {
                             "location": {
                                 "detail": "xbar",
+                                "stage": 1,
+                                "type": "mau",
+                                "table": "WaterfallIngress.swap1_hi"
+                            }
+                        },
+                        {
+                            "location": {
+                                "detail": "xbar",
+                                "stage": 2,
+                                "type": "mau",
+                                "table": "WaterfallIngress.swap1_lo"
+                            }
+                        },
+                        {
+                            "location": {
+                                "detail": "xbar",
                                 "stage": 4,
                                 "type": "mau",
                                 "table": "WaterfallIngress.swap2_hi"
@@ -1700,7 +1742,7 @@
                         {
                             "location": {
                                 "detail": "vliw",
-                                "stage": 2,
+                                "stage": 1,
                                 "type": "mau",
                                 "action": "WaterfallIngress.lookup1_hi",
                                 "table": "WaterfallIngress.swap1_hi"
@@ -1727,6 +1769,22 @@
                     },
                     "phv_number": 68,
                     "reads": [
+                        {
+                            "location": {
+                                "detail": "xbar",
+                                "stage": 1,
+                                "type": "mau",
+                                "table": "WaterfallIngress.swap1_hi"
+                            }
+                        },
+                        {
+                            "location": {
+                                "detail": "xbar",
+                                "stage": 2,
+                                "type": "mau",
+                                "table": "WaterfallIngress.swap1_lo"
+                            }
+                        },
                         {
                             "location": {
                                 "detail": "xbar",
@@ -1769,7 +1827,7 @@
                         {
                             "location": {
                                 "detail": "vliw",
-                                "stage": 1,
+                                "stage": 2,
                                 "type": "mau",
                                 "action": "WaterfallIngress.lookup1_lo",
                                 "table": "WaterfallIngress.swap1_lo"
@@ -1849,8 +1907,8 @@
                                 "detail": "vliw",
                                 "stage": 0,
                                 "type": "mau",
-                                "action": "waterfall361",
-                                "table": "tbl_waterfall361"
+                                "action": "waterfall365",
+                                "table": "tbl_waterfall365"
                             }
                         }
                     ]
@@ -1873,7 +1931,7 @@
                         {
                             "location": {
                                 "detail": "vliw",
-                                "stage": 1,
+                                "stage": 2,
                                 "type": "mau",
                                 "action": "WaterfallIngress.do_swap1_lo",
                                 "table": "WaterfallIngress.swap1_lo"
@@ -1882,7 +1940,7 @@
                         {
                             "location": {
                                 "detail": "vliw",
-                                "stage": 1,
+                                "stage": 2,
                                 "type": "mau",
                                 "action": "WaterfallIngress.lookup1_lo",
                                 "table": "WaterfallIngress.swap1_lo"
@@ -1920,8 +1978,8 @@
                                 "detail": "vliw",
                                 "stage": 0,
                                 "type": "mau",
-                                "action": "waterfall361",
-                                "table": "tbl_waterfall361"
+                                "action": "waterfall365",
+                                "table": "tbl_waterfall365"
                             }
                         }
                     ]
@@ -1982,7 +2040,7 @@
                     "field_slice": {
                         "field_name": "ig_md.idx2",
                         "slice_info": {
-                            "lsb": 0,
+                            "lsb": 8,
                             "msb": 15
                         }
                     },
@@ -1990,7 +2048,7 @@
                     "reads": [],
                     "slice_info": {
                         "lsb": 16,
-                        "msb": 31
+                        "msb": 23
                     },
                     "writes": [
                         {
@@ -1998,8 +2056,8 @@
                                 "detail": "vliw",
                                 "stage": 3,
                                 "type": "mau",
-                                "action": "waterfall364",
-                                "table": "tbl_waterfall364"
+                                "action": "waterfall368",
+                                "table": "tbl_waterfall368"
                             }
                         }
                     ]
@@ -2022,7 +2080,7 @@
                         {
                             "location": {
                                 "detail": "vliw",
-                                "stage": 2,
+                                "stage": 1,
                                 "type": "mau",
                                 "action": "WaterfallIngress.do_swap1_hi",
                                 "table": "WaterfallIngress.swap1_hi"
@@ -2031,7 +2089,7 @@
                         {
                             "location": {
                                 "detail": "vliw",
-                                "stage": 2,
+                                "stage": 1,
                                 "type": "mau",
                                 "action": "WaterfallIngress.lookup1_hi",
                                 "table": "WaterfallIngress.swap1_hi"
@@ -4917,7 +4975,7 @@
                         {
                             "location": {
                                 "detail": "xbar",
-                                "stage": 2,
+                                "stage": 1,
                                 "type": "mau",
                                 "table": "WaterfallIngress.swap1_hi"
                             }
@@ -4925,7 +4983,7 @@
                         {
                             "location": {
                                 "detail": "xbar",
-                                "stage": 1,
+                                "stage": 2,
                                 "type": "mau",
                                 "table": "WaterfallIngress.swap1_lo"
                             }
@@ -9991,6 +10049,22 @@
                         {
                             "location": {
                                 "detail": "xbar",
+                                "stage": 1,
+                                "type": "mau",
+                                "table": "WaterfallIngress.swap1_hi"
+                            }
+                        },
+                        {
+                            "location": {
+                                "detail": "xbar",
+                                "stage": 2,
+                                "type": "mau",
+                                "table": "WaterfallIngress.swap1_lo"
+                            }
+                        },
+                        {
+                            "location": {
+                                "detail": "xbar",
                                 "stage": 4,
                                 "type": "mau",
                                 "table": "WaterfallIngress.swap2_hi"
@@ -10030,7 +10104,7 @@
                         {
                             "location": {
                                 "detail": "vliw",
-                                "stage": 2,
+                                "stage": 1,
                                 "type": "mau",
                                 "action": "WaterfallIngress.lookup1_hi",
                                 "table": "WaterfallIngress.swap1_hi"
@@ -10100,6 +10174,22 @@
                         {
                             "location": {
                                 "detail": "xbar",
+                                "stage": 1,
+                                "type": "mau",
+                                "table": "WaterfallIngress.swap1_hi"
+                            }
+                        },
+                        {
+                            "location": {
+                                "detail": "xbar",
+                                "stage": 2,
+                                "type": "mau",
+                                "table": "WaterfallIngress.swap1_lo"
+                            }
+                        },
+                        {
+                            "location": {
+                                "detail": "xbar",
                                 "stage": 4,
                                 "type": "mau",
                                 "table": "WaterfallIngress.swap2_hi"
@@ -10139,7 +10229,7 @@
                         {
                             "location": {
                                 "detail": "vliw",
-                                "stage": 1,
+                                "stage": 2,
                                 "type": "mau",
                                 "action": "WaterfallIngress.lookup1_lo",
                                 "table": "WaterfallIngress.swap1_lo"
@@ -10223,8 +10313,8 @@
                                 "detail": "vliw",
                                 "stage": 0,
                                 "type": "mau",
-                                "action": "waterfall361",
-                                "table": "tbl_waterfall361"
+                                "action": "waterfall365",
+                                "table": "tbl_waterfall365"
                             }
                         }
                     ]
@@ -10249,8 +10339,8 @@
                                 "detail": "vliw",
                                 "stage": 0,
                                 "type": "mau",
-                                "action": "waterfall361",
-                                "table": "tbl_waterfall361"
+                                "action": "waterfall365",
+                                "table": "tbl_waterfall365"
                             }
                         }
                     ]
@@ -10289,8 +10379,15 @@
                 {
                     "field_name": "ig_md.idx2",
                     "slice_info": {
-                        "lsb": 0,
+                        "lsb": 8,
                         "msb": 15
+                    }
+                },
+                {
+                    "field_name": "ig_md.idx2",
+                    "slice_info": {
+                        "lsb": 0,
+                        "msb": 7
                     }
                 }
             ],
@@ -10299,7 +10396,7 @@
                     "field_slice": {
                         "field_name": "ig_md.idx2",
                         "slice_info": {
-                            "lsb": 0,
+                            "lsb": 8,
                             "msb": 15
                         }
                     },
@@ -10307,7 +10404,7 @@
                     "reads": [],
                     "slice_info": {
                         "lsb": 16,
-                        "msb": 31
+                        "msb": 23
                     },
                     "writes": [
                         {
@@ -10315,8 +10412,34 @@
                                 "detail": "vliw",
                                 "stage": 3,
                                 "type": "mau",
-                                "action": "waterfall364",
-                                "table": "tbl_waterfall364"
+                                "action": "waterfall368",
+                                "table": "tbl_waterfall368"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "field_slice": {
+                        "field_name": "ig_md.idx2",
+                        "slice_info": {
+                            "lsb": 0,
+                            "msb": 7
+                        }
+                    },
+                    "phv_number": 129,
+                    "reads": [],
+                    "slice_info": {
+                        "lsb": 0,
+                        "msb": 7
+                    },
+                    "writes": [
+                        {
+                            "location": {
+                                "detail": "vliw",
+                                "stage": 3,
+                                "type": "mau",
+                                "action": "waterfall368",
+                                "table": "tbl_waterfall368"
                             }
                         }
                     ]
@@ -10379,7 +10502,7 @@
                         {
                             "location": {
                                 "detail": "vliw",
-                                "stage": 2,
+                                "stage": 1,
                                 "type": "mau",
                                 "action": "WaterfallIngress.do_swap1_hi",
                                 "table": "WaterfallIngress.swap1_hi"
@@ -10388,7 +10511,7 @@
                         {
                             "location": {
                                 "detail": "vliw",
-                                "stage": 2,
+                                "stage": 1,
                                 "type": "mau",
                                 "action": "WaterfallIngress.lookup1_hi",
                                 "table": "WaterfallIngress.swap1_hi"
@@ -10454,7 +10577,7 @@
                         {
                             "location": {
                                 "detail": "vliw",
-                                "stage": 1,
+                                "stage": 2,
                                 "type": "mau",
                                 "action": "WaterfallIngress.do_swap1_lo",
                                 "table": "WaterfallIngress.swap1_lo"
@@ -10463,7 +10586,7 @@
                         {
                             "location": {
                                 "detail": "vliw",
-                                "stage": 1,
+                                "stage": 2,
                                 "type": "mau",
                                 "action": "WaterfallIngress.lookup1_lo",
                                 "table": "WaterfallIngress.swap1_lo"
@@ -18632,7 +18755,7 @@
             "num_containers": 64
         }
     ],
-    "run_id": "6bba0bfb128c4f55",
+    "run_id": "2970b28da4ce4e3e",
     "schema_version": "3.0.0",
     "structures": [
         {

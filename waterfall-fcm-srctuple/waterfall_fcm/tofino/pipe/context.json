@@ -1,5 +1,5 @@
 {
-  "build_date": "Thu Feb 27 12:10:44 2025",
+  "build_date": "Thu Feb 27 15:19:47 2025",
   "schema_version": "1.12.4",
   "compiler_version": "9.11.0 (fdd358c)",
   "target": "tofino",
@@ -3826,20 +3826,6 @@
               "live_start": 1,
               "live_end": 2,
               "mutually_exclusive_with": []
-            },
-            {
-              "position_offset": 88,
-              "field_name": "ig_md.remain1_lo",
-              "field_msb": 15,
-              "field_lsb": 0,
-              "field_width": 2,
-              "phv_msb": 15,
-              "phv_lsb": 0,
-              "is_compiler_generated": false,
-              "is_pov": false,
-              "live_start": 2,
-              "live_end": 5,
-              "mutually_exclusive_with": []
             }
           ],
           "word_bit_width": 32
@@ -3860,6 +3846,27 @@
               "is_pov": false,
               "live_start": "parser",
               "live_end": "deparser",
+              "mutually_exclusive_with": []
+            }
+          ],
+          "word_bit_width": 32
+        },
+        {
+          "phv_number": 3,
+          "container_type": "normal",
+          "records": [
+            {
+              "position_offset": 86,
+              "field_name": "ig_md.remain1_hi",
+              "field_msb": 15,
+              "field_lsb": 0,
+              "field_width": 2,
+              "phv_msb": 15,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false,
+              "live_start": 2,
+              "live_end": 4,
               "mutually_exclusive_with": []
             }
           ],
@@ -5706,7 +5713,7 @@
               "phv_lsb": 0,
               "is_compiler_generated": false,
               "is_pov": false,
-              "live_start": 2,
+              "live_start": 3,
               "live_end": 5,
               "mutually_exclusive_with": []
             }
@@ -5748,7 +5755,7 @@
               "phv_lsb": 0,
               "is_compiler_generated": false,
               "is_pov": false,
-              "live_start": 3,
+              "live_start": 2,
               "live_end": 4,
               "mutually_exclusive_with": []
             }
@@ -7596,7 +7603,7 @@
               "phv_lsb": 0,
               "is_compiler_generated": false,
               "is_pov": false,
-              "live_start": 2,
+              "live_start": 3,
               "live_end": 5,
               "mutually_exclusive_with": []
             }
@@ -7632,9 +7639,9 @@
               "position_offset": 84,
               "field_name": "ig_md.idx2",
               "field_msb": 15,
-              "field_lsb": 0,
+              "field_lsb": 8,
               "field_width": 2,
-              "phv_msb": 31,
+              "phv_msb": 23,
               "phv_lsb": 16,
               "is_compiler_generated": false,
               "is_pov": false,
@@ -7652,7 +7659,7 @@
               "phv_lsb": 0,
               "is_compiler_generated": false,
               "is_pov": false,
-              "live_start": 3,
+              "live_start": 2,
               "live_end": 4,
               "mutually_exclusive_with": []
             }
@@ -7861,6 +7868,20 @@
               "is_pov": false,
               "live_start": "parser",
               "live_end": 6,
+              "mutually_exclusive_with": []
+            },
+            {
+              "position_offset": 84,
+              "field_name": "ig_md.idx2",
+              "field_msb": 7,
+              "field_lsb": 0,
+              "field_width": 2,
+              "phv_msb": 7,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false,
+              "live_start": 4,
+              "live_end": 5,
               "mutually_exclusive_with": []
             }
           ],
@@ -9458,7 +9479,7 @@
               "phv_lsb": 0,
               "is_compiler_generated": false,
               "is_pov": false,
-              "live_start": 2,
+              "live_start": 3,
               "live_end": 5,
               "mutually_exclusive_with": []
             }
@@ -9494,9 +9515,9 @@
               "position_offset": 84,
               "field_name": "ig_md.idx2",
               "field_msb": 15,
-              "field_lsb": 0,
+              "field_lsb": 8,
               "field_width": 2,
-              "phv_msb": 31,
+              "phv_msb": 23,
               "phv_lsb": 16,
               "is_compiler_generated": false,
               "is_pov": false,
@@ -9709,6 +9730,20 @@
               "is_pov": false,
               "live_start": "parser",
               "live_end": 6,
+              "mutually_exclusive_with": []
+            },
+            {
+              "position_offset": 84,
+              "field_name": "ig_md.idx2",
+              "field_msb": 7,
+              "field_lsb": 0,
+              "field_width": 2,
+              "phv_msb": 7,
+              "phv_lsb": 0,
+              "is_compiler_generated": false,
+              "is_pov": false,
+              "live_start": 4,
+              "live_end": 5,
               "mutually_exclusive_with": []
             }
           ],
@@ -23510,7 +23545,7 @@
     {
       "direction": "ingress",
       "handle": 16777218,
-      "name": "tbl_waterfall361",
+      "name": "tbl_waterfall365",
       "table_type": "match",
       "size": 65536,
       "p4_hidden": true,
@@ -23535,7 +23570,7 @@
             "result_physical_buses": [ 2 ],
             "action_format": [
               {
-                "action_name": "waterfall361",
+                "action_name": "waterfall365",
                 "action_handle": 536870916,
                 "table_name": "--END_OF_PIPELINE--",
                 "next_table": 0,
@@ -23552,7 +23587,7 @@
       },
       "actions": [
         {
-          "name": "waterfall361",
+          "name": "waterfall365",
           "handle": 536870916,
           "primitives": [
             {
@@ -23603,9 +23638,9 @@
     },
     {
       "direction": "ingress",
-      "attached_to": "tbl_waterfall361",
+      "attached_to": "tbl_waterfall365",
       "handle": 1879048192,
-      "name": "tbl_waterfall361-gateway",
+      "name": "tbl_waterfall365-gateway",
       "table_type": "condition",
       "stage_tables": [
         {
@@ -23860,7 +23895,7 @@
                 "vliw_instruction_full": 66,
                 "next_tables": [
                   {
-                    "next_table_name": "WaterfallIngress.swap1_lo",
+                    "next_table_name": "WaterfallIngress.swap1_hi",
                     "next_table_logical_id": 0,
                     "next_table_stage_no": 1
                   }
@@ -23885,7 +23920,7 @@
                 "vliw_instruction_full": 68,
                 "next_tables": [
                   {
-                    "next_table_name": "WaterfallIngress.swap1_lo",
+                    "next_table_name": "WaterfallIngress.swap1_hi",
                     "next_table_logical_id": 0,
                     "next_table_stage_no": 1
                   }
@@ -23902,7 +23937,7 @@
                 "vliw_instruction_full": 64,
                 "next_tables": [
                   {
-                    "next_table_name": "WaterfallIngress.swap1_lo",
+                    "next_table_name": "WaterfallIngress.swap1_hi",
                     "next_table_logical_id": 0,
                     "next_table_stage_no": 1
                   }
@@ -27093,9 +27128,9 @@
     {
       "direction": "ingress",
       "handle": 16777220,
-      "name": "WaterfallIngress.swap1_lo",
+      "name": "WaterfallIngress.swap1_hi",
       "table_type": "match",
-      "size": 4,
+      "size": 8,
       "action_data_table_refs": [],
       "selection_table_refs": [],
       "meter_table_refs": [],
@@ -27104,10 +27139,10 @@
         {
           "how_referenced": "indirect",
           "handle": 100663297,
-          "name": "WaterfallIngress.table_1_lo"
+          "name": "WaterfallIngress.table_1_hi"
         }
       ],
-      "default_action_handle": 536870922,
+      "default_action_handle": 536870919,
       "action_profile": "",
       "default_next_table_mask": 0,
       "default_next_table_default": 0,
@@ -27124,6 +27159,28 @@
           "is_valid": false,
           "instance_name": "ig_intr_md",
           "field_name": "resubmit_flag"
+        },
+        {
+          "name": "ig_md.found_hi",
+          "start_bit": 0,
+          "bit_width": 1,
+          "bit_width_full": 1,
+          "position": 1,
+          "match_type": "exact",
+          "is_valid": false,
+          "instance_name": "ig_md",
+          "field_name": "found_hi"
+        },
+        {
+          "name": "ig_md.found_lo",
+          "start_bit": 0,
+          "bit_width": 1,
+          "bit_width_full": 1,
+          "position": 2,
+          "match_type": "exact",
+          "is_valid": false,
+          "instance_name": "ig_md",
+          "field_name": "found_lo"
         }
       ],
       "ap_bind_indirect_res_to_match": [],
@@ -27144,22 +27201,58 @@
                     "bits_to_xor": [
                       {
                         "field_bit": 0,
+                        "field_name": "ig_md.found_hi",
+                        "global_name": "ig_md.found_hi",
+                        "hash_match_group": 0,
+                        "hash_match_group_bit": 3
+                      }
+                    ],
+                    "hash_bit": 0,
+                    "seed": 0
+                  },
+                  {
+                    "bits_to_xor": [
+                      {
+                        "field_bit": 0,
+                        "field_name": "ig_md.found_lo",
+                        "global_name": "ig_md.found_lo",
+                        "hash_match_group": 0,
+                        "hash_match_group_bit": 4
+                      }
+                    ],
+                    "hash_bit": 1,
+                    "seed": 0
+                  },
+                  {
+                    "bits_to_xor": [
+                      {
+                        "field_bit": 0,
                         "field_name": "ig_intr_md.resubmit_flag",
                         "global_name": "ig_intr_md.resubmit_flag",
                         "hash_match_group": 0,
                         "hash_match_group_bit": 15
                       }
                     ],
-                    "hash_bit": 0,
+                    "hash_bit": 2,
                     "seed": 0
                   }
                 ],
                 "hash_function_number": 0,
-                "ghost_bit_to_hash_bit": [ [ 0 ] ],
+                "ghost_bit_to_hash_bit": [ [ 2 ], [ 0 ], [ 1 ] ],
                 "ghost_bit_info": [
                   {
                     "field_name": "ig_intr_md.resubmit_flag",
                     "global_name": "ig_intr_md.resubmit_flag",
+                    "bit_in_match_spec": 0
+                  },
+                  {
+                    "field_name": "ig_md.found_hi",
+                    "global_name": "ig_md.found_hi",
+                    "bit_in_match_spec": 0
+                  },
+                  {
+                    "field_name": "ig_md.found_lo",
+                    "global_name": "ig_md.found_lo",
                     "bit_in_match_spec": 0
                   }
                 ]
@@ -27167,8 +27260,8 @@
             ],
             "action_format": [
               {
-                "action_name": "WaterfallIngress.do_swap1_lo",
-                "action_handle": 536870920,
+                "action_name": "WaterfallIngress.do_swap1_hi",
+                "action_handle": 536870917,
                 "table_name": "--END_OF_PIPELINE--",
                 "next_table": 0,
                 "next_table_full": 32,
@@ -27176,7 +27269,7 @@
                 "vliw_instruction_full": 65,
                 "next_tables": [
                   {
-                    "next_table_name": "WaterfallIngress.swap1_hi",
+                    "next_table_name": "WaterfallIngress.swap1_lo",
                     "next_table_logical_id": 0,
                     "next_table_stage_no": 2
                   }
@@ -27184,8 +27277,8 @@
                 "immediate_fields": []
               },
               {
-                "action_name": "WaterfallIngress.lookup1_lo",
-                "action_handle": 536870921,
+                "action_name": "WaterfallIngress.lookup1_hi",
+                "action_handle": 536870918,
                 "table_name": "--END_OF_PIPELINE--",
                 "next_table": 0,
                 "next_table_full": 32,
@@ -27193,7 +27286,7 @@
                 "vliw_instruction_full": 66,
                 "next_tables": [
                   {
-                    "next_table_name": "WaterfallIngress.swap1_hi",
+                    "next_table_name": "WaterfallIngress.swap1_lo",
                     "next_table_logical_id": 0,
                     "next_table_stage_no": 2
                   }
@@ -27202,7 +27295,7 @@
               },
               {
                 "action_name": "WaterfallIngress.no_action",
-                "action_handle": 536870922,
+                "action_handle": 536870919,
                 "table_name": "--END_OF_PIPELINE--",
                 "next_table": 0,
                 "next_table_full": 32,
@@ -27210,7 +27303,7 @@
                 "vliw_instruction_full": 64,
                 "next_tables": [
                   {
-                    "next_table_name": "WaterfallIngress.swap1_hi",
+                    "next_table_name": "WaterfallIngress.swap1_lo",
                     "next_table_logical_id": 0,
                     "next_table_stage_no": 2
                   }
@@ -27315,781 +27408,6 @@
             "ways": [
               {
                 "stage_number": 1,
-                "way_number": 0,
-                "stage_table_type": "hash_way",
-                "size": 2048,
-                "pack_format": [
-                  {
-                    "memory_word_width": 128,
-                    "table_word_width": 128,
-                    "entries_per_table_word": 2,
-                    "number_memory_units_per_table_word": 1,
-                    "entries": [
-                      {
-                        "entry_number": 1,
-                        "fields": [
-                          {
-                            "start_bit": 0,
-                            "field_width": 2,
-                            "lsb_mem_word_idx": 0,
-                            "msb_mem_word_idx": 0,
-                            "source": "instr",
-                            "enable_pfe": false,
-                            "lsb_mem_word_offset": 2,
-                            "field_name": "action",
-                            "global_name": "",
-                            "match_mode": "unused"
-                          },
-                          {
-                            "start_bit": 0,
-                            "field_width": 4,
-                            "lsb_mem_word_idx": 0,
-                            "msb_mem_word_idx": 0,
-                            "source": "version",
-                            "enable_pfe": false,
-                            "lsb_mem_word_offset": 116,
-                            "field_name": "version",
-                            "global_name": "",
-                            "match_mode": "s1q0"
-                          },
-                          {
-                            "start_bit": 4,
-                            "field_width": 16,
-                            "lsb_mem_word_idx": 0,
-                            "msb_mem_word_idx": 0,
-                            "source": "stful_ptr",
-                            "enable_pfe": false,
-                            "lsb_mem_word_offset": 24,
-                            "field_name": "meter_addr",
-                            "global_name": "",
-                            "match_mode": "unused"
-                          },
-                          {
-                            "start_bit": 23,
-                            "field_width": 1,
-                            "lsb_mem_word_idx": 0,
-                            "msb_mem_word_idx": 0,
-                            "source": "stful_ptr",
-                            "enable_pfe": false,
-                            "lsb_mem_word_offset": 40,
-                            "field_name": "meter_pfe",
-                            "global_name": "",
-                            "match_mode": "unused"
-                          },
-                          {
-                            "start_bit": 24,
-                            "field_width": 3,
-                            "lsb_mem_word_idx": 0,
-                            "msb_mem_word_idx": 0,
-                            "source": "stful_ptr",
-                            "enable_pfe": false,
-                            "lsb_mem_word_offset": 41,
-                            "field_name": "meter_type",
-                            "global_name": "",
-                            "match_mode": "unused"
-                          }
-                        ]
-                      },
-                      {
-                        "entry_number": 0,
-                        "fields": [
-                          {
-                            "start_bit": 0,
-                            "field_width": 2,
-                            "lsb_mem_word_idx": 0,
-                            "msb_mem_word_idx": 0,
-                            "source": "instr",
-                            "enable_pfe": false,
-                            "lsb_mem_word_offset": 0,
-                            "field_name": "action",
-                            "global_name": "",
-                            "match_mode": "unused"
-                          },
-                          {
-                            "start_bit": 0,
-                            "field_width": 4,
-                            "lsb_mem_word_idx": 0,
-                            "msb_mem_word_idx": 0,
-                            "source": "version",
-                            "enable_pfe": false,
-                            "lsb_mem_word_offset": 112,
-                            "field_name": "version",
-                            "global_name": "",
-                            "match_mode": "s1q0"
-                          },
-                          {
-                            "start_bit": 4,
-                            "field_width": 16,
-                            "lsb_mem_word_idx": 0,
-                            "msb_mem_word_idx": 0,
-                            "source": "stful_ptr",
-                            "enable_pfe": false,
-                            "lsb_mem_word_offset": 4,
-                            "field_name": "meter_addr",
-                            "global_name": "",
-                            "match_mode": "unused"
-                          },
-                          {
-                            "start_bit": 23,
-                            "field_width": 1,
-                            "lsb_mem_word_idx": 0,
-                            "msb_mem_word_idx": 0,
-                            "source": "stful_ptr",
-                            "enable_pfe": false,
-                            "lsb_mem_word_offset": 20,
-                            "field_name": "meter_pfe",
-                            "global_name": "",
-                            "match_mode": "unused"
-                          },
-                          {
-                            "start_bit": 24,
-                            "field_width": 3,
-                            "lsb_mem_word_idx": 0,
-                            "msb_mem_word_idx": 0,
-                            "source": "stful_ptr",
-                            "enable_pfe": false,
-                            "lsb_mem_word_offset": 21,
-                            "field_name": "meter_type",
-                            "global_name": "",
-                            "match_mode": "unused"
-                          },
-                          {
-                            "start_bit": 0,
-                            "field_width": 68,
-                            "lsb_mem_word_idx": 0,
-                            "msb_mem_word_idx": 0,
-                            "source": "zero",
-                            "enable_pfe": false,
-                            "lsb_mem_word_offset": 44,
-                            "field_name": "--padding_44_111--",
-                            "global_name": "",
-                            "match_mode": "unused"
-                          },
-                          {
-                            "start_bit": 0,
-                            "field_width": 8,
-                            "lsb_mem_word_idx": 0,
-                            "msb_mem_word_idx": 0,
-                            "source": "zero",
-                            "enable_pfe": false,
-                            "lsb_mem_word_offset": 120,
-                            "field_name": "--padding_120_127--",
-                            "global_name": "",
-                            "match_mode": "unused"
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ],
-                "memory_resource_allocation": {
-                  "hash_function_id": 0,
-                  "hash_entry_bit_lo": 0,
-                  "hash_entry_bit_hi": 9,
-                  "number_entry_bits": 10,
-                  "number_subword_bits": 0,
-                  "hash_select_bit_hi": 40,
-                  "hash_select_bit_lo": 40,
-                  "number_select_bits": 0,
-                  "memory_type": "sram",
-                  "memory_units_and_vpns": [ { "memory_units": [ 86 ], "vpns": [ 0, 1 ] } ]
-                }
-              }
-            ]
-          }
-        ],
-        "match_type": "exact",
-        "uses_dynamic_key_masks": false
-      },
-      "actions": [
-        {
-          "name": "WaterfallIngress.do_swap1_lo",
-          "handle": 536870920,
-          "primitives": [
-            {
-              "name": "ExecuteStatefulAluFromHashPrimitive",
-              "dst": { "type": "stateful", "name": "WaterfallIngress.table_1_lo" },
-              "idx": {
-                "type": "hash",
-                "name": "hash_WaterfallIngress.table_1_lo",
-                "algorithm": "identity"
-              },
-              "hash_inputs": [ "ig_md.idx1" ],
-              "stateful_alu_details": {
-                "name": "table_1_lo_swap_0",
-                "single_bit_mode": false,
-                "update_lo_1_value": {
-                  "operand_1_type": "phv",
-                  "operand_1_value": "ingress::ig_md.resubmit_md.remain[15:0]"
-                },
-                "output_value": { "operand_1_type": "memory", "operand_1_value": "mem_lo" },
-                "output_dst": "ig_md.remain1_lo"
-              }
-            }
-          ],
-          "direct_resources": [],
-          "indirect_resources": [],
-          "allowed_as_hit_action": true,
-          "allowed_as_default_action": true,
-          "is_compiler_added_action": false,
-          "constant_default_action": false,
-          "p4_parameters": [],
-          "override_meter_addr": false,
-          "override_meter_addr_pfe": false,
-          "override_meter_full_addr": 0,
-          "override_stat_addr": false,
-          "override_stat_addr_pfe": false,
-          "override_stat_full_addr": 0,
-          "override_stateful_addr": true,
-          "override_stateful_addr_pfe": true,
-          "override_stateful_full_addr": 25165824,
-          "is_action_meter_color_aware": false
-        },
-        {
-          "name": "WaterfallIngress.lookup1_lo",
-          "handle": 536870921,
-          "primitives": [
-            {
-              "name": "ExecuteStatefulAluFromHashPrimitive",
-              "dst": { "type": "stateful", "name": "WaterfallIngress.table_1_lo" },
-              "idx": {
-                "type": "hash",
-                "name": "hash_WaterfallIngress.table_1_lo",
-                "algorithm": "identity"
-              },
-              "hash_inputs": [ "ig_md.idx1" ],
-              "stateful_alu_details": {
-                "name": "table_1_lo_lookup_0",
-                "single_bit_mode": false,
-                "output_dst": "ig_md.found_lo"
-              }
-            },
-            {
-              "name": "ModifyFieldPrimitive",
-              "operation": "set",
-              "dst": { "type": "phv", "name": "ig_md.remain1_lo" },
-              "dst_mask": { "type": "immediate", "name": "65535" },
-              "src1": { "type": "phv", "name": "hdr.ipv4.src_addr" }
-            }
-          ],
-          "direct_resources": [],
-          "indirect_resources": [],
-          "allowed_as_hit_action": true,
-          "allowed_as_default_action": true,
-          "is_compiler_added_action": false,
-          "constant_default_action": false,
-          "p4_parameters": [],
-          "override_meter_addr": false,
-          "override_meter_addr_pfe": false,
-          "override_meter_full_addr": 0,
-          "override_stat_addr": false,
-          "override_stat_addr_pfe": false,
-          "override_stat_full_addr": 0,
-          "override_stateful_addr": true,
-          "override_stateful_addr_pfe": true,
-          "override_stateful_full_addr": 58720256,
-          "is_action_meter_color_aware": false
-        },
-        {
-          "name": "WaterfallIngress.no_action",
-          "handle": 536870922,
-          "primitives": [],
-          "direct_resources": [],
-          "indirect_resources": [],
-          "allowed_as_hit_action": true,
-          "allowed_as_default_action": true,
-          "is_compiler_added_action": false,
-          "constant_default_action": false,
-          "p4_parameters": [],
-          "override_meter_addr": false,
-          "override_meter_addr_pfe": false,
-          "override_meter_full_addr": 0,
-          "override_stat_addr": false,
-          "override_stat_addr_pfe": false,
-          "override_stat_full_addr": 0,
-          "override_stateful_addr": false,
-          "override_stateful_addr_pfe": false,
-          "override_stateful_full_addr": 0,
-          "is_action_meter_color_aware": false
-        }
-      ]
-    },
-    {
-      "direction": "ingress",
-      "handle": 100663297,
-      "name": "WaterfallIngress.table_1_lo",
-      "table_type": "stateful",
-      "size": 65535,
-      "initial_value_lo": 0,
-      "initial_value_hi": 0,
-      "alu_width": 16,
-      "dual_width_mode": false,
-      "action_to_stateful_instruction_slot": [
-        { "action_handle": 536870920, "instruction_slot": 0 },
-        { "action_handle": 536870921, "instruction_slot": 1 }
-      ],
-      "register_params": [],
-      "stage_tables": [
-        {
-          "stage_number": 1,
-          "size": 65536,
-          "stage_table_type": "stateful",
-          "logical_table_id": 0,
-          "pack_format": [
-            {
-              "table_word_width": 128,
-              "memory_word_width": 128,
-              "entries_per_table_word": 8,
-              "number_memory_units_per_table_word": 1
-            }
-          ],
-          "memory_resource_allocation": {
-            "memory_type": "sram",
-            "memory_units_and_vpns": [
-              { "memory_units": [ 18 ], "vpns": [ 0 ] },
-              { "memory_units": [ 19 ], "vpns": [ 1 ] },
-              { "memory_units": [ 20 ], "vpns": [ 2 ] },
-              { "memory_units": [ 21 ], "vpns": [ 3 ] },
-              { "memory_units": [ 22 ], "vpns": [ 4 ] },
-              { "memory_units": [ 23 ], "vpns": [ 5 ] },
-              { "memory_units": [ 6 ], "vpns": [ 6 ] },
-              { "memory_units": [ 7 ], "vpns": [ 7 ] }
-            ],
-            "spare_bank_memory_unit": 8
-          },
-          "meter_alu_index": 0
-        }
-      ],
-      "how_referenced": "indirect"
-    },
-    {
-      "direction": "egress",
-      "handle": 16777231,
-      "name": "tbl_fcmsketch_fcm_action_l1_d2",
-      "table_type": "match",
-      "size": 524288,
-      "p4_hidden": true,
-      "match_attributes": {
-        "stage_tables": [
-          {
-            "stage_number": 1,
-            "size": 1,
-            "stage_table_type": "match_with_no_key",
-            "logical_table_id": 1,
-            "has_attached_gateway": true,
-            "memory_resource_allocation": null,
-            "default_next_table": 255,
-            "pack_format": [
-              {
-                "table_word_width": 0,
-                "memory_word_width": 0,
-                "entries_per_table_word": 0,
-                "number_memory_units_per_table_word": 0
-              }
-            ],
-            "result_physical_buses": [ 0 ],
-            "action_format": [
-              {
-                "action_name": "FcmEgress.fcmsketch.fcm_action_l1_d2",
-                "action_handle": 536870936,
-                "table_name": "--END_OF_PIPELINE--",
-                "next_table": 0,
-                "next_table_full": 255,
-                "vliw_instruction": 0,
-                "vliw_instruction_full": 65,
-                "next_tables": [],
-                "immediate_fields": []
-              }
-            ]
-          }
-        ],
-        "match_type": "match_with_no_key"
-      },
-      "actions": [
-        {
-          "name": "FcmEgress.fcmsketch.fcm_action_l1_d2",
-          "handle": 536870936,
-          "primitives": [
-            {
-              "name": "ExecuteStatefulAluFromHashPrimitive",
-              "dst": {
-                "type": "stateful",
-                "name": "FcmEgress.fcmsketch.sketch_reg_l1_d2"
-              },
-              "idx": {
-                "type": "hash",
-                "name": "hash_FcmEgress.fcmsketch.sketch_reg_l1_d2",
-                "algorithm": "identity"
-              },
-              "hash_inputs": [ "eg_md.hash_meta_d2$180" ],
-              "stateful_alu_details": {
-                "name": "fcmsketch_increment_l1_d2",
-                "single_bit_mode": false,
-                "output_value": { "operand_1_type": "memory", "operand_1_value": "memory_lo" },
-                "output_dst": "eg_md.result_d2"
-              }
-            }
-          ],
-          "direct_resources": [],
-          "indirect_resources": [],
-          "allowed_as_hit_action": true,
-          "allowed_as_default_action": true,
-          "is_compiler_added_action": false,
-          "constant_default_action": true,
-          "disallowed_as_default_action_reason": "",
-          "p4_parameters": [],
-          "override_meter_addr": false,
-          "override_meter_addr_pfe": false,
-          "override_meter_full_addr": 0,
-          "override_stat_addr": false,
-          "override_stat_addr_pfe": false,
-          "override_stat_full_addr": 0,
-          "override_stateful_addr": true,
-          "override_stateful_addr_pfe": true,
-          "override_stateful_full_addr": 25165824,
-          "is_action_meter_color_aware": false
-        }
-      ],
-      "default_action_handle": 536870936,
-      "action_profile": "",
-      "default_next_table_mask": 0,
-      "default_next_table_default": 0,
-      "is_resource_controllable": true,
-      "uses_range": false,
-      "match_key_fields": [],
-      "ap_bind_indirect_res_to_match": [],
-      "static_entries": [],
-      "action_data_table_refs": [],
-      "selection_table_refs": [],
-      "meter_table_refs": [],
-      "statistics_table_refs": [],
-      "stateful_table_refs": [
-        {
-          "how_referenced": "indirect",
-          "handle": 100663302,
-          "name": "FcmEgress.fcmsketch.sketch_reg_l1_d2"
-        }
-      ]
-    },
-    {
-      "direction": "egress",
-      "attached_to": "tbl_fcmsketch_fcm_action_l1_d2",
-      "handle": 1879048195,
-      "name": "tbl_fcmsketch_fcm_action_l1_d2-gateway",
-      "table_type": "condition",
-      "stage_tables": [
-        {
-          "next_tables": { "false": "33", "true": "33" },
-          "next_table_names": {
-            "false": "tbl_fcmsketch_fcm_action_l1_d1",
-            "true": "tbl_fcmsketch_fcm_action_l1_d1"
-          },
-          "memory_resource_allocation": { "memory_unit": 0, "memory_type": "gateway", "payload_buses": [] },
-          "pack_format": [],
-          "logical_table_id": 1,
-          "stage_number": 1,
-          "stage_table_type": "gateway",
-          "size": 0
-        }
-      ],
-      "condition_fields": [],
-      "condition": "true(always hit)",
-      "size": 0
-    },
-    {
-      "direction": "egress",
-      "handle": 100663302,
-      "name": "FcmEgress.fcmsketch.sketch_reg_l1_d2",
-      "table_type": "stateful",
-      "size": 524288,
-      "initial_value_lo": 0,
-      "initial_value_hi": 0,
-      "alu_width": 8,
-      "dual_width_mode": false,
-      "action_to_stateful_instruction_slot": [ { "action_handle": 536870936, "instruction_slot": 0 } ],
-      "register_params": [],
-      "stage_tables": [
-        {
-          "stage_number": 1,
-          "size": 524288,
-          "stage_table_type": "stateful",
-          "logical_table_id": 1,
-          "pack_format": [
-            {
-              "table_word_width": 128,
-              "memory_word_width": 128,
-              "entries_per_table_word": 16,
-              "number_memory_units_per_table_word": 1
-            }
-          ],
-          "memory_resource_allocation": {
-            "memory_type": "sram",
-            "memory_units_and_vpns": [
-              { "memory_units": [ 90 ], "vpns": [ 0 ] },
-              { "memory_units": [ 91 ], "vpns": [ 1 ] },
-              { "memory_units": [ 92 ], "vpns": [ 2 ] },
-              { "memory_units": [ 93 ], "vpns": [ 3 ] },
-              { "memory_units": [ 94 ], "vpns": [ 4 ] },
-              { "memory_units": [ 95 ], "vpns": [ 5 ] },
-              { "memory_units": [ 78 ], "vpns": [ 6 ] },
-              { "memory_units": [ 79 ], "vpns": [ 7 ] },
-              { "memory_units": [ 80 ], "vpns": [ 8 ] },
-              { "memory_units": [ 81 ], "vpns": [ 9 ] },
-              { "memory_units": [ 82 ], "vpns": [ 10 ] },
-              { "memory_units": [ 83 ], "vpns": [ 11 ] },
-              { "memory_units": [ 66 ], "vpns": [ 12 ] },
-              { "memory_units": [ 67 ], "vpns": [ 13 ] },
-              { "memory_units": [ 68 ], "vpns": [ 14 ] },
-              { "memory_units": [ 69 ], "vpns": [ 15 ] },
-              { "memory_units": [ 70 ], "vpns": [ 16 ] },
-              { "memory_units": [ 71 ], "vpns": [ 17 ] },
-              { "memory_units": [ 54 ], "vpns": [ 18 ] },
-              { "memory_units": [ 55 ], "vpns": [ 19 ] },
-              { "memory_units": [ 56 ], "vpns": [ 20 ] },
-              { "memory_units": [ 57 ], "vpns": [ 21 ] },
-              { "memory_units": [ 58 ], "vpns": [ 22 ] },
-              { "memory_units": [ 59 ], "vpns": [ 23 ] },
-              { "memory_units": [ 42 ], "vpns": [ 24 ] },
-              { "memory_units": [ 43 ], "vpns": [ 25 ] },
-              { "memory_units": [ 44 ], "vpns": [ 26 ] },
-              { "memory_units": [ 45 ], "vpns": [ 27 ] },
-              { "memory_units": [ 46 ], "vpns": [ 28 ] },
-              { "memory_units": [ 47 ], "vpns": [ 29 ] },
-              { "memory_units": [ 30 ], "vpns": [ 30 ] },
-              { "memory_units": [ 31 ], "vpns": [ 31 ] }
-            ],
-            "spare_bank_memory_unit": 32
-          },
-          "meter_alu_index": 3
-        }
-      ],
-      "how_referenced": "indirect"
-    },
-    {
-      "direction": "ingress",
-      "handle": 16777221,
-      "name": "WaterfallIngress.swap1_hi",
-      "table_type": "match",
-      "size": 4,
-      "action_data_table_refs": [],
-      "selection_table_refs": [],
-      "meter_table_refs": [],
-      "statistics_table_refs": [],
-      "stateful_table_refs": [
-        {
-          "how_referenced": "indirect",
-          "handle": 100663298,
-          "name": "WaterfallIngress.table_1_hi"
-        }
-      ],
-      "default_action_handle": 536870919,
-      "action_profile": "",
-      "default_next_table_mask": 0,
-      "default_next_table_default": 0,
-      "is_resource_controllable": true,
-      "uses_range": false,
-      "match_key_fields": [
-        {
-          "name": "ig_intr_md.resubmit_flag",
-          "start_bit": 0,
-          "bit_width": 1,
-          "bit_width_full": 1,
-          "position": 0,
-          "match_type": "exact",
-          "is_valid": false,
-          "instance_name": "ig_intr_md",
-          "field_name": "resubmit_flag"
-        }
-      ],
-      "ap_bind_indirect_res_to_match": [],
-      "static_entries": [],
-      "match_attributes": {
-        "stage_tables": [
-          {
-            "stage_number": 2,
-            "size": 2048,
-            "stage_table_type": "hash_match",
-            "logical_table_id": 0,
-            "has_attached_gateway": false,
-            "default_next_table": 255,
-            "hash_functions": [
-              {
-                "hash_bits": [
-                  {
-                    "bits_to_xor": [
-                      {
-                        "field_bit": 0,
-                        "field_name": "ig_intr_md.resubmit_flag",
-                        "global_name": "ig_intr_md.resubmit_flag",
-                        "hash_match_group": 0,
-                        "hash_match_group_bit": 15
-                      }
-                    ],
-                    "hash_bit": 0,
-                    "seed": 0
-                  }
-                ],
-                "hash_function_number": 0,
-                "ghost_bit_to_hash_bit": [ [ 0 ] ],
-                "ghost_bit_info": [
-                  {
-                    "field_name": "ig_intr_md.resubmit_flag",
-                    "global_name": "ig_intr_md.resubmit_flag",
-                    "bit_in_match_spec": 0
-                  }
-                ]
-              }
-            ],
-            "action_format": [
-              {
-                "action_name": "WaterfallIngress.do_swap1_hi",
-                "action_handle": 536870917,
-                "table_name": "--END_OF_PIPELINE--",
-                "next_table": 0,
-                "next_table_full": 48,
-                "vliw_instruction": 0,
-                "vliw_instruction_full": 65,
-                "next_tables": [
-                  {
-                    "next_table_name": "tbl_waterfall364",
-                    "next_table_logical_id": 0,
-                    "next_table_stage_no": 3
-                  }
-                ],
-                "immediate_fields": []
-              },
-              {
-                "action_name": "WaterfallIngress.lookup1_hi",
-                "action_handle": 536870918,
-                "table_name": "--END_OF_PIPELINE--",
-                "next_table": 0,
-                "next_table_full": 48,
-                "vliw_instruction": 1,
-                "vliw_instruction_full": 66,
-                "next_tables": [
-                  {
-                    "next_table_name": "tbl_waterfall364",
-                    "next_table_logical_id": 0,
-                    "next_table_stage_no": 3
-                  }
-                ],
-                "immediate_fields": []
-              },
-              {
-                "action_name": "WaterfallIngress.no_action",
-                "action_handle": 536870919,
-                "table_name": "--END_OF_PIPELINE--",
-                "next_table": 0,
-                "next_table_full": 48,
-                "vliw_instruction": 2,
-                "vliw_instruction_full": 64,
-                "next_tables": [
-                  {
-                    "next_table_name": "tbl_waterfall364",
-                    "next_table_logical_id": 0,
-                    "next_table_stage_no": 3
-                  }
-                ],
-                "immediate_fields": []
-              }
-            ],
-            "result_physical_buses": [ 14 ],
-            "pack_format": [
-              {
-                "memory_word_width": 128,
-                "table_word_width": 128,
-                "entries_per_table_word": 2,
-                "number_memory_units_per_table_word": 1
-              }
-            ],
-            "memory_resource_allocation": null,
-            "stash_allocation": {
-              "pack_format": [
-                {
-                  "memory_word_width": 128,
-                  "table_word_width": 128,
-                  "entries_per_table_word": 1,
-                  "number_memory_units_per_table_word": 1,
-                  "entries": [
-                    {
-                      "entry_number": 0,
-                      "fields": [
-                        {
-                          "start_bit": 4,
-                          "field_width": 16,
-                          "lsb_mem_word_idx": 0,
-                          "msb_mem_word_idx": 0,
-                          "source": "stful_ptr",
-                          "enable_pfe": false,
-                          "lsb_mem_word_offset": 4,
-                          "field_name": "meter_addr",
-                          "global_name": "",
-                          "match_mode": "unused"
-                        },
-                        {
-                          "start_bit": 23,
-                          "field_width": 1,
-                          "lsb_mem_word_idx": 0,
-                          "msb_mem_word_idx": 0,
-                          "source": "stful_ptr",
-                          "enable_pfe": false,
-                          "lsb_mem_word_offset": 20,
-                          "field_name": "meter_pfe",
-                          "global_name": "",
-                          "match_mode": "unused"
-                        },
-                        {
-                          "start_bit": 24,
-                          "field_width": 3,
-                          "lsb_mem_word_idx": 0,
-                          "msb_mem_word_idx": 0,
-                          "source": "stful_ptr",
-                          "enable_pfe": false,
-                          "lsb_mem_word_offset": 21,
-                          "field_name": "meter_type",
-                          "global_name": "",
-                          "match_mode": "unused"
-                        },
-                        {
-                          "start_bit": 0,
-                          "field_width": 2,
-                          "lsb_mem_word_idx": 0,
-                          "msb_mem_word_idx": 0,
-                          "source": "instr",
-                          "enable_pfe": false,
-                          "lsb_mem_word_offset": 0,
-                          "field_name": "action",
-                          "global_name": "",
-                          "match_mode": "unused"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ],
-              "num_stash_entries": 2,
-              "stash_entries": [
-                [
-                  {
-                    "stash_entry_id": 28,
-                    "stash_match_data_select": 0,
-                    "stash_hashbank_select": 0,
-                    "hash_function_id": 0
-                  }
-                ],
-                [
-                  {
-                    "stash_entry_id": 29,
-                    "stash_match_data_select": 0,
-                    "stash_hashbank_select": 0,
-                    "hash_function_id": 0
-                  }
-                ]
-              ]
-            },
-            "ways": [
-              {
-                "stage_number": 2,
                 "way_number": 0,
                 "stage_table_type": "hash_way",
                 "size": 2048,
@@ -28391,7 +27709,7 @@
     },
     {
       "direction": "ingress",
-      "handle": 100663298,
+      "handle": 100663297,
       "name": "WaterfallIngress.table_1_hi",
       "table_type": "stateful",
       "size": 65535,
@@ -28402,6 +27720,839 @@
       "action_to_stateful_instruction_slot": [
         { "action_handle": 536870917, "instruction_slot": 0 },
         { "action_handle": 536870918, "instruction_slot": 1 }
+      ],
+      "register_params": [],
+      "stage_tables": [
+        {
+          "stage_number": 1,
+          "size": 65536,
+          "stage_table_type": "stateful",
+          "logical_table_id": 0,
+          "pack_format": [
+            {
+              "table_word_width": 128,
+              "memory_word_width": 128,
+              "entries_per_table_word": 8,
+              "number_memory_units_per_table_word": 1
+            }
+          ],
+          "memory_resource_allocation": {
+            "memory_type": "sram",
+            "memory_units_and_vpns": [
+              { "memory_units": [ 18 ], "vpns": [ 0 ] },
+              { "memory_units": [ 19 ], "vpns": [ 1 ] },
+              { "memory_units": [ 20 ], "vpns": [ 2 ] },
+              { "memory_units": [ 21 ], "vpns": [ 3 ] },
+              { "memory_units": [ 22 ], "vpns": [ 4 ] },
+              { "memory_units": [ 23 ], "vpns": [ 5 ] },
+              { "memory_units": [ 6 ], "vpns": [ 6 ] },
+              { "memory_units": [ 7 ], "vpns": [ 7 ] }
+            ],
+            "spare_bank_memory_unit": 8
+          },
+          "meter_alu_index": 0
+        }
+      ],
+      "how_referenced": "indirect"
+    },
+    {
+      "direction": "egress",
+      "handle": 16777231,
+      "name": "tbl_fcmsketch_fcm_action_l1_d2",
+      "table_type": "match",
+      "size": 524288,
+      "p4_hidden": true,
+      "match_attributes": {
+        "stage_tables": [
+          {
+            "stage_number": 1,
+            "size": 1,
+            "stage_table_type": "match_with_no_key",
+            "logical_table_id": 1,
+            "has_attached_gateway": true,
+            "memory_resource_allocation": null,
+            "default_next_table": 255,
+            "pack_format": [
+              {
+                "table_word_width": 0,
+                "memory_word_width": 0,
+                "entries_per_table_word": 0,
+                "number_memory_units_per_table_word": 0
+              }
+            ],
+            "result_physical_buses": [ 0 ],
+            "action_format": [
+              {
+                "action_name": "FcmEgress.fcmsketch.fcm_action_l1_d2",
+                "action_handle": 536870936,
+                "table_name": "--END_OF_PIPELINE--",
+                "next_table": 0,
+                "next_table_full": 255,
+                "vliw_instruction": 0,
+                "vliw_instruction_full": 65,
+                "next_tables": [],
+                "immediate_fields": []
+              }
+            ]
+          }
+        ],
+        "match_type": "match_with_no_key"
+      },
+      "actions": [
+        {
+          "name": "FcmEgress.fcmsketch.fcm_action_l1_d2",
+          "handle": 536870936,
+          "primitives": [
+            {
+              "name": "ExecuteStatefulAluFromHashPrimitive",
+              "dst": {
+                "type": "stateful",
+                "name": "FcmEgress.fcmsketch.sketch_reg_l1_d2"
+              },
+              "idx": {
+                "type": "hash",
+                "name": "hash_FcmEgress.fcmsketch.sketch_reg_l1_d2",
+                "algorithm": "identity"
+              },
+              "hash_inputs": [ "eg_md.hash_meta_d2$180" ],
+              "stateful_alu_details": {
+                "name": "fcmsketch_increment_l1_d2",
+                "single_bit_mode": false,
+                "output_value": { "operand_1_type": "memory", "operand_1_value": "memory_lo" },
+                "output_dst": "eg_md.result_d2"
+              }
+            }
+          ],
+          "direct_resources": [],
+          "indirect_resources": [],
+          "allowed_as_hit_action": true,
+          "allowed_as_default_action": true,
+          "is_compiler_added_action": false,
+          "constant_default_action": true,
+          "disallowed_as_default_action_reason": "",
+          "p4_parameters": [],
+          "override_meter_addr": false,
+          "override_meter_addr_pfe": false,
+          "override_meter_full_addr": 0,
+          "override_stat_addr": false,
+          "override_stat_addr_pfe": false,
+          "override_stat_full_addr": 0,
+          "override_stateful_addr": true,
+          "override_stateful_addr_pfe": true,
+          "override_stateful_full_addr": 25165824,
+          "is_action_meter_color_aware": false
+        }
+      ],
+      "default_action_handle": 536870936,
+      "action_profile": "",
+      "default_next_table_mask": 0,
+      "default_next_table_default": 0,
+      "is_resource_controllable": true,
+      "uses_range": false,
+      "match_key_fields": [],
+      "ap_bind_indirect_res_to_match": [],
+      "static_entries": [],
+      "action_data_table_refs": [],
+      "selection_table_refs": [],
+      "meter_table_refs": [],
+      "statistics_table_refs": [],
+      "stateful_table_refs": [
+        {
+          "how_referenced": "indirect",
+          "handle": 100663302,
+          "name": "FcmEgress.fcmsketch.sketch_reg_l1_d2"
+        }
+      ]
+    },
+    {
+      "direction": "egress",
+      "attached_to": "tbl_fcmsketch_fcm_action_l1_d2",
+      "handle": 1879048195,
+      "name": "tbl_fcmsketch_fcm_action_l1_d2-gateway",
+      "table_type": "condition",
+      "stage_tables": [
+        {
+          "next_tables": { "false": "33", "true": "33" },
+          "next_table_names": {
+            "false": "tbl_fcmsketch_fcm_action_l1_d1",
+            "true": "tbl_fcmsketch_fcm_action_l1_d1"
+          },
+          "memory_resource_allocation": { "memory_unit": 0, "memory_type": "gateway", "payload_buses": [] },
+          "pack_format": [],
+          "logical_table_id": 1,
+          "stage_number": 1,
+          "stage_table_type": "gateway",
+          "size": 0
+        }
+      ],
+      "condition_fields": [],
+      "condition": "true(always hit)",
+      "size": 0
+    },
+    {
+      "direction": "egress",
+      "handle": 100663302,
+      "name": "FcmEgress.fcmsketch.sketch_reg_l1_d2",
+      "table_type": "stateful",
+      "size": 524288,
+      "initial_value_lo": 0,
+      "initial_value_hi": 0,
+      "alu_width": 8,
+      "dual_width_mode": false,
+      "action_to_stateful_instruction_slot": [ { "action_handle": 536870936, "instruction_slot": 0 } ],
+      "register_params": [],
+      "stage_tables": [
+        {
+          "stage_number": 1,
+          "size": 524288,
+          "stage_table_type": "stateful",
+          "logical_table_id": 1,
+          "pack_format": [
+            {
+              "table_word_width": 128,
+              "memory_word_width": 128,
+              "entries_per_table_word": 16,
+              "number_memory_units_per_table_word": 1
+            }
+          ],
+          "memory_resource_allocation": {
+            "memory_type": "sram",
+            "memory_units_and_vpns": [
+              { "memory_units": [ 90 ], "vpns": [ 0 ] },
+              { "memory_units": [ 91 ], "vpns": [ 1 ] },
+              { "memory_units": [ 92 ], "vpns": [ 2 ] },
+              { "memory_units": [ 93 ], "vpns": [ 3 ] },
+              { "memory_units": [ 94 ], "vpns": [ 4 ] },
+              { "memory_units": [ 95 ], "vpns": [ 5 ] },
+              { "memory_units": [ 78 ], "vpns": [ 6 ] },
+              { "memory_units": [ 79 ], "vpns": [ 7 ] },
+              { "memory_units": [ 80 ], "vpns": [ 8 ] },
+              { "memory_units": [ 81 ], "vpns": [ 9 ] },
+              { "memory_units": [ 82 ], "vpns": [ 10 ] },
+              { "memory_units": [ 83 ], "vpns": [ 11 ] },
+              { "memory_units": [ 66 ], "vpns": [ 12 ] },
+              { "memory_units": [ 67 ], "vpns": [ 13 ] },
+              { "memory_units": [ 68 ], "vpns": [ 14 ] },
+              { "memory_units": [ 69 ], "vpns": [ 15 ] },
+              { "memory_units": [ 70 ], "vpns": [ 16 ] },
+              { "memory_units": [ 71 ], "vpns": [ 17 ] },
+              { "memory_units": [ 54 ], "vpns": [ 18 ] },
+              { "memory_units": [ 55 ], "vpns": [ 19 ] },
+              { "memory_units": [ 56 ], "vpns": [ 20 ] },
+              { "memory_units": [ 57 ], "vpns": [ 21 ] },
+              { "memory_units": [ 58 ], "vpns": [ 22 ] },
+              { "memory_units": [ 59 ], "vpns": [ 23 ] },
+              { "memory_units": [ 42 ], "vpns": [ 24 ] },
+              { "memory_units": [ 43 ], "vpns": [ 25 ] },
+              { "memory_units": [ 44 ], "vpns": [ 26 ] },
+              { "memory_units": [ 45 ], "vpns": [ 27 ] },
+              { "memory_units": [ 46 ], "vpns": [ 28 ] },
+              { "memory_units": [ 47 ], "vpns": [ 29 ] },
+              { "memory_units": [ 30 ], "vpns": [ 30 ] },
+              { "memory_units": [ 31 ], "vpns": [ 31 ] }
+            ],
+            "spare_bank_memory_unit": 32
+          },
+          "meter_alu_index": 3
+        }
+      ],
+      "how_referenced": "indirect"
+    },
+    {
+      "direction": "ingress",
+      "handle": 16777221,
+      "name": "WaterfallIngress.swap1_lo",
+      "table_type": "match",
+      "size": 8,
+      "action_data_table_refs": [],
+      "selection_table_refs": [],
+      "meter_table_refs": [],
+      "statistics_table_refs": [],
+      "stateful_table_refs": [
+        {
+          "how_referenced": "indirect",
+          "handle": 100663298,
+          "name": "WaterfallIngress.table_1_lo"
+        }
+      ],
+      "default_action_handle": 536870922,
+      "action_profile": "",
+      "default_next_table_mask": 0,
+      "default_next_table_default": 0,
+      "is_resource_controllable": true,
+      "uses_range": false,
+      "match_key_fields": [
+        {
+          "name": "ig_intr_md.resubmit_flag",
+          "start_bit": 0,
+          "bit_width": 1,
+          "bit_width_full": 1,
+          "position": 0,
+          "match_type": "exact",
+          "is_valid": false,
+          "instance_name": "ig_intr_md",
+          "field_name": "resubmit_flag"
+        },
+        {
+          "name": "ig_md.found_hi",
+          "start_bit": 0,
+          "bit_width": 1,
+          "bit_width_full": 1,
+          "position": 1,
+          "match_type": "exact",
+          "is_valid": false,
+          "instance_name": "ig_md",
+          "field_name": "found_hi"
+        },
+        {
+          "name": "ig_md.found_lo",
+          "start_bit": 0,
+          "bit_width": 1,
+          "bit_width_full": 1,
+          "position": 2,
+          "match_type": "exact",
+          "is_valid": false,
+          "instance_name": "ig_md",
+          "field_name": "found_lo"
+        }
+      ],
+      "ap_bind_indirect_res_to_match": [],
+      "static_entries": [],
+      "match_attributes": {
+        "stage_tables": [
+          {
+            "stage_number": 2,
+            "size": 2048,
+            "stage_table_type": "hash_match",
+            "logical_table_id": 0,
+            "has_attached_gateway": false,
+            "default_next_table": 255,
+            "hash_functions": [
+              {
+                "hash_bits": [
+                  {
+                    "bits_to_xor": [
+                      {
+                        "field_bit": 0,
+                        "field_name": "ig_md.found_hi",
+                        "global_name": "ig_md.found_hi",
+                        "hash_match_group": 0,
+                        "hash_match_group_bit": 3
+                      }
+                    ],
+                    "hash_bit": 0,
+                    "seed": 0
+                  },
+                  {
+                    "bits_to_xor": [
+                      {
+                        "field_bit": 0,
+                        "field_name": "ig_md.found_lo",
+                        "global_name": "ig_md.found_lo",
+                        "hash_match_group": 0,
+                        "hash_match_group_bit": 4
+                      }
+                    ],
+                    "hash_bit": 1,
+                    "seed": 0
+                  },
+                  {
+                    "bits_to_xor": [
+                      {
+                        "field_bit": 0,
+                        "field_name": "ig_intr_md.resubmit_flag",
+                        "global_name": "ig_intr_md.resubmit_flag",
+                        "hash_match_group": 0,
+                        "hash_match_group_bit": 15
+                      }
+                    ],
+                    "hash_bit": 2,
+                    "seed": 0
+                  }
+                ],
+                "hash_function_number": 0,
+                "ghost_bit_to_hash_bit": [ [ 2 ], [ 0 ], [ 1 ] ],
+                "ghost_bit_info": [
+                  {
+                    "field_name": "ig_intr_md.resubmit_flag",
+                    "global_name": "ig_intr_md.resubmit_flag",
+                    "bit_in_match_spec": 0
+                  },
+                  {
+                    "field_name": "ig_md.found_hi",
+                    "global_name": "ig_md.found_hi",
+                    "bit_in_match_spec": 0
+                  },
+                  {
+                    "field_name": "ig_md.found_lo",
+                    "global_name": "ig_md.found_lo",
+                    "bit_in_match_spec": 0
+                  }
+                ]
+              }
+            ],
+            "action_format": [
+              {
+                "action_name": "WaterfallIngress.do_swap1_lo",
+                "action_handle": 536870920,
+                "table_name": "--END_OF_PIPELINE--",
+                "next_table": 0,
+                "next_table_full": 48,
+                "vliw_instruction": 0,
+                "vliw_instruction_full": 65,
+                "next_tables": [
+                  {
+                    "next_table_name": "tbl_waterfall368",
+                    "next_table_logical_id": 0,
+                    "next_table_stage_no": 3
+                  }
+                ],
+                "immediate_fields": []
+              },
+              {
+                "action_name": "WaterfallIngress.lookup1_lo",
+                "action_handle": 536870921,
+                "table_name": "--END_OF_PIPELINE--",
+                "next_table": 0,
+                "next_table_full": 48,
+                "vliw_instruction": 1,
+                "vliw_instruction_full": 66,
+                "next_tables": [
+                  {
+                    "next_table_name": "tbl_waterfall368",
+                    "next_table_logical_id": 0,
+                    "next_table_stage_no": 3
+                  }
+                ],
+                "immediate_fields": []
+              },
+              {
+                "action_name": "WaterfallIngress.no_action",
+                "action_handle": 536870922,
+                "table_name": "--END_OF_PIPELINE--",
+                "next_table": 0,
+                "next_table_full": 48,
+                "vliw_instruction": 2,
+                "vliw_instruction_full": 64,
+                "next_tables": [
+                  {
+                    "next_table_name": "tbl_waterfall368",
+                    "next_table_logical_id": 0,
+                    "next_table_stage_no": 3
+                  }
+                ],
+                "immediate_fields": []
+              }
+            ],
+            "result_physical_buses": [ 14 ],
+            "pack_format": [
+              {
+                "memory_word_width": 128,
+                "table_word_width": 128,
+                "entries_per_table_word": 2,
+                "number_memory_units_per_table_word": 1
+              }
+            ],
+            "memory_resource_allocation": null,
+            "stash_allocation": {
+              "pack_format": [
+                {
+                  "memory_word_width": 128,
+                  "table_word_width": 128,
+                  "entries_per_table_word": 1,
+                  "number_memory_units_per_table_word": 1,
+                  "entries": [
+                    {
+                      "entry_number": 0,
+                      "fields": [
+                        {
+                          "start_bit": 4,
+                          "field_width": 16,
+                          "lsb_mem_word_idx": 0,
+                          "msb_mem_word_idx": 0,
+                          "source": "stful_ptr",
+                          "enable_pfe": false,
+                          "lsb_mem_word_offset": 4,
+                          "field_name": "meter_addr",
+                          "global_name": "",
+                          "match_mode": "unused"
+                        },
+                        {
+                          "start_bit": 23,
+                          "field_width": 1,
+                          "lsb_mem_word_idx": 0,
+                          "msb_mem_word_idx": 0,
+                          "source": "stful_ptr",
+                          "enable_pfe": false,
+                          "lsb_mem_word_offset": 20,
+                          "field_name": "meter_pfe",
+                          "global_name": "",
+                          "match_mode": "unused"
+                        },
+                        {
+                          "start_bit": 24,
+                          "field_width": 3,
+                          "lsb_mem_word_idx": 0,
+                          "msb_mem_word_idx": 0,
+                          "source": "stful_ptr",
+                          "enable_pfe": false,
+                          "lsb_mem_word_offset": 21,
+                          "field_name": "meter_type",
+                          "global_name": "",
+                          "match_mode": "unused"
+                        },
+                        {
+                          "start_bit": 0,
+                          "field_width": 2,
+                          "lsb_mem_word_idx": 0,
+                          "msb_mem_word_idx": 0,
+                          "source": "instr",
+                          "enable_pfe": false,
+                          "lsb_mem_word_offset": 0,
+                          "field_name": "action",
+                          "global_name": "",
+                          "match_mode": "unused"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "num_stash_entries": 2,
+              "stash_entries": [
+                [
+                  {
+                    "stash_entry_id": 28,
+                    "stash_match_data_select": 0,
+                    "stash_hashbank_select": 0,
+                    "hash_function_id": 0
+                  }
+                ],
+                [
+                  {
+                    "stash_entry_id": 29,
+                    "stash_match_data_select": 0,
+                    "stash_hashbank_select": 0,
+                    "hash_function_id": 0
+                  }
+                ]
+              ]
+            },
+            "ways": [
+              {
+                "stage_number": 2,
+                "way_number": 0,
+                "stage_table_type": "hash_way",
+                "size": 2048,
+                "pack_format": [
+                  {
+                    "memory_word_width": 128,
+                    "table_word_width": 128,
+                    "entries_per_table_word": 2,
+                    "number_memory_units_per_table_word": 1,
+                    "entries": [
+                      {
+                        "entry_number": 1,
+                        "fields": [
+                          {
+                            "start_bit": 0,
+                            "field_width": 2,
+                            "lsb_mem_word_idx": 0,
+                            "msb_mem_word_idx": 0,
+                            "source": "instr",
+                            "enable_pfe": false,
+                            "lsb_mem_word_offset": 2,
+                            "field_name": "action",
+                            "global_name": "",
+                            "match_mode": "unused"
+                          },
+                          {
+                            "start_bit": 0,
+                            "field_width": 4,
+                            "lsb_mem_word_idx": 0,
+                            "msb_mem_word_idx": 0,
+                            "source": "version",
+                            "enable_pfe": false,
+                            "lsb_mem_word_offset": 116,
+                            "field_name": "version",
+                            "global_name": "",
+                            "match_mode": "s1q0"
+                          },
+                          {
+                            "start_bit": 4,
+                            "field_width": 16,
+                            "lsb_mem_word_idx": 0,
+                            "msb_mem_word_idx": 0,
+                            "source": "stful_ptr",
+                            "enable_pfe": false,
+                            "lsb_mem_word_offset": 24,
+                            "field_name": "meter_addr",
+                            "global_name": "",
+                            "match_mode": "unused"
+                          },
+                          {
+                            "start_bit": 23,
+                            "field_width": 1,
+                            "lsb_mem_word_idx": 0,
+                            "msb_mem_word_idx": 0,
+                            "source": "stful_ptr",
+                            "enable_pfe": false,
+                            "lsb_mem_word_offset": 40,
+                            "field_name": "meter_pfe",
+                            "global_name": "",
+                            "match_mode": "unused"
+                          },
+                          {
+                            "start_bit": 24,
+                            "field_width": 3,
+                            "lsb_mem_word_idx": 0,
+                            "msb_mem_word_idx": 0,
+                            "source": "stful_ptr",
+                            "enable_pfe": false,
+                            "lsb_mem_word_offset": 41,
+                            "field_name": "meter_type",
+                            "global_name": "",
+                            "match_mode": "unused"
+                          }
+                        ]
+                      },
+                      {
+                        "entry_number": 0,
+                        "fields": [
+                          {
+                            "start_bit": 0,
+                            "field_width": 2,
+                            "lsb_mem_word_idx": 0,
+                            "msb_mem_word_idx": 0,
+                            "source": "instr",
+                            "enable_pfe": false,
+                            "lsb_mem_word_offset": 0,
+                            "field_name": "action",
+                            "global_name": "",
+                            "match_mode": "unused"
+                          },
+                          {
+                            "start_bit": 0,
+                            "field_width": 4,
+                            "lsb_mem_word_idx": 0,
+                            "msb_mem_word_idx": 0,
+                            "source": "version",
+                            "enable_pfe": false,
+                            "lsb_mem_word_offset": 112,
+                            "field_name": "version",
+                            "global_name": "",
+                            "match_mode": "s1q0"
+                          },
+                          {
+                            "start_bit": 4,
+                            "field_width": 16,
+                            "lsb_mem_word_idx": 0,
+                            "msb_mem_word_idx": 0,
+                            "source": "stful_ptr",
+                            "enable_pfe": false,
+                            "lsb_mem_word_offset": 4,
+                            "field_name": "meter_addr",
+                            "global_name": "",
+                            "match_mode": "unused"
+                          },
+                          {
+                            "start_bit": 23,
+                            "field_width": 1,
+                            "lsb_mem_word_idx": 0,
+                            "msb_mem_word_idx": 0,
+                            "source": "stful_ptr",
+                            "enable_pfe": false,
+                            "lsb_mem_word_offset": 20,
+                            "field_name": "meter_pfe",
+                            "global_name": "",
+                            "match_mode": "unused"
+                          },
+                          {
+                            "start_bit": 24,
+                            "field_width": 3,
+                            "lsb_mem_word_idx": 0,
+                            "msb_mem_word_idx": 0,
+                            "source": "stful_ptr",
+                            "enable_pfe": false,
+                            "lsb_mem_word_offset": 21,
+                            "field_name": "meter_type",
+                            "global_name": "",
+                            "match_mode": "unused"
+                          },
+                          {
+                            "start_bit": 0,
+                            "field_width": 68,
+                            "lsb_mem_word_idx": 0,
+                            "msb_mem_word_idx": 0,
+                            "source": "zero",
+                            "enable_pfe": false,
+                            "lsb_mem_word_offset": 44,
+                            "field_name": "--padding_44_111--",
+                            "global_name": "",
+                            "match_mode": "unused"
+                          },
+                          {
+                            "start_bit": 0,
+                            "field_width": 8,
+                            "lsb_mem_word_idx": 0,
+                            "msb_mem_word_idx": 0,
+                            "source": "zero",
+                            "enable_pfe": false,
+                            "lsb_mem_word_offset": 120,
+                            "field_name": "--padding_120_127--",
+                            "global_name": "",
+                            "match_mode": "unused"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "memory_resource_allocation": {
+                  "hash_function_id": 0,
+                  "hash_entry_bit_lo": 0,
+                  "hash_entry_bit_hi": 9,
+                  "number_entry_bits": 10,
+                  "number_subword_bits": 0,
+                  "hash_select_bit_hi": 40,
+                  "hash_select_bit_lo": 40,
+                  "number_select_bits": 0,
+                  "memory_type": "sram",
+                  "memory_units_and_vpns": [ { "memory_units": [ 86 ], "vpns": [ 0, 1 ] } ]
+                }
+              }
+            ]
+          }
+        ],
+        "match_type": "exact",
+        "uses_dynamic_key_masks": false
+      },
+      "actions": [
+        {
+          "name": "WaterfallIngress.do_swap1_lo",
+          "handle": 536870920,
+          "primitives": [
+            {
+              "name": "ExecuteStatefulAluFromHashPrimitive",
+              "dst": { "type": "stateful", "name": "WaterfallIngress.table_1_lo" },
+              "idx": {
+                "type": "hash",
+                "name": "hash_WaterfallIngress.table_1_lo",
+                "algorithm": "identity"
+              },
+              "hash_inputs": [ "ig_md.idx1" ],
+              "stateful_alu_details": {
+                "name": "table_1_lo_swap_0",
+                "single_bit_mode": false,
+                "update_lo_1_value": {
+                  "operand_1_type": "phv",
+                  "operand_1_value": "ingress::ig_md.resubmit_md.remain[15:0]"
+                },
+                "output_value": { "operand_1_type": "memory", "operand_1_value": "mem_lo" },
+                "output_dst": "ig_md.remain1_lo"
+              }
+            }
+          ],
+          "direct_resources": [],
+          "indirect_resources": [],
+          "allowed_as_hit_action": true,
+          "allowed_as_default_action": true,
+          "is_compiler_added_action": false,
+          "constant_default_action": false,
+          "p4_parameters": [],
+          "override_meter_addr": false,
+          "override_meter_addr_pfe": false,
+          "override_meter_full_addr": 0,
+          "override_stat_addr": false,
+          "override_stat_addr_pfe": false,
+          "override_stat_full_addr": 0,
+          "override_stateful_addr": true,
+          "override_stateful_addr_pfe": true,
+          "override_stateful_full_addr": 25165824,
+          "is_action_meter_color_aware": false
+        },
+        {
+          "name": "WaterfallIngress.lookup1_lo",
+          "handle": 536870921,
+          "primitives": [
+            {
+              "name": "ExecuteStatefulAluFromHashPrimitive",
+              "dst": { "type": "stateful", "name": "WaterfallIngress.table_1_lo" },
+              "idx": {
+                "type": "hash",
+                "name": "hash_WaterfallIngress.table_1_lo",
+                "algorithm": "identity"
+              },
+              "hash_inputs": [ "ig_md.idx1" ],
+              "stateful_alu_details": {
+                "name": "table_1_lo_lookup_0",
+                "single_bit_mode": false,
+                "output_dst": "ig_md.found_lo"
+              }
+            },
+            {
+              "name": "ModifyFieldPrimitive",
+              "operation": "set",
+              "dst": { "type": "phv", "name": "ig_md.remain1_lo" },
+              "dst_mask": { "type": "immediate", "name": "65535" },
+              "src1": { "type": "phv", "name": "hdr.ipv4.src_addr" }
+            }
+          ],
+          "direct_resources": [],
+          "indirect_resources": [],
+          "allowed_as_hit_action": true,
+          "allowed_as_default_action": true,
+          "is_compiler_added_action": false,
+          "constant_default_action": false,
+          "p4_parameters": [],
+          "override_meter_addr": false,
+          "override_meter_addr_pfe": false,
+          "override_meter_full_addr": 0,
+          "override_stat_addr": false,
+          "override_stat_addr_pfe": false,
+          "override_stat_full_addr": 0,
+          "override_stateful_addr": true,
+          "override_stateful_addr_pfe": true,
+          "override_stateful_full_addr": 58720256,
+          "is_action_meter_color_aware": false
+        },
+        {
+          "name": "WaterfallIngress.no_action",
+          "handle": 536870922,
+          "primitives": [],
+          "direct_resources": [],
+          "indirect_resources": [],
+          "allowed_as_hit_action": true,
+          "allowed_as_default_action": true,
+          "is_compiler_added_action": false,
+          "constant_default_action": false,
+          "p4_parameters": [],
+          "override_meter_addr": false,
+          "override_meter_addr_pfe": false,
+          "override_meter_full_addr": 0,
+          "override_stat_addr": false,
+          "override_stat_addr_pfe": false,
+          "override_stat_full_addr": 0,
+          "override_stateful_addr": false,
+          "override_stateful_addr_pfe": false,
+          "override_stateful_full_addr": 0,
+          "is_action_meter_color_aware": false
+        }
+      ]
+    },
+    {
+      "direction": "ingress",
+      "handle": 100663298,
+      "name": "WaterfallIngress.table_1_lo",
+      "table_type": "stateful",
+      "size": 65535,
+      "initial_value_lo": 0,
+      "initial_value_hi": 0,
+      "alu_width": 16,
+      "dual_width_mode": false,
+      "action_to_stateful_instruction_slot": [
+        { "action_handle": 536870920, "instruction_slot": 0 },
+        { "action_handle": 536870921, "instruction_slot": 1 }
       ],
       "register_params": [],
       "stage_tables": [
@@ -28643,7 +28794,7 @@
     {
       "direction": "ingress",
       "handle": 16777222,
-      "name": "tbl_waterfall364",
+      "name": "tbl_waterfall368",
       "table_type": "match",
       "size": 65536,
       "p4_hidden": true,
@@ -28668,7 +28819,7 @@
             "result_physical_buses": [ 2 ],
             "action_format": [
               {
-                "action_name": "waterfall364",
+                "action_name": "waterfall368",
                 "action_handle": 536870923,
                 "table_name": "--END_OF_PIPELINE--",
                 "next_table": 0,
@@ -28685,7 +28836,7 @@
       },
       "actions": [
         {
-          "name": "waterfall364",
+          "name": "waterfall368",
           "handle": 536870923,
           "primitives": [
             {
@@ -28736,9 +28887,9 @@
     },
     {
       "direction": "ingress",
-      "attached_to": "tbl_waterfall364",
+      "attached_to": "tbl_waterfall368",
       "handle": 1879048197,
-      "name": "tbl_waterfall364-gateway",
+      "name": "tbl_waterfall368-gateway",
       "table_type": "condition",
       "stage_tables": [
         {
@@ -31719,7 +31870,7 @@
     {
       "fully_qualified_name": "mau[1].dp.match_input_xbar_din_power_ctl",
       "name": "stage_1_match_input_xbar_din_power_ctl",
-      "value": "0000000700000000000000400000000000000008000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+      "value": "0000000700000000000000400000000000000018000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
     },
     {
       "fully_qualified_name": "mau[1].dp.xbar_hash.hash.parity_group_mask",
@@ -31734,7 +31885,7 @@
     {
       "fully_qualified_name": "mau[2].dp.match_input_xbar_din_power_ctl",
       "name": "stage_2_match_input_xbar_din_power_ctl",
-      "value": "0000000700000000000000200000000000000008000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+      "value": "0000000700000000000000200000000000000018000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
     },
     {
       "fully_qualified_name": "mau[2].dp.xbar_hash.hash.parity_group_mask",
@@ -31754,7 +31905,7 @@
     {
       "fully_qualified_name": "mau[3].dp.xbar_hash.hash.hash_seed",
       "name": "stage_3_hash_seed",
-      "value": "00000000000000000000000000000000000000000000000000000000000000000000000100000000000000010000000100000000000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+      "value": "00000001000000000000000100000001000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
     },
     {
       "fully_qualified_name": "mau[3].dp.xbar_hash.hash.parity_group_mask",
@@ -32893,22 +33044,22 @@
             "hash_id": 0,
             "num_hash_bits": 16,
             "hash_bits": [
-              { "gfm_hash_bit": 0, "p4_hash_bit": 0 },
-              { "gfm_hash_bit": 1, "p4_hash_bit": 1 },
-              { "gfm_hash_bit": 2, "p4_hash_bit": 2 },
-              { "gfm_hash_bit": 3, "p4_hash_bit": 3 },
-              { "gfm_hash_bit": 4, "p4_hash_bit": 4 },
-              { "gfm_hash_bit": 5, "p4_hash_bit": 5 },
-              { "gfm_hash_bit": 6, "p4_hash_bit": 6 },
-              { "gfm_hash_bit": 7, "p4_hash_bit": 7 },
-              { "gfm_hash_bit": 8, "p4_hash_bit": 8 },
-              { "gfm_hash_bit": 9, "p4_hash_bit": 9 },
-              { "gfm_hash_bit": 10, "p4_hash_bit": 10 },
-              { "gfm_hash_bit": 11, "p4_hash_bit": 11 },
-              { "gfm_hash_bit": 12, "p4_hash_bit": 12 },
-              { "gfm_hash_bit": 13, "p4_hash_bit": 13 },
-              { "gfm_hash_bit": 14, "p4_hash_bit": 14 },
-              { "gfm_hash_bit": 15, "p4_hash_bit": 15 }
+              { "gfm_hash_bit": 0, "p4_hash_bit": 8 },
+              { "gfm_hash_bit": 1, "p4_hash_bit": 9 },
+              { "gfm_hash_bit": 2, "p4_hash_bit": 10 },
+              { "gfm_hash_bit": 3, "p4_hash_bit": 11 },
+              { "gfm_hash_bit": 4, "p4_hash_bit": 12 },
+              { "gfm_hash_bit": 5, "p4_hash_bit": 13 },
+              { "gfm_hash_bit": 6, "p4_hash_bit": 14 },
+              { "gfm_hash_bit": 7, "p4_hash_bit": 15 },
+              { "gfm_hash_bit": 8, "p4_hash_bit": 0 },
+              { "gfm_hash_bit": 9, "p4_hash_bit": 1 },
+              { "gfm_hash_bit": 10, "p4_hash_bit": 2 },
+              { "gfm_hash_bit": 11, "p4_hash_bit": 3 },
+              { "gfm_hash_bit": 12, "p4_hash_bit": 4 },
+              { "gfm_hash_bit": 13, "p4_hash_bit": 5 },
+              { "gfm_hash_bit": 14, "p4_hash_bit": 6 },
+              { "gfm_hash_bit": 15, "p4_hash_bit": 7 }
             ]
           },
           "hash_mod": { "hash_id": 0, "num_hash_bits": 0, "hash_bits": [] }
@@ -32917,7 +33068,7 @@
       "hash_bit_width": 16
     }
   ],
-  "run_id": "6bba0bfb128c4f55",
+  "run_id": "2970b28da4ce4e3e",
   "driver_options": {
     "hash_parity_enabled": false,
     "high_availability_enabled": true,

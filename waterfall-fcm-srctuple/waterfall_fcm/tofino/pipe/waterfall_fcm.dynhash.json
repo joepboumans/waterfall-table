@@ -1334,67 +1334,67 @@
             "hash_bits" : [
               {
                 "gfm_hash_bit" : 0,
-                "p4_hash_bit" : 0
-              },
-              {
-                "gfm_hash_bit" : 1,
-                "p4_hash_bit" : 1
-              },
-              {
-                "gfm_hash_bit" : 2,
-                "p4_hash_bit" : 2
-              },
-              {
-                "gfm_hash_bit" : 3,
-                "p4_hash_bit" : 3
-              },
-              {
-                "gfm_hash_bit" : 4,
-                "p4_hash_bit" : 4
-              },
-              {
-                "gfm_hash_bit" : 5,
-                "p4_hash_bit" : 5
-              },
-              {
-                "gfm_hash_bit" : 6,
-                "p4_hash_bit" : 6
-              },
-              {
-                "gfm_hash_bit" : 7,
-                "p4_hash_bit" : 7
-              },
-              {
-                "gfm_hash_bit" : 8,
                 "p4_hash_bit" : 8
               },
               {
-                "gfm_hash_bit" : 9,
+                "gfm_hash_bit" : 1,
                 "p4_hash_bit" : 9
               },
               {
-                "gfm_hash_bit" : 10,
+                "gfm_hash_bit" : 2,
                 "p4_hash_bit" : 10
               },
               {
-                "gfm_hash_bit" : 11,
+                "gfm_hash_bit" : 3,
                 "p4_hash_bit" : 11
               },
               {
-                "gfm_hash_bit" : 12,
+                "gfm_hash_bit" : 4,
                 "p4_hash_bit" : 12
               },
               {
-                "gfm_hash_bit" : 13,
+                "gfm_hash_bit" : 5,
                 "p4_hash_bit" : 13
               },
               {
-                "gfm_hash_bit" : 14,
+                "gfm_hash_bit" : 6,
                 "p4_hash_bit" : 14
               },
               {
-                "gfm_hash_bit" : 15,
+                "gfm_hash_bit" : 7,
                 "p4_hash_bit" : 15
+              },
+              {
+                "gfm_hash_bit" : 8,
+                "p4_hash_bit" : 0
+              },
+              {
+                "gfm_hash_bit" : 9,
+                "p4_hash_bit" : 1
+              },
+              {
+                "gfm_hash_bit" : 10,
+                "p4_hash_bit" : 2
+              },
+              {
+                "gfm_hash_bit" : 11,
+                "p4_hash_bit" : 3
+              },
+              {
+                "gfm_hash_bit" : 12,
+                "p4_hash_bit" : 4
+              },
+              {
+                "gfm_hash_bit" : 13,
+                "p4_hash_bit" : 5
+              },
+              {
+                "gfm_hash_bit" : 14,
+                "p4_hash_bit" : 6
+              },
+              {
+                "gfm_hash_bit" : 15,
+                "p4_hash_bit" : 7
               }
             ]
           },
