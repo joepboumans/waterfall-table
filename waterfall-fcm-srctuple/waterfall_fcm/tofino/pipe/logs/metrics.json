@@ -1,18 +1,18 @@
 {
     "program_name": "waterfall_fcm.p4", 
-    "build_date": "Thu Feb 27 15:19:47 2025", 
-    "run_id": "2970b28da4ce4e3e", 
+    "build_date": "Thu Feb 27 16:47:12 2025", 
+    "run_id": "609d14c6f1544a25", 
     "compiler_version": "9.11.0", 
     "schema_version": "1.1.0", 
     "target": "tofino", 
-    "compilation_time": "4.308112144470215", 
+    "compilation_time": "5.969486951828003", 
     "phv": {
         "normal": [
             {
                 "bit_width": 8, 
                 "containers_occupied": 9, 
-                "bits_occupied": 46, 
-                "bits_overlaid": 14
+                "bits_occupied": 41, 
+                "bits_overlaid": 11
             }, 
             {
                 "bit_width": 16, 
@@ -22,9 +22,9 @@
             }, 
             {
                 "bit_width": 32, 
-                "containers_occupied": 11, 
-                "bits_occupied": 336, 
-                "bits_overlaid": 0
+                "containers_occupied": 13, 
+                "bits_occupied": 352, 
+                "bits_overlaid": 32
             }
         ], 
         "tagalong": [
@@ -57,17 +57,17 @@
         }
     }, 
     "mau": {
-        "srams": 134, 
+        "srams": 174, 
         "tcams": 0, 
-        "map_rams": 128, 
-        "logical_tables": 19, 
-        "action_bus_bytes": 49, 
-        "exact_crossbar_bytes": 86, 
+        "map_rams": 164, 
+        "logical_tables": 21, 
+        "action_bus_bytes": 58, 
+        "exact_crossbar_bytes": 120, 
         "ternary_crossbar_bytes": 0, 
         "latency": [
             {
                 "gress": "ingress", 
-                "cycles": 165
+                "cycles": 238
             }, 
             {
                 "gress": "egress", 
@@ -77,7 +77,7 @@
         "power": [
             {
                 "gress": "ingress", 
-                "estimate": "2.3666595179"
+                "estimate": "4.63698789365"
             }, 
             {
                 "gress": "egress", 

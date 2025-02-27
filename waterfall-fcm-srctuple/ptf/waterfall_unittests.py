@@ -55,7 +55,7 @@ class WaterfallUnitTests(BfRuntimeTest):
 
         # Get Waterfall tables
         self.table_dict = {}
-        table_names = ["table_1", "table_2"]
+        table_names = ["table_1", "table_2", "table_3", "table_4"]
         for sname in table_names:
             for loc in ["hi", "lo"]:
                 name = f"{sname}_{loc}"
@@ -66,7 +66,7 @@ class WaterfallUnitTests(BfRuntimeTest):
 
         # Get swap tables
         self.swap_dict = {}
-        swap_names = ["swap1", "swap2"]
+        swap_names = ["swap1", "swap2", "swap3", "swap4"]
         for sname in swap_names:
             for loc in ["hi", "lo"]:
                 name = f"{sname}_{loc}"
@@ -111,11 +111,11 @@ class WaterfallUnitTests(BfRuntimeTest):
     def runTest(self):
         logger.info("Start testing")
 
-        # self.testDigest()
-        # self.resetWaterfall()
+        self.testDigest()
+        self.resetWaterfall()
         self.testPassAllTables()
         self.resetWaterfall()
-        # self.testLargeInserts()
+        self.testLargeInserts()
 
     def evalutate_digest(self, num_entries):
         learn_filter = self.learn_filter
@@ -147,7 +147,7 @@ class WaterfallUnitTests(BfRuntimeTest):
             if entry_val != 0:
                 summed += entry_val
                 nonzero_entries += 1
-                logger.info(data_dict)
+                # logger.info(data_dict)
                 # logger.info(entry_val.to_bytes(2,'big'))
 
         logger.info(f"{name} has {summed} total remainders and {nonzero_entries} entries")
@@ -159,39 +159,35 @@ class WaterfallUnitTests(BfRuntimeTest):
         target = self.target
         forward = self.forward
         resub = self.resub
-        parse_resub = self.parse_resub
 
         key = forward.make_key([gc.KeyTuple('ig_intr_md.ingress_port', ig_port)])
         data = forward.make_data([gc.DataTuple('dst_port', eg_port)], "WaterfallIngress.hit")
         forward.entry_add(target, [key], [data])
 
-        swap1 = self.swap1
-        swap2 = self.swap2
-        swap3 = self.swap3
-        swap4 = self.swap4
-
-        num_entries = 1
+        num_entries = 10
         seed = 1001
         ip_list = self.generate_random_ip_list(num_entries, seed)
         ''' TC:1 Setting up port_metadata and resub'''
         logger.info("Populating resub table...")
         logger.debug(f"\tresub - inserting table entry with port {ig_port}")
 
-        key = resub.make_key([gc.KeyTuple('ig_md.found', True)])
-        data = resub.make_data([], "WaterfallIngress.no_action")
-        resub.entry_add(target, [key], [data])
-
-        key = resub.make_key([gc.KeyTuple('ig_md.found', False), gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0)])
+        # Only resubmit if both are found
+        key = resub.make_key([gc.KeyTuple('ig_md.found_hi', False), gc.KeyTuple('ig_md.found_lo', False)])
         data = resub.make_data([], "WaterfallIngress.resubmit_hdr")
         resub.entry_add(target, [key], [data])
 
-        key = parse_resub.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0)])
-        data = parse_resub.make_data([], "WaterfallIngress.no_action")
-        parse_resub.entry_add(target, [key], [data])
+        key = resub.make_key([gc.KeyTuple('ig_md.found_hi', True), gc.KeyTuple('ig_md.found_lo', True)])
+        data = resub.make_data([], "WaterfallIngress.no_action")
+        resub.entry_add(target, [key], [data])
 
-        key = parse_resub.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
-        data = parse_resub.make_data([], "WaterfallIngress.parse_hdr")
-        parse_resub.entry_add(target, [key], [data])
+
+        key = resub.make_key([gc.KeyTuple('ig_md.found_hi', True), gc.KeyTuple('ig_md.found_lo', False)])
+        data = resub.make_data([], "WaterfallIngress.no_action")
+        resub.entry_add(target, [key], [data])
+
+        key = resub.make_key([gc.KeyTuple('ig_md.found_hi', False), gc.KeyTuple('ig_md.found_lo', True)])
+        data = resub.make_data([], "WaterfallIngress.no_action")
+        resub.entry_add(target, [key], [data])
 
         for name, table in self.swap_dict.items():
             self.addSwapEntry(table, name)
@@ -217,7 +213,6 @@ class WaterfallUnitTests(BfRuntimeTest):
 
     def addSwapEntry(self, table, name):
         num = name.replace("swap", "")
-        logger.info(num)
         key = table.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0), gc.KeyTuple('ig_md.found_hi', False), gc.KeyTuple('ig_md.found_lo', False)])
         data = table.make_data([], f"WaterfallIngress.lookup{num}")
         table.entry_add(self.target, [key], [data])
@@ -230,8 +225,6 @@ class WaterfallUnitTests(BfRuntimeTest):
     def testPassAllTables(self):
         ig_port = swports[0]
         eg_port = swports[1]
-        # ig_port = 132 # hwports can be 132, 140, 148, 156
-        # eg_port = hwports[ig_port]
         target = self.target
         forward = self.forward
         resub = self.resub
@@ -242,7 +235,7 @@ class WaterfallUnitTests(BfRuntimeTest):
 
         learn_filter = self.learn_filter
         
-        num_entries = 1
+        num_entries = 5
         seed = 1001
         ip_list = self.generate_random_ip_list(num_entries, seed)
         ''' TC:1 Setting up port_metadata and resub'''
@@ -266,15 +259,6 @@ class WaterfallUnitTests(BfRuntimeTest):
         data = resub.make_data([], "WaterfallIngress.resubmit_hdr")
         resub.entry_add(target, [key], [data])
 
-        # parse_resub = self.parse_resub
-        # key = parse_resub.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0)])
-        # data = parse_resub.make_data([], "WaterfallIngress.no_action")
-        # parse_resub.entry_add(target, [key], [data])
-        #
-        # key = parse_resub.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
-        # data = parse_resub.make_data([], "WaterfallIngress.parse_hdr")
-        # parse_resub.entry_add(target, [key], [data])
-
         for name, table in self.swap_dict.items():
             self.addSwapEntry(table, name)
 
@@ -283,8 +267,8 @@ class WaterfallUnitTests(BfRuntimeTest):
 
             ''' TC:2 Send, receive and verify packets'''
             pkt_in = testutils.simple_tcp_packet(ip_src=src_addr)
-            logger.info("Sending 5 idenitcal packets to flow through all the tables")
-            for _ in range(3):
+            logger.info("Sending 4 identical packets to flow through all the tables")
+            for _ in range(4):
                 testutils.send_packet(self, ig_port, pkt_in)
                 testutils.verify_packet(self, pkt_in, eg_port)
 
@@ -301,8 +285,6 @@ class WaterfallUnitTests(BfRuntimeTest):
     def testLargeInserts(self):
         ig_port = swports[0]
         eg_port = swports[1]
-        # ig_port = 132 # hwports can be 132, 140, 148, 156
-        # eg_port = hwports[ig_port]
         target = self.target
         forward = self.forward
         resub = self.resub
@@ -312,47 +294,48 @@ class WaterfallUnitTests(BfRuntimeTest):
         forward.entry_add(target, [key], [data])
 
         num_entries_src = 1000
-        num_entries_dst = 100
         seed = 1001
         random.seed(seed)
         src_ip_list = self.generate_random_ip_list(num_entries_src, seed)
-        dst_ip_list = self.generate_random_ip_list(num_entries_dst, seed + 1)
 
         ''' TC:1 Setting up port_metadata and resub'''
         logger.info("Populating resub table...")
         logger.debug(f"\tresub - inserting table entry with port {ig_port}")
 
-        swap1 = self.swap1
-        swap2 = self.swap2
-        swap3 = self.swap3
-        swap4 = self.swap4
+        # Only resubmit if both are found
+        key = resub.make_key([gc.KeyTuple('ig_md.found_hi', False), gc.KeyTuple('ig_md.found_lo', False)])
+        data = resub.make_data([], "WaterfallIngress.resubmit_hdr")
+        resub.entry_add(target, [key], [data])
 
-        key = resub.make_key([gc.KeyTuple('ig_md.found', True)])
+        key = resub.make_key([gc.KeyTuple('ig_md.found_hi', True), gc.KeyTuple('ig_md.found_lo', True)])
         data = resub.make_data([], "WaterfallIngress.no_action")
         resub.entry_add(target, [key], [data])
 
-        key = resub.make_key([gc.KeyTuple('ig_md.found', False)])
-        data = resub.make_data([], "WaterfallIngress.resubmit_hdr")
+
+        key = resub.make_key([gc.KeyTuple('ig_md.found_hi', True), gc.KeyTuple('ig_md.found_lo', False)])
+        data = resub.make_data([], "WaterfallIngress.no_action")
+        resub.entry_add(target, [key], [data])
+
+        key = resub.make_key([gc.KeyTuple('ig_md.found_hi', False), gc.KeyTuple('ig_md.found_lo', True)])
+        data = resub.make_data([], "WaterfallIngress.no_action")
         resub.entry_add(target, [key], [data])
 
         for name, table in self.swap_dict.items():
             self.addSwapEntry(table, name)
 
-        logger.info(f"Start sending {num_entries_src * num_entries_dst} entries")
+        logger.info(f"Start sending {num_entries_src} entries")
         for src_ip in src_ip_list:
-            for dst_ip in dst_ip_list:
-                src_addr = getattr(src_ip, "ip")
-                dst_addr = getattr(dst_ip, "ip")
-                src_port = random.randrange(0, 0xFFFF)
-                dst_port = random.randrange(0, 0xFFFF)
+            src_addr = getattr(src_ip, "ip")
+            src_port = random.randrange(0, 0xFFFF)
+            dst_port = random.randrange(0, 0xFFFF)
 
-                pkt_in = testutils.simple_tcp_packet(ip_src=src_addr, ip_dst=dst_addr, tcp_sport=src_port, tcp_dport=dst_port)
-                testutils.send_packet(self, ig_port, pkt_in)
-                testutils.verify_packet(self, pkt_in, eg_port)
+            pkt_in = testutils.simple_tcp_packet(ip_src=src_addr,  tcp_sport=src_port, tcp_dport=dst_port)
+            testutils.send_packet(self, ig_port, pkt_in)
+            testutils.verify_packet(self, pkt_in, eg_port)
         logger.info(f"...done sending")
 
         ''' TC:3 Look for data in digest'''
-        self.evalutate_digest(num_entries_src * num_entries_dst)
+        self.evalutate_digest(num_entries_src )
 
         ''' TC:4 Validate received digest data'''
         for key, data in self.table_dict.items():

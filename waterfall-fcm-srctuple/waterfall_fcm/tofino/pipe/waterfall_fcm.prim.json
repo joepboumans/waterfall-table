@@ -79,29 +79,6 @@
       ]
     },
     {
-      "name" : "tbl_waterfall365",
-      "actions" : [
-        {
-          "name" : "waterfall365",
-          "primitives" : [
-            {
-              "name" : "SetFieldToHashIndexPrimitive",
-              "dst" : {
-                "type" : "phv",
-                "name" : "ig_md.idx1"
-              },
-              "idx" : {
-                "type" : "hash",
-                "name" : "hash_ig_md.idx1",
-                "algorithm" : "crc_32"
-              },
-              "hash_inputs" : ["hdr.ipv4.src_addr"]
-            }
-          ]
-        }
-      ]
-    },
-    {
       "name" : "WaterfallIngress.swap1_hi",
       "actions" : [
         {
@@ -116,9 +93,9 @@
               "idx" : {
                 "type" : "hash",
                 "name" : "hash_WaterfallIngress.table_1_hi",
-                "algorithm" : "identity"
+                "algorithm" : "crc_32"
               },
-              "hash_inputs" : ["ig_md.idx1"],
+              "hash_inputs" : ["hdr.ipv4.src_addr"],
               "stateful_alu_details" : {
                 "name" : "table_1_hi_swap_0",
                 "single_bit_mode" : false,
@@ -147,9 +124,9 @@
               "idx" : {
                 "type" : "hash",
                 "name" : "hash_WaterfallIngress.table_1_hi",
-                "algorithm" : "identity"
+                "algorithm" : "crc_32"
               },
-              "hash_inputs" : ["ig_md.idx1"],
+              "hash_inputs" : ["hdr.ipv4.src_addr"],
               "stateful_alu_details" : {
                 "name" : "table_1_hi_lookup_0",
                 "single_bit_mode" : false,
@@ -195,9 +172,9 @@
               "idx" : {
                 "type" : "hash",
                 "name" : "hash_WaterfallIngress.table_1_lo",
-                "algorithm" : "identity"
+                "algorithm" : "crc_32"
               },
-              "hash_inputs" : ["ig_md.idx1"],
+              "hash_inputs" : ["hdr.ipv4.src_addr"],
               "stateful_alu_details" : {
                 "name" : "table_1_lo_swap_0",
                 "single_bit_mode" : false,
@@ -226,9 +203,9 @@
               "idx" : {
                 "type" : "hash",
                 "name" : "hash_WaterfallIngress.table_1_lo",
-                "algorithm" : "identity"
+                "algorithm" : "crc_32"
               },
-              "hash_inputs" : ["ig_md.idx1"],
+              "hash_inputs" : ["hdr.ipv4.src_addr"],
               "stateful_alu_details" : {
                 "name" : "table_1_lo_lookup_0",
                 "single_bit_mode" : false,
@@ -260,29 +237,6 @@
       ]
     },
     {
-      "name" : "tbl_waterfall368",
-      "actions" : [
-        {
-          "name" : "waterfall368",
-          "primitives" : [
-            {
-              "name" : "SetFieldToHashIndexPrimitive",
-              "dst" : {
-                "type" : "phv",
-                "name" : "ig_md.idx2"
-              },
-              "idx" : {
-                "type" : "hash",
-                "name" : "hash_ig_md.idx2",
-                "algorithm" : "crc_32"
-              },
-              "hash_inputs" : ["ig_md.remain1_hi", "ig_md.remain1_lo"]
-            }
-          ]
-        }
-      ]
-    },
-    {
       "name" : "WaterfallIngress.swap2_hi",
       "actions" : [
         {
@@ -297,9 +251,9 @@
               "idx" : {
                 "type" : "hash",
                 "name" : "hash_WaterfallIngress.table_2_hi",
-                "algorithm" : "identity"
+                "algorithm" : "crc_32"
               },
-              "hash_inputs" : ["ig_md.idx2"],
+              "hash_inputs" : ["ig_md.remain1_hi", "ig_md.remain1_lo"],
               "stateful_alu_details" : {
                 "name" : "table_2_hi_swap_0",
                 "single_bit_mode" : false,
@@ -310,7 +264,8 @@
                 "output_value" : {
                   "operand_1_type" : "memory",
                   "operand_1_value" : "mem_lo"
-                }
+                },
+                "output_dst" : "ig_md.remain2_hi"
               }
             }
           ]
@@ -327,13 +282,29 @@
               "idx" : {
                 "type" : "hash",
                 "name" : "hash_WaterfallIngress.table_2_hi",
-                "algorithm" : "identity"
+                "algorithm" : "crc_32"
               },
-              "hash_inputs" : ["ig_md.idx2"],
+              "hash_inputs" : ["ig_md.remain1_hi", "ig_md.remain1_lo"],
               "stateful_alu_details" : {
                 "name" : "table_2_hi_lookup_0",
                 "single_bit_mode" : false,
                 "output_dst" : "ig_md.found_hi"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "ig_md.remain2_hi"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "hdr.ipv4.src_addr"
               }
             }
           ]
@@ -359,9 +330,9 @@
               "idx" : {
                 "type" : "hash",
                 "name" : "hash_WaterfallIngress.table_2_lo",
-                "algorithm" : "identity"
+                "algorithm" : "crc_32"
               },
-              "hash_inputs" : ["ig_md.idx2"],
+              "hash_inputs" : ["ig_md.remain1_hi", "ig_md.remain1_lo"],
               "stateful_alu_details" : {
                 "name" : "table_2_lo_swap_0",
                 "single_bit_mode" : false,
@@ -372,7 +343,8 @@
                 "output_value" : {
                   "operand_1_type" : "memory",
                   "operand_1_value" : "mem_lo"
-                }
+                },
+                "output_dst" : "ig_md.remain2_lo"
               }
             }
           ]
@@ -389,11 +361,309 @@
               "idx" : {
                 "type" : "hash",
                 "name" : "hash_WaterfallIngress.table_2_lo",
-                "algorithm" : "identity"
+                "algorithm" : "crc_32"
               },
-              "hash_inputs" : ["ig_md.idx2"],
+              "hash_inputs" : ["ig_md.remain1_hi", "ig_md.remain1_lo"],
               "stateful_alu_details" : {
                 "name" : "table_2_lo_lookup_0",
+                "single_bit_mode" : false,
+                "output_dst" : "ig_md.found_lo"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "ig_md.remain2_lo"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "hdr.ipv4.src_addr"
+              }
+            }
+          ]
+        },
+        {
+          "name" : "WaterfallIngress.no_action",
+          "primitives" : []
+        }
+      ]
+    },
+    {
+      "name" : "WaterfallIngress.swap3_hi",
+      "actions" : [
+        {
+          "name" : "WaterfallIngress.do_swap3_hi",
+          "primitives" : [
+            {
+              "name" : "ExecuteStatefulAluFromHashPrimitive",
+              "dst" : {
+                "type" : "stateful",
+                "name" : "WaterfallIngress.table_3_hi"
+              },
+              "idx" : {
+                "type" : "hash",
+                "name" : "hash_WaterfallIngress.table_3_hi",
+                "algorithm" : "crc_32"
+              },
+              "hash_inputs" : ["ig_md.remain2_hi", "ig_md.remain2_lo"],
+              "stateful_alu_details" : {
+                "name" : "table_3_hi_swap_0",
+                "single_bit_mode" : false,
+                "update_lo_1_value" : {
+                  "operand_1_type" : "phv",
+                  "operand_1_value" : "ingress::ig_md.remain2_hi"
+                },
+                "output_value" : {
+                  "operand_1_type" : "memory",
+                  "operand_1_value" : "mem_lo"
+                },
+                "output_dst" : "ig_md.remain3_hi"
+              }
+            }
+          ]
+        },
+        {
+          "name" : "WaterfallIngress.lookup3_hi",
+          "primitives" : [
+            {
+              "name" : "ExecuteStatefulAluFromHashPrimitive",
+              "dst" : {
+                "type" : "stateful",
+                "name" : "WaterfallIngress.table_3_hi"
+              },
+              "idx" : {
+                "type" : "hash",
+                "name" : "hash_WaterfallIngress.table_3_hi",
+                "algorithm" : "crc_32"
+              },
+              "hash_inputs" : ["ig_md.remain2_hi", "ig_md.remain2_lo"],
+              "stateful_alu_details" : {
+                "name" : "table_3_hi_lookup_0",
+                "single_bit_mode" : false,
+                "output_dst" : "ig_md.found_hi"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "ig_md.remain3_hi"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "hdr.ipv4.src_addr"
+              }
+            }
+          ]
+        },
+        {
+          "name" : "WaterfallIngress.no_action",
+          "primitives" : []
+        }
+      ]
+    },
+    {
+      "name" : "WaterfallIngress.swap3_lo",
+      "actions" : [
+        {
+          "name" : "WaterfallIngress.do_swap3_lo",
+          "primitives" : [
+            {
+              "name" : "ExecuteStatefulAluFromHashPrimitive",
+              "dst" : {
+                "type" : "stateful",
+                "name" : "WaterfallIngress.table_3_lo"
+              },
+              "idx" : {
+                "type" : "hash",
+                "name" : "hash_WaterfallIngress.table_3_lo",
+                "algorithm" : "crc_32"
+              },
+              "hash_inputs" : ["ig_md.remain2_hi", "ig_md.remain2_lo"],
+              "stateful_alu_details" : {
+                "name" : "table_3_lo_swap_0",
+                "single_bit_mode" : false,
+                "update_lo_1_value" : {
+                  "operand_1_type" : "phv",
+                  "operand_1_value" : "ingress::ig_md.remain2_lo"
+                },
+                "output_value" : {
+                  "operand_1_type" : "memory",
+                  "operand_1_value" : "mem_lo"
+                },
+                "output_dst" : "ig_md.remain3_lo"
+              }
+            }
+          ]
+        },
+        {
+          "name" : "WaterfallIngress.lookup3_lo",
+          "primitives" : [
+            {
+              "name" : "ExecuteStatefulAluFromHashPrimitive",
+              "dst" : {
+                "type" : "stateful",
+                "name" : "WaterfallIngress.table_3_lo"
+              },
+              "idx" : {
+                "type" : "hash",
+                "name" : "hash_WaterfallIngress.table_3_lo",
+                "algorithm" : "crc_32"
+              },
+              "hash_inputs" : ["ig_md.remain2_hi", "ig_md.remain2_lo"],
+              "stateful_alu_details" : {
+                "name" : "table_3_lo_lookup_0",
+                "single_bit_mode" : false,
+                "output_dst" : "ig_md.found_lo"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "ig_md.remain3_lo"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "hdr.ipv4.src_addr"
+              }
+            }
+          ]
+        },
+        {
+          "name" : "WaterfallIngress.no_action",
+          "primitives" : []
+        }
+      ]
+    },
+    {
+      "name" : "WaterfallIngress.swap4_hi",
+      "actions" : [
+        {
+          "name" : "WaterfallIngress.do_swap4_hi",
+          "primitives" : [
+            {
+              "name" : "ExecuteStatefulAluFromHashPrimitive",
+              "dst" : {
+                "type" : "stateful",
+                "name" : "WaterfallIngress.table_4_hi"
+              },
+              "idx" : {
+                "type" : "hash",
+                "name" : "hash_WaterfallIngress.table_4_hi",
+                "algorithm" : "crc_32"
+              },
+              "hash_inputs" : ["ig_md.remain3_hi", "ig_md.remain3_lo"],
+              "stateful_alu_details" : {
+                "name" : "table_4_hi_swap_0",
+                "single_bit_mode" : false,
+                "update_lo_1_value" : {
+                  "operand_1_type" : "phv",
+                  "operand_1_value" : "ingress::ig_md.remain3_hi"
+                },
+                "output_value" : {
+                  "operand_1_type" : "memory",
+                  "operand_1_value" : "mem_lo"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name" : "WaterfallIngress.lookup4_hi",
+          "primitives" : [
+            {
+              "name" : "ExecuteStatefulAluFromHashPrimitive",
+              "dst" : {
+                "type" : "stateful",
+                "name" : "WaterfallIngress.table_4_hi"
+              },
+              "idx" : {
+                "type" : "hash",
+                "name" : "hash_WaterfallIngress.table_4_hi",
+                "algorithm" : "crc_32"
+              },
+              "hash_inputs" : ["ig_md.remain3_hi", "ig_md.remain3_lo"],
+              "stateful_alu_details" : {
+                "name" : "table_4_hi_lookup_0",
+                "single_bit_mode" : false,
+                "output_dst" : "ig_md.found_hi"
+              }
+            }
+          ]
+        },
+        {
+          "name" : "WaterfallIngress.no_action",
+          "primitives" : []
+        }
+      ]
+    },
+    {
+      "name" : "WaterfallIngress.swap4_lo",
+      "actions" : [
+        {
+          "name" : "WaterfallIngress.do_swap4_lo",
+          "primitives" : [
+            {
+              "name" : "ExecuteStatefulAluFromHashPrimitive",
+              "dst" : {
+                "type" : "stateful",
+                "name" : "WaterfallIngress.table_4_lo"
+              },
+              "idx" : {
+                "type" : "hash",
+                "name" : "hash_WaterfallIngress.table_4_lo",
+                "algorithm" : "crc_32"
+              },
+              "hash_inputs" : ["ig_md.remain3_hi", "ig_md.remain3_lo"],
+              "stateful_alu_details" : {
+                "name" : "table_4_lo_swap_0",
+                "single_bit_mode" : false,
+                "update_lo_1_value" : {
+                  "operand_1_type" : "phv",
+                  "operand_1_value" : "ingress::ig_md.remain3_lo"
+                },
+                "output_value" : {
+                  "operand_1_type" : "memory",
+                  "operand_1_value" : "mem_lo"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name" : "WaterfallIngress.lookup4_lo",
+          "primitives" : [
+            {
+              "name" : "ExecuteStatefulAluFromHashPrimitive",
+              "dst" : {
+                "type" : "stateful",
+                "name" : "WaterfallIngress.table_4_lo"
+              },
+              "idx" : {
+                "type" : "hash",
+                "name" : "hash_WaterfallIngress.table_4_lo",
+                "algorithm" : "crc_32"
+              },
+              "hash_inputs" : ["ig_md.remain3_hi", "ig_md.remain3_lo"],
+              "stateful_alu_details" : {
+                "name" : "table_4_lo_lookup_0",
                 "single_bit_mode" : false,
                 "output_dst" : "ig_md.found_lo"
               }
@@ -475,45 +745,12 @@
                 "type" : "immediate",
                 "name" : "3w5"
               }
-            },
-            {
-              "name" : "ModifyFieldPrimitive",
-              "operation" : "set",
-              "dst" : {
-                "type" : "phv",
-                "name" : "ig_intr_md_for_dprsr.mirror_type"
-              },
-              "dst_mask" : {
-                "type" : "immediate",
-                "name" : "7"
-              },
-              "src1" : {
-                "type" : "immediate",
-                "name" : "3w0"
-              }
             }
           ]
         },
         {
           "name" : "WaterfallIngress.no_action",
-          "primitives" : [
-            {
-              "name" : "ModifyFieldPrimitive",
-              "operation" : "set",
-              "dst" : {
-                "type" : "phv",
-                "name" : "ig_intr_md_for_dprsr.mirror_type"
-              },
-              "dst_mask" : {
-                "type" : "immediate",
-                "name" : "7"
-              },
-              "src1" : {
-                "type" : "immediate",
-                "name" : "3w0"
-              }
-            }
-          ]
+          "primitives" : []
         }
       ]
     },
@@ -667,7 +904,7 @@
               "operation" : "set",
               "dst" : {
                 "type" : "phv",
-                "name" : "$tmp22"
+                "name" : "$tmp44"
               },
               "dst_mask" : {
                 "type" : "immediate",
@@ -722,7 +959,7 @@
               },
               "src2" : {
                 "type" : "phv",
-                "name" : "$tmp22"
+                "name" : "$tmp44"
               }
             }
           ]
@@ -744,7 +981,7 @@
               "operation" : "set",
               "dst" : {
                 "type" : "phv",
-                "name" : "$tmp23"
+                "name" : "$tmp45"
               },
               "dst_mask" : {
                 "type" : "immediate",
@@ -799,7 +1036,7 @@
               },
               "src2" : {
                 "type" : "phv",
-                "name" : "$tmp23"
+                "name" : "$tmp45"
               }
             }
           ]

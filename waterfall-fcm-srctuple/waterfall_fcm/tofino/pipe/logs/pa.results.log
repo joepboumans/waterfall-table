@@ -1,8 +1,8 @@
 +---------------------------------------------------------------------+
 |  Log file: pa.results.log                                           |
 |  Compiler version: 9.11.0                                           |
-|  Created on: Thu Feb 27 15:19:47 2025                               |
-|  Run ID: 2970b28da4ce4e3e                                           |
+|  Created on: Thu Feb 27 16:47:12 2025                               |
+|  Run ID: 609d14c6f1544a25                                           |
 +---------------------------------------------------------------------+
 
 Allocation state: Final Allocation
@@ -10,17 +10,17 @@ Allocation state: Final Allocation
 |       PHV Group        | Containers Used |   Bits Used   | Bits Available |
 | (container bit widths) |     (% used)    |    (% used)   |                |
 ------------------------------------------------------------------------------
-|         0 (32)         |    4 (25.00%)   |  112 (21.88%) |      512       |
+|         0 (32)         |    6 (37.50%)   |  128 (25.00%) |      512       |
 |         1 (32)         |    7 (43.75%)   |  224 (43.75%) |      512       |
 |         2 (32)         |    0 (0.00%)    |   0 (0.00%)   |      512       |
 |         3 (32)         |    0 (0.00%)    |   0 (0.00%)   |      512       |
-|    Total for 32 bit    |   11 (17.19%)   |  336 (16.41%) |      2048      |
+|    Total for 32 bit    |   13 (20.31%)   |  352 (17.19%) |      2048      |
 |                        |                 |               |                |
-|         4 (8)          |    7 (43.75%)   |  39 (30.47%)  |      128       |
+|         4 (8)          |    7 (43.75%)   |  34 (26.56%)  |      128       |
 |         5 (8)          |    2 (12.50%)   |   7 (5.47%)   |      128       |
 |         6 (8)          |    0 (0.00%)    |   0 (0.00%)   |      128       |
 |         7 (8)          |    0 (0.00%)    |   0 (0.00%)   |      128       |
-|    Total for 8 bit     |    9 (14.06%)   |   46 (8.98%)  |      512       |
+|    Total for 8 bit     |    9 (14.06%)   |   41 (8.01%)  |      512       |
 |                        |                 |               |                |
 |         8 (16)         |    2 (12.50%)   |   20 (7.81%)  |      256       |
 |         9 (16)         |    1 (6.25%)    |   9 (3.52%)   |      256       |
@@ -43,9 +43,9 @@ Allocation state: Final Allocation
 |       20 (16) T        |    0 (0.00%)    |   0 (0.00%)   |      256       |
 |    Total for 16 bit    |   21 (43.75%)   |  336 (43.75%) |      768       |
 |                        |                 |               |                |
-|       MAU total        |   23 (10.27%)   |  411 (10.03%) |      4096      |
+|       MAU total        |   25 (11.16%)   |  422 (10.30%) |      4096      |
 |     Tagalong total     |   47 (41.96%)   |  904 (44.14%) |      2048      |
-|     Overall total      |   70 (20.83%)   | 1315 (21.40%) |      6144      |
+|     Overall total      |   72 (21.43%)   | 1326 (21.58%) |      6144      |
 ------------------------------------------------------------------------------
 
 --------------------------------------------
@@ -54,18 +54,20 @@ PHV Allocation
 
 Allocations in Group 0 32 bits
   32-bit PHV 0 (ingress): phv0[31:0] = hdr.ipv4.src_addr[31:0] (deparsed)
-  32-bit PHV 1 (ingress): phv1[23:16] = ig_md.idx1[15:8]
   32-bit PHV 1 (ingress): phv1[15:0] = ig_md.remain1_lo[15:0]
-  32-bit PHV 2 (ingress): phv2[31:0] = ig_md.resubmit_md.remain[31:0] (deparsed)
-  32-bit PHV 3 (ingress): phv3[23:16] = ig_md.idx2[15:8]
-  32-bit PHV 3 (ingress): phv3[15:0] = ig_md.remain1_hi[15:0]
-  >> 4 in ingress and 0 in egress
+  32-bit PHV 1 (ingress): phv1[15:0] = ig_md.remain3_lo[15:0]
+  32-bit PHV 2 (ingress): phv2[15:0] = ig_md.remain2_lo[15:0]
+  32-bit PHV 3 (ingress): phv3[31:0] = ig_md.resubmit_md.remain[31:0] (deparsed)
+  32-bit PHV 4 (ingress): phv4[15:0] = ig_md.remain1_hi[15:0]
+  32-bit PHV 4 (ingress): phv4[15:0] = ig_md.remain3_hi[15:0]
+  32-bit PHV 5 (ingress): phv5[15:0] = ig_md.remain2_hi[15:0]
+  >> 6 in ingress and 0 in egress
 
 Allocations in Group 1 32 bits
   32-bit PHV 16 (egress): phv16[31:0] = eg_md.result_d1[31:0]
-  32-bit PHV 17 (egress): phv17[31:0] = $tmp22[31:0]
+  32-bit PHV 17 (egress): phv17[31:0] = $tmp44[31:0]
   32-bit PHV 18 (egress): phv18[31:0] = eg_md.result_d2[31:0]
-  32-bit PHV 19 (egress): phv19[31:0] = $tmp23[31:0]
+  32-bit PHV 19 (egress): phv19[31:0] = $tmp45[31:0]
   32-bit PHV 20 (egress): phv20[31:0] = hdr.ipv4.src_addr[31:0] (deparsed)
   32-bit PHV 21 (egress): phv21[31:0] = eg_md.hash_meta_d1[31:0]
   32-bit PHV 22 (egress): phv22[31:0] = eg_md.hash_meta_d2[31:0]
@@ -77,7 +79,6 @@ Allocations in Group 4 8 bits
   8-bit PHV 64 (ingress): phv64[7:0] = $tmp3[7:0] (deparsed)
   8-bit PHV 65 (ingress): phv65[2:0] = ig_intr_md_for_dprsr.digest_type[2:0] (deparsed)
   8-bit PHV 66 (ingress): phv66[2:0] = ig_intr_md_for_dprsr.resubmit_type[2:0] (deparsed)
-  8-bit PHV 67 (ingress): phv67[7:0] = ig_md.idx1[7:0]
   8-bit PHV 67 (ingress): phv67[2:0] = ig_intr_md_for_dprsr.mirror_type[2:0] (deparsed)
   8-bit PHV 68 (ingress): phv68[4:4] = ig_md.found_lo[0:0]
   8-bit PHV 68 (ingress): phv68[3:3] = ig_md.found_hi[0:0]
@@ -105,7 +106,6 @@ Allocations in Group 8 16 bits
   16-bit PHV 129 (ingress): phv129[15:15] = ig_intr_md.resubmit_flag[0:0]
   16-bit PHV 129 (ingress): phv129[9:0] = $tmp2[9:0] (deparsed)
   16-bit PHV 129 (ingress): phv129[8:0] = ig_intr_md.ingress_port[8:0]
-  16-bit PHV 129 (ingress): phv129[7:0] = ig_md.idx2[7:0]
   >> 2 in ingress and 0 in egress
 
 Allocations in Group 9 16 bits

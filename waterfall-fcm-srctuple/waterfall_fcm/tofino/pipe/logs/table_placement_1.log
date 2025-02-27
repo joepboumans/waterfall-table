@@ -1,17 +1,23 @@
 Table Placement ignores container conflicts? 0
 Table placement starting on pipe with DEFAULT PLACEMENT approach
-ingress: [3] 0 11 111 1111 11111 111111 1111111
+ingress: [3] 1 11 111 1111 11111 111111 1111111 11111111 111111111
   forward_0{ E -1+2, 2 0K }
-  tbl_waterfall365
   swap1_hi_0{ E -7+2, 0 0K }
     stateful WaterfallIngress.table_1_hi  66K
   swap1_lo_0{ E -7+2, 0 0K }
     stateful WaterfallIngress.table_1_lo  66K
-  tbl_waterfall368
   swap2_hi_0{ E -7+2, 0 0K }
     stateful WaterfallIngress.table_2_hi  66K
   swap2_lo_0{ E -7+2, 0 0K }
     stateful WaterfallIngress.table_2_lo  66K
+  swap3_hi_0{ E -7+2, 0 0K }
+    stateful WaterfallIngress.table_3_hi  66K
+  swap3_lo_0{ E -7+2, 0 0K }
+    stateful WaterfallIngress.table_3_lo  66K
+  swap4_hi_0{ E -7+2, 0 0K }
+    stateful WaterfallIngress.table_4_hi  66K
+  swap4_lo_0{ E -7+2, 0 0K }
+    stateful WaterfallIngress.table_4_lo  66K
   resub_0{ E -7+1, 0 0K }
 egress: [4] 0 00 010 0010 00000 010101 0000000 00101001 010101100 0010100110
   tbl_count_pkt
@@ -33,7 +39,7 @@ egress: [4] 0 00 010 0010 00000 010101 0000000 00101001 010101100 0010100110
   fcmsketch_tb_fcm_l2_to_l3_d2{ E 22+0, 0 0K }
     stateful FcmEgress.fcmsketch.sketch_reg_l3_d2 8192
 
-stage 0, work: [ 3540663, 3556856 ], partly placed 0, placed 0
+stage 0, work: [ 4221967, 4240467 ], partly placed 0, placed 0
     { id=0 ram=0 tcam=0 mram=0 eixb=0 tixb=0 malu=0 salu=0 local_tinds=0 }
 forward_0 is not a gateway! Aborting search for merge choices
 try_place_table(forward_0, stage=0)
@@ -49,25 +55,14 @@ try_place_table(forward_0, stage=0)
     Selected stage: 0    Furthest stage: 0
     try_place_table returning 5120 of forward_0 in stage 0
     Pl vector: forward_0 
-tbl_waterfall365 is not a gateway! Aborting search for merge choices
-try_place_table(tbl_waterfall365, stage=0)
-    Initial stage is 0, initial entries is 1
-  Try_alloc_all for Table use
-  Trying to allocate layout for tbl_waterfall365 
-  Picking layout option for table : tbl_waterfall365
-  picked layout for tbl_waterfall365 FormatType(02) layout: 0hV ixbar:0B/0b match:0B/0b
-    way:{ g:1 e:0 w:1 }
-    entries:0 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
-  Trying to allocate adb for tbl_waterfall365 
-  Trying to allocate imem for tbl_waterfall365 
-    Selected stage: 0    Furthest stage: 0
-    try_place_table returning 1 of tbl_waterfall365 in stage 0
-    Pl vector: tbl_waterfall365 
   - skipping swap1_hi_0 due to in-sequence control dependence on forward_0
   - skipping swap1_lo_0 due to in-sequence control dependence on forward_0
-  - skipping tbl_waterfall368 due to in-sequence control dependence on forward_0
   - skipping swap2_hi_0 due to in-sequence control dependence on forward_0
   - skipping swap2_lo_0 due to in-sequence control dependence on forward_0
+  - skipping swap3_hi_0 due to in-sequence control dependence on forward_0
+  - skipping swap3_lo_0 due to in-sequence control dependence on forward_0
+  - skipping swap4_hi_0 due to in-sequence control dependence on forward_0
+  - skipping swap4_lo_0 due to in-sequence control dependence on forward_0
   - skipping resub_0 due to in-sequence control dependence on forward_0
 tbl_count_pkt is not a gateway! Aborting search for merge choices
 try_place_table(tbl_count_pkt, stage=0)
@@ -137,117 +132,6 @@ try_place_table(fcmsketch_tb_fcm_l1_to_l2_d2$precompute, stage=0)
   Trying to allocate adb for fcmsketch_tb_fcm_l1_to_l2_d2$precompute 
   Trying to allocate imem for fcmsketch_tb_fcm_l1_to_l2_d2$precompute 
     Selected stage: 0    Furthest stage: 0
-    try_place_table returning 1 of fcmsketch_tb_fcm_l1_to_l2_d2$precompute in stage 0
-    Pl vector: fcmsketch_tb_fcm_l1_to_l2_d2$precompute 
-  - skipping fcmsketch_tb_fcm_l1_to_l2_d2 due to in-sequence control dependence on tbl_fcmsketch_fcm_hash_d2
-  - skipping fcmsketch_tb_fcm_l2_to_l3_d1 due to in-sequence control dependence on tbl_fcmsketch_fcm_hash_d1
-  - skipping fcmsketch_tb_fcm_l2_to_l3_d2 due to in-sequence control dependence on tbl_fcmsketch_fcm_hash_d2
-found 7 tables that could be placed: [ forward_0, tbl_waterfall365, tbl_count_pkt, tbl_fcmsketch_fcm_hash_d1, tbl_fcmsketch_fcm_hash_d2, fcmsketch_tb_fcm_l1_to_l2_d1$precompute, fcmsketch_tb_fcm_l1_to_l2_d2$precompute ]
-Initial best is first table seen: forward_0
-For trial t : tbl_waterfall365 with best: forward_0
-    Updating best to tbl_waterfall365 from forward_0 for reason: default choice
-For trial t : tbl_count_pkt with best: tbl_waterfall365
-    Keeping best tbl_waterfall365 for reason: longer downward prop control-included dependence tail chain
-For trial t : tbl_fcmsketch_fcm_hash_d1 with best: tbl_waterfall365
-    Keeping best tbl_waterfall365 for reason: longer downward prop control-included dependence tail chain
-For trial t : tbl_fcmsketch_fcm_hash_d2 with best: tbl_waterfall365
-    Keeping best tbl_waterfall365 for reason: longer downward prop control-included dependence tail chain
-For trial t : fcmsketch_tb_fcm_l1_to_l2_d1$precompute with best: tbl_waterfall365
-    Keeping best tbl_waterfall365 for reason: longer downward prop control-included dependence tail chain
-For trial t : fcmsketch_tb_fcm_l1_to_l2_d2$precompute with best: tbl_waterfall365
-    Keeping best tbl_waterfall365 for reason: longer downward prop control-included dependence tail chain
-placing 1 entries of tbl_waterfall365 in stage 0(0) FormatType(02)
-stage 0, work: [ 3540663, 3556856 ], partly placed 0, placed 1
-    { id=0 ram=0 tcam=0 mram=0 eixb=0 tixb=0 malu=0 salu=0 local_tinds=0 }
-forward_0 is not a gateway! Aborting search for merge choices
-try_place_table(forward_0, stage=0)
-    Initial stage is 0, initial entries is 512
-  Try_alloc_all for Table use
-  Trying to allocate layout for forward_0 
-  Picking layout option for table : forward_0
-  picked layout for forward_0 FormatType(02) layout: 512eV ixbar:2B/9b match:0B/-1b gh:2 adb:2 ov:11 imm:9
-    way:{ g:5 e:0 w:1 1 }
-    entries:5120 srams:1 local_tinds: 0 maprams:0 tcams:0 afi:1 I
-  Trying to allocate adb for forward_0 
-  Trying to allocate imem for forward_0 
-    Selected stage: 0    Furthest stage: 1
-    try_place_table returning 5120 of forward_0 in stage 0
-    Pl vector: forward_0 
-    - skipping tbl_waterfall365 as its already done
-  - skipping swap1_hi_0 due to in-sequence control dependence on forward_0
-  - skipping swap1_lo_0 due to in-sequence control dependence on forward_0
-  - skipping tbl_waterfall368 due to in-sequence control dependence on forward_0
-  - skipping swap2_hi_0 due to in-sequence control dependence on forward_0
-  - skipping swap2_lo_0 due to in-sequence control dependence on forward_0
-  - skipping resub_0 due to in-sequence control dependence on forward_0
-tbl_count_pkt is not a gateway! Aborting search for merge choices
-try_place_table(tbl_count_pkt, stage=0)
-    Initial stage is 0, initial entries is 1
-  Try_alloc_all for Table use
-  Trying to allocate layout for tbl_count_pkt 
-  Picking layout option for table : tbl_count_pkt
-  picked layout for tbl_count_pkt FormatType(022) layout: 0V ixbar:0B/0b match:0B/0b ov:10
-    entries:0 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
-  Trying to allocate adb for tbl_count_pkt 
-  Trying to allocate imem for tbl_count_pkt 
-    Selected stage: 0    Furthest stage: 1
-    try_place_table returning 1 of tbl_count_pkt in stage 0
-    Pl vector: tbl_count_pkt 
-tbl_fcmsketch_fcm_hash_d1 is not a gateway! Aborting search for merge choices
-try_place_table(tbl_fcmsketch_fcm_hash_d1, stage=0)
-    Initial stage is 0, initial entries is 1
-  Try_alloc_all for Table use
-  Trying to allocate layout for tbl_fcmsketch_fcm_hash_d1 
-  Picking layout option for table : tbl_fcmsketch_fcm_hash_d1
-  picked layout for tbl_fcmsketch_fcm_hash_d1 FormatType(02) layout: 0hV ixbar:0B/0b match:0B/0b
-    way:{ g:1 e:0 w:1 }
-    entries:0 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
-  Trying to allocate adb for tbl_fcmsketch_fcm_hash_d1 
-  Trying to allocate imem for tbl_fcmsketch_fcm_hash_d1 
-    Selected stage: 0    Furthest stage: 1
-    try_place_table returning 1 of tbl_fcmsketch_fcm_hash_d1 in stage 0
-    Pl vector: tbl_fcmsketch_fcm_hash_d1 
-tbl_fcmsketch_fcm_hash_d2 is not a gateway! Aborting search for merge choices
-try_place_table(tbl_fcmsketch_fcm_hash_d2, stage=0)
-    Initial stage is 0, initial entries is 1
-  Try_alloc_all for Table use
-  Trying to allocate layout for tbl_fcmsketch_fcm_hash_d2 
-  Picking layout option for table : tbl_fcmsketch_fcm_hash_d2
-  picked layout for tbl_fcmsketch_fcm_hash_d2 FormatType(02) layout: 0hV ixbar:0B/0b match:0B/0b
-    way:{ g:1 e:0 w:1 }
-    entries:0 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
-  Trying to allocate adb for tbl_fcmsketch_fcm_hash_d2 
-  Trying to allocate imem for tbl_fcmsketch_fcm_hash_d2 
-    Selected stage: 0    Furthest stage: 1
-    try_place_table returning 1 of tbl_fcmsketch_fcm_hash_d2 in stage 0
-    Pl vector: tbl_fcmsketch_fcm_hash_d2 
-  - skipping tbl_fcmsketch_fcm_action_l1_d1 due to in-sequence control dependence on tbl_fcmsketch_fcm_hash_d1
-  - skipping tbl_fcmsketch_fcm_action_l1_d2 due to in-sequence control dependence on tbl_fcmsketch_fcm_hash_d2
-fcmsketch_tb_fcm_l1_to_l2_d1$precompute is not a gateway! Aborting search for merge choices
-try_place_table(fcmsketch_tb_fcm_l1_to_l2_d1$precompute, stage=0)
-    Initial stage is 0, initial entries is 1
-  Try_alloc_all for Table use
-  Trying to allocate layout for fcmsketch_tb_fcm_l1_to_l2_d1$precompute 
-  Picking layout option for table : fcmsketch_tb_fcm_l1_to_l2_d1$precompute
-  picked layout for fcmsketch_tb_fcm_l1_to_l2_d1$precompute FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
-    entries:0 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
-  Trying to allocate adb for fcmsketch_tb_fcm_l1_to_l2_d1$precompute 
-  Trying to allocate imem for fcmsketch_tb_fcm_l1_to_l2_d1$precompute 
-    Selected stage: 0    Furthest stage: 1
-    try_place_table returning 1 of fcmsketch_tb_fcm_l1_to_l2_d1$precompute in stage 0
-    Pl vector: fcmsketch_tb_fcm_l1_to_l2_d1$precompute 
-  - skipping fcmsketch_tb_fcm_l1_to_l2_d1 due to in-sequence control dependence on tbl_fcmsketch_fcm_hash_d1
-fcmsketch_tb_fcm_l1_to_l2_d2$precompute is not a gateway! Aborting search for merge choices
-try_place_table(fcmsketch_tb_fcm_l1_to_l2_d2$precompute, stage=0)
-    Initial stage is 0, initial entries is 1
-  Try_alloc_all for Table use
-  Trying to allocate layout for fcmsketch_tb_fcm_l1_to_l2_d2$precompute 
-  Picking layout option for table : fcmsketch_tb_fcm_l1_to_l2_d2$precompute
-  picked layout for fcmsketch_tb_fcm_l1_to_l2_d2$precompute FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
-    entries:0 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
-  Trying to allocate adb for fcmsketch_tb_fcm_l1_to_l2_d2$precompute 
-  Trying to allocate imem for fcmsketch_tb_fcm_l1_to_l2_d2$precompute 
-    Selected stage: 0    Furthest stage: 1
     try_place_table returning 1 of fcmsketch_tb_fcm_l1_to_l2_d2$precompute in stage 0
     Pl vector: fcmsketch_tb_fcm_l1_to_l2_d2$precompute 
   - skipping fcmsketch_tb_fcm_l1_to_l2_d2 due to in-sequence control dependence on tbl_fcmsketch_fcm_hash_d2
@@ -265,11 +149,10 @@ For trial t : fcmsketch_tb_fcm_l1_to_l2_d1$precompute with best: forward_0
     Keeping best forward_0 for reason: longer downward prop control-included dependence tail chain
 For trial t : fcmsketch_tb_fcm_l1_to_l2_d2$precompute with best: forward_0
     Keeping best forward_0 for reason: longer downward prop control-included dependence tail chain
-placing 5120 entries of forward_0 in stage 0(1) FormatType(02)
-stage 0, work: [ 3540663, 3556856 ], partly placed 0, placed 2
+placing 5120 entries of forward_0 in stage 0(0) FormatType(02)
+stage 0, work: [ 4221967, 4240467 ], partly placed 0, placed 1
     { id=1 ram=1 tcam=0 mram=0 eixb=2 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping forward_0 as its already done
-    - skipping tbl_waterfall365 as its already done
 swap1_hi_0 is not a gateway! Aborting search for merge choices
 try_place_table(swap1_hi_0, stage=0)
     - dependency between forward_0 and table advances stage
@@ -286,9 +169,12 @@ try_place_table(swap1_hi_0, stage=0)
     try_place_table returning 2048 of swap1_hi_0 in stage 1
     Pl vector: swap1_hi_0 
   - skipping swap1_lo_0 due to in-sequence control dependence on swap1_hi_0
-  - skipping tbl_waterfall368 due to in-sequence control dependence on swap1_hi_0
   - skipping swap2_hi_0 due to in-sequence control dependence on swap1_hi_0
   - skipping swap2_lo_0 due to in-sequence control dependence on swap1_hi_0
+  - skipping swap3_hi_0 due to in-sequence control dependence on swap1_hi_0
+  - skipping swap3_lo_0 due to in-sequence control dependence on swap1_hi_0
+  - skipping swap4_hi_0 due to in-sequence control dependence on swap1_hi_0
+  - skipping swap4_lo_0 due to in-sequence control dependence on swap1_hi_0
   - skipping resub_0 due to in-sequence control dependence on swap1_hi_0
 tbl_count_pkt is not a gateway! Aborting search for merge choices
 try_place_table(tbl_count_pkt, stage=0)
@@ -375,11 +261,10 @@ For trial t : fcmsketch_tb_fcm_l1_to_l2_d1$precompute with best: tbl_fcmsketch_f
     Keeping best tbl_fcmsketch_fcm_hash_d2 for reason: longer downward prop control-included dependence tail chain
 For trial t : fcmsketch_tb_fcm_l1_to_l2_d2$precompute with best: tbl_fcmsketch_fcm_hash_d2
     Keeping best tbl_fcmsketch_fcm_hash_d2 for reason: longer downward prop control-included dependence tail chain
-placing 1 entries of tbl_fcmsketch_fcm_hash_d2 in stage 0(2) FormatType(02)
-stage 0, work: [ 3540663, 3556856 ], partly placed 0, placed 3
+placing 1 entries of tbl_fcmsketch_fcm_hash_d2 in stage 0(1) FormatType(02)
+stage 0, work: [ 4221967, 4240467 ], partly placed 0, placed 2
     { id=1 ram=1 tcam=0 mram=0 eixb=2 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping forward_0 as its already done
-    - skipping tbl_waterfall365 as its already done
 swap1_hi_0 is not a gateway! Aborting search for merge choices
 try_place_table(swap1_hi_0, stage=0)
     - dependency between forward_0 and table advances stage
@@ -396,9 +281,12 @@ try_place_table(swap1_hi_0, stage=0)
     try_place_table returning 2048 of swap1_hi_0 in stage 1
     Pl vector: swap1_hi_0 
   - skipping swap1_lo_0 due to in-sequence control dependence on swap1_hi_0
-  - skipping tbl_waterfall368 due to in-sequence control dependence on swap1_hi_0
   - skipping swap2_hi_0 due to in-sequence control dependence on swap1_hi_0
   - skipping swap2_lo_0 due to in-sequence control dependence on swap1_hi_0
+  - skipping swap3_hi_0 due to in-sequence control dependence on swap1_hi_0
+  - skipping swap3_lo_0 due to in-sequence control dependence on swap1_hi_0
+  - skipping swap4_hi_0 due to in-sequence control dependence on swap1_hi_0
+  - skipping swap4_lo_0 due to in-sequence control dependence on swap1_hi_0
   - skipping resub_0 due to in-sequence control dependence on swap1_hi_0
 tbl_count_pkt is not a gateway! Aborting search for merge choices
 try_place_table(tbl_count_pkt, stage=0)
@@ -486,11 +374,10 @@ For trial t : fcmsketch_tb_fcm_l1_to_l2_d1$precompute with best: tbl_fcmsketch_f
     Keeping best tbl_fcmsketch_fcm_hash_d1 for reason: longer downward prop control-included dependence tail chain
 For trial t : fcmsketch_tb_fcm_l1_to_l2_d2$precompute with best: tbl_fcmsketch_fcm_hash_d1
     Keeping best tbl_fcmsketch_fcm_hash_d1 for reason: longer downward prop control-included dependence tail chain
-placing 1 entries of tbl_fcmsketch_fcm_hash_d1 in stage 0(3) FormatType(02)
-stage 0, work: [ 3540663, 3556856 ], partly placed 0, placed 4
+placing 1 entries of tbl_fcmsketch_fcm_hash_d1 in stage 0(2) FormatType(02)
+stage 0, work: [ 4221967, 4240467 ], partly placed 0, placed 3
     { id=1 ram=1 tcam=0 mram=0 eixb=2 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping forward_0 as its already done
-    - skipping tbl_waterfall365 as its already done
 swap1_hi_0 is not a gateway! Aborting search for merge choices
 try_place_table(swap1_hi_0, stage=0)
     - dependency between forward_0 and table advances stage
@@ -507,9 +394,12 @@ try_place_table(swap1_hi_0, stage=0)
     try_place_table returning 2048 of swap1_hi_0 in stage 1
     Pl vector: swap1_hi_0 
   - skipping swap1_lo_0 due to in-sequence control dependence on swap1_hi_0
-  - skipping tbl_waterfall368 due to in-sequence control dependence on swap1_hi_0
   - skipping swap2_hi_0 due to in-sequence control dependence on swap1_hi_0
   - skipping swap2_lo_0 due to in-sequence control dependence on swap1_hi_0
+  - skipping swap3_hi_0 due to in-sequence control dependence on swap1_hi_0
+  - skipping swap3_lo_0 due to in-sequence control dependence on swap1_hi_0
+  - skipping swap4_hi_0 due to in-sequence control dependence on swap1_hi_0
+  - skipping swap4_lo_0 due to in-sequence control dependence on swap1_hi_0
   - skipping resub_0 due to in-sequence control dependence on swap1_hi_0
 tbl_count_pkt is not a gateway! Aborting search for merge choices
 try_place_table(tbl_count_pkt, stage=0)
@@ -598,11 +488,10 @@ For trial t : fcmsketch_tb_fcm_l1_to_l2_d1$precompute with best: tbl_count_pkt
     Updating best to fcmsketch_tb_fcm_l1_to_l2_d1$precompute from tbl_count_pkt for reason: longer downward prop control-included dependence tail chain
 For trial t : fcmsketch_tb_fcm_l1_to_l2_d2$precompute with best: fcmsketch_tb_fcm_l1_to_l2_d1$precompute
     Updating best to fcmsketch_tb_fcm_l1_to_l2_d2$precompute from fcmsketch_tb_fcm_l1_to_l2_d1$precompute for reason: default choice
-placing 1 entries of fcmsketch_tb_fcm_l1_to_l2_d2$precompute in stage 0(4) FormatType(02)
-stage 0, work: [ 3540663, 3556856 ], partly placed 0, placed 5
+placing 1 entries of fcmsketch_tb_fcm_l1_to_l2_d2$precompute in stage 0(3) FormatType(02)
+stage 0, work: [ 4221967, 4240467 ], partly placed 0, placed 4
     { id=1 ram=1 tcam=0 mram=0 eixb=2 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping forward_0 as its already done
-    - skipping tbl_waterfall365 as its already done
 swap1_hi_0 is not a gateway! Aborting search for merge choices
 try_place_table(swap1_hi_0, stage=0)
     - dependency between forward_0 and table advances stage
@@ -619,9 +508,12 @@ try_place_table(swap1_hi_0, stage=0)
     try_place_table returning 2048 of swap1_hi_0 in stage 1
     Pl vector: swap1_hi_0 
   - skipping swap1_lo_0 due to in-sequence control dependence on swap1_hi_0
-  - skipping tbl_waterfall368 due to in-sequence control dependence on swap1_hi_0
   - skipping swap2_hi_0 due to in-sequence control dependence on swap1_hi_0
   - skipping swap2_lo_0 due to in-sequence control dependence on swap1_hi_0
+  - skipping swap3_hi_0 due to in-sequence control dependence on swap1_hi_0
+  - skipping swap3_lo_0 due to in-sequence control dependence on swap1_hi_0
+  - skipping swap4_hi_0 due to in-sequence control dependence on swap1_hi_0
+  - skipping swap4_lo_0 due to in-sequence control dependence on swap1_hi_0
   - skipping resub_0 due to in-sequence control dependence on swap1_hi_0
 tbl_count_pkt is not a gateway! Aborting search for merge choices
 try_place_table(tbl_count_pkt, stage=0)
@@ -696,11 +588,10 @@ For trial t : tbl_fcmsketch_fcm_action_l1_d2 with best: tbl_count_pkt
     Keeping best tbl_count_pkt for reason: earlier stage calculated
 For trial t : fcmsketch_tb_fcm_l1_to_l2_d1$precompute with best: tbl_count_pkt
     Updating best to fcmsketch_tb_fcm_l1_to_l2_d1$precompute from tbl_count_pkt for reason: longer downward prop control-included dependence tail chain
-placing 1 entries of fcmsketch_tb_fcm_l1_to_l2_d1$precompute in stage 0(5) FormatType(02)
-stage 0, work: [ 3540663, 3556856 ], partly placed 0, placed 6
+placing 1 entries of fcmsketch_tb_fcm_l1_to_l2_d1$precompute in stage 0(4) FormatType(02)
+stage 0, work: [ 4221967, 4240467 ], partly placed 0, placed 5
     { id=1 ram=1 tcam=0 mram=0 eixb=2 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping forward_0 as its already done
-    - skipping tbl_waterfall365 as its already done
 swap1_hi_0 is not a gateway! Aborting search for merge choices
 try_place_table(swap1_hi_0, stage=0)
     - dependency between forward_0 and table advances stage
@@ -717,9 +608,12 @@ try_place_table(swap1_hi_0, stage=0)
     try_place_table returning 2048 of swap1_hi_0 in stage 1
     Pl vector: swap1_hi_0 
   - skipping swap1_lo_0 due to in-sequence control dependence on swap1_hi_0
-  - skipping tbl_waterfall368 due to in-sequence control dependence on swap1_hi_0
   - skipping swap2_hi_0 due to in-sequence control dependence on swap1_hi_0
   - skipping swap2_lo_0 due to in-sequence control dependence on swap1_hi_0
+  - skipping swap3_hi_0 due to in-sequence control dependence on swap1_hi_0
+  - skipping swap3_lo_0 due to in-sequence control dependence on swap1_hi_0
+  - skipping swap4_hi_0 due to in-sequence control dependence on swap1_hi_0
+  - skipping swap4_lo_0 due to in-sequence control dependence on swap1_hi_0
   - skipping resub_0 due to in-sequence control dependence on swap1_hi_0
 tbl_count_pkt is not a gateway! Aborting search for merge choices
 try_place_table(tbl_count_pkt, stage=0)
@@ -780,11 +674,10 @@ For trial t : tbl_fcmsketch_fcm_action_l1_d1 with best: tbl_count_pkt
     Keeping best tbl_count_pkt for reason: earlier stage calculated
 For trial t : tbl_fcmsketch_fcm_action_l1_d2 with best: tbl_count_pkt
     Keeping best tbl_count_pkt for reason: earlier stage calculated
-placing 1 entries of tbl_count_pkt in stage 0(6) FormatType(022)
-stage 0, work: [ 3540663, 3556856 ], partly placed 0, placed 7
+placing 1 entries of tbl_count_pkt in stage 0(5) FormatType(022)
+stage 0, work: [ 4221967, 4240467 ], partly placed 0, placed 6
     { id=1 ram=1 tcam=0 mram=0 eixb=2 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping forward_0 as its already done
-    - skipping tbl_waterfall365 as its already done
 swap1_hi_0 is not a gateway! Aborting search for merge choices
 try_place_table(swap1_hi_0, stage=0)
     - dependency between forward_0 and table advances stage
@@ -801,9 +694,12 @@ try_place_table(swap1_hi_0, stage=0)
     try_place_table returning 2048 of swap1_hi_0 in stage 1
     Pl vector: swap1_hi_0 
   - skipping swap1_lo_0 due to in-sequence control dependence on swap1_hi_0
-  - skipping tbl_waterfall368 due to in-sequence control dependence on swap1_hi_0
   - skipping swap2_hi_0 due to in-sequence control dependence on swap1_hi_0
   - skipping swap2_lo_0 due to in-sequence control dependence on swap1_hi_0
+  - skipping swap3_hi_0 due to in-sequence control dependence on swap1_hi_0
+  - skipping swap3_lo_0 due to in-sequence control dependence on swap1_hi_0
+  - skipping swap4_hi_0 due to in-sequence control dependence on swap1_hi_0
+  - skipping swap4_lo_0 due to in-sequence control dependence on swap1_hi_0
   - skipping resub_0 due to in-sequence control dependence on swap1_hi_0
     - skipping tbl_count_pkt as its already done
     - skipping tbl_fcmsketch_fcm_hash_d1 as its already done
@@ -851,10 +747,9 @@ For trial t : tbl_fcmsketch_fcm_action_l1_d1 with best: swap1_hi_0
 For trial t : tbl_fcmsketch_fcm_action_l1_d2 with best: swap1_hi_0
     Keeping best swap1_hi_0 for reason: longer downward prop control-included dependence tail chain
 placing 2048 entries of swap1_hi_0 in stage 1(10) FormatType(022)
-stage 1, work: [ 3540663, 3556856 ], partly placed 0, placed 8
+stage 1, work: [ 4221967, 4240467 ], partly placed 0, placed 7
     { id=1 ram=9 tcam=0 mram=8 eixb=2 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping forward_0 as its already done
-    - skipping tbl_waterfall365 as its already done
     - skipping swap1_hi_0 as its already done
 swap1_lo_0 is not a gateway! Aborting search for merge choices
 try_place_table(swap1_lo_0, stage=1)
@@ -871,9 +766,12 @@ try_place_table(swap1_lo_0, stage=1)
     Selected stage: 2    Furthest stage: 2
     try_place_table returning 2048 of swap1_lo_0 in stage 2
     Pl vector: swap1_lo_0 
-  - skipping tbl_waterfall368 due to in-sequence control dependence on swap1_lo_0
   - skipping swap2_hi_0 due to in-sequence control dependence on swap1_lo_0
   - skipping swap2_lo_0 due to in-sequence control dependence on swap1_lo_0
+  - skipping swap3_hi_0 due to in-sequence control dependence on swap1_lo_0
+  - skipping swap3_lo_0 due to in-sequence control dependence on swap1_lo_0
+  - skipping swap4_hi_0 due to in-sequence control dependence on swap1_lo_0
+  - skipping swap4_lo_0 due to in-sequence control dependence on swap1_lo_0
   - skipping resub_0 due to in-sequence control dependence on swap1_lo_0
     - skipping tbl_count_pkt as its already done
     - skipping tbl_fcmsketch_fcm_hash_d1 as its already done
@@ -919,10 +817,9 @@ For trial t : tbl_fcmsketch_fcm_action_l1_d1 with best: swap1_lo_0
 For trial t : tbl_fcmsketch_fcm_action_l1_d2 with best: tbl_fcmsketch_fcm_action_l1_d1
     Updating best to tbl_fcmsketch_fcm_action_l1_d2 from tbl_fcmsketch_fcm_action_l1_d1 for reason: default choice
 placing 1 entries of tbl_fcmsketch_fcm_action_l1_d2 in stage 1(11) FormatType(022)
-stage 1, work: [ 3540663, 3556856 ], partly placed 0, placed 9
+stage 1, work: [ 4221967, 4240467 ], partly placed 0, placed 8
     { id=1 ram=9 tcam=0 mram=8 eixb=2 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping forward_0 as its already done
-    - skipping tbl_waterfall365 as its already done
     - skipping swap1_hi_0 as its already done
 swap1_lo_0 is not a gateway! Aborting search for merge choices
 try_place_table(swap1_lo_0, stage=1)
@@ -939,9 +836,12 @@ try_place_table(swap1_lo_0, stage=1)
     Selected stage: 2    Furthest stage: 2
     try_place_table returning 2048 of swap1_lo_0 in stage 2
     Pl vector: swap1_lo_0 
-  - skipping tbl_waterfall368 due to in-sequence control dependence on swap1_lo_0
   - skipping swap2_hi_0 due to in-sequence control dependence on swap1_lo_0
   - skipping swap2_lo_0 due to in-sequence control dependence on swap1_lo_0
+  - skipping swap3_hi_0 due to in-sequence control dependence on swap1_lo_0
+  - skipping swap3_lo_0 due to in-sequence control dependence on swap1_lo_0
+  - skipping swap4_hi_0 due to in-sequence control dependence on swap1_lo_0
+  - skipping swap4_lo_0 due to in-sequence control dependence on swap1_lo_0
   - skipping resub_0 due to in-sequence control dependence on swap1_lo_0
     - skipping tbl_count_pkt as its already done
     - skipping tbl_fcmsketch_fcm_hash_d1 as its already done
@@ -1010,30 +910,32 @@ For trial t : tbl_fcmsketch_fcm_action_l1_d1 with best: swap1_lo_0
 For trial t : fcmsketch_tb_fcm_l1_to_l2_d2 with best: swap1_lo_0
     Keeping best swap1_lo_0 for reason: longer downward prop control-included dependence tail chain
 placing 2048 entries of swap1_lo_0 in stage 2(20) FormatType(022)
-stage 2, work: [ 3540663, 3556856 ], partly placed 0, placed 10
+stage 2, work: [ 4221967, 4240467 ], partly placed 0, placed 9
     { id=1 ram=9 tcam=0 mram=8 eixb=2 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping forward_0 as its already done
-    - skipping tbl_waterfall365 as its already done
     - skipping swap1_hi_0 as its already done
     - skipping swap1_lo_0 as its already done
-tbl_waterfall368 is not a gateway! Aborting search for merge choices
-try_place_table(tbl_waterfall368, stage=2)
+swap2_hi_0 is not a gateway! Aborting search for merge choices
+try_place_table(swap2_hi_0, stage=2)
     - dependency between swap1_lo_0 and table advances stage
-    Initial stage is 3, initial entries is 1
+    Initial stage is 3, initial entries is 8
   Try_alloc_all for Table use
-  Trying to allocate layout for tbl_waterfall368 
-  Picking layout option for table : tbl_waterfall368
-  picked layout for tbl_waterfall368 FormatType(02) layout: 0hV ixbar:0B/0b match:0B/0b
-    way:{ g:1 e:0 w:1 }
-    entries:0 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
-  Trying to allocate adb for tbl_waterfall368 
-  Trying to allocate imem for tbl_waterfall368 
+  Trying to allocate layout for swap2_hi_0 
+  Picking layout option for table : swap2_hi_0
+  picked layout for swap2_hi_0 FormatType(022) layout: 8eV ixbar:2B/3b match:0B/-7b gh:2 ov:22
+    way:{ g:2 e:0 w:1 1 }
+    entries:2048 srams:9 local_tinds: 0 maprams:8 tcams:0 afi:0 I
+  Trying to allocate adb for swap2_hi_0 
+  Trying to allocate imem for swap2_hi_0 
     Selected stage: 3    Furthest stage: 3
-    try_place_table returning 1 of tbl_waterfall368 in stage 3
-    Pl vector: tbl_waterfall368 
-  - skipping swap2_hi_0 due to in-sequence control dependence on tbl_waterfall368
-  - skipping swap2_lo_0 due to in-sequence control dependence on tbl_waterfall368
-  - skipping resub_0 due to in-sequence control dependence on tbl_waterfall368
+    try_place_table returning 2048 of swap2_hi_0 in stage 3
+    Pl vector: swap2_hi_0 
+  - skipping swap2_lo_0 due to in-sequence control dependence on swap2_hi_0
+  - skipping swap3_hi_0 due to in-sequence control dependence on swap2_hi_0
+  - skipping swap3_lo_0 due to in-sequence control dependence on swap2_hi_0
+  - skipping swap4_hi_0 due to in-sequence control dependence on swap2_hi_0
+  - skipping swap4_lo_0 due to in-sequence control dependence on swap2_hi_0
+  - skipping resub_0 due to in-sequence control dependence on swap2_hi_0
     - skipping tbl_count_pkt as its already done
     - skipping tbl_fcmsketch_fcm_hash_d1 as its already done
     - skipping tbl_fcmsketch_fcm_hash_d2 as its already done
@@ -1071,37 +973,39 @@ try_place_table(fcmsketch_tb_fcm_l1_to_l2_d2, stage=2)
     Pl vector: fcmsketch_tb_fcm_l1_to_l2_d2 
   - skipping fcmsketch_tb_fcm_l2_to_l3_d1 due to in-sequence control dependence on tbl_fcmsketch_fcm_action_l1_d1
   - skipping fcmsketch_tb_fcm_l2_to_l3_d2 due to in-sequence control dependence on fcmsketch_tb_fcm_l1_to_l2_d2
-found 3 tables that could be placed: [ tbl_waterfall368, tbl_fcmsketch_fcm_action_l1_d1, fcmsketch_tb_fcm_l1_to_l2_d2 ]
-Initial best is first table seen: tbl_waterfall368
-For trial t : tbl_fcmsketch_fcm_action_l1_d1 with best: tbl_waterfall368
-    Updating best to tbl_fcmsketch_fcm_action_l1_d1 from tbl_waterfall368 for reason: earlier stage calculated
+found 3 tables that could be placed: [ swap2_hi_0, tbl_fcmsketch_fcm_action_l1_d1, fcmsketch_tb_fcm_l1_to_l2_d2 ]
+Initial best is first table seen: swap2_hi_0
+For trial t : tbl_fcmsketch_fcm_action_l1_d1 with best: swap2_hi_0
+    Updating best to tbl_fcmsketch_fcm_action_l1_d1 from swap2_hi_0 for reason: earlier stage calculated
 For trial t : fcmsketch_tb_fcm_l1_to_l2_d2 with best: tbl_fcmsketch_fcm_action_l1_d1
     Keeping best tbl_fcmsketch_fcm_action_l1_d1 for reason: longer downward prop control-included dependence tail chain
 placing 1 entries of tbl_fcmsketch_fcm_action_l1_d1 in stage 2(21) FormatType(022)
-stage 2, work: [ 3540663, 3556856 ], partly placed 0, placed 11
+stage 2, work: [ 4221967, 4240467 ], partly placed 0, placed 10
     { id=1 ram=9 tcam=0 mram=8 eixb=2 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping forward_0 as its already done
-    - skipping tbl_waterfall365 as its already done
     - skipping swap1_hi_0 as its already done
     - skipping swap1_lo_0 as its already done
-tbl_waterfall368 is not a gateway! Aborting search for merge choices
-try_place_table(tbl_waterfall368, stage=2)
+swap2_hi_0 is not a gateway! Aborting search for merge choices
+try_place_table(swap2_hi_0, stage=2)
     - dependency between swap1_lo_0 and table advances stage
-    Initial stage is 3, initial entries is 1
+    Initial stage is 3, initial entries is 8
   Try_alloc_all for Table use
-  Trying to allocate layout for tbl_waterfall368 
-  Picking layout option for table : tbl_waterfall368
-  picked layout for tbl_waterfall368 FormatType(02) layout: 0hV ixbar:0B/0b match:0B/0b
-    way:{ g:1 e:0 w:1 }
-    entries:0 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
-  Trying to allocate adb for tbl_waterfall368 
-  Trying to allocate imem for tbl_waterfall368 
+  Trying to allocate layout for swap2_hi_0 
+  Picking layout option for table : swap2_hi_0
+  picked layout for swap2_hi_0 FormatType(022) layout: 8eV ixbar:2B/3b match:0B/-7b gh:2 ov:22
+    way:{ g:2 e:0 w:1 1 }
+    entries:2048 srams:9 local_tinds: 0 maprams:8 tcams:0 afi:0 I
+  Trying to allocate adb for swap2_hi_0 
+  Trying to allocate imem for swap2_hi_0 
     Selected stage: 3    Furthest stage: 3
-    try_place_table returning 1 of tbl_waterfall368 in stage 3
-    Pl vector: tbl_waterfall368 
-  - skipping swap2_hi_0 due to in-sequence control dependence on tbl_waterfall368
-  - skipping swap2_lo_0 due to in-sequence control dependence on tbl_waterfall368
-  - skipping resub_0 due to in-sequence control dependence on tbl_waterfall368
+    try_place_table returning 2048 of swap2_hi_0 in stage 3
+    Pl vector: swap2_hi_0 
+  - skipping swap2_lo_0 due to in-sequence control dependence on swap2_hi_0
+  - skipping swap3_hi_0 due to in-sequence control dependence on swap2_hi_0
+  - skipping swap3_lo_0 due to in-sequence control dependence on swap2_hi_0
+  - skipping swap4_hi_0 due to in-sequence control dependence on swap2_hi_0
+  - skipping swap4_lo_0 due to in-sequence control dependence on swap2_hi_0
+  - skipping resub_0 due to in-sequence control dependence on swap2_hi_0
     - skipping tbl_count_pkt as its already done
     - skipping tbl_fcmsketch_fcm_hash_d1 as its already done
     - skipping tbl_fcmsketch_fcm_hash_d2 as its already done
@@ -1318,37 +1222,39 @@ try_place_table(fcmsketch_tb_fcm_l1_to_l2_d2, stage=2)
     Pl vector: fcmsketch_tb_fcm_l1_to_l2_d2 
   - skipping fcmsketch_tb_fcm_l2_to_l3_d1 due to in-sequence control dependence on fcmsketch_tb_fcm_l1_to_l2_d1
   - skipping fcmsketch_tb_fcm_l2_to_l3_d2 due to in-sequence control dependence on fcmsketch_tb_fcm_l1_to_l2_d2
-found 3 tables that could be placed: [ tbl_waterfall368, fcmsketch_tb_fcm_l1_to_l2_d1, fcmsketch_tb_fcm_l1_to_l2_d2 ]
-Initial best is first table seen: tbl_waterfall368
-For trial t : fcmsketch_tb_fcm_l1_to_l2_d1 with best: tbl_waterfall368
-    Keeping best tbl_waterfall368 for reason: longer downward prop control-included dependence tail chain
-For trial t : fcmsketch_tb_fcm_l1_to_l2_d2 with best: tbl_waterfall368
-    Keeping best tbl_waterfall368 for reason: longer downward prop control-included dependence tail chain
-placing 1 entries of tbl_waterfall368 in stage 3(30) FormatType(02)
-stage 3, work: [ 3540663, 3556856 ], partly placed 0, placed 12
-    { id=0 ram=0 tcam=0 mram=0 eixb=0 tixb=0 malu=0 salu=0 local_tinds=0 }
+found 3 tables that could be placed: [ swap2_hi_0, fcmsketch_tb_fcm_l1_to_l2_d1, fcmsketch_tb_fcm_l1_to_l2_d2 ]
+Initial best is first table seen: swap2_hi_0
+For trial t : fcmsketch_tb_fcm_l1_to_l2_d1 with best: swap2_hi_0
+    Keeping best swap2_hi_0 for reason: longer downward prop control-included dependence tail chain
+For trial t : fcmsketch_tb_fcm_l1_to_l2_d2 with best: swap2_hi_0
+    Keeping best swap2_hi_0 for reason: longer downward prop control-included dependence tail chain
+placing 2048 entries of swap2_hi_0 in stage 3(30) FormatType(022)
+stage 3, work: [ 4221967, 4240467 ], partly placed 0, placed 11
+    { id=1 ram=9 tcam=0 mram=8 eixb=2 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping forward_0 as its already done
-    - skipping tbl_waterfall365 as its already done
     - skipping swap1_hi_0 as its already done
     - skipping swap1_lo_0 as its already done
-    - skipping tbl_waterfall368 as its already done
-swap2_hi_0 is not a gateway! Aborting search for merge choices
-try_place_table(swap2_hi_0, stage=3)
-    - dependency between tbl_waterfall368 and table advances stage
+    - skipping swap2_hi_0 as its already done
+swap2_lo_0 is not a gateway! Aborting search for merge choices
+try_place_table(swap2_lo_0, stage=3)
+    - dependency between swap2_hi_0 and table advances stage
     Initial stage is 4, initial entries is 8
   Try_alloc_all for Table use
-  Trying to allocate layout for swap2_hi_0 
-  Picking layout option for table : swap2_hi_0
-  picked layout for swap2_hi_0 FormatType(022) layout: 8eV ixbar:2B/3b match:0B/-7b gh:2 ov:22
+  Trying to allocate layout for swap2_lo_0 
+  Picking layout option for table : swap2_lo_0
+  picked layout for swap2_lo_0 FormatType(022) layout: 8eV ixbar:2B/3b match:0B/-7b gh:2 ov:22
     way:{ g:2 e:0 w:1 1 }
     entries:2048 srams:9 local_tinds: 0 maprams:8 tcams:0 afi:0 I
-  Trying to allocate adb for swap2_hi_0 
-  Trying to allocate imem for swap2_hi_0 
+  Trying to allocate adb for swap2_lo_0 
+  Trying to allocate imem for swap2_lo_0 
     Selected stage: 4    Furthest stage: 4
-    try_place_table returning 2048 of swap2_hi_0 in stage 4
-    Pl vector: swap2_hi_0 
-  - skipping swap2_lo_0 due to in-sequence control dependence on swap2_hi_0
-  - skipping resub_0 due to in-sequence control dependence on swap2_hi_0
+    try_place_table returning 2048 of swap2_lo_0 in stage 4
+    Pl vector: swap2_lo_0 
+  - skipping swap3_hi_0 due to in-sequence control dependence on swap2_lo_0
+  - skipping swap3_lo_0 due to in-sequence control dependence on swap2_lo_0
+  - skipping swap4_hi_0 due to in-sequence control dependence on swap2_lo_0
+  - skipping swap4_lo_0 due to in-sequence control dependence on swap2_lo_0
+  - skipping resub_0 due to in-sequence control dependence on swap2_lo_0
     - skipping tbl_count_pkt as its already done
     - skipping tbl_fcmsketch_fcm_hash_d1 as its already done
     - skipping tbl_fcmsketch_fcm_hash_d2 as its already done
@@ -1386,37 +1292,39 @@ try_place_table(fcmsketch_tb_fcm_l1_to_l2_d2, stage=3)
     Pl vector: fcmsketch_tb_fcm_l1_to_l2_d2 
   - skipping fcmsketch_tb_fcm_l2_to_l3_d1 due to in-sequence control dependence on fcmsketch_tb_fcm_l1_to_l2_d1
   - skipping fcmsketch_tb_fcm_l2_to_l3_d2 due to in-sequence control dependence on fcmsketch_tb_fcm_l1_to_l2_d2
-found 3 tables that could be placed: [ swap2_hi_0, fcmsketch_tb_fcm_l1_to_l2_d1, fcmsketch_tb_fcm_l1_to_l2_d2 ]
-Initial best is first table seen: swap2_hi_0
-For trial t : fcmsketch_tb_fcm_l1_to_l2_d1 with best: swap2_hi_0
-    Updating best to fcmsketch_tb_fcm_l1_to_l2_d1 from swap2_hi_0 for reason: earlier stage calculated
+found 3 tables that could be placed: [ swap2_lo_0, fcmsketch_tb_fcm_l1_to_l2_d1, fcmsketch_tb_fcm_l1_to_l2_d2 ]
+Initial best is first table seen: swap2_lo_0
+For trial t : fcmsketch_tb_fcm_l1_to_l2_d1 with best: swap2_lo_0
+    Updating best to fcmsketch_tb_fcm_l1_to_l2_d1 from swap2_lo_0 for reason: earlier stage calculated
 For trial t : fcmsketch_tb_fcm_l1_to_l2_d2 with best: fcmsketch_tb_fcm_l1_to_l2_d1
     Updating best to fcmsketch_tb_fcm_l1_to_l2_d2 from fcmsketch_tb_fcm_l1_to_l2_d1 for reason: default choice
 placing 2 entries of fcmsketch_tb_fcm_l1_to_l2_d2 in stage 3(31) FormatType(022)
-stage 3, work: [ 3540663, 3556856 ], partly placed 0, placed 13
-    { id=1 ram=8 tcam=0 mram=8 eixb=4 tixb=0 malu=0 salu=0 local_tinds=0 }
+stage 3, work: [ 4221967, 4240467 ], partly placed 0, placed 12
+    { id=2 ram=17 tcam=0 mram=16 eixb=6 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping forward_0 as its already done
-    - skipping tbl_waterfall365 as its already done
     - skipping swap1_hi_0 as its already done
     - skipping swap1_lo_0 as its already done
-    - skipping tbl_waterfall368 as its already done
-swap2_hi_0 is not a gateway! Aborting search for merge choices
-try_place_table(swap2_hi_0, stage=3)
-    - dependency between tbl_waterfall368 and table advances stage
+    - skipping swap2_hi_0 as its already done
+swap2_lo_0 is not a gateway! Aborting search for merge choices
+try_place_table(swap2_lo_0, stage=3)
+    - dependency between swap2_hi_0 and table advances stage
     Initial stage is 4, initial entries is 8
   Try_alloc_all for Table use
-  Trying to allocate layout for swap2_hi_0 
-  Picking layout option for table : swap2_hi_0
-  picked layout for swap2_hi_0 FormatType(022) layout: 8eV ixbar:2B/3b match:0B/-7b gh:2 ov:22
+  Trying to allocate layout for swap2_lo_0 
+  Picking layout option for table : swap2_lo_0
+  picked layout for swap2_lo_0 FormatType(022) layout: 8eV ixbar:2B/3b match:0B/-7b gh:2 ov:22
     way:{ g:2 e:0 w:1 1 }
     entries:2048 srams:9 local_tinds: 0 maprams:8 tcams:0 afi:0 I
-  Trying to allocate adb for swap2_hi_0 
-  Trying to allocate imem for swap2_hi_0 
+  Trying to allocate adb for swap2_lo_0 
+  Trying to allocate imem for swap2_lo_0 
     Selected stage: 4    Furthest stage: 4
-    try_place_table returning 2048 of swap2_hi_0 in stage 4
-    Pl vector: swap2_hi_0 
-  - skipping swap2_lo_0 due to in-sequence control dependence on swap2_hi_0
-  - skipping resub_0 due to in-sequence control dependence on swap2_hi_0
+    try_place_table returning 2048 of swap2_lo_0 in stage 4
+    Pl vector: swap2_lo_0 
+  - skipping swap3_hi_0 due to in-sequence control dependence on swap2_lo_0
+  - skipping swap3_lo_0 due to in-sequence control dependence on swap2_lo_0
+  - skipping swap4_hi_0 due to in-sequence control dependence on swap2_lo_0
+  - skipping swap4_lo_0 due to in-sequence control dependence on swap2_lo_0
+  - skipping resub_0 due to in-sequence control dependence on swap2_lo_0
     - skipping tbl_count_pkt as its already done
     - skipping tbl_fcmsketch_fcm_hash_d1 as its already done
     - skipping tbl_fcmsketch_fcm_hash_d2 as its already done
@@ -1455,37 +1363,39 @@ try_place_table(fcmsketch_tb_fcm_l2_to_l3_d2, stage=3)
     Selected stage: 4    Furthest stage: 4
     try_place_table returning 2 of fcmsketch_tb_fcm_l2_to_l3_d2 in stage 4
     Pl vector: fcmsketch_tb_fcm_l2_to_l3_d2 
-found 3 tables that could be placed: [ swap2_hi_0, fcmsketch_tb_fcm_l1_to_l2_d1, fcmsketch_tb_fcm_l2_to_l3_d2 ]
-Initial best is first table seen: swap2_hi_0
-For trial t : fcmsketch_tb_fcm_l1_to_l2_d1 with best: swap2_hi_0
-    Updating best to fcmsketch_tb_fcm_l1_to_l2_d1 from swap2_hi_0 for reason: earlier stage calculated
+found 3 tables that could be placed: [ swap2_lo_0, fcmsketch_tb_fcm_l1_to_l2_d1, fcmsketch_tb_fcm_l2_to_l3_d2 ]
+Initial best is first table seen: swap2_lo_0
+For trial t : fcmsketch_tb_fcm_l1_to_l2_d1 with best: swap2_lo_0
+    Updating best to fcmsketch_tb_fcm_l1_to_l2_d1 from swap2_lo_0 for reason: earlier stage calculated
 For trial t : fcmsketch_tb_fcm_l2_to_l3_d2 with best: fcmsketch_tb_fcm_l1_to_l2_d1
     Keeping best fcmsketch_tb_fcm_l1_to_l2_d1 for reason: earlier stage calculated
 placing 2 entries of fcmsketch_tb_fcm_l1_to_l2_d1 in stage 3(32) FormatType(022)
-stage 3, work: [ 3540663, 3556856 ], partly placed 0, placed 14
-    { id=2 ram=16 tcam=0 mram=16 eixb=8 tixb=0 malu=0 salu=0 local_tinds=0 }
+stage 3, work: [ 4221967, 4240467 ], partly placed 0, placed 13
+    { id=3 ram=25 tcam=0 mram=24 eixb=10 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping forward_0 as its already done
-    - skipping tbl_waterfall365 as its already done
     - skipping swap1_hi_0 as its already done
     - skipping swap1_lo_0 as its already done
-    - skipping tbl_waterfall368 as its already done
-swap2_hi_0 is not a gateway! Aborting search for merge choices
-try_place_table(swap2_hi_0, stage=3)
-    - dependency between tbl_waterfall368 and table advances stage
+    - skipping swap2_hi_0 as its already done
+swap2_lo_0 is not a gateway! Aborting search for merge choices
+try_place_table(swap2_lo_0, stage=3)
+    - dependency between swap2_hi_0 and table advances stage
     Initial stage is 4, initial entries is 8
   Try_alloc_all for Table use
-  Trying to allocate layout for swap2_hi_0 
-  Picking layout option for table : swap2_hi_0
-  picked layout for swap2_hi_0 FormatType(022) layout: 8eV ixbar:2B/3b match:0B/-7b gh:2 ov:22
+  Trying to allocate layout for swap2_lo_0 
+  Picking layout option for table : swap2_lo_0
+  picked layout for swap2_lo_0 FormatType(022) layout: 8eV ixbar:2B/3b match:0B/-7b gh:2 ov:22
     way:{ g:2 e:0 w:1 1 }
     entries:2048 srams:9 local_tinds: 0 maprams:8 tcams:0 afi:0 I
-  Trying to allocate adb for swap2_hi_0 
-  Trying to allocate imem for swap2_hi_0 
+  Trying to allocate adb for swap2_lo_0 
+  Trying to allocate imem for swap2_lo_0 
     Selected stage: 4    Furthest stage: 4
-    try_place_table returning 2048 of swap2_hi_0 in stage 4
-    Pl vector: swap2_hi_0 
-  - skipping swap2_lo_0 due to in-sequence control dependence on swap2_hi_0
-  - skipping resub_0 due to in-sequence control dependence on swap2_hi_0
+    try_place_table returning 2048 of swap2_lo_0 in stage 4
+    Pl vector: swap2_lo_0 
+  - skipping swap3_hi_0 due to in-sequence control dependence on swap2_lo_0
+  - skipping swap3_lo_0 due to in-sequence control dependence on swap2_lo_0
+  - skipping swap4_hi_0 due to in-sequence control dependence on swap2_lo_0
+  - skipping swap4_lo_0 due to in-sequence control dependence on swap2_lo_0
+  - skipping resub_0 due to in-sequence control dependence on swap2_lo_0
     - skipping tbl_count_pkt as its already done
     - skipping tbl_fcmsketch_fcm_hash_d1 as its already done
     - skipping tbl_fcmsketch_fcm_hash_d2 as its already done
@@ -1525,37 +1435,39 @@ try_place_table(fcmsketch_tb_fcm_l2_to_l3_d2, stage=3)
     Selected stage: 4    Furthest stage: 4
     try_place_table returning 2 of fcmsketch_tb_fcm_l2_to_l3_d2 in stage 4
     Pl vector: fcmsketch_tb_fcm_l2_to_l3_d2 
-found 3 tables that could be placed: [ swap2_hi_0, fcmsketch_tb_fcm_l2_to_l3_d1, fcmsketch_tb_fcm_l2_to_l3_d2 ]
-Initial best is first table seen: swap2_hi_0
-For trial t : fcmsketch_tb_fcm_l2_to_l3_d1 with best: swap2_hi_0
-    Keeping best swap2_hi_0 for reason: longer downward prop control-included dependence tail chain
-For trial t : fcmsketch_tb_fcm_l2_to_l3_d2 with best: swap2_hi_0
-    Keeping best swap2_hi_0 for reason: longer downward prop control-included dependence tail chain
-placing 2048 entries of swap2_hi_0 in stage 4(40) FormatType(022)
-stage 4, work: [ 3540663, 3556856 ], partly placed 0, placed 15
+found 3 tables that could be placed: [ swap2_lo_0, fcmsketch_tb_fcm_l2_to_l3_d1, fcmsketch_tb_fcm_l2_to_l3_d2 ]
+Initial best is first table seen: swap2_lo_0
+For trial t : fcmsketch_tb_fcm_l2_to_l3_d1 with best: swap2_lo_0
+    Keeping best swap2_lo_0 for reason: longer downward prop control-included dependence tail chain
+For trial t : fcmsketch_tb_fcm_l2_to_l3_d2 with best: swap2_lo_0
+    Keeping best swap2_lo_0 for reason: longer downward prop control-included dependence tail chain
+placing 2048 entries of swap2_lo_0 in stage 4(40) FormatType(022)
+stage 4, work: [ 4221967, 4240467 ], partly placed 0, placed 14
     { id=1 ram=9 tcam=0 mram=8 eixb=2 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping forward_0 as its already done
-    - skipping tbl_waterfall365 as its already done
     - skipping swap1_hi_0 as its already done
     - skipping swap1_lo_0 as its already done
-    - skipping tbl_waterfall368 as its already done
     - skipping swap2_hi_0 as its already done
-swap2_lo_0 is not a gateway! Aborting search for merge choices
-try_place_table(swap2_lo_0, stage=4)
-    - dependency between swap2_hi_0 and table advances stage
+    - skipping swap2_lo_0 as its already done
+swap3_hi_0 is not a gateway! Aborting search for merge choices
+try_place_table(swap3_hi_0, stage=4)
+    - dependency between swap2_lo_0 and table advances stage
     Initial stage is 5, initial entries is 8
   Try_alloc_all for Table use
-  Trying to allocate layout for swap2_lo_0 
-  Picking layout option for table : swap2_lo_0
-  picked layout for swap2_lo_0 FormatType(022) layout: 8eV ixbar:2B/3b match:0B/-7b gh:2 ov:22
+  Trying to allocate layout for swap3_hi_0 
+  Picking layout option for table : swap3_hi_0
+  picked layout for swap3_hi_0 FormatType(022) layout: 8eV ixbar:2B/3b match:0B/-7b gh:2 ov:22
     way:{ g:2 e:0 w:1 1 }
     entries:2048 srams:9 local_tinds: 0 maprams:8 tcams:0 afi:0 I
-  Trying to allocate adb for swap2_lo_0 
-  Trying to allocate imem for swap2_lo_0 
+  Trying to allocate adb for swap3_hi_0 
+  Trying to allocate imem for swap3_hi_0 
     Selected stage: 5    Furthest stage: 5
-    try_place_table returning 2048 of swap2_lo_0 in stage 5
-    Pl vector: swap2_lo_0 
-  - skipping resub_0 due to in-sequence control dependence on swap2_lo_0
+    try_place_table returning 2048 of swap3_hi_0 in stage 5
+    Pl vector: swap3_hi_0 
+  - skipping swap3_lo_0 due to in-sequence control dependence on swap3_hi_0
+  - skipping swap4_hi_0 due to in-sequence control dependence on swap3_hi_0
+  - skipping swap4_lo_0 due to in-sequence control dependence on swap3_hi_0
+  - skipping resub_0 due to in-sequence control dependence on swap3_hi_0
     - skipping tbl_count_pkt as its already done
     - skipping tbl_fcmsketch_fcm_hash_d1 as its already done
     - skipping tbl_fcmsketch_fcm_hash_d2 as its already done
@@ -1593,37 +1505,39 @@ try_place_table(fcmsketch_tb_fcm_l2_to_l3_d2, stage=4)
     Selected stage: 4    Furthest stage: 5
     try_place_table returning 2 of fcmsketch_tb_fcm_l2_to_l3_d2 in stage 4
     Pl vector: fcmsketch_tb_fcm_l2_to_l3_d2 
-found 3 tables that could be placed: [ swap2_lo_0, fcmsketch_tb_fcm_l2_to_l3_d1, fcmsketch_tb_fcm_l2_to_l3_d2 ]
-Initial best is first table seen: swap2_lo_0
-For trial t : fcmsketch_tb_fcm_l2_to_l3_d1 with best: swap2_lo_0
-    Updating best to fcmsketch_tb_fcm_l2_to_l3_d1 from swap2_lo_0 for reason: earlier stage calculated
+found 3 tables that could be placed: [ swap3_hi_0, fcmsketch_tb_fcm_l2_to_l3_d1, fcmsketch_tb_fcm_l2_to_l3_d2 ]
+Initial best is first table seen: swap3_hi_0
+For trial t : fcmsketch_tb_fcm_l2_to_l3_d1 with best: swap3_hi_0
+    Updating best to fcmsketch_tb_fcm_l2_to_l3_d1 from swap3_hi_0 for reason: earlier stage calculated
 For trial t : fcmsketch_tb_fcm_l2_to_l3_d2 with best: fcmsketch_tb_fcm_l2_to_l3_d1
     Updating best to fcmsketch_tb_fcm_l2_to_l3_d2 from fcmsketch_tb_fcm_l2_to_l3_d1 for reason: default choice
 placing 2 entries of fcmsketch_tb_fcm_l2_to_l3_d2 in stage 4(41) FormatType(022)
-stage 4, work: [ 3540663, 3556856 ], partly placed 0, placed 16
+stage 4, work: [ 4221967, 4240467 ], partly placed 0, placed 15
     { id=2 ram=11 tcam=0 mram=10 eixb=6 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping forward_0 as its already done
-    - skipping tbl_waterfall365 as its already done
     - skipping swap1_hi_0 as its already done
     - skipping swap1_lo_0 as its already done
-    - skipping tbl_waterfall368 as its already done
     - skipping swap2_hi_0 as its already done
-swap2_lo_0 is not a gateway! Aborting search for merge choices
-try_place_table(swap2_lo_0, stage=4)
-    - dependency between swap2_hi_0 and table advances stage
+    - skipping swap2_lo_0 as its already done
+swap3_hi_0 is not a gateway! Aborting search for merge choices
+try_place_table(swap3_hi_0, stage=4)
+    - dependency between swap2_lo_0 and table advances stage
     Initial stage is 5, initial entries is 8
   Try_alloc_all for Table use
-  Trying to allocate layout for swap2_lo_0 
-  Picking layout option for table : swap2_lo_0
-  picked layout for swap2_lo_0 FormatType(022) layout: 8eV ixbar:2B/3b match:0B/-7b gh:2 ov:22
+  Trying to allocate layout for swap3_hi_0 
+  Picking layout option for table : swap3_hi_0
+  picked layout for swap3_hi_0 FormatType(022) layout: 8eV ixbar:2B/3b match:0B/-7b gh:2 ov:22
     way:{ g:2 e:0 w:1 1 }
     entries:2048 srams:9 local_tinds: 0 maprams:8 tcams:0 afi:0 I
-  Trying to allocate adb for swap2_lo_0 
-  Trying to allocate imem for swap2_lo_0 
+  Trying to allocate adb for swap3_hi_0 
+  Trying to allocate imem for swap3_hi_0 
     Selected stage: 5    Furthest stage: 5
-    try_place_table returning 2048 of swap2_lo_0 in stage 5
-    Pl vector: swap2_lo_0 
-  - skipping resub_0 due to in-sequence control dependence on swap2_lo_0
+    try_place_table returning 2048 of swap3_hi_0 in stage 5
+    Pl vector: swap3_hi_0 
+  - skipping swap3_lo_0 due to in-sequence control dependence on swap3_hi_0
+  - skipping swap4_hi_0 due to in-sequence control dependence on swap3_hi_0
+  - skipping swap4_lo_0 due to in-sequence control dependence on swap3_hi_0
+  - skipping resub_0 due to in-sequence control dependence on swap3_hi_0
     - skipping tbl_count_pkt as its already done
     - skipping tbl_fcmsketch_fcm_hash_d1 as its already done
     - skipping tbl_fcmsketch_fcm_hash_d2 as its already done
@@ -1648,51 +1562,142 @@ try_place_table(fcmsketch_tb_fcm_l2_to_l3_d1, stage=4)
     try_place_table returning 2 of fcmsketch_tb_fcm_l2_to_l3_d1 in stage 4
     Pl vector: fcmsketch_tb_fcm_l2_to_l3_d1 
     - skipping fcmsketch_tb_fcm_l2_to_l3_d2 as its already done
-found 2 tables that could be placed: [ swap2_lo_0, fcmsketch_tb_fcm_l2_to_l3_d1 ]
-Initial best is first table seen: swap2_lo_0
-For trial t : fcmsketch_tb_fcm_l2_to_l3_d1 with best: swap2_lo_0
-    Updating best to fcmsketch_tb_fcm_l2_to_l3_d1 from swap2_lo_0 for reason: earlier stage calculated
+found 2 tables that could be placed: [ swap3_hi_0, fcmsketch_tb_fcm_l2_to_l3_d1 ]
+Initial best is first table seen: swap3_hi_0
+For trial t : fcmsketch_tb_fcm_l2_to_l3_d1 with best: swap3_hi_0
+    Updating best to fcmsketch_tb_fcm_l2_to_l3_d1 from swap3_hi_0 for reason: earlier stage calculated
 placing 2 entries of fcmsketch_tb_fcm_l2_to_l3_d1 in stage 4(42) FormatType(022)
-stage 4, work: [ 3540663 ], partly placed 0, placed 17
+stage 4, work: [ 4221967 ], partly placed 0, placed 16
     { id=3 ram=13 tcam=0 mram=12 eixb=10 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping forward_0 as its already done
-    - skipping tbl_waterfall365 as its already done
     - skipping swap1_hi_0 as its already done
     - skipping swap1_lo_0 as its already done
-    - skipping tbl_waterfall368 as its already done
-    - skipping swap2_hi_0 as its already done
-swap2_lo_0 is not a gateway! Aborting search for merge choices
-try_place_table(swap2_lo_0, stage=4)
-    - dependency between swap2_hi_0 and table advances stage
-    Initial stage is 5, initial entries is 8
-  Try_alloc_all for Table use
-  Trying to allocate layout for swap2_lo_0 
-  Picking layout option for table : swap2_lo_0
-  picked layout for swap2_lo_0 FormatType(022) layout: 8eV ixbar:2B/3b match:0B/-7b gh:2 ov:22
-    way:{ g:2 e:0 w:1 1 }
-    entries:2048 srams:9 local_tinds: 0 maprams:8 tcams:0 afi:0 I
-  Trying to allocate adb for swap2_lo_0 
-  Trying to allocate imem for swap2_lo_0 
-    Selected stage: 5    Furthest stage: 5
-    try_place_table returning 2048 of swap2_lo_0 in stage 5
-    Pl vector: swap2_lo_0 
-  - skipping resub_0 due to in-sequence control dependence on swap2_lo_0
-found 1 tables that could be placed: [ swap2_lo_0 ]
-Initial best is first table seen: swap2_lo_0
-placing 2048 entries of swap2_lo_0 in stage 5(50) FormatType(022)
-stage 5, work: [ 3540663 ], partly placed 0, placed 18
-    { id=1 ram=9 tcam=0 mram=8 eixb=2 tixb=0 malu=0 salu=0 local_tinds=0 }
-    - skipping forward_0 as its already done
-    - skipping tbl_waterfall365 as its already done
-    - skipping swap1_hi_0 as its already done
-    - skipping swap1_lo_0 as its already done
-    - skipping tbl_waterfall368 as its already done
     - skipping swap2_hi_0 as its already done
     - skipping swap2_lo_0 as its already done
-resub_0 is not a gateway! Aborting search for merge choices
-try_place_table(resub_0, stage=5)
+swap3_hi_0 is not a gateway! Aborting search for merge choices
+try_place_table(swap3_hi_0, stage=4)
     - dependency between swap2_lo_0 and table advances stage
+    Initial stage is 5, initial entries is 8
+  Try_alloc_all for Table use
+  Trying to allocate layout for swap3_hi_0 
+  Picking layout option for table : swap3_hi_0
+  picked layout for swap3_hi_0 FormatType(022) layout: 8eV ixbar:2B/3b match:0B/-7b gh:2 ov:22
+    way:{ g:2 e:0 w:1 1 }
+    entries:2048 srams:9 local_tinds: 0 maprams:8 tcams:0 afi:0 I
+  Trying to allocate adb for swap3_hi_0 
+  Trying to allocate imem for swap3_hi_0 
+    Selected stage: 5    Furthest stage: 5
+    try_place_table returning 2048 of swap3_hi_0 in stage 5
+    Pl vector: swap3_hi_0 
+  - skipping swap3_lo_0 due to in-sequence control dependence on swap3_hi_0
+  - skipping swap4_hi_0 due to in-sequence control dependence on swap3_hi_0
+  - skipping swap4_lo_0 due to in-sequence control dependence on swap3_hi_0
+  - skipping resub_0 due to in-sequence control dependence on swap3_hi_0
+found 1 tables that could be placed: [ swap3_hi_0 ]
+Initial best is first table seen: swap3_hi_0
+placing 2048 entries of swap3_hi_0 in stage 5(50) FormatType(022)
+stage 5, work: [ 4221967 ], partly placed 0, placed 17
+    { id=1 ram=9 tcam=0 mram=8 eixb=2 tixb=0 malu=0 salu=0 local_tinds=0 }
+    - skipping forward_0 as its already done
+    - skipping swap1_hi_0 as its already done
+    - skipping swap1_lo_0 as its already done
+    - skipping swap2_hi_0 as its already done
+    - skipping swap2_lo_0 as its already done
+    - skipping swap3_hi_0 as its already done
+swap3_lo_0 is not a gateway! Aborting search for merge choices
+try_place_table(swap3_lo_0, stage=5)
+    - dependency between swap3_hi_0 and table advances stage
     Initial stage is 6, initial entries is 8
+  Try_alloc_all for Table use
+  Trying to allocate layout for swap3_lo_0 
+  Picking layout option for table : swap3_lo_0
+  picked layout for swap3_lo_0 FormatType(022) layout: 8eV ixbar:2B/3b match:0B/-7b gh:2 ov:22
+    way:{ g:2 e:0 w:1 1 }
+    entries:2048 srams:9 local_tinds: 0 maprams:8 tcams:0 afi:0 I
+  Trying to allocate adb for swap3_lo_0 
+  Trying to allocate imem for swap3_lo_0 
+    Selected stage: 6    Furthest stage: 6
+    try_place_table returning 2048 of swap3_lo_0 in stage 6
+    Pl vector: swap3_lo_0 
+  - skipping swap4_hi_0 due to in-sequence control dependence on swap3_lo_0
+  - skipping swap4_lo_0 due to in-sequence control dependence on swap3_lo_0
+  - skipping resub_0 due to in-sequence control dependence on swap3_lo_0
+found 1 tables that could be placed: [ swap3_lo_0 ]
+Initial best is first table seen: swap3_lo_0
+placing 2048 entries of swap3_lo_0 in stage 6(60) FormatType(022)
+stage 6, work: [ 4221967 ], partly placed 0, placed 18
+    { id=1 ram=9 tcam=0 mram=8 eixb=2 tixb=0 malu=0 salu=0 local_tinds=0 }
+    - skipping forward_0 as its already done
+    - skipping swap1_hi_0 as its already done
+    - skipping swap1_lo_0 as its already done
+    - skipping swap2_hi_0 as its already done
+    - skipping swap2_lo_0 as its already done
+    - skipping swap3_hi_0 as its already done
+    - skipping swap3_lo_0 as its already done
+swap4_hi_0 is not a gateway! Aborting search for merge choices
+try_place_table(swap4_hi_0, stage=6)
+    - dependency between swap3_lo_0 and table advances stage
+    Initial stage is 7, initial entries is 8
+  Try_alloc_all for Table use
+  Trying to allocate layout for swap4_hi_0 
+  Picking layout option for table : swap4_hi_0
+  picked layout for swap4_hi_0 FormatType(022) layout: 8eV ixbar:2B/3b match:0B/-7b gh:2 ov:22
+    way:{ g:2 e:0 w:1 1 }
+    entries:2048 srams:9 local_tinds: 0 maprams:8 tcams:0 afi:0 I
+  Trying to allocate adb for swap4_hi_0 
+  Trying to allocate imem for swap4_hi_0 
+    Selected stage: 7    Furthest stage: 7
+    try_place_table returning 2048 of swap4_hi_0 in stage 7
+    Pl vector: swap4_hi_0 
+  - skipping swap4_lo_0 due to in-sequence control dependence on swap4_hi_0
+  - skipping resub_0 due to in-sequence control dependence on swap4_hi_0
+found 1 tables that could be placed: [ swap4_hi_0 ]
+Initial best is first table seen: swap4_hi_0
+placing 2048 entries of swap4_hi_0 in stage 7(70) FormatType(022)
+stage 7, work: [ 4221967 ], partly placed 0, placed 19
+    { id=1 ram=9 tcam=0 mram=8 eixb=2 tixb=0 malu=0 salu=0 local_tinds=0 }
+    - skipping forward_0 as its already done
+    - skipping swap1_hi_0 as its already done
+    - skipping swap1_lo_0 as its already done
+    - skipping swap2_hi_0 as its already done
+    - skipping swap2_lo_0 as its already done
+    - skipping swap3_hi_0 as its already done
+    - skipping swap3_lo_0 as its already done
+    - skipping swap4_hi_0 as its already done
+swap4_lo_0 is not a gateway! Aborting search for merge choices
+try_place_table(swap4_lo_0, stage=7)
+    - dependency between swap4_hi_0 and table advances stage
+    Initial stage is 8, initial entries is 8
+  Try_alloc_all for Table use
+  Trying to allocate layout for swap4_lo_0 
+  Picking layout option for table : swap4_lo_0
+  picked layout for swap4_lo_0 FormatType(022) layout: 8eV ixbar:2B/3b match:0B/-7b gh:2 ov:22
+    way:{ g:2 e:0 w:1 1 }
+    entries:2048 srams:9 local_tinds: 0 maprams:8 tcams:0 afi:0 I
+  Trying to allocate adb for swap4_lo_0 
+  Trying to allocate imem for swap4_lo_0 
+    Selected stage: 8    Furthest stage: 8
+    try_place_table returning 2048 of swap4_lo_0 in stage 8
+    Pl vector: swap4_lo_0 
+  - skipping resub_0 due to in-sequence control dependence on swap4_lo_0
+found 1 tables that could be placed: [ swap4_lo_0 ]
+Initial best is first table seen: swap4_lo_0
+placing 2048 entries of swap4_lo_0 in stage 8(80) FormatType(022)
+stage 8, work: [ 4221967 ], partly placed 0, placed 20
+    { id=1 ram=9 tcam=0 mram=8 eixb=2 tixb=0 malu=0 salu=0 local_tinds=0 }
+    - skipping forward_0 as its already done
+    - skipping swap1_hi_0 as its already done
+    - skipping swap1_lo_0 as its already done
+    - skipping swap2_hi_0 as its already done
+    - skipping swap2_lo_0 as its already done
+    - skipping swap3_hi_0 as its already done
+    - skipping swap3_lo_0 as its already done
+    - skipping swap4_hi_0 as its already done
+    - skipping swap4_lo_0 as its already done
+resub_0 is not a gateway! Aborting search for merge choices
+try_place_table(resub_0, stage=8)
+    - dependency between swap4_lo_0 and table advances stage
+    Initial stage is 9, initial entries is 8
   Try_alloc_all for Table use
   Trying to allocate layout for resub_0 
   Picking layout option for table : resub_0
@@ -1701,32 +1706,39 @@ try_place_table(resub_0, stage=5)
     entries:5120 srams:1 local_tinds: 0 maprams:0 tcams:0 afi:0 I
   Trying to allocate adb for resub_0 
   Trying to allocate imem for resub_0 
-    Selected stage: 6    Furthest stage: 6
-    try_place_table returning 5120 of resub_0 in stage 6
+    Selected stage: 9    Furthest stage: 9
+    try_place_table returning 5120 of resub_0 in stage 9
     Pl vector: resub_0 
 found 1 tables that could be placed: [ resub_0 ]
 Initial best is first table seen: resub_0
-placing 5120 entries of resub_0 in stage 6(60) FormatType(02)
+placing 5120 entries of resub_0 in stage 9(90) FormatType(02)
 Adding complete placement for resource mode:0
 Found a complete solution that fit the number of stages required
 Evaluating complete solution with resource:0
-Placement error(s):0 stages required:7
+Placement error(s):0 stages required:10
 Updating best final placement with this one
-Table placement placed 19 tables in 7 stages
-  Table resub_0 logical id 0x60 entries=5120
-  Table swap2_lo_0 logical id 0x50 entries=2048
-    attached table WaterfallIngress.table_2_lo entries=65535
+Table placement placed 21 tables in 10 stages
+  Table resub_0 logical id 0x90 entries=5120
+  Table swap4_lo_0 logical id 0x80 entries=2048
+    attached table WaterfallIngress.table_4_lo entries=65535
+  Table swap4_hi_0 logical id 0x70 entries=2048
+    attached table WaterfallIngress.table_4_hi entries=65535
+  Table swap3_lo_0 logical id 0x60 entries=2048
+    attached table WaterfallIngress.table_3_lo entries=65535
+  Table swap3_hi_0 logical id 0x50 entries=2048
+    attached table WaterfallIngress.table_3_hi entries=65535
   Table fcmsketch_tb_fcm_l2_to_l3_d1 logical id 0x42 entries=2
     attached table FcmEgress.fcmsketch.sketch_reg_l3_d1 entries=8192
   Table fcmsketch_tb_fcm_l2_to_l3_d2 logical id 0x41 entries=2
     attached table FcmEgress.fcmsketch.sketch_reg_l3_d2 entries=8192
-  Table swap2_hi_0 logical id 0x40 entries=2048
-    attached table WaterfallIngress.table_2_hi entries=65535
+  Table swap2_lo_0 logical id 0x40 entries=2048
+    attached table WaterfallIngress.table_2_lo entries=65535
   Table fcmsketch_tb_fcm_l1_to_l2_d1 logical id 0x32 entries=2
     attached table FcmEgress.fcmsketch.sketch_reg_l2_d1 entries=65536
   Table fcmsketch_tb_fcm_l1_to_l2_d2 logical id 0x31 entries=2
     attached table FcmEgress.fcmsketch.sketch_reg_l2_d2 entries=65536
-  Table tbl_waterfall368 logical id 0x30 entries=1
+  Table swap2_hi_0 logical id 0x30 entries=2048
+    attached table WaterfallIngress.table_2_hi entries=65535
   Table tbl_fcmsketch_fcm_action_l1_d1 logical id 0x21 entries=1
     attached table FcmEgress.fcmsketch.sketch_reg_l1_d1 entries=524288
   Table swap1_lo_0 logical id 0x20 entries=2048
@@ -1735,38 +1747,43 @@ Table placement placed 19 tables in 7 stages
     attached table FcmEgress.fcmsketch.sketch_reg_l1_d2 entries=524288
   Table swap1_hi_0 logical id 0x10 entries=2048
     attached table WaterfallIngress.table_1_hi entries=65535
-  Table tbl_count_pkt logical id 0x6 entries=1
+  Table tbl_count_pkt logical id 0x5 entries=1
     attached table FcmEgress.num_pkt entries=1
-  Table fcmsketch_tb_fcm_l1_to_l2_d1$precompute logical id 0x5 entries=1
-  Table fcmsketch_tb_fcm_l1_to_l2_d2$precompute logical id 0x4 entries=1
-  Table tbl_fcmsketch_fcm_hash_d1 logical id 0x3 entries=1
-  Table tbl_fcmsketch_fcm_hash_d2 logical id 0x2 entries=1
-  Table forward_0 logical id 0x1 entries=5120
-  Table tbl_waterfall365 logical id 0x0 entries=1
+  Table fcmsketch_tb_fcm_l1_to_l2_d1$precompute logical id 0x4 entries=1
+  Table fcmsketch_tb_fcm_l1_to_l2_d2$precompute logical id 0x3 entries=1
+  Table tbl_fcmsketch_fcm_hash_d1 logical id 0x2 entries=1
+  Table tbl_fcmsketch_fcm_hash_d2 logical id 0x1 entries=1
+  Table forward_0 logical id 0x0 entries=5120
 Finished table placement decisions pipe
   Adding Ternary Indirect table to tbl_count_pkt
   Adding Ternary Indirect table to fcmsketch_tb_fcm_l1_to_l2_d1$precompute
   Adding Ternary Indirect table to fcmsketch_tb_fcm_l1_to_l2_d2$precompute
 table placement completed pipe
-ingress: [3] 0 00 000 0000 00000 000000 0000000
-  0: tbl_waterfall365
-  1: forward_0{ E -1+11, 2 [1x5 5K] }
+ingress: [3] 0 00 000 0000 00000 000000 0000000 00000000 000000000
+  0: forward_0{ E -1+11, 2 [1x5 5K] }
   10: swap1_hi_0{ E -7+22, 0 [1x2 2K] }
     stateful WaterfallIngress.table_1_hi  66K
   20: swap1_lo_0{ E -7+22, 0 [1x2 2K] }
     stateful WaterfallIngress.table_1_lo  66K
-  30: tbl_waterfall368
-  40: swap2_hi_0{ E -7+22, 0 [1x2 2K] }
+  30: swap2_hi_0{ E -7+22, 0 [1x2 2K] }
     stateful WaterfallIngress.table_2_hi  66K
-  50: swap2_lo_0{ E -7+22, 0 [1x2 2K] }
+  40: swap2_lo_0{ E -7+22, 0 [1x2 2K] }
     stateful WaterfallIngress.table_2_lo  66K
-  60: resub_0{ E -7+1, 0 [1x5 5K] }
+  50: swap3_hi_0{ E -7+22, 0 [1x2 2K] }
+    stateful WaterfallIngress.table_3_hi  66K
+  60: swap3_lo_0{ E -7+22, 0 [1x2 2K] }
+    stateful WaterfallIngress.table_3_lo  66K
+  70: swap4_hi_0{ E -7+22, 0 [1x2 2K] }
+    stateful WaterfallIngress.table_4_hi  66K
+  80: swap4_lo_0{ E -7+22, 0 [1x2 2K] }
+    stateful WaterfallIngress.table_4_lo  66K
+  90: resub_0{ E -7+1, 0 [1x5 5K] }
 egress: [4] 0 00 000 0000 00000 000000 0000000 00000000 000000000 0000000000
-  2: tbl_fcmsketch_fcm_hash_d2
-  3: tbl_fcmsketch_fcm_hash_d1
-  4: fcmsketch_tb_fcm_l1_to_l2_d2$precompute
-  5: fcmsketch_tb_fcm_l1_to_l2_d1$precompute
-  6: tbl_count_pkt{ E 0+10, 0 0K }
+  1: tbl_fcmsketch_fcm_hash_d2
+  2: tbl_fcmsketch_fcm_hash_d1
+  3: fcmsketch_tb_fcm_l1_to_l2_d2$precompute
+  4: fcmsketch_tb_fcm_l1_to_l2_d1$precompute
+  5: tbl_count_pkt{ E 0+10, 0 0K }
     stateful FcmEgress.num_pkt    1
   11: tbl_fcmsketch_fcm_action_l1_d2{ E 0+19, 0 0K }
     stateful FcmEgress.fcmsketch.sketch_reg_l1_d2 524K

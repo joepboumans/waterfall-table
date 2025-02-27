@@ -1,11 +1,11 @@
 {
   "schema_version": "2.0.6",
   "target": "tofino",
-  "build_date": "Thu Feb 27 15:19:47 2025",
+  "build_date": "Thu Feb 27 16:47:12 2025",
   "compiler_version": "9.11.0 (fdd358c)",
   "compilation_succeeded": true,
-  "compilation_time": "4.308112144470215",
-  "run_id": "2970b28da4ce4e3e",
+  "compilation_time": "5.969486951828003",
+  "run_id": "609d14c6f1544a25",
   "architecture": "tna",
   "architectureConfig": {
     "name": "64q",
@@ -65,15 +65,21 @@
             ],
             "graphs": [
               {
+                "path": "pipe/graphs/FcmEgress.dot",
+                "gress": "egress",
+                "graph_type": "control",
+                "graph_format": ".dot"
+              },
+              {
                 "path": "pipe/graphs/program_graph.dot",
                 "gress": "ingress",
                 "graph_type": "table",
                 "graph_format": ".dot"
               },
               {
-                "path": "pipe/graphs/FcmEgress.dot",
-                "gress": "egress",
-                "graph_type": "control",
+                "path": "pipe/graphs/power_graph.dot",
+                "gress": "ingress",
+                "graph_type": "table",
                 "graph_format": ".dot"
               },
               {
@@ -101,19 +107,13 @@
                 "graph_format": ".json"
               },
               {
-                "path": "pipe/graphs/power_graph.dot",
+                "path": "pipe/graphs/placement_graph.dot",
                 "gress": "ingress",
                 "graph_type": "table",
                 "graph_format": ".dot"
               },
               {
                 "path": "pipe/graphs/table_dep_graph_placement_0.dot",
-                "gress": "ingress",
-                "graph_type": "table",
-                "graph_format": ".dot"
-              },
-              {
-                "path": "pipe/graphs/placement_graph.dot",
                 "gress": "ingress",
                 "graph_type": "table",
                 "graph_format": ".dot"

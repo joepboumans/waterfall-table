@@ -1,7 +1,7 @@
 {
-    "build_date": "Thu Feb 27 15:19:47 2025", 
+    "build_date": "Thu Feb 27 16:47:12 2025", 
     "program_name": "waterfall_fcm", 
-    "run_id": "2970b28da4ce4e3e", 
+    "run_id": "609d14c6f1544a25", 
     "compiler_version": "9.11.0 (fdd358c)", 
     "schema_version": "1.0.0", 
     "tables": [
@@ -486,7 +486,7 @@
             ], 
             "stage_allocation": [
                 {
-                    "stage_number": 6, 
+                    "stage_number": 9, 
                     "memories": [
                         {
                             "memory_type": "sram", 
@@ -958,7 +958,7 @@
             ], 
             "stage_allocation": [
                 {
-                    "stage_number": 4, 
+                    "stage_number": 3, 
                     "memories": [
                         {
                             "memory_type": "sram", 
@@ -1113,7 +1113,627 @@
             ], 
             "stage_allocation": [
                 {
+                    "stage_number": 4, 
+                    "memories": [
+                        {
+                            "memory_type": "sram", 
+                            "table_word_width": 128, 
+                            "memory_word_width": 128, 
+                            "entries_per_table_word": 2, 
+                            "table_type": "match", 
+                            "num_memories": 1, 
+                            "entries_requested": 8, 
+                            "entries_allocated": 2048, 
+                            "imm_bit_width_in_overhead_requested": 0, 
+                            "imm_bit_width_in_overhead_allocated": 0, 
+                            "entry_bit_width_requested": 7, 
+                            "entry_bit_width_allocated": 26, 
+                            "ideal_entries_per_table_word": 5, 
+                            "ideal_table_word_bit_width": 128
+                        }, 
+                        {
+                            "memory_type": "sram", 
+                            "table_word_width": 128, 
+                            "memory_word_width": 128, 
+                            "entries_per_table_word": 8, 
+                            "table_type": "stateful", 
+                            "num_memories": 9
+                        }
+                    ], 
+                    "overhead_fields": [
+                        {
+                            "name": "version/valid", 
+                            "bit_width": 4
+                        }
+                    ], 
+                    "match_format": {
+                        "entries": [
+                            {
+                                "entry_number": 1, 
+                                "fields": [
+                                    {
+                                        "name": "action", 
+                                        "bit_width": 2, 
+                                        "start_bit": 0, 
+                                        "memory_start_bit": 2
+                                    }, 
+                                    {
+                                        "name": "version", 
+                                        "bit_width": 4, 
+                                        "start_bit": 0, 
+                                        "memory_start_bit": 116
+                                    }, 
+                                    {
+                                        "name": "meter_addr", 
+                                        "bit_width": 16, 
+                                        "start_bit": 4, 
+                                        "memory_start_bit": 24
+                                    }, 
+                                    {
+                                        "name": "meter_pfe", 
+                                        "bit_width": 1, 
+                                        "start_bit": 23, 
+                                        "memory_start_bit": 40
+                                    }, 
+                                    {
+                                        "name": "meter_type", 
+                                        "bit_width": 3, 
+                                        "start_bit": 24, 
+                                        "memory_start_bit": 41
+                                    }
+                                ]
+                            }, 
+                            {
+                                "entry_number": 0, 
+                                "fields": [
+                                    {
+                                        "name": "action", 
+                                        "bit_width": 2, 
+                                        "start_bit": 0, 
+                                        "memory_start_bit": 0
+                                    }, 
+                                    {
+                                        "name": "version", 
+                                        "bit_width": 4, 
+                                        "start_bit": 0, 
+                                        "memory_start_bit": 112
+                                    }, 
+                                    {
+                                        "name": "meter_addr", 
+                                        "bit_width": 16, 
+                                        "start_bit": 4, 
+                                        "memory_start_bit": 4
+                                    }, 
+                                    {
+                                        "name": "meter_pfe", 
+                                        "bit_width": 1, 
+                                        "start_bit": 23, 
+                                        "memory_start_bit": 20
+                                    }, 
+                                    {
+                                        "name": "meter_type", 
+                                        "bit_width": 3, 
+                                        "start_bit": 24, 
+                                        "memory_start_bit": 21
+                                    }
+                                ]
+                            }
+                        ]
+                    }, 
+                    "action_formats": []
+                }
+            ]
+        }, 
+        {
+            "name": "WaterfallIngress.swap3_hi", 
+            "gress": "ingress", 
+            "lookup_types": [
+                "exact"
+            ], 
+            "entries_requested": 8, 
+            "entries_allocated": 2048, 
+            "match_fields": [
+                {
+                    "name": "ig_intr_md.resubmit_flag", 
+                    "start_bit": 0, 
+                    "bit_width": 1, 
+                    "lookup_type": "exact"
+                }, 
+                {
+                    "name": "ig_md.found_hi", 
+                    "start_bit": 0, 
+                    "bit_width": 1, 
+                    "lookup_type": "exact"
+                }, 
+                {
+                    "name": "ig_md.found_lo", 
+                    "start_bit": 0, 
+                    "bit_width": 1, 
+                    "lookup_type": "exact"
+                }
+            ], 
+            "action_parameters": [
+                {
+                    "action_name": "WaterfallIngress.do_swap3_hi", 
+                    "parameters": []
+                }, 
+                {
+                    "action_name": "WaterfallIngress.lookup3_hi", 
+                    "parameters": []
+                }, 
+                {
+                    "action_name": "WaterfallIngress.no_action", 
+                    "parameters": []
+                }
+            ], 
+            "stage_allocation": [
+                {
                     "stage_number": 5, 
+                    "memories": [
+                        {
+                            "memory_type": "sram", 
+                            "table_word_width": 128, 
+                            "memory_word_width": 128, 
+                            "entries_per_table_word": 2, 
+                            "table_type": "match", 
+                            "num_memories": 1, 
+                            "entries_requested": 8, 
+                            "entries_allocated": 2048, 
+                            "imm_bit_width_in_overhead_requested": 0, 
+                            "imm_bit_width_in_overhead_allocated": 0, 
+                            "entry_bit_width_requested": 7, 
+                            "entry_bit_width_allocated": 26, 
+                            "ideal_entries_per_table_word": 5, 
+                            "ideal_table_word_bit_width": 128
+                        }, 
+                        {
+                            "memory_type": "sram", 
+                            "table_word_width": 128, 
+                            "memory_word_width": 128, 
+                            "entries_per_table_word": 8, 
+                            "table_type": "stateful", 
+                            "num_memories": 9
+                        }
+                    ], 
+                    "overhead_fields": [
+                        {
+                            "name": "version/valid", 
+                            "bit_width": 4
+                        }
+                    ], 
+                    "match_format": {
+                        "entries": [
+                            {
+                                "entry_number": 1, 
+                                "fields": [
+                                    {
+                                        "name": "action", 
+                                        "bit_width": 2, 
+                                        "start_bit": 0, 
+                                        "memory_start_bit": 2
+                                    }, 
+                                    {
+                                        "name": "version", 
+                                        "bit_width": 4, 
+                                        "start_bit": 0, 
+                                        "memory_start_bit": 116
+                                    }, 
+                                    {
+                                        "name": "meter_addr", 
+                                        "bit_width": 16, 
+                                        "start_bit": 4, 
+                                        "memory_start_bit": 24
+                                    }, 
+                                    {
+                                        "name": "meter_pfe", 
+                                        "bit_width": 1, 
+                                        "start_bit": 23, 
+                                        "memory_start_bit": 40
+                                    }, 
+                                    {
+                                        "name": "meter_type", 
+                                        "bit_width": 3, 
+                                        "start_bit": 24, 
+                                        "memory_start_bit": 41
+                                    }
+                                ]
+                            }, 
+                            {
+                                "entry_number": 0, 
+                                "fields": [
+                                    {
+                                        "name": "action", 
+                                        "bit_width": 2, 
+                                        "start_bit": 0, 
+                                        "memory_start_bit": 0
+                                    }, 
+                                    {
+                                        "name": "version", 
+                                        "bit_width": 4, 
+                                        "start_bit": 0, 
+                                        "memory_start_bit": 112
+                                    }, 
+                                    {
+                                        "name": "meter_addr", 
+                                        "bit_width": 16, 
+                                        "start_bit": 4, 
+                                        "memory_start_bit": 4
+                                    }, 
+                                    {
+                                        "name": "meter_pfe", 
+                                        "bit_width": 1, 
+                                        "start_bit": 23, 
+                                        "memory_start_bit": 20
+                                    }, 
+                                    {
+                                        "name": "meter_type", 
+                                        "bit_width": 3, 
+                                        "start_bit": 24, 
+                                        "memory_start_bit": 21
+                                    }
+                                ]
+                            }
+                        ]
+                    }, 
+                    "action_formats": []
+                }
+            ]
+        }, 
+        {
+            "name": "WaterfallIngress.swap3_lo", 
+            "gress": "ingress", 
+            "lookup_types": [
+                "exact"
+            ], 
+            "entries_requested": 8, 
+            "entries_allocated": 2048, 
+            "match_fields": [
+                {
+                    "name": "ig_intr_md.resubmit_flag", 
+                    "start_bit": 0, 
+                    "bit_width": 1, 
+                    "lookup_type": "exact"
+                }, 
+                {
+                    "name": "ig_md.found_hi", 
+                    "start_bit": 0, 
+                    "bit_width": 1, 
+                    "lookup_type": "exact"
+                }, 
+                {
+                    "name": "ig_md.found_lo", 
+                    "start_bit": 0, 
+                    "bit_width": 1, 
+                    "lookup_type": "exact"
+                }
+            ], 
+            "action_parameters": [
+                {
+                    "action_name": "WaterfallIngress.do_swap3_lo", 
+                    "parameters": []
+                }, 
+                {
+                    "action_name": "WaterfallIngress.lookup3_lo", 
+                    "parameters": []
+                }, 
+                {
+                    "action_name": "WaterfallIngress.no_action", 
+                    "parameters": []
+                }
+            ], 
+            "stage_allocation": [
+                {
+                    "stage_number": 6, 
+                    "memories": [
+                        {
+                            "memory_type": "sram", 
+                            "table_word_width": 128, 
+                            "memory_word_width": 128, 
+                            "entries_per_table_word": 2, 
+                            "table_type": "match", 
+                            "num_memories": 1, 
+                            "entries_requested": 8, 
+                            "entries_allocated": 2048, 
+                            "imm_bit_width_in_overhead_requested": 0, 
+                            "imm_bit_width_in_overhead_allocated": 0, 
+                            "entry_bit_width_requested": 7, 
+                            "entry_bit_width_allocated": 26, 
+                            "ideal_entries_per_table_word": 5, 
+                            "ideal_table_word_bit_width": 128
+                        }, 
+                        {
+                            "memory_type": "sram", 
+                            "table_word_width": 128, 
+                            "memory_word_width": 128, 
+                            "entries_per_table_word": 8, 
+                            "table_type": "stateful", 
+                            "num_memories": 9
+                        }
+                    ], 
+                    "overhead_fields": [
+                        {
+                            "name": "version/valid", 
+                            "bit_width": 4
+                        }
+                    ], 
+                    "match_format": {
+                        "entries": [
+                            {
+                                "entry_number": 1, 
+                                "fields": [
+                                    {
+                                        "name": "action", 
+                                        "bit_width": 2, 
+                                        "start_bit": 0, 
+                                        "memory_start_bit": 2
+                                    }, 
+                                    {
+                                        "name": "version", 
+                                        "bit_width": 4, 
+                                        "start_bit": 0, 
+                                        "memory_start_bit": 116
+                                    }, 
+                                    {
+                                        "name": "meter_addr", 
+                                        "bit_width": 16, 
+                                        "start_bit": 4, 
+                                        "memory_start_bit": 24
+                                    }, 
+                                    {
+                                        "name": "meter_pfe", 
+                                        "bit_width": 1, 
+                                        "start_bit": 23, 
+                                        "memory_start_bit": 40
+                                    }, 
+                                    {
+                                        "name": "meter_type", 
+                                        "bit_width": 3, 
+                                        "start_bit": 24, 
+                                        "memory_start_bit": 41
+                                    }
+                                ]
+                            }, 
+                            {
+                                "entry_number": 0, 
+                                "fields": [
+                                    {
+                                        "name": "action", 
+                                        "bit_width": 2, 
+                                        "start_bit": 0, 
+                                        "memory_start_bit": 0
+                                    }, 
+                                    {
+                                        "name": "version", 
+                                        "bit_width": 4, 
+                                        "start_bit": 0, 
+                                        "memory_start_bit": 112
+                                    }, 
+                                    {
+                                        "name": "meter_addr", 
+                                        "bit_width": 16, 
+                                        "start_bit": 4, 
+                                        "memory_start_bit": 4
+                                    }, 
+                                    {
+                                        "name": "meter_pfe", 
+                                        "bit_width": 1, 
+                                        "start_bit": 23, 
+                                        "memory_start_bit": 20
+                                    }, 
+                                    {
+                                        "name": "meter_type", 
+                                        "bit_width": 3, 
+                                        "start_bit": 24, 
+                                        "memory_start_bit": 21
+                                    }
+                                ]
+                            }
+                        ]
+                    }, 
+                    "action_formats": []
+                }
+            ]
+        }, 
+        {
+            "name": "WaterfallIngress.swap4_hi", 
+            "gress": "ingress", 
+            "lookup_types": [
+                "exact"
+            ], 
+            "entries_requested": 8, 
+            "entries_allocated": 2048, 
+            "match_fields": [
+                {
+                    "name": "ig_intr_md.resubmit_flag", 
+                    "start_bit": 0, 
+                    "bit_width": 1, 
+                    "lookup_type": "exact"
+                }, 
+                {
+                    "name": "ig_md.found_hi", 
+                    "start_bit": 0, 
+                    "bit_width": 1, 
+                    "lookup_type": "exact"
+                }, 
+                {
+                    "name": "ig_md.found_lo", 
+                    "start_bit": 0, 
+                    "bit_width": 1, 
+                    "lookup_type": "exact"
+                }
+            ], 
+            "action_parameters": [
+                {
+                    "action_name": "WaterfallIngress.do_swap4_hi", 
+                    "parameters": []
+                }, 
+                {
+                    "action_name": "WaterfallIngress.lookup4_hi", 
+                    "parameters": []
+                }, 
+                {
+                    "action_name": "WaterfallIngress.no_action", 
+                    "parameters": []
+                }
+            ], 
+            "stage_allocation": [
+                {
+                    "stage_number": 7, 
+                    "memories": [
+                        {
+                            "memory_type": "sram", 
+                            "table_word_width": 128, 
+                            "memory_word_width": 128, 
+                            "entries_per_table_word": 2, 
+                            "table_type": "match", 
+                            "num_memories": 1, 
+                            "entries_requested": 8, 
+                            "entries_allocated": 2048, 
+                            "imm_bit_width_in_overhead_requested": 0, 
+                            "imm_bit_width_in_overhead_allocated": 0, 
+                            "entry_bit_width_requested": 7, 
+                            "entry_bit_width_allocated": 26, 
+                            "ideal_entries_per_table_word": 5, 
+                            "ideal_table_word_bit_width": 128
+                        }, 
+                        {
+                            "memory_type": "sram", 
+                            "table_word_width": 128, 
+                            "memory_word_width": 128, 
+                            "entries_per_table_word": 8, 
+                            "table_type": "stateful", 
+                            "num_memories": 9
+                        }
+                    ], 
+                    "overhead_fields": [
+                        {
+                            "name": "version/valid", 
+                            "bit_width": 4
+                        }
+                    ], 
+                    "match_format": {
+                        "entries": [
+                            {
+                                "entry_number": 1, 
+                                "fields": [
+                                    {
+                                        "name": "action", 
+                                        "bit_width": 2, 
+                                        "start_bit": 0, 
+                                        "memory_start_bit": 2
+                                    }, 
+                                    {
+                                        "name": "version", 
+                                        "bit_width": 4, 
+                                        "start_bit": 0, 
+                                        "memory_start_bit": 116
+                                    }, 
+                                    {
+                                        "name": "meter_addr", 
+                                        "bit_width": 16, 
+                                        "start_bit": 4, 
+                                        "memory_start_bit": 24
+                                    }, 
+                                    {
+                                        "name": "meter_pfe", 
+                                        "bit_width": 1, 
+                                        "start_bit": 23, 
+                                        "memory_start_bit": 40
+                                    }, 
+                                    {
+                                        "name": "meter_type", 
+                                        "bit_width": 3, 
+                                        "start_bit": 24, 
+                                        "memory_start_bit": 41
+                                    }
+                                ]
+                            }, 
+                            {
+                                "entry_number": 0, 
+                                "fields": [
+                                    {
+                                        "name": "action", 
+                                        "bit_width": 2, 
+                                        "start_bit": 0, 
+                                        "memory_start_bit": 0
+                                    }, 
+                                    {
+                                        "name": "version", 
+                                        "bit_width": 4, 
+                                        "start_bit": 0, 
+                                        "memory_start_bit": 112
+                                    }, 
+                                    {
+                                        "name": "meter_addr", 
+                                        "bit_width": 16, 
+                                        "start_bit": 4, 
+                                        "memory_start_bit": 4
+                                    }, 
+                                    {
+                                        "name": "meter_pfe", 
+                                        "bit_width": 1, 
+                                        "start_bit": 23, 
+                                        "memory_start_bit": 20
+                                    }, 
+                                    {
+                                        "name": "meter_type", 
+                                        "bit_width": 3, 
+                                        "start_bit": 24, 
+                                        "memory_start_bit": 21
+                                    }
+                                ]
+                            }
+                        ]
+                    }, 
+                    "action_formats": []
+                }
+            ]
+        }, 
+        {
+            "name": "WaterfallIngress.swap4_lo", 
+            "gress": "ingress", 
+            "lookup_types": [
+                "exact"
+            ], 
+            "entries_requested": 8, 
+            "entries_allocated": 2048, 
+            "match_fields": [
+                {
+                    "name": "ig_intr_md.resubmit_flag", 
+                    "start_bit": 0, 
+                    "bit_width": 1, 
+                    "lookup_type": "exact"
+                }, 
+                {
+                    "name": "ig_md.found_hi", 
+                    "start_bit": 0, 
+                    "bit_width": 1, 
+                    "lookup_type": "exact"
+                }, 
+                {
+                    "name": "ig_md.found_lo", 
+                    "start_bit": 0, 
+                    "bit_width": 1, 
+                    "lookup_type": "exact"
+                }
+            ], 
+            "action_parameters": [
+                {
+                    "action_name": "WaterfallIngress.do_swap4_lo", 
+                    "parameters": []
+                }, 
+                {
+                    "action_name": "WaterfallIngress.lookup4_lo", 
+                    "parameters": []
+                }, 
+                {
+                    "action_name": "WaterfallIngress.no_action", 
+                    "parameters": []
+                }
+            ], 
+            "stage_allocation": [
+                {
+                    "stage_number": 8, 
                     "memories": [
                         {
                             "memory_type": "sram", 
@@ -1560,56 +2180,6 @@
             "stage_allocation": [
                 {
                     "stage_number": 0, 
-                    "memories": [], 
-                    "overhead_fields": [], 
-                    "match_format": {
-                        "entries": []
-                    }, 
-                    "action_formats": []
-                }
-            ]
-        }, 
-        {
-            "name": "tbl_waterfall365", 
-            "gress": "ingress", 
-            "lookup_types": [], 
-            "entries_requested": 65536, 
-            "entries_allocated": 1, 
-            "match_fields": [], 
-            "action_parameters": [
-                {
-                    "action_name": "waterfall365", 
-                    "parameters": []
-                }
-            ], 
-            "stage_allocation": [
-                {
-                    "stage_number": 0, 
-                    "memories": [], 
-                    "overhead_fields": [], 
-                    "match_format": {
-                        "entries": []
-                    }, 
-                    "action_formats": []
-                }
-            ]
-        }, 
-        {
-            "name": "tbl_waterfall368", 
-            "gress": "ingress", 
-            "lookup_types": [], 
-            "entries_requested": 65536, 
-            "entries_allocated": 1, 
-            "match_fields": [], 
-            "action_parameters": [
-                {
-                    "action_name": "waterfall368", 
-                    "parameters": []
-                }
-            ], 
-            "stage_allocation": [
-                {
-                    "stage_number": 3, 
                     "memories": [], 
                     "overhead_fields": [], 
                     "match_format": {
