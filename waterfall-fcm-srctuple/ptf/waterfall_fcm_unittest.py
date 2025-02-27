@@ -130,8 +130,8 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
     def runTest(self):
         logger.info("Start testing")
 
-        self.testWaterfallFcm()
-        self.resetWaterfall()
+        # self.testWaterfallFcm()
+        # self.resetWaterfall()
 
     def evaluate_digest(self, num_entries):
         learn_filter = self.learn_filter

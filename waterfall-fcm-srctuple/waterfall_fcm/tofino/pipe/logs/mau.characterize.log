@@ -1,8 +1,8 @@
 +---------------------------------------------------------------------+
 |  Log file: mau.characterize.log                                     |
 |  Compiler version: 9.11.0 (fdd358c)                                 |
-|  Created on: Thu Feb 13 11:08:39 2025                               |
-|  Run ID: 5c5916958a224d15                                           |
+|  Created on: Thu Feb 27 12:10:44 2025                               |
+|  Run ID: 6bba0bfb128c4f55                                           |
 +---------------------------------------------------------------------+
 
 Match+Action Resource Usage
@@ -20,7 +20,7 @@ Match+Action Resource Usage
 |  WaterfallIngressParser.$PORT_METADATA  | ingress | parser |  exact  | buf  |   0 (0/0/0/0/0)   |   0   |   288 / 288 (0)   |  9 / 0 (-9)  |    0    |   0   |   0/0/0/0/0/0/0/0   | 64 / 0 (-64) | 0 / 0 (0) |  0 / 0 (0)   |   64   | 0 / 0 (0) | 1 in 2 (128) | 1 in 1 (64)  |  - / -  |     - / -     |  - / -  |
 |                                         |         |        |         |      |                   |       |                   |              |         |       |                     |              |           |              |        |           |              |              |         |               |         |
 |         WaterfallIngress.forward        | ingress |   0    |  exact  | sram |   1 (1/0/0/0/0)   |   0   | 512 / 5120 (4608) |  9 / 2 (-7)  |    0    |   13  |   0/0/0/0/0/0/4/9   |  9 / 9 (0)   | 0 / 0 (0) | 22 / 15 (-7) |   9    | 0 / 0 (0) | 5 in 1 (128) | 5 in 1 (128) |  - / -  | 70.3% / 35.2% |  - / -  |
-|              tbl_get_hash1              | ingress |   0    |    -    |  -   |   0 (0/0/0/0/0)   |   0   |     0 / 0 (0)     |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   | 0 / 0 (0) |  0 / 0 (0)   |   0    | 0 / 0 (0) |  0 in 0 (0)  |  0 in 0 (0)  |  - / -  |     - / -     |  - / -  |
+|             tbl_waterfall361            | ingress |   0    |    -    |  -   |   0 (0/0/0/0/0)   |   0   |     0 / 0 (0)     |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   | 0 / 0 (0) |  0 / 0 (0)   |   0    | 0 / 0 (0) |  0 in 0 (0)  |  0 in 0 (0)  |  - / -  |     - / -     |  - / -  |
 | fcmsketch_tb_fcm_l1_to_l2_d1$precompute |  egress |   0    |    -    | sram |   0 (0/0/0/0/0)   |   0   |     0 / 0 (0)     |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   | 0 / 0 (0) |  0 / 0 (0)   |   0    | 0 / 0 (0) |  0 in 0 (0)  |  1 in 0 (0)  |  - / -  |     - / -     |  - / -  |
 | fcmsketch_tb_fcm_l1_to_l2_d2$precompute |  egress |   0    |    -    | sram |   0 (0/0/0/0/0)   |   0   |     0 / 0 (0)     |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   | 0 / 0 (0) |  0 / 0 (0)   |   0    | 0 / 0 (0) |  0 in 0 (0)  |  1 in 0 (0)  |  - / -  |     - / -     |  - / -  |
 |              tbl_count_pkt              |  egress |   0    |    -    | sram |   2 (0/0/0/2/0)   |   0   |     0 / 0 (0)     |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   | 0 / 0 (0) |  0 / 0 (0)   |   0    | 0 / 0 (0) |  0 in 0 (0)  |  1 in 0 (0)  |  - / -  |     - / -     |  - / -  |
@@ -28,44 +28,35 @@ Match+Action Resource Usage
 |        tbl_fcmsketch_fcm_hash_d2        |  egress |   0    |    -    |  -   |   0 (0/0/0/0/0)   |   0   |     0 / 0 (0)     |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   | 0 / 0 (0) |  0 / 0 (0)   |   0    | 0 / 0 (0) |  0 in 0 (0)  |  0 in 0 (0)  |  - / -  |     - / -     |  - / -  |
 |              stage 0 totals             |    -    |   -    |    -    |  -   |   3 (1/0/0/2/0)   |   0   |         -         |      -       |    -    |   -   |          -          |      -       |     -     |      -       |   -    |     -     |      -       |      -       |    -    |       -       |    -    |
 |                                         |         |        |         |      |                   |       |                   |              |         |       |                     |              |           |              |        |           |              |              |         |               |         |
-|     WaterfallIngress.parse_resub_hdr    | ingress |   1    |  exact  | sram |   1 (1/0/0/0/0)   |   0   |  2 / 5120 (5118)  |  1 / 1 (0)   |    0    |   4   |   0/0/0/0/0/0/4/0   |  0 / 0 (0)   | 0 / 0 (0) |  5 / 5 (0)   |   0    | 0 / 0 (0) | 5 in 1 (128) | 5 in 1 (128) |  - / -  |  3.9% / 0.0%  |  - / -  |
+|        WaterfallIngress.swap1_lo        | ingress |   1    |  exact  | sram |   10 (1/0/0/9/0)  |   0   |  4 / 2048 (2044)  | 1 / 22 (21)  |    0    |   4   |   0/0/0/0/0/0/4/0   |  0 / 0 (0)   | 0 / 0 (0) | 5 / 26 (21)  |   0    | 0 / 0 (0) | 5 in 1 (128) | 2 in 1 (128) |  - / -  |  3.9% / 0.0%  |  - / -  |
 |      tbl_fcmsketch_fcm_action_l1_d2     |  egress |   1    |    -    |  -   |  33 (0/0/0/33/0)  |   0   |     0 / 0 (0)     |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   | 0 / 0 (0) |  0 / 0 (0)   |   0    | 0 / 0 (0) |  0 in 0 (0)  |  0 in 0 (0)  |  - / -  |     - / -     |  - / -  |
-|              stage 1 totals             |    -    |   -    |    -    |  -   |  34 (1/0/0/33/0)  |   0   |         -         |      -       |    -    |   -   |          -          |      -       |     -     |      -       |   -    |     -     |      -       |      -       |    -    |       -       |    -    |
+|              stage 1 totals             |    -    |   -    |    -    |  -   |  43 (1/0/0/42/0)  |   0   |         -         |      -       |    -    |   -   |          -          |      -       |     -     |      -       |   -    |     -     |      -       |      -       |    -    |       -       |    -    |
 |                                         |         |        |         |      |                   |       |                   |              |         |       |                     |              |           |              |        |           |              |              |         |               |         |
-|          WaterfallIngress.swap1         | ingress |   2    |  exact  | sram |  18 (1/0/0/17/0)  |   0   |  2 / 2048 (2046)  | 1 / 22 (21)  |    0    |   4   |   0/0/0/0/0/0/4/0   |  0 / 0 (0)   | 0 / 0 (0) | 5 / 26 (21)  |   0    | 0 / 0 (0) | 5 in 1 (128) | 2 in 1 (128) |  - / -  |  3.9% / 0.0%  |  - / -  |
-|  FcmEgress.fcmsketch.tb_fcm_l1_to_l2_d2 |  egress |   2    |  exact  | sram |   9 (0/0/0/9/0)   |   0   |     1 / 1 (0)     | 32 / 0 (-32) |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   | 0 / 0 (0) | 32 / 0 (-32) |   0    | 0 / 0 (0) |  0 in 0 (0)  |  0 in 0 (0)  |  - / -  |     - / -     |  - / -  |
-|              stage 2 totals             |    -    |   -    |    -    |  -   |  27 (1/0/0/26/0)  |   0   |         -         |      -       |    -    |   -   |          -          |      -       |     -     |      -       |   -    |     -     |      -       |      -       |    -    |       -       |    -    |
+|        WaterfallIngress.swap1_hi        | ingress |   2    |  exact  | sram |   10 (1/0/0/9/0)  |   0   |  4 / 2048 (2044)  | 1 / 22 (21)  |    0    |   4   |   0/0/0/0/0/0/4/0   |  0 / 0 (0)   | 0 / 0 (0) | 5 / 26 (21)  |   0    | 0 / 0 (0) | 5 in 1 (128) | 2 in 1 (128) |  - / -  |  3.9% / 0.0%  |  - / -  |
+|      tbl_fcmsketch_fcm_action_l1_d1     |  egress |   2    |    -    |  -   |  33 (0/0/0/33/0)  |   0   |     0 / 0 (0)     |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   | 0 / 0 (0) |  0 / 0 (0)   |   0    | 0 / 0 (0) |  0 in 0 (0)  |  0 in 0 (0)  |  - / -  |     - / -     |  - / -  |
+|              stage 2 totals             |    -    |   -    |    -    |  -   |  43 (1/0/0/42/0)  |   0   |         -         |      -       |    -    |   -   |          -          |      -       |     -     |      -       |   -    |     -     |      -       |      -       |    -    |       -       |    -    |
 |                                         |         |        |         |      |                   |       |                   |              |         |       |                     |              |           |              |        |           |              |              |         |               |         |
-|              tbl_get_hash2              | ingress |   3    |    -    |  -   |   0 (0/0/0/0/0)   |   0   |     0 / 0 (0)     |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   | 0 / 0 (0) |  0 / 0 (0)   |   0    | 0 / 0 (0) |  0 in 0 (0)  |  0 in 0 (0)  |  - / -  |     - / -     |  - / -  |
-|  FcmEgress.fcmsketch.tb_fcm_l2_to_l3_d2 |  egress |   3    |  exact  | sram |   3 (0/0/0/3/0)   |   0   |     1 / 1 (0)     | 32 / 0 (-32) |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   | 0 / 0 (0) | 32 / 0 (-32) |   0    | 0 / 0 (0) |  0 in 0 (0)  |  0 in 0 (0)  |  - / -  |     - / -     |  - / -  |
-|      tbl_fcmsketch_fcm_action_l1_d1     |  egress |   3    |    -    |  -   |  33 (0/0/0/33/0)  |   0   |     0 / 0 (0)     |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   | 0 / 0 (0) |  0 / 0 (0)   |   0    | 0 / 0 (0) |  0 in 0 (0)  |  0 in 0 (0)  |  - / -  |     - / -     |  - / -  |
-|              stage 3 totals             |    -    |   -    |    -    |  -   |  36 (0/0/0/36/0)  |   0   |         -         |      -       |    -    |   -   |          -          |      -       |     -     |      -       |   -    |     -     |      -       |      -       |    -    |       -       |    -    |
+|             tbl_waterfall364            | ingress |   3    |    -    |  -   |   0 (0/0/0/0/0)   |   0   |     0 / 0 (0)     |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   | 0 / 0 (0) |  0 / 0 (0)   |   0    | 0 / 0 (0) |  0 in 0 (0)  |  0 in 0 (0)  |  - / -  |     - / -     |  - / -  |
+|  FcmEgress.fcmsketch.tb_fcm_l1_to_l2_d1 |  egress |   3    |  exact  | sram |   9 (0/0/0/9/0)   |   0   |     1 / 1 (0)     | 32 / 0 (-32) |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   | 0 / 0 (0) | 32 / 0 (-32) |   0    | 0 / 0 (0) |  0 in 0 (0)  |  0 in 0 (0)  |  - / -  |     - / -     |  - / -  |
+|  FcmEgress.fcmsketch.tb_fcm_l1_to_l2_d2 |  egress |   3    |  exact  | sram |   9 (0/0/0/9/0)   |   0   |     1 / 1 (0)     | 32 / 0 (-32) |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   | 0 / 0 (0) | 32 / 0 (-32) |   0    | 0 / 0 (0) |  0 in 0 (0)  |  0 in 0 (0)  |  - / -  |     - / -     |  - / -  |
+|              stage 3 totals             |    -    |   -    |    -    |  -   |  18 (0/0/0/18/0)  |   0   |         -         |      -       |    -    |   -   |          -          |      -       |     -     |      -       |   -    |     -     |      -       |      -       |    -    |       -       |    -    |
 |                                         |         |        |         |      |                   |       |                   |              |         |       |                     |              |           |              |        |           |              |              |         |               |         |
-|          WaterfallIngress.swap2         | ingress |   4    |  exact  | sram |  18 (1/0/0/17/0)  |   0   |  5 / 2048 (2043)  | 2 / 22 (20)  |    0    |   4   |   0/0/0/0/0/0/4/0   |  0 / 0 (0)   | 0 / 0 (0) | 6 / 26 (20)  |   0    | 0 / 0 (0) | 5 in 1 (128) | 2 in 1 (128) |  - / -  |  7.8% / 0.0%  |  - / -  |
-|  FcmEgress.fcmsketch.tb_fcm_l1_to_l2_d1 |  egress |   4    |  exact  | sram |   9 (0/0/0/9/0)   |   0   |     1 / 1 (0)     | 32 / 0 (-32) |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   | 0 / 0 (0) | 32 / 0 (-32) |   0    | 0 / 0 (0) |  0 in 0 (0)  |  0 in 0 (0)  |  - / -  |     - / -     |  - / -  |
-|              stage 4 totals             |    -    |   -    |    -    |  -   |  27 (1/0/0/26/0)  |   0   |         -         |      -       |    -    |   -   |          -          |      -       |     -     |      -       |   -    |     -     |      -       |      -       |    -    |       -       |    -    |
+|        WaterfallIngress.swap2_hi        | ingress |   4    |  exact  | sram |   10 (1/0/0/9/0)  |   0   |  8 / 2048 (2040)  | 3 / 22 (19)  |    0    |   4   |   0/0/0/0/0/0/4/0   |  0 / 0 (0)   | 0 / 0 (0) | 7 / 26 (19)  |   0    | 0 / 0 (0) | 5 in 1 (128) | 2 in 1 (128) |  - / -  |  11.7% / 0.0% |  - / -  |
+|  FcmEgress.fcmsketch.tb_fcm_l2_to_l3_d1 |  egress |   4    |  exact  | sram |   3 (0/0/0/3/0)   |   0   |     1 / 1 (0)     | 32 / 0 (-32) |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   | 0 / 0 (0) | 32 / 0 (-32) |   0    | 0 / 0 (0) |  0 in 0 (0)  |  0 in 0 (0)  |  - / -  |     - / -     |  - / -  |
+|  FcmEgress.fcmsketch.tb_fcm_l2_to_l3_d2 |  egress |   4    |  exact  | sram |   3 (0/0/0/3/0)   |   0   |     1 / 1 (0)     | 32 / 0 (-32) |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   | 0 / 0 (0) | 32 / 0 (-32) |   0    | 0 / 0 (0) |  0 in 0 (0)  |  0 in 0 (0)  |  - / -  |     - / -     |  - / -  |
+|              stage 4 totals             |    -    |   -    |    -    |  -   |  16 (1/0/0/15/0)  |   0   |         -         |      -       |    -    |   -   |          -          |      -       |     -     |      -       |   -    |     -     |      -       |      -       |    -    |       -       |    -    |
 |                                         |         |        |         |      |                   |       |                   |              |         |       |                     |              |           |              |        |           |              |              |         |               |         |
-|              tbl_get_hash3              | ingress |   5    |    -    |  -   |   0 (0/0/0/0/0)   |   0   |     0 / 0 (0)     |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   | 0 / 0 (0) |  0 / 0 (0)   |   0    | 0 / 0 (0) |  0 in 0 (0)  |  0 in 0 (0)  |  - / -  |     - / -     |  - / -  |
-|  FcmEgress.fcmsketch.tb_fcm_l2_to_l3_d1 |  egress |   5    |  exact  | sram |   3 (0/0/0/3/0)   |   0   |     1 / 1 (0)     | 32 / 0 (-32) |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   | 0 / 0 (0) | 32 / 0 (-32) |   0    | 0 / 0 (0) |  0 in 0 (0)  |  0 in 0 (0)  |  - / -  |     - / -     |  - / -  |
-|              stage 5 totals             |    -    |   -    |    -    |  -   |   3 (0/0/0/3/0)   |   0   |         -         |      -       |    -    |   -   |          -          |      -       |     -     |      -       |   -    |     -     |      -       |      -       |    -    |       -       |    -    |
+|        WaterfallIngress.swap2_lo        | ingress |   5    |  exact  | sram |   10 (1/0/0/9/0)  |   0   |  8 / 2048 (2040)  | 3 / 22 (19)  |    0    |   4   |   0/0/0/0/0/0/4/0   |  0 / 0 (0)   | 0 / 0 (0) | 7 / 26 (19)  |   0    | 0 / 0 (0) | 5 in 1 (128) | 2 in 1 (128) |  - / -  |  11.7% / 0.0% |  - / -  |
+|              stage 5 totals             |    -    |   -    |    -    |  -   |   10 (1/0/0/9/0)  |   0   |         -         |      -       |    -    |   -   |          -          |      -       |     -     |      -       |   -    |     -     |      -       |      -       |    -    |       -       |    -    |
 |                                         |         |        |         |      |                   |       |                   |              |         |       |                     |              |           |              |        |           |              |              |         |               |         |
-|          WaterfallIngress.swap3         | ingress |   6    |  exact  | sram |  18 (1/0/0/17/0)  |   0   |  3 / 2048 (2045)  | 2 / 22 (20)  |    0    |   4   |   0/0/0/0/0/0/4/0   |  0 / 0 (0)   | 0 / 0 (0) | 6 / 26 (20)  |   0    | 0 / 0 (0) | 5 in 1 (128) | 2 in 1 (128) |  - / -  |  7.8% / 0.0%  |  - / -  |
-|              stage 6 totals             |    -    |   -    |    -    |  -   |  18 (1/0/0/17/0)  |   0   |         -         |      -       |    -    |   -   |          -          |      -       |     -     |      -       |   -    |     -     |      -       |      -       |    -    |       -       |    -    |
+|          WaterfallIngress.resub         | ingress |   6    |  exact  | sram |   1 (1/0/0/0/0)   |   0   |  8 / 5120 (5112)  |  3 / 1 (-2)  |    0    |   4   |   0/0/0/0/0/0/4/0   |  0 / 0 (0)   | 0 / 0 (0) |  7 / 5 (-2)  |   0    | 0 / 0 (0) | 5 in 1 (128) | 5 in 1 (128) |  - / -  |  11.7% / 0.0% |  - / -  |
+|              stage 6 totals             |    -    |   -    |    -    |  -   |   1 (1/0/0/0/0)   |   0   |         -         |      -       |    -    |   -   |          -          |      -       |     -     |      -       |   -    |     -     |      -       |      -       |    -    |       -       |    -    |
 |                                         |         |        |         |      |                   |       |                   |              |         |       |                     |              |           |              |        |           |              |              |         |               |         |
-|              tbl_get_hash4              | ingress |   7    |    -    |  -   |   0 (0/0/0/0/0)   |   0   |     0 / 0 (0)     |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   | 0 / 0 (0) |  0 / 0 (0)   |   0    | 0 / 0 (0) |  0 in 0 (0)  |  0 in 0 (0)  |  - / -  |     - / -     |  - / -  |
-|              stage 7 totals             |    -    |   -    |    -    |  -   |   0 (0/0/0/0/0)   |   0   |         -         |      -       |    -    |   -   |          -          |      -       |     -     |      -       |   -    |     -     |      -       |      -       |    -    |       -       |    -    |
-|                                         |         |        |         |      |                   |       |                   |              |         |       |                     |              |           |              |        |           |              |              |         |               |         |
-|          WaterfallIngress.swap4         | ingress |   8    |  exact  | sram |  18 (1/0/0/17/0)  |   0   |  3 / 2048 (2045)  | 2 / 22 (20)  |    0    |   4   |   0/0/0/0/0/0/4/0   |  0 / 0 (0)   | 0 / 0 (0) | 6 / 26 (20)  |   0    | 0 / 0 (0) | 5 in 1 (128) | 2 in 1 (128) |  - / -  |  7.8% / 0.0%  |  - / -  |
-|              stage 8 totals             |    -    |   -    |    -    |  -   |  18 (1/0/0/17/0)  |   0   |         -         |      -       |    -    |   -   |          -          |      -       |     -     |      -       |   -    |     -     |      -       |      -       |    -    |       -       |    -    |
-|                                         |         |        |         |      |                   |       |                   |              |         |       |                     |              |           |              |        |           |              |              |         |               |         |
-|          WaterfallIngress.resub         | ingress |   9    |  exact  | sram |   1 (1/0/0/0/0)   |   0   |  3 / 5120 (5117)  |  2 / 1 (-1)  |    0    |   4   |   0/0/0/0/0/0/4/0   |  0 / 0 (0)   | 0 / 0 (0) |  6 / 5 (-1)  |   0    | 0 / 0 (0) | 5 in 1 (128) | 5 in 1 (128) |  - / -  |  7.8% / 0.0%  |  - / -  |
-|              stage 9 totals             |    -    |   -    |    -    |  -   |   1 (1/0/0/0/0)   |   0   |         -         |      -       |    -    |   -   |          -          |      -       |     -     |      -       |   -    |     -     |      -       |      -       |    -    |       -       |    -    |
-|                                         |         |        |         |      |                   |       |                   |              |         |       |                     |              |           |              |        |           |              |              |         |               |         |
-|         overall totals (ingress)        |    -    |   -    |    -    |  -   |  75 (7/0/0/68/0)  |   0   |         -         |      -       |    -    |   -   |          -          |      -       |     -     |      -       |   -    |     -     |      -       |      -       |    -    |       -       |    -    |
+|         overall totals (ingress)        |    -    |   -    |    -    |  -   |  42 (6/0/0/36/0)  |   0   |         -         |      -       |    -    |   -   |          -          |      -       |     -     |      -       |   -    |     -     |      -       |      -       |    -    |       -       |    -    |
 |                                         |         |        |         |      |                   |       |                   |              |         |       |                     |              |           |              |        |           |              |              |         |               |         |
 |         overall totals (egress)         |    -    |   -    |    -    |  -   |  92 (0/0/0/92/0)  |   0   |         -         |      -       |    -    |   -   |          -          |      -       |     -     |      -       |   -    |     -     |      -       |      -       |    -    |       -       |    -    |
 |                                         |         |        |         |      |                   |       |                   |              |         |       |                     |              |           |              |        |           |              |              |         |               |         |
-|              overall totals             |    -    |   -    |    -    |  -   | 167 (7/0/0/160/0) |   0   |         -         |      -       |    -    |   -   |          -          |      -       |     -     |      -       |   -    |     -     |      -       |      -       |    -    |       -       |    -    |
+|              overall totals             |    -    |   -    |    -    |  -   | 134 (6/0/0/128/0) |   0   |         -         |      -       |    -    |   -   |          -          |      -       |     -     |      -       |   -    |     -     |      -       |      -       |    -    |       -       |    -    |
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Total SRAMs Legend:
@@ -129,13 +120,6 @@ Match Overhead:
 
   Total bits: 13
 +----------------------------------------------------------------+
-   WaterfallIngress.parse_resub_hdr
-+----------------------------------------------------------------+
-Match Overhead:
-  Field --version_valid-- [3:0] (4 bits)
-
-  Total bits: 4
-+----------------------------------------------------------------+
    WaterfallIngress.resub
 +----------------------------------------------------------------+
 Match Overhead:
@@ -143,28 +127,28 @@ Match Overhead:
 
   Total bits: 4
 +----------------------------------------------------------------+
-   WaterfallIngress.swap1
+   WaterfallIngress.swap1_hi
 +----------------------------------------------------------------+
 Match Overhead:
   Field --version_valid-- [3:0] (4 bits)
 
   Total bits: 4
 +----------------------------------------------------------------+
-   WaterfallIngress.swap2
+   WaterfallIngress.swap1_lo
 +----------------------------------------------------------------+
 Match Overhead:
   Field --version_valid-- [3:0] (4 bits)
 
   Total bits: 4
 +----------------------------------------------------------------+
-   WaterfallIngress.swap3
+   WaterfallIngress.swap2_hi
 +----------------------------------------------------------------+
 Match Overhead:
   Field --version_valid-- [3:0] (4 bits)
 
   Total bits: 4
 +----------------------------------------------------------------+
-   WaterfallIngress.swap4
+   WaterfallIngress.swap2_lo
 +----------------------------------------------------------------+
 Match Overhead:
   Field --version_valid-- [3:0] (4 bits)
@@ -219,25 +203,13 @@ Match Overhead:
 
   Total bits: 0
 +----------------------------------------------------------------+
-   tbl_get_hash1
+   tbl_waterfall361
 +----------------------------------------------------------------+
 Match Overhead:
 
   Total bits: 0
 +----------------------------------------------------------------+
-   tbl_get_hash2
-+----------------------------------------------------------------+
-Match Overhead:
-
-  Total bits: 0
-+----------------------------------------------------------------+
-   tbl_get_hash3
-+----------------------------------------------------------------+
-Match Overhead:
-
-  Total bits: 0
-+----------------------------------------------------------------+
-   tbl_get_hash4
+   tbl_waterfall364
 +----------------------------------------------------------------+
 Match Overhead:
 
@@ -257,7 +229,7 @@ Match Overhead:
 +------------------------------------------------+
    Match format for FcmEgress.fcmsketch.tb_fcm_l1_to_l2_d1
 +------------------------------------------------+
-Stage 4:
+Stage 3:
 No match entries required.
 +----------------------------------------------------------------+
   FcmEgress.fcmsketch.tb_fcm_l1_to_l2_d2
@@ -265,7 +237,7 @@ No match entries required.
 +------------------------------------------------+
    Match format for FcmEgress.fcmsketch.tb_fcm_l1_to_l2_d2
 +------------------------------------------------+
-Stage 2:
+Stage 3:
 No match entries required.
 +----------------------------------------------------------------+
   FcmEgress.fcmsketch.tb_fcm_l2_to_l3_d1
@@ -273,7 +245,7 @@ No match entries required.
 +------------------------------------------------+
    Match format for FcmEgress.fcmsketch.tb_fcm_l2_to_l3_d1
 +------------------------------------------------+
-Stage 5:
+Stage 4:
 No match entries required.
 +----------------------------------------------------------------+
   FcmEgress.fcmsketch.tb_fcm_l2_to_l3_d2
@@ -281,7 +253,7 @@ No match entries required.
 +------------------------------------------------+
    Match format for FcmEgress.fcmsketch.tb_fcm_l2_to_l3_d2
 +------------------------------------------------+
-Stage 3:
+Stage 4:
 No match entries required.
 +----------------------------------------------------------------+
   WaterfallIngress.forward
@@ -328,51 +300,12 @@ Pack Format:
     ]
   ]
 +----------------------------------------------------------------+
-  WaterfallIngress.parse_resub_hdr
-+----------------------------------------------------------------+
-+------------------------------------------------+
-   Match format for WaterfallIngress.parse_resub_hdr
-+------------------------------------------------+
-Stage 1:
-Pack Format:
-  table_word_width: 128
-  memory_word_width: 128
-  entries_per_table_word: 5
-  number_memory_units_per_table_word: 1
-  entry_list: [
-    entry_number : 4
-    field_list : [
-       Field action [0:0]    : in bits [4:4]
-       Field version [3:0]   : in bits [11:8]
-    ]
-    entry_number : 3
-    field_list : [
-       Field action [0:0]    : in bits [3:3]
-       Field version [3:0]   : in bits [127:124]
-    ]
-    entry_number : 2
-    field_list : [
-       Field action [0:0]    : in bits [2:2]
-       Field version [3:0]   : in bits [123:120]
-    ]
-    entry_number : 1
-    field_list : [
-       Field action [0:0]    : in bits [1:1]
-       Field version [3:0]   : in bits [119:116]
-    ]
-    entry_number : 0
-    field_list : [
-       Field action [0:0]    : in bits [0:0]
-       Field version [3:0]   : in bits [115:112]
-    ]
-  ]
-+----------------------------------------------------------------+
   WaterfallIngress.resub
 +----------------------------------------------------------------+
 +------------------------------------------------+
    Match format for WaterfallIngress.resub
 +------------------------------------------------+
-Stage 9:
+Stage 6:
 Pack Format:
   table_word_width: 128
   memory_word_width: 128
@@ -406,10 +339,10 @@ Pack Format:
     ]
   ]
 +----------------------------------------------------------------+
-  WaterfallIngress.swap1
+  WaterfallIngress.swap1_hi
 +----------------------------------------------------------------+
 +------------------------------------------------+
-   Match format for WaterfallIngress.swap1
+   Match format for WaterfallIngress.swap1_hi
 +------------------------------------------------+
 Stage 2:
 Pack Format:
@@ -422,7 +355,7 @@ Pack Format:
     field_list : [
        Field action [1:0]         : in bits [3:2]
        Field version [3:0]        : in bits [119:116]
-       Field meter_addr [20:5]    : in bits [39:24]
+       Field meter_addr [19:4]    : in bits [39:24]
        Field meter_pfe [23:23]    : in bits [40:40]
        Field meter_type [26:24]   : in bits [43:41]
     ]
@@ -430,16 +363,46 @@ Pack Format:
     field_list : [
        Field action [1:0]         : in bits [1:0]
        Field version [3:0]        : in bits [115:112]
-       Field meter_addr [20:5]    : in bits [19:4]
+       Field meter_addr [19:4]    : in bits [19:4]
        Field meter_pfe [23:23]    : in bits [20:20]
        Field meter_type [26:24]   : in bits [23:21]
     ]
   ]
 +----------------------------------------------------------------+
-  WaterfallIngress.swap2
+  WaterfallIngress.swap1_lo
 +----------------------------------------------------------------+
 +------------------------------------------------+
-   Match format for WaterfallIngress.swap2
+   Match format for WaterfallIngress.swap1_lo
++------------------------------------------------+
+Stage 1:
+Pack Format:
+  table_word_width: 128
+  memory_word_width: 128
+  entries_per_table_word: 2
+  number_memory_units_per_table_word: 1
+  entry_list: [
+    entry_number : 1
+    field_list : [
+       Field action [1:0]         : in bits [3:2]
+       Field version [3:0]        : in bits [119:116]
+       Field meter_addr [19:4]    : in bits [39:24]
+       Field meter_pfe [23:23]    : in bits [40:40]
+       Field meter_type [26:24]   : in bits [43:41]
+    ]
+    entry_number : 0
+    field_list : [
+       Field action [1:0]         : in bits [1:0]
+       Field version [3:0]        : in bits [115:112]
+       Field meter_addr [19:4]    : in bits [19:4]
+       Field meter_pfe [23:23]    : in bits [20:20]
+       Field meter_type [26:24]   : in bits [23:21]
+    ]
+  ]
++----------------------------------------------------------------+
+  WaterfallIngress.swap2_hi
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for WaterfallIngress.swap2_hi
 +------------------------------------------------+
 Stage 4:
 Pack Format:
@@ -452,7 +415,7 @@ Pack Format:
     field_list : [
        Field action [1:0]         : in bits [3:2]
        Field version [3:0]        : in bits [119:116]
-       Field meter_addr [20:5]    : in bits [39:24]
+       Field meter_addr [19:4]    : in bits [39:24]
        Field meter_pfe [23:23]    : in bits [40:40]
        Field meter_type [26:24]   : in bits [43:41]
     ]
@@ -460,18 +423,18 @@ Pack Format:
     field_list : [
        Field action [1:0]         : in bits [1:0]
        Field version [3:0]        : in bits [115:112]
-       Field meter_addr [20:5]    : in bits [19:4]
+       Field meter_addr [19:4]    : in bits [19:4]
        Field meter_pfe [23:23]    : in bits [20:20]
        Field meter_type [26:24]   : in bits [23:21]
     ]
   ]
 +----------------------------------------------------------------+
-  WaterfallIngress.swap3
+  WaterfallIngress.swap2_lo
 +----------------------------------------------------------------+
 +------------------------------------------------+
-   Match format for WaterfallIngress.swap3
+   Match format for WaterfallIngress.swap2_lo
 +------------------------------------------------+
-Stage 6:
+Stage 5:
 Pack Format:
   table_word_width: 128
   memory_word_width: 128
@@ -482,7 +445,7 @@ Pack Format:
     field_list : [
        Field action [1:0]         : in bits [3:2]
        Field version [3:0]        : in bits [119:116]
-       Field meter_addr [20:5]    : in bits [39:24]
+       Field meter_addr [19:4]    : in bits [39:24]
        Field meter_pfe [23:23]    : in bits [40:40]
        Field meter_type [26:24]   : in bits [43:41]
     ]
@@ -490,37 +453,7 @@ Pack Format:
     field_list : [
        Field action [1:0]         : in bits [1:0]
        Field version [3:0]        : in bits [115:112]
-       Field meter_addr [20:5]    : in bits [19:4]
-       Field meter_pfe [23:23]    : in bits [20:20]
-       Field meter_type [26:24]   : in bits [23:21]
-    ]
-  ]
-+----------------------------------------------------------------+
-  WaterfallIngress.swap4
-+----------------------------------------------------------------+
-+------------------------------------------------+
-   Match format for WaterfallIngress.swap4
-+------------------------------------------------+
-Stage 8:
-Pack Format:
-  table_word_width: 128
-  memory_word_width: 128
-  entries_per_table_word: 2
-  number_memory_units_per_table_word: 1
-  entry_list: [
-    entry_number : 1
-    field_list : [
-       Field action [1:0]         : in bits [3:2]
-       Field version [3:0]        : in bits [119:116]
-       Field meter_addr [20:5]    : in bits [39:24]
-       Field meter_pfe [23:23]    : in bits [40:40]
-       Field meter_type [26:24]   : in bits [43:41]
-    ]
-    entry_number : 0
-    field_list : [
-       Field action [1:0]         : in bits [1:0]
-       Field version [3:0]        : in bits [115:112]
-       Field meter_addr [20:5]    : in bits [19:4]
+       Field meter_addr [19:4]    : in bits [19:4]
        Field meter_pfe [23:23]    : in bits [20:20]
        Field meter_type [26:24]   : in bits [23:21]
     ]
@@ -574,7 +507,7 @@ No match entries required.
 +------------------------------------------------+
    Match format for tbl_fcmsketch_fcm_action_l1_d1
 +------------------------------------------------+
-Stage 3:
+Stage 2:
 No match entries required.
 +----------------------------------------------------------------+
   tbl_fcmsketch_fcm_action_l1_d2
@@ -601,34 +534,18 @@ No match entries required.
 Stage 0:
 No match entries required.
 +----------------------------------------------------------------+
-  tbl_get_hash1
+  tbl_waterfall361
 +----------------------------------------------------------------+
 +------------------------------------------------+
-   Match format for tbl_get_hash1
+   Match format for tbl_waterfall361
 +------------------------------------------------+
 Stage 0:
 No match entries required.
 +----------------------------------------------------------------+
-  tbl_get_hash2
+  tbl_waterfall364
 +----------------------------------------------------------------+
 +------------------------------------------------+
-   Match format for tbl_get_hash2
+   Match format for tbl_waterfall364
 +------------------------------------------------+
 Stage 3:
-No match entries required.
-+----------------------------------------------------------------+
-  tbl_get_hash3
-+----------------------------------------------------------------+
-+------------------------------------------------+
-   Match format for tbl_get_hash3
-+------------------------------------------------+
-Stage 5:
-No match entries required.
-+----------------------------------------------------------------+
-  tbl_get_hash4
-+----------------------------------------------------------------+
-+------------------------------------------------+
-   Match format for tbl_get_hash4
-+------------------------------------------------+
-Stage 7:
 No match entries required.

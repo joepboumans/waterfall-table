@@ -12,9 +12,10 @@
 #include "../common/util.p4"
 
 // Waterfall defines
-#define WATERFALL_REMAIN_BIT_WIDTH 32 // SrcAddr
-#define WATERFALL_BIT_WIDTH 16
-#define WATERFALL_WIDTH 65535 // 2 ^ WATERFALL_BIT_WIDTH - 1 = WATERFALL_WIDTH
+#define FLOW_ID_BIT_WIDTH 32 // SrcAddr
+#define HFLOW_ID_BIT_WIDTH 16 // SrcAddr / 2
+#define IDX_BIT_WIDTH 16
+#define WATERFALL_WIDTH 65535 // 2 ^ IDX_BIT_WIDTH - 1 = WATERFALL_WIDTH
 
 const bit<8> RESUB = 3;
 const bit<3> DPRSR_RESUB = 3;
@@ -22,8 +23,7 @@ const bit<3> DIGEST = 5;
 
 header resubmit_md_t {
   bit<8> type;
-  bit<WATERFALL_BIT_WIDTH> idx;
-  bit<WATERFALL_REMAIN_BIT_WIDTH> remain;
+  bit<FLOW_ID_BIT_WIDTH> remain;
 }
 
 struct port_metadata_t {
@@ -32,26 +32,20 @@ struct port_metadata_t {
 }
 
 struct digest_t {
-  bit<32> src_addr;
+  bit<FLOW_ID_BIT_WIDTH> src_addr;
 }
 
 struct waterfall_metadata_t {
   port_metadata_t port_metadata;
   resubmit_md_t resubmit_md;
-  bool found;
-
-  bit<WATERFALL_BIT_WIDTH> idx1;
-  bit<WATERFALL_BIT_WIDTH> idx2;
-  bit<WATERFALL_BIT_WIDTH> idx3;
-  bit<WATERFALL_BIT_WIDTH> idx4;
-  bit<WATERFALL_REMAIN_BIT_WIDTH> remain1;
-  bit<WATERFALL_REMAIN_BIT_WIDTH> remain2;
-  bit<WATERFALL_REMAIN_BIT_WIDTH> remain3;
-  bit<WATERFALL_REMAIN_BIT_WIDTH> remain4;
-  bit<WATERFALL_REMAIN_BIT_WIDTH> out_remain1;
-  bit<WATERFALL_REMAIN_BIT_WIDTH> out_remain2;
-  bit<WATERFALL_REMAIN_BIT_WIDTH> out_remain3;
-  bit<WATERFALL_REMAIN_BIT_WIDTH> out_remain4;
+  bool found_hi;
+  bool found_lo;
+  bit<IDX_BIT_WIDTH> idx1;
+  bit<IDX_BIT_WIDTH> idx2;
+  bit<HFLOW_ID_BIT_WIDTH> remain1_hi;
+  bit<HFLOW_ID_BIT_WIDTH> remain1_lo;
+  bit<HFLOW_ID_BIT_WIDTH> remain2_hi;
+  bit<HFLOW_ID_BIT_WIDTH> remain2_lo;
 }
 
 // ---------------------------------------------------------------------------
@@ -127,7 +121,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
                          32w0xFFFFFFFF, // initial shift register value
                          32w0xFFFFFFFF  // result xor
                          ) CRC32_1;
-  Hash<bit<32>>(HashAlgorithm_t.CUSTOM, CRC32_1) hash1;
+  Hash<bit<IDX_BIT_WIDTH>>(HashAlgorithm_t.CUSTOM, CRC32_1) hash1;
 
   CRCPolynomial<bit<32>>(32w0x04C11DB7, // polynomial
                          true,          // reversed
@@ -136,119 +130,95 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
                          32w0xFFFFFFF0, // initial shift register value
                          32w0xFFFFFFFF  // result xor
                          ) CRC32_2;
-  Hash<bit<32>>(HashAlgorithm_t.CUSTOM, CRC32_2) hash2;
+  Hash<bit<IDX_BIT_WIDTH>>(HashAlgorithm_t.CUSTOM, CRC32_2) hash2;
 
-  CRCPolynomial<bit<32>>(32w0x04C11DB7, // polynomial
-                         true,          // reversed
-                         false,         // use msb?
-                         false,         // extended?
-                         32w0xFFFFFF00, // initial shift register value
-                         32w0xFFFFFFFF  // result xor
-                         ) CRC32_3;
-  Hash<bit<32>>(HashAlgorithm_t.CUSTOM, CRC32_3) hash3;
+  /*CRCPolynomial<bit<32>>(32w0x04C11DB7, // polynomial*/
+  /*                       true,          // reversed*/
+  /*                       false,         // use msb?*/
+  /*                       false,         // extended?*/
+  /*                       32w0xFFFFFF00, // initial shift register value*/
+  /*                       32w0xFFFFFFFF  // result xor*/
+  /*                       ) CRC32_3;*/
+  /*Hash<bit<IDX_BIT_WIDTH>>(HashAlgorithm_t.CUSTOM, CRC32_3) hash3;*/
+  /**/
+  /*CRCPolynomial<bit<32>>(32w0x04C11DB7, // polynomial*/
+  /*                       true,          // reversed*/
+  /*                       false,         // use msb?*/
+  /*                       false,         // extended? 32w0xFFFFF000, // initial shift register value*/
+  /*                       32w0xFFFFF000, // initial shift register value*/
+  /*                       32w0xFFFFFFFF  // result xor*/
+  /*                       ) CRC32_4;*/
+  /*Hash<bit<IDX_BIT_WIDTH>>(HashAlgorithm_t.CUSTOM, CRC32_4) hash4;*/
 
-  CRCPolynomial<bit<32>>(32w0x04C11DB7, // polynomial
-                         true,          // reversed
-                         false,         // use msb?
-                         false,         // extended? 32w0xFFFFF000, // initial shift register value
-                         32w0xFFFFF000, // initial shift register value
-                         32w0xFFFFFFFF  // result xor
-                         ) CRC32_4;
-  Hash<bit<32>>(HashAlgorithm_t.CUSTOM, CRC32_4) hash4;
+  Register<bit<HFLOW_ID_BIT_WIDTH>, bit<IDX_BIT_WIDTH>>(WATERFALL_WIDTH, 0) table_1_lo; 
+  Register<bit<HFLOW_ID_BIT_WIDTH>, bit<IDX_BIT_WIDTH>>(WATERFALL_WIDTH, 0) table_1_hi; 
+  Register<bit<HFLOW_ID_BIT_WIDTH>, bit<IDX_BIT_WIDTH>>(WATERFALL_WIDTH, 0) table_2_lo; 
+  Register<bit<HFLOW_ID_BIT_WIDTH>, bit<IDX_BIT_WIDTH>>(WATERFALL_WIDTH, 0) table_2_hi; 
 
-  action get_hash1() {
-    bit<32> hash_val = hash1.get({hdr.ipv4.src_addr});
-    ig_md.idx1 = hash_val[31:WATERFALL_BIT_WIDTH];
-    ig_md.remain1 = hdr.ipv4.src_addr;
-  }
-
-  action get_hash2() {
-    bit<32> hash_val = hash2.get({ig_md.out_remain1});
-    ig_md.idx2 = hash_val[31:WATERFALL_BIT_WIDTH];
-    ig_md.remain2 = ig_md.out_remain1;
-  }
-
-  action get_hash3() {
-    bit<32> hash_val = hash3.get({ig_md.out_remain2});
-    ig_md.idx3 = hash_val[31:WATERFALL_BIT_WIDTH];
-    ig_md.remain3 = ig_md.out_remain2;
-  }
-
-  action get_hash4() {
-    bit<32> hash_val = hash4.get({ig_md.out_remain3});
-    ig_md.idx4 = hash_val[31:WATERFALL_BIT_WIDTH];
-    ig_md.remain4 = ig_md.out_remain3;
-  }
-  
-  Register<bit<WATERFALL_REMAIN_BIT_WIDTH>, bit<WATERFALL_BIT_WIDTH>>(WATERFALL_WIDTH, 0) table_1; 
-  Register<bit<WATERFALL_REMAIN_BIT_WIDTH>, bit<WATERFALL_BIT_WIDTH>>(WATERFALL_WIDTH, 0) table_2;
-  Register<bit<WATERFALL_REMAIN_BIT_WIDTH>, bit<WATERFALL_BIT_WIDTH>>(WATERFALL_WIDTH, 0) table_3; 
-  Register<bit<WATERFALL_REMAIN_BIT_WIDTH>, bit<WATERFALL_BIT_WIDTH>>(WATERFALL_WIDTH, 0) table_4;
-
-  RegisterAction<bit<WATERFALL_REMAIN_BIT_WIDTH>, bit<WATERFALL_BIT_WIDTH>, bool>(table_1) table_1_lookup = {
-    void apply(inout bit<WATERFALL_REMAIN_BIT_WIDTH> val, out bool read_value) {
-      if (ig_md.remain1 == val) {
+  RegisterAction<bit<HFLOW_ID_BIT_WIDTH>, bit<IDX_BIT_WIDTH>, bool>(table_1_lo) table_1_lo_lookup = {
+    void apply(inout bit<HFLOW_ID_BIT_WIDTH> val, out bool read_value) {
+      if (hdr.ipv4.src_addr[15:0] == val) {
         read_value = true;
       }
     }
   };
 
-  RegisterAction<bit<WATERFALL_REMAIN_BIT_WIDTH>, bit<WATERFALL_BIT_WIDTH>, bool>(table_2) table_2_lookup = {
-    void apply(inout bit<WATERFALL_REMAIN_BIT_WIDTH> val, out bool read_value) {
-      if (ig_md.remain2 == val) {
+  RegisterAction<bit<HFLOW_ID_BIT_WIDTH>, bit<IDX_BIT_WIDTH>, bool>(table_1_hi) table_1_hi_lookup = {
+    void apply(inout bit<HFLOW_ID_BIT_WIDTH> val, out bool read_value) {
+      if (hdr.ipv4.src_addr[31:16] == val) {
         read_value = true;
       }
     }
   };
 
-  RegisterAction<bit<WATERFALL_REMAIN_BIT_WIDTH>, bit<WATERFALL_BIT_WIDTH>, bool>(table_3) table_3_lookup = {
-    void apply(inout bit<WATERFALL_REMAIN_BIT_WIDTH> val, out bool read_value) {
-      if (ig_md.remain3 == val) {
+  RegisterAction<bit<HFLOW_ID_BIT_WIDTH>, bit<IDX_BIT_WIDTH>, bool>(table_2_lo) table_2_lo_lookup = {
+    void apply(inout bit<HFLOW_ID_BIT_WIDTH> val, out bool read_value) {
+      if (hdr.ipv4.src_addr[15:0] == val) {
         read_value = true;
       }
     }
   };
 
-  RegisterAction<bit<WATERFALL_REMAIN_BIT_WIDTH>, bit<WATERFALL_BIT_WIDTH>, bool>(table_4) table_4_lookup = {
-    void apply(inout bit<WATERFALL_REMAIN_BIT_WIDTH> val, out bool read_value) {
-      if (ig_md.remain4 == val) {
+  RegisterAction<bit<HFLOW_ID_BIT_WIDTH>, bit<IDX_BIT_WIDTH>, bool>(table_2_hi) table_2_hi_lookup = {
+    void apply(inout bit<HFLOW_ID_BIT_WIDTH> val, out bool read_value) {
+      if (hdr.ipv4.src_addr[31:16] == val) {
         read_value = true;
       }
     }
   };
 
-  RegisterAction<bit<WATERFALL_REMAIN_BIT_WIDTH>, bit<WATERFALL_BIT_WIDTH>, bit<WATERFALL_REMAIN_BIT_WIDTH>>(table_1) table_1_swap = {
-    void apply(inout bit<WATERFALL_REMAIN_BIT_WIDTH> val, out bit<WATERFALL_REMAIN_BIT_WIDTH> read_value) {
+  RegisterAction<bit<HFLOW_ID_BIT_WIDTH>, bit<IDX_BIT_WIDTH>, bit<HFLOW_ID_BIT_WIDTH>>(table_1_lo) table_1_lo_swap = {
+    void apply(inout bit<HFLOW_ID_BIT_WIDTH> val, out bit<HFLOW_ID_BIT_WIDTH> read_value) {
       read_value = val;
-      val = ig_md.remain1;
+      val = ig_md.resubmit_md.remain[15:0];
     }
   };
 
-  RegisterAction<bit<WATERFALL_REMAIN_BIT_WIDTH>, bit<WATERFALL_BIT_WIDTH>, bit<WATERFALL_REMAIN_BIT_WIDTH>>(table_2) table_2_swap = {
-    void apply(inout bit<WATERFALL_REMAIN_BIT_WIDTH> val, out bit<WATERFALL_REMAIN_BIT_WIDTH> read_value) {
+  RegisterAction<bit<HFLOW_ID_BIT_WIDTH>, bit<IDX_BIT_WIDTH>, bit<HFLOW_ID_BIT_WIDTH>>(table_1_hi) table_1_hi_swap = {
+    void apply(inout bit<HFLOW_ID_BIT_WIDTH> val, out bit<HFLOW_ID_BIT_WIDTH> read_value) {
       read_value = val;
-      val = ig_md.remain2;
+      val = ig_md.resubmit_md.remain[31:16];
     }
   };
 
-  RegisterAction<bit<WATERFALL_REMAIN_BIT_WIDTH>, bit<WATERFALL_BIT_WIDTH>, bit<WATERFALL_REMAIN_BIT_WIDTH>>(table_3) table_3_swap = {
-    void apply(inout bit<WATERFALL_REMAIN_BIT_WIDTH> val, out bit<WATERFALL_REMAIN_BIT_WIDTH> read_value) {
+
+  RegisterAction<bit<HFLOW_ID_BIT_WIDTH>, bit<IDX_BIT_WIDTH>, bit<HFLOW_ID_BIT_WIDTH>>(table_2_lo) table_2_lo_swap = {
+    void apply(inout bit<HFLOW_ID_BIT_WIDTH> val, out bit<HFLOW_ID_BIT_WIDTH> read_value) {
       read_value = val;
-      val = ig_md.remain3;
+      val = ig_md.remain1_lo;
     }
   };
 
-  RegisterAction<bit<WATERFALL_REMAIN_BIT_WIDTH>, bit<WATERFALL_BIT_WIDTH>, bit<WATERFALL_REMAIN_BIT_WIDTH>>(table_4) table_4_swap = {
-    void apply(inout bit<WATERFALL_REMAIN_BIT_WIDTH> val, out bit<WATERFALL_REMAIN_BIT_WIDTH> read_value) {
+  RegisterAction<bit<HFLOW_ID_BIT_WIDTH>, bit<IDX_BIT_WIDTH>, bit<HFLOW_ID_BIT_WIDTH>>(table_2_hi) table_2_hi_swap = {
+    void apply(inout bit<HFLOW_ID_BIT_WIDTH> val, out bit<HFLOW_ID_BIT_WIDTH> read_value) {
       read_value = val;
-      val = ig_md.remain4;
+      val = ig_md.remain1_hi;
     }
   };
 
   action resubmit_hdr() {
     ig_intr_dprsr_md.resubmit_type = DPRSR_RESUB;
     ig_md.resubmit_md.type = RESUB;
-    ig_md.resubmit_md.idx = ig_md.idx1;
     ig_md.resubmit_md.remain = hdr.ipv4.src_addr;
     ig_intr_dprsr_md.digest_type = DIGEST;
   }
@@ -258,7 +228,8 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
 
   table resub {
     key = {
-      ig_md.found : exact;
+      ig_md.found_hi : exact;
+      ig_md.found_lo : exact;
       ig_intr_md.resubmit_flag : exact;
     }
     actions = {
@@ -266,132 +237,107 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
       no_action;
     }
     default_action = no_action;
-    size = 3;
+    size = 8;
   }
 
-  action do_swap1() {
-    ig_md.out_remain1 = table_1_swap.execute(ig_md.idx1);
+  action do_swap1_lo() {
+    ig_md.remain1_lo = table_1_lo_swap.execute(ig_md.idx1);
   }
 
-  action lookup1(){
-      ig_md.found = table_1_lookup.execute(ig_md.idx1); 
-      ig_md.out_remain1 = ig_md.remain1;
+  action lookup1_lo(){
+    ig_md.found_lo = table_1_lo_lookup.execute(ig_md.idx1);
+    ig_md.remain1_lo = hdr.ipv4.src_addr[15:0];
   }
 
-  table swap1 {
+  action do_swap1_hi() {
+    ig_md.remain1_hi = table_1_hi_swap.execute(ig_md.idx1);
+  }
+
+  action lookup1_hi(){
+    ig_md.found_hi = table_1_hi_lookup.execute(ig_md.idx1);
+    ig_md.remain1_hi = hdr.ipv4.src_addr[31:16];
+  }
+
+  table swap1_lo {
     key = {
       ig_intr_md.resubmit_flag : exact;
     }
     actions = {
-      do_swap1;
-      lookup1;
+      do_swap1_lo;
+      lookup1_lo;
       no_action;
     }
     default_action = no_action;
-    size = 2;
+    size = 4;
   }
 
-  action do_swap2() {
-    ig_md.out_remain2 = table_2_swap.execute(ig_md.idx2);
-  }
-
-  action no_swap2() {
-    ig_md.out_remain2 = 0x0;
-  }
-
-  action lookup2(){
-      ig_md.found = table_2_lookup.execute(ig_md.idx2); 
-      ig_md.out_remain2 = ig_md.remain2;
-  }
-
-
-  table swap2 {
+  table swap1_hi {
     key = {
       ig_intr_md.resubmit_flag : exact;
-      ig_md.found : exact;
     }
     actions = {
-      do_swap2;
-      no_swap2;
-      lookup2;
-    }
-    default_action = no_swap2;
-    size = 5;
-  }
-
-  action do_swap3() {
-    ig_md.out_remain3 = table_3_swap.execute(ig_md.idx3);
-  }
-
-  action no_swap3() {
-    ig_md.out_remain3 = 0x0;
-  }
-
-  action lookup3(){
-      ig_md.found = table_3_lookup.execute(ig_md.idx3); 
-      ig_md.out_remain3 = ig_md.remain3;
-  }
-
-  table swap3 {
-    key = {
-      ig_intr_md.resubmit_flag : exact;
-      ig_md.found : exact;
-    }
-    actions = {
-      do_swap3;
-      no_swap3;
-      lookup3;
-    }
-    default_action = no_swap3;
-    size = 3;
-  }
-
-  action do_swap4() {
-    ig_md.out_remain4 = table_4_swap.execute(ig_md.idx4);
-  } 
-
-  action no_swap4() {
-    ig_md.out_remain4 = 0x0;
-  }
-
-  action lookup4(){
-    ig_md.found = table_4_lookup.execute(ig_md.idx4); 
-  }
-
-  table swap4 {
-    key = {
-      ig_intr_md.resubmit_flag : exact;
-      ig_md.found : exact;
-    }
-    actions = {
-      do_swap4;
-      no_swap4;
-      lookup4;
-    }
-    default_action = no_swap4;
-    size = 3;
-  }
-
-  action parse_hdr() {
-    ig_md.idx1 = ig_md.resubmit_md.idx;
-    ig_md.remain1 = ig_md.resubmit_md.remain;
-  }
-
-  table parse_resub_hdr {
-    key = {
-        ig_intr_md.resubmit_flag : exact;
-    }
-    actions = {
-      parse_hdr;
+      do_swap1_hi;
+      lookup1_hi;
       no_action;
     }
     default_action = no_action;
-    size = 2;
+    size = 4;
   }
+
+
+  action do_swap2_lo() {
+    ig_md.remain2_lo = table_2_lo_swap.execute(ig_md.idx2);
+  }
+
+  action lookup2_lo(){
+    ig_md.found_lo = table_2_lo_lookup.execute(ig_md.idx2);
+    ig_md.remain2_lo = hdr.ipv4.src_addr[15:0];
+  }
+
+  action do_swap2_hi() {
+    ig_md.remain2_hi = table_2_hi_swap.execute(ig_md.idx2);
+  }
+
+  action lookup2_hi(){
+    ig_md.found_hi = table_2_hi_lookup.execute(ig_md.idx2);
+    ig_md.remain2_hi = hdr.ipv4.src_addr[31:16];
+  }
+
+  table swap2_lo {
+    key = {
+      ig_intr_md.resubmit_flag : exact;
+      ig_md.found_hi : exact;
+      ig_md.found_lo : exact;
+    }
+    actions = {
+      do_swap2_lo;
+      lookup2_lo;
+      no_action;
+    }
+    default_action = no_action;
+    size = 8;
+  }
+
+  table swap2_hi {
+    key = {
+      ig_intr_md.resubmit_flag : exact;
+      ig_md.found_hi : exact;
+      ig_md.found_lo : exact;
+    }
+    actions = {
+      do_swap2_hi;
+      lookup2_hi;
+      no_action;
+    }
+    default_action = no_action;
+    size = 8;
+  }
+
 
   action hit(PortId_t dst_port) {
     ig_intr_tm_md.ucast_egress_port = dst_port;
-    ig_md.found = false;
+    ig_md.found_hi = false;
+    ig_md.found_lo = false;
     ig_intr_dprsr_md.drop_ctl = 0x0;
   }
   action drop() { ig_intr_dprsr_md.drop_ctl = 0x1; }
@@ -412,19 +358,12 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
 
   apply { 
     forward.apply();
-
-    get_hash1();
-    parse_resub_hdr.apply();
-    swap1.apply();
-    
-    get_hash2();
-    swap2.apply();
-
-    get_hash3();
-    swap3.apply();
-
-    get_hash4();
-    swap4.apply();
+    ig_md.idx1 = hash1.get({hdr.ipv4.src_addr});
+    swap1_hi.apply();
+    swap1_lo.apply();
+    ig_md.idx2 = hash2.get({ig_md.remain1_hi, ig_md.remain1_lo});
+    swap2_hi.apply();
+    swap2_lo.apply();
 
     resub.apply();
   }

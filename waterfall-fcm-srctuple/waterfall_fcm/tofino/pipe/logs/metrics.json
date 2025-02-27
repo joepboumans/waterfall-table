@@ -1,30 +1,30 @@
 {
     "program_name": "waterfall_fcm.p4", 
-    "build_date": "Thu Feb 13 11:08:39 2025", 
-    "run_id": "5c5916958a224d15", 
+    "build_date": "Thu Feb 27 12:10:44 2025", 
+    "run_id": "6bba0bfb128c4f55", 
     "compiler_version": "9.11.0", 
     "schema_version": "1.1.0", 
     "target": "tofino", 
-    "compilation_time": "39.88197040557861", 
+    "compilation_time": "3.950901985168457", 
     "phv": {
         "normal": [
             {
                 "bit_width": 8, 
-                "containers_occupied": 8, 
-                "bits_occupied": 42, 
-                "bits_overlaid": 6
+                "containers_occupied": 9, 
+                "bits_occupied": 46, 
+                "bits_overlaid": 14
             }, 
             {
                 "bit_width": 16, 
-                "containers_occupied": 6, 
-                "bits_occupied": 77, 
+                "containers_occupied": 3, 
+                "bits_occupied": 29, 
                 "bits_overlaid": 9
             }, 
             {
                 "bit_width": 32, 
-                "containers_occupied": 15, 
-                "bits_occupied": 480, 
-                "bits_overlaid": 48
+                "containers_occupied": 11, 
+                "bits_occupied": 344, 
+                "bits_overlaid": 0
             }
         ], 
         "tagalong": [
@@ -57,27 +57,27 @@
         }
     }, 
     "mau": {
-        "srams": 167, 
+        "srams": 134, 
         "tcams": 0, 
-        "map_rams": 160, 
-        "logical_tables": 22, 
-        "action_bus_bytes": 53, 
-        "exact_crossbar_bytes": 94, 
+        "map_rams": 128, 
+        "logical_tables": 19, 
+        "action_bus_bytes": 47, 
+        "exact_crossbar_bytes": 84, 
         "ternary_crossbar_bytes": 0, 
         "latency": [
             {
                 "gress": "ingress", 
-                "cycles": 204
+                "cycles": 165
             }, 
             {
                 "gress": "egress", 
-                "cycles": 175
+                "cycles": 171
             }
         ], 
         "power": [
             {
                 "gress": "ingress", 
-                "estimate": "3.08720982346"
+                "estimate": "2.3666595179"
             }, 
             {
                 "gress": "egress", 

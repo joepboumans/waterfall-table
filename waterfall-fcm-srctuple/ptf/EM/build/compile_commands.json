@@ -1,7 +1,7 @@
 [
 {
   "directory": "/workspace/P4-code/waterfall-table/waterfall-fcm-srctuple/ptf/EM/build",
-  "command": "/usr/bin/c++ -DEM_WFCM_EXPORTS -I/workspace/P4-code/waterfall-table/waterfall-fcm-srctuple/ptf/EM -fPIC -o CMakeFiles/EM_WFCM.dir/EM_WFCM.cpp.o -c /workspace/P4-code/waterfall-table/waterfall-fcm-srctuple/ptf/EM/EM_WFCM.cpp",
+  "command": "/usr/bin/c++ -DEM_WFCM_EXPORTS -I/workspace/P4-code/waterfall-table/waterfall-fcm-srctuple/ptf/EM  -Wall -O3 -lpthread -mavx -march=native -msse4.2 -msse4.1 -msse3 -msse2 -fPIC -o CMakeFiles/EM_WFCM.dir/EM_WFCM.cpp.o -c /workspace/P4-code/waterfall-table/waterfall-fcm-srctuple/ptf/EM/EM_WFCM.cpp",
   "file": "/workspace/P4-code/waterfall-table/waterfall-fcm-srctuple/ptf/EM/EM_WFCM.cpp"
 }
 ]
