@@ -243,6 +243,8 @@ class BfRt_interface():
 
         print(f"Received {len(self.recieved_digests)} digest from switch")
         print(f"Received {len(self.tuples)} tuples from switch")
+        for t in self.tuples:
+            print(t)
         parsed_digest = 0
         prev_tuple_len = 0
         # for digest in self.recieved_digests:
@@ -440,6 +442,8 @@ def read_data_set(data_name):
     # print(f"[Dataset Loader] ...done! Waiting for {delay}s before starting test...")
     # time.sleep(delay)
     print(f"[Dataset Loader] Parse data into tuples, found {len(tuples)} tuples!")
+    for t in tuples:
+        print(t)
     print("[Dataset Loader] Done!")
     return tuples
 
