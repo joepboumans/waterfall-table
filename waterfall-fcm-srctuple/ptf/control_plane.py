@@ -326,12 +326,12 @@ class BfRt_interface():
                 true_pos += 1
             else:
                 false_pos += 1
-                print(tup)
 
         for tup in in_tuples:
             if not tup in self.tuples:
                 false_neg += 1
-                print(tup)
+                print(tup.hex(), end=", ")
+        print("")
 
 
         # F1 Score
