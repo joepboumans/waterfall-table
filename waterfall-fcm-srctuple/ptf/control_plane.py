@@ -87,19 +87,22 @@ class BfRt_interface():
         self.table_dict = {}
         table_names = ["table_1", "table_2", "table_3", "table_4"]
         for sname in table_names:
-            tables = []
             for loc in ["hi", "lo"]:
-                tables.append(self.bfrt_info.table_get(f"{sname}_{loc}"))
-            self.table_dict.update({sname : tables})
+                name = f"{sname}_{loc}"
+                table = self.bfrt_info.table_get(name)
+                self.table_dict.update({name : table})
+
+
 
         # Get swap tables
         self.swap_dict = {}
         swap_names = ["swap1", "swap2", "swap3", "swap4"]
         for sname in swap_names:
-            tables = []
             for loc in ["hi", "lo"]:
-                tables.append(self.bfrt_info.table_get(f"{sname}_{loc}"))
-            self.swap_dict.update({sname : tables})
+                name = f"{sname}_{loc}"
+                swap = self.bfrt_info.table_get(name)
+                self.swap_dict.update({name : swap})
+
         # Get FCM counters
         self.fcm_l1_d1 = self.bfrt_info.table_get("sketch_reg_l1_d1")
         self.fcm_l2_d1 = self.bfrt_info.table_get("sketch_reg_l2_d1")
@@ -132,7 +135,6 @@ class BfRt_interface():
         data = table.make_data([], f"WaterfallIngress.lookup{num}")
         table.entry_add(self.dev_tgt, [key], [data])
 
-        logger.info(table)
         key = table.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
         data = table.make_data([], f"WaterfallIngress.do_swap{num}")
         table.entry_add(self.dev_tgt, [key], [data])
@@ -161,20 +163,22 @@ class BfRt_interface():
                     ))
             print("================")
 
-    def evalutateEntryInTable(self, table, name, flowId):
+    def evalutateEntryInTable(self, name, flowId):
         # Get the correct inital value for the crc32
         # Is reveresed to the number in P4 code
         num = int(re.search(r'\d+', name).group())
         init_val = 0x0
-        if num == 1:
-            init_val = 0xFFFFFFFF
-        elif num == 2:
-            init_val = 0x0FFFFFFF
-        elif num == 3:
-            init_val = 0x00FFFFFF
-        elif num == 4:
-            init_val = 0x000FFFFF
+        match num:
+            case 1: 
+                init_val = 0xFFFFFFFF
+            case 2:
+                init_val = 0x0FFFFFFF
+            case 3:
+                init_val = 0x00FFFFFF
+            case 4:
+                init_val = 0x000FFFFF
 
+        table = self.table_dict[name]
         idx = crc32_sf(flowId, init_val) % WATERFALL_WIDTH 
         # logger.info(f"idx of {flowId.hex()} : {idx}")
         key = table.make_key([gc.KeyTuple('$REGISTER_INDEX', idx)])
@@ -310,11 +314,8 @@ class BfRt_interface():
         data = resub.make_data([], "WaterfallIngress.no_action")
         resub.entry_add(target, [key], [data])
 
-        # for name, tables in self.swap_dict.items():
-        #     for table in tables:
-        #         for loc in ["lo", "hi"]:
-        #             logger.info(f"{name}_{loc}")
-        #             self.addSwapEntry(table, f"{name}_{loc}")
+        for name, table in self.swap_dict.items():
+            self.addSwapEntry(table, name)
 
         self.isRunning = True
         while self.isRunning:
@@ -345,10 +346,9 @@ class BfRt_interface():
             #     print(f"Parsed {parsed_digest} of {self.recievedDigest} digests; Current tuples {len(self.tuples)}")
 
         for tup in self.tuples:
-            for name, tables in self.table_dict.items():
-                for t in tables:
-                    for loc in ["hi", "lo"]:
-                        self.evalutateEntryInTable(t, f"{name}_{loc}", tup)
+            logger.info(tup.hex())
+            for key, data in self.table_dict.items():
+                self.evalutateEntryInTable(key, tup)
 
 
     def verify(self, in_tuples, iters):
