@@ -168,15 +168,14 @@ class BfRt_interface():
         # Is reveresed to the number in P4 code
         num = int(re.search(r'\d+', name).group())
         init_val = 0x0
-        match num:
-            case 1: 
-                init_val = 0xFFFFFFFF
-            case 2:
-                init_val = 0x0FFFFFFF
-            case 3:
-                init_val = 0x00FFFFFF
-            case 4:
-                init_val = 0x000FFFFF
+        if num == 1:
+            init_val = 0xFFFFFFFF
+        elif num == 2:
+            init_val = 0x0FFFFFFF
+        elif num == 3:
+            init_val = 0x00FFFFFF
+        elif num == 4:
+            init_val = 0x000FFFFF
 
         table = self.table_dict[name]
         idx = crc32_sf(flowId, init_val) % WATERFALL_WIDTH 
