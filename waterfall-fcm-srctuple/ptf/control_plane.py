@@ -221,6 +221,7 @@ class BfRt_interface():
         return entries
     
     def evaluateTable(self, table, name):
+        idx = 0
         summed = 0
         nonzero_entries = 0
         data_table = table.entry_get(self.dev_tgt, [], {"from_hw" : True})
@@ -231,7 +232,8 @@ class BfRt_interface():
                 summed += entry_val
                 nonzero_entries += 1
                 print(data_dict)
-                print(entry_val.to_bytes(2,'big'))
+                print(f"{idx} : {entry_val.to_bytes(2,'big').hex()}")
+            idx += 1
 
         logger.info(f"{name} has {summed} total remainders and {nonzero_entries} entries")
 
