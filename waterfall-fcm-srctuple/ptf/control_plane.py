@@ -301,8 +301,8 @@ class BfRt_interface():
 
         print(f"Received {self.recievedDigest} digest from switch")
         print(f"Received {len(self.tuples)} tuples from switch")
-        for t in self.tuples:
-            print(t.hex())
+        # for t in self.tuples:
+        #     print(t.hex())
         parsed_digest = 0
         prev_tuple_len = 0
 
