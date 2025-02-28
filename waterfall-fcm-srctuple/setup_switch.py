@@ -84,24 +84,37 @@ resub.add_with_resubmit_hdr(found_lo=False, found_hi=False, resubmit_flag=0x0)
 resub.add_with_no_action(resubmit_flag=0x1)
 
 print("populating swaps table...")
-swap1 = p4.WaterfallIngress.swap1
-swap1.add_with_lookup1(resubmit_flag=0x0)
-swap1.add_with_do_swap1(resubmit_flag=0x1)
+swap1_hi = p4.WaterfallIngress.swap1_hi
+swap1_hi.add_with_lookup1(resubmit_flag=0x0, found_hi=False, found_lo=False)
+swap1_hi.add_with_do_swap1_hi(resubmit_flag=0x1)
 
-swap2 = p4.WaterfallIngress.swap2
-swap2.add_with_lookup2(resubmit_flag=0x0, found=False)
-swap2.add_with_no_swap2(resubmit_flag=0x0, found=True)
-swap2.add_with_do_swap2(resubmit_flag=0x1)
+swap1_lo = p4.WaterfallIngress.swap1_lo
+swap1_lo.add_with_lookup1(resubmit_flag=0x0, found_hi=False, found_lo=False)
+swap1_lo.add_with_do_swap1_lo(resubmit_flag=0x1)
 
-swap3 = p4.WaterfallIngress.swap3
-swap3.add_with_lookup3(resubmit_flag=0x0, found=False)
-swap3.add_with_no_swap3(resubmit_flag=0x0, found=True)
-swap3.add_with_do_swap3(resubmit_flag=0x1)
+swap2_hi = p4.WaterfallIngress.swap2_hi
+swap2_hi.add_with_lookup2(resubmit_flag=0x0, found_hi=False, found_lo=False)
+swap2_hi.add_with_do_swap2_hi(resubmit_flag=0x2)
 
-swap4 = p4.WaterfallIngress.swap4
-swap4.add_with_lookup4(resubmit_flag=0x0, found=False)
-swap4.add_with_no_swap4(resubmit_flag=0x0, found=True)
-swap4.add_with_do_swap4(resubmit_flag=0x1)
+swap2_lo = p4.WaterfallIngress.swap2_lo
+swap2_lo.add_with_lookup2(resubmit_flag=0x0, found_hi=False, found_lo=False)
+swap2_lo.add_with_do_swap2_lo(resubmit_flag=0x1)
+
+swap3_hi = p4.WaterfallIngress.swap3_hi
+swap3_hi.add_with_lookup3(resubmit_flag=0x0, found_hi=False, found_lo=False)
+swap3_hi.add_with_do_swap3_hi(resubmit_flag=0x3)
+
+swap3_lo = p4.WaterfallIngress.swap3_lo
+swap3_lo.add_with_lookup3(resubmit_flag=0x0, found_hi=False, found_lo=False)
+swap3_lo.add_with_do_swap3_lo(resubmit_flag=0x1)
+
+swap4_hi = p4.WaterfallIngress.swap4_hi
+swap4_hi.add_with_lookup4(resubmit_flag=0x0, found_hi=False, found_lo=False)
+swap4_hi.add_with_do_swap4_hi(resubmit_flag=0x4)
+
+swap4_lo = p4.WaterfallIngress.swap4_lo
+swap4_lo.add_with_lookup4(resubmit_flag=0x0, found_hi=False, found_lo=False)
+swap4_lo.add_with_do_swap4_lo(resubmit_flag=0x1)
 
 # prt = bfrt.port.port
 print("activating ports...")

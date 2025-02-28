@@ -76,8 +76,6 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
                 table = self.bfrt_info.table_get(name)
                 self.table_dict.update({name : table})
 
-
-
         # Get swap tables
         self.swap_dict = {}
         swap_names = ["swap1", "swap2", "swap3", "swap4"]
