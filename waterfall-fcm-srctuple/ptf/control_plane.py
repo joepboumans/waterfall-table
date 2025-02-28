@@ -295,11 +295,11 @@ class BfRt_interface():
     def run(self):
         target = self.dev_tgt
 
-        forward = self.forward
-        for ig_port, eg_port in zip([132, 148], [148, 132]):
-            key = forward.make_key([gc.KeyTuple('ig_intr_md.ingress_port', ig_port)])
-            data = forward.make_data([gc.DataTuple('dst_port', eg_port)], "WaterfallIngress.hit")
-            forward.entry_add(target, [key], [data])
+        # forward = self.forward
+        # for ig_port, eg_port in zip([132, 148], [148, 132]):
+        #     key = forward.make_key([gc.KeyTuple('ig_intr_md.ingress_port', ig_port)])
+        #     data = forward.make_data([gc.DataTuple('dst_port', eg_port)], "WaterfallIngress.hit")
+        #     forward.entry_add(target, [key], [data])
 
         # Only resubmit if both are found
         # resub = self.resub
