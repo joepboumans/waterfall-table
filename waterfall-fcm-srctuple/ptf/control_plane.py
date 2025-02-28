@@ -66,8 +66,6 @@ class BfRt_interface():
         self.interface.bind_pipeline_config(self.p4_name)
 
         self.setupTables()
-        self.clearTables()
-        self.setupTables()
 
         print("Connected to Device: {}, Program: {}, ClientId: {}".format(
                 dev, self.p4_name, client_id))
@@ -304,10 +302,10 @@ class BfRt_interface():
             forward.entry_add(target, [key], [data])
 
         # Only resubmit if both are found
-        resub = self.resub
-        key = resub.make_key([gc.KeyTuple('ig_md.found_hi', False), gc.KeyTuple('ig_md.found_lo', False)])
-        data = resub.make_data([], "WaterfallIngress.resubmit_hdr")
-        resub.entry_add(target, [key], [data])
+        # resub = self.resub
+        # key = resub.make_key([gc.KeyTuple('ig_md.found_hi', False), gc.KeyTuple('ig_md.found_lo', False)])
+        # data = resub.make_data([], "WaterfallIngress.resubmit_hdr")
+        # resub.entry_add(target, [key], [data])
 
         # key = resub.make_key([gc.KeyTuple('ig_md.found_hi', True), gc.KeyTuple('ig_md.found_lo', False)])
         # data = resub.make_data([], "WaterfallIngress.no_action")
@@ -321,8 +319,8 @@ class BfRt_interface():
         # data = resub.make_data([], "WaterfallIngress.no_action")
         # resub.entry_add(target, [key], [data])
 
-        for name, table in self.swap_dict.items():
-            self.addSwapEntry(table, name)
+        # for name, table in self.swap_dict.items():
+        #     self.addSwapEntry(table, name)
 
         self.isRunning = True
         while self.isRunning:
