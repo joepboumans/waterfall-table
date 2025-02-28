@@ -94,7 +94,7 @@ swap1_lo.add_with_do_swap1_lo(resubmit_flag=0x1)
 
 swap2_hi = p4.WaterfallIngress.swap2_hi
 swap2_hi.add_with_lookup2_hi(resubmit_flag=0x0, found_hi=False, found_lo=False)
-swap2_hi.add_with_do_swap2_hi(resubmit_flag=0x2)
+swap2_hi.add_with_do_swap2_hi(resubmit_flag=0x1)
 
 swap2_lo = p4.WaterfallIngress.swap2_lo
 swap2_lo.add_with_lookup2_lo(resubmit_flag=0x0, found_hi=False, found_lo=False)
