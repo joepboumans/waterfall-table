@@ -4,6 +4,7 @@ import mmap
 import time
 import utils
 import argparse
+import logging
 
 from collections import defaultdict
 
@@ -29,6 +30,17 @@ OVERFLOW_LEVEL1 = 255
 OVERFLOW_LEVEL2 = 65535 
 
 import bfrt_grpc.client as gc
+
+project_name = 'waterfall_fcm'
+logger = logging.getLogger(project_name)
+
+if not len(logger.handlers):
+    sh = logging.StreamHandler()
+    formatter = logging.Formatter('[%(levelname)s - %(name)s - %(funcName)s]: %(message)s')
+    sh.setFormatter(formatter)
+    sh.setLevel(logging.INFO)
+    logger.addHandler(sh)
+
 
 
 class BfRt_interface():
