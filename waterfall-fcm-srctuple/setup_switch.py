@@ -80,12 +80,8 @@ forward_tbl.add_with_hit(ingress_port=140, dst_port=132)
 
 print("populating resub table...")
 resub = p4.WaterfallIngress.resub
-resub.add_with_resubmit_hdr(found=False, resubmit_flag=0x0)
-resub.add_with_no_action(found=True, resubmit_flag=0x1)
-resub.add_with_no_action(found=False, resubmit_flag=0x1)
-
-parse_resub = p4.WaterfallIngress.parse_resub_hdr
-parse_resub.add_with_parse_hdr(resubmit_flag=0x1)
+resub.add_with_resubmit_hdr(found_lo=False, found_hi=False, resubmit_flag=0x0)
+resub.add_with_no_action(resubmit_flag=0x1)
 
 print("populating swaps table...")
 swap1 = p4.WaterfallIngress.swap1

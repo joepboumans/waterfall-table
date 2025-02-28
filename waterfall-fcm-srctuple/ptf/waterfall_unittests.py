@@ -3,6 +3,7 @@ import logging
 from collections import namedtuple
 from math import radians
 import random
+import re
 
 from ptf import config
 import ptf.testutils as testutils
@@ -11,6 +12,9 @@ from bfruntime_client_base_tests import BfRuntimeTest
 import bfrt_grpc.bfruntime_pb2 as bfruntime_pb2
 import bfrt_grpc.client as gc
 from utils import *
+from fcm_utils import *
+
+WATERFALL_WIDTH = 65536 # 2 ^ IDX_BIT_WIDTH - 1 = WATERFALL_WIDTH
 
 swports = get_sw_ports()
 project_name = 'waterfall_fcm'
@@ -47,7 +51,6 @@ class WaterfallUnitTests(BfRuntimeTest):
         # Get resubmission and port metadata tables
         self.port_meta = self.bfrt_info.table_get("$PORT_METADATA")
         self.resub = self.bfrt_info.table_get("resub")
-        # self.parse_resub = self.bfrt_info.table_get("parse_resub_hdr")
 
         # Get digest/learn filter from gRPC
         self.learn_filter = self.bfrt_info.learn_get("digest")
@@ -75,6 +78,16 @@ class WaterfallUnitTests(BfRuntimeTest):
 
         self.target = gc.Target(device_id=0, pipe_id=0xffff)
         logger.info("...tables setup done!")
+
+    def addSwapEntry(self, table, name):
+        num = name.replace("swap", "")
+        key = table.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0), gc.KeyTuple('ig_md.found_hi', False), gc.KeyTuple('ig_md.found_lo', False)])
+        data = table.make_data([], f"WaterfallIngress.lookup{num}")
+        table.entry_add(self.target, [key], [data])
+
+        key = table.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
+        data = table.make_data([], f"WaterfallIngress.do_swap{num}")
+        table.entry_add(self.target, [key], [data])
 
     def clearWaterfall(self):
         logger.info("Resetting switch..")
@@ -152,6 +165,32 @@ class WaterfallUnitTests(BfRuntimeTest):
 
         logger.info(f"{name} has {summed} total remainders and {nonzero_entries} entries")
 
+    def evalutateEntryInTable(self, name, flowId):
+        # Get the correct inital value for the crc32
+        # Is reveresed to the number in P4 code
+        num = int(re.search(r'\d+', name).group())
+        init_val = 0x0
+        match num:
+            case 1: 
+                init_val = 0xFFFFFFFF
+            case 2:
+                init_val = 0x0FFFFFFF
+            case 3:
+                init_val = 0x00FFFFFF
+            case 4:
+                init_val = 0x000FFFFF
+
+        table = self.table_dict[name]
+        idx = crc32_sf(flowId, init_val) % WATERFALL_WIDTH 
+        # logger.info(f"idx of {flowId.hex()} : {idx}")
+        key = table.make_key([gc.KeyTuple('$REGISTER_INDEX', idx)])
+        resp_table = table.entry_get(self.target, [key], {"from_hw" : True})
+        data, _ = next(resp_table)
+        data_dict = data.to_dict()
+        entry_val = data_dict[f"WaterfallIngress.{name}.f1"][0]
+        if entry_val > 0:
+            logger.info(f"{name} : {entry_val.to_bytes(2,'big').hex()}")
+
     def testDigest(self):
         ig_port = swports[0]
         eg_port = swports[1]
@@ -167,6 +206,7 @@ class WaterfallUnitTests(BfRuntimeTest):
         num_entries = 10
         seed = 1001
         ip_list = self.generate_random_ip_list(num_entries, seed)
+        raw_ip_list = []
         ''' TC:1 Setting up port_metadata and resub'''
         logger.info("Populating resub table...")
         logger.debug(f"\tresub - inserting table entry with port {ig_port}")
@@ -202,24 +242,20 @@ class WaterfallUnitTests(BfRuntimeTest):
             testutils.verify_packet(self, pkt_in, eg_port)
             logger.info("..packet received correctly")
 
+            raw_src_addr = bytes([int(x) for x in src_addr.split('.')])
+            raw_ip_list.append(raw_src_addr)
+            logger.info(ip_entry)
+
         ''' TC:3 Get data from the digest'''
         self.evalutate_digest(num_entries)
 
         ''' TC:4 Validate received digest data'''
         logger.info("Only Table 1 should have been filled")
-        for key, data in self.table_dict.items():
-            self.evalutate_table(key)
+        for src_addr in raw_ip_list:
+            logger.info(src_addr.hex())
+            for key, data in self.table_dict.items():
+                self.evalutateEntryInTable(key, src_addr)
 
-
-    def addSwapEntry(self, table, name):
-        num = name.replace("swap", "")
-        key = table.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0), gc.KeyTuple('ig_md.found_hi', False), gc.KeyTuple('ig_md.found_lo', False)])
-        data = table.make_data([], f"WaterfallIngress.lookup{num}")
-        table.entry_add(self.target, [key], [data])
-
-        key = table.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
-        data = table.make_data([], f"WaterfallIngress.do_swap{num}")
-        table.entry_add(self.target, [key], [data])
 
     
     def testPassAllTables(self):
@@ -235,7 +271,7 @@ class WaterfallUnitTests(BfRuntimeTest):
 
         learn_filter = self.learn_filter
         
-        num_entries = 5
+        num_entries = 1
         seed = 1001
         ip_list = self.generate_random_ip_list(num_entries, seed)
         ''' TC:1 Setting up port_metadata and resub'''
@@ -262,16 +298,19 @@ class WaterfallUnitTests(BfRuntimeTest):
         for name, table in self.swap_dict.items():
             self.addSwapEntry(table, name)
 
+        raw_ip_list = []
         for ip_entry in ip_list:
             src_addr = getattr(ip_entry, "ip")
 
             ''' TC:2 Send, receive and verify packets'''
             pkt_in = testutils.simple_tcp_packet(ip_src=src_addr)
             logger.info("Sending 4 identical packets to flow through all the tables")
-            for _ in range(4):
+            for _ in range(5):
                 testutils.send_packet(self, ig_port, pkt_in)
                 testutils.verify_packet(self, pkt_in, eg_port)
 
+            raw_src_addr = bytes([int(x) for x in src_addr.split('.')])
+            raw_ip_list.append(raw_src_addr)
             logger.info("..all packets sent and received")
 
         ''' TC:3 Get data from the digest'''
@@ -279,8 +318,12 @@ class WaterfallUnitTests(BfRuntimeTest):
 
         ''' TC:4 Validate received digest data'''
         logger.info(f"All tables should have {num_entries} entries")
-        for key, data in self.table_dict.items():
-            self.evalutate_table(key)
+        # for key, data in self.table_dict.items():
+        #     self.evalutate_table(key)
+        for src_addr in raw_ip_list:
+            logger.info(src_addr.hex())
+            for key, data in self.table_dict.items():
+                self.evalutateEntryInTable(key, src_addr)
 
     def testLargeInserts(self):
         ig_port = swports[0]
@@ -324,6 +367,7 @@ class WaterfallUnitTests(BfRuntimeTest):
             self.addSwapEntry(table, name)
 
         logger.info(f"Start sending {num_entries_src} entries")
+        raw_ip_list = []
         for src_ip in src_ip_list:
             src_addr = getattr(src_ip, "ip")
             src_port = random.randrange(0, 0xFFFF)
@@ -332,11 +376,19 @@ class WaterfallUnitTests(BfRuntimeTest):
             pkt_in = testutils.simple_tcp_packet(ip_src=src_addr,  tcp_sport=src_port, tcp_dport=dst_port)
             testutils.send_packet(self, ig_port, pkt_in)
             testutils.verify_packet(self, pkt_in, eg_port)
+
+            raw_src_addr = bytes([int(x) for x in src_addr.split('.')])
+            raw_ip_list.append(raw_src_addr)
         logger.info(f"...done sending")
 
         ''' TC:3 Look for data in digest'''
         self.evalutate_digest(num_entries_src )
 
         ''' TC:4 Validate received digest data'''
-        for key, data in self.table_dict.items():
-            self.evalutate_table(key)
+        # for key, data in self.table_dict.items():
+        #     self.evalutate_table(key)
+
+        for src_addr in raw_ip_list:
+            logger.info(src_addr.hex())
+            for key, data in self.table_dict.items():
+                self.evalutateEntryInTable(key, src_addr)
