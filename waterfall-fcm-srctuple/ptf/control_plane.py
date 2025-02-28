@@ -236,8 +236,9 @@ class BfRt_interface():
             # if parsed_digest % 1000 == 0:
             #     print(f"Parsed {parsed_digest} of {self.recievedDigest} digests; Current tuples {len(self.tuples)}")
 
-        for t in self.table_dict.keys():
-            self.evaluate_table(self.table_dict, t)
+        for tables in self.table_dict.keys():
+            for t in tables:
+                self.evaluate_table(self.table_dict, t)
 
 
     def verify(self, in_tuples, iters):
