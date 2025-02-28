@@ -190,7 +190,7 @@ class BfRt_interface():
         resp_table = table.entry_get(self.dev_tgt, [key], {"from_hw" : True})
         data, _ = next(resp_table)
         data_dict = data.to_dict()
-        entry_val = data_dict[f"WaterfallIngress.{name}.f1"][0]
+        entry_val = sum(data_dict[f"WaterfallIngress.{name}.f1"])
         # if entry_val > 0:
         print(f"{name} : {entry_val.to_bytes(2,'big').hex()}")
 
