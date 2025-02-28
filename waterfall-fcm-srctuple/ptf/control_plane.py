@@ -342,7 +342,7 @@ class BfRt_interface():
             # if parsed_digest % 1000 == 0:
             #     print(f"Parsed {parsed_digest} of {self.recievedDigest} digests; Current tuples {len(self.tuples)}")
 
-        for name, table in self.table_dict:
+        for name, table in self.table_dict.items():
             self.evaluateTable(table, name)
 
         for tup in self.tuples:
