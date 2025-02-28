@@ -36,13 +36,13 @@ import bfrt_grpc.client as gc
 
 project_name = 'waterfall_fcm'
 logger = logging.getLogger(project_name)
-
-if not len(logger.handlers):
-    sh = logging.StreamHandler()
-    formatter = logging.Formatter('[%(levelname)s - %(name)s - %(funcName)s]: %(message)s')
-    sh.setFormatter(formatter)
-    sh.setLevel(logging.INFO)
-    logger.addHandler(sh)
+#
+# if not len(logger.handlers):
+#     sh = logging.StreamHandler()
+#     formatter = logging.Formatter('[%(levelname)s - %(name)s - %(funcName)s]: %(message)s')
+#     sh.setFormatter(formatter)
+#     sh.setLevel(logging.INFO)
+#     logger.addHandler(sh)
 
 
 
@@ -222,8 +222,8 @@ class BfRt_interface():
             if entry_val != 0:
                 summed += entry_val
                 nonzero_entries += 1
-                # logger.info(data_dict)
-                # logger.info(entry_val.to_bytes(2,'big'))
+                print(data_dict)
+                print(entry_val.to_bytes(2,'big'))
 
         logger.info(f"{name} has {summed} total remainders and {nonzero_entries} entries")
 
@@ -341,6 +341,9 @@ class BfRt_interface():
             # parsed_digest += 1
             # if parsed_digest % 1000 == 0:
             #     print(f"Parsed {parsed_digest} of {self.recievedDigest} digests; Current tuples {len(self.tuples)}")
+
+        for name, table in self.table_dict:
+            self.evaluateTable(table, name)
 
         for tup in self.tuples:
             print(tup.hex())
