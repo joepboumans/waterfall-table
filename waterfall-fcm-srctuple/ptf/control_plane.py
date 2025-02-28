@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
 import os, sys, subprocess
+import re
 import mmap
 import time
 import utils
@@ -9,6 +10,7 @@ import logging
 from collections import defaultdict
 
 from EM_ctypes import EM_WFCM
+from utils import *
 
 sys.path.append('/home/onie/sde/bf-sde-9.11.0/install/lib/python3.8/site-packages/tofino/')
 sys.path.append('/home/onie/sde/bf-sde-9.11.0/install/lib/python3.8/site-packages/tofino/bfrt_grpc/')
@@ -28,6 +30,7 @@ ADD_LEVEL1 = 255
 ADD_LEVEL2 = 65789 
 OVERFLOW_LEVEL1 = 255   
 OVERFLOW_LEVEL2 = 65535 
+WATERFALL_WIDTH = 65536 # 2 ^ IDX_BIT_WIDTH - 1 = WATERFALL_WIDTH
 
 import bfrt_grpc.client as gc
 
@@ -139,6 +142,31 @@ class BfRt_interface():
                     ))
             print("================")
 
+    def evalutateEntryInTable(self, table, name, flowId):
+        # Get the correct inital value for the crc32
+        # Is reveresed to the number in P4 code
+        num = int(re.search(r'\d+', name).group())
+        init_val = 0x0
+        match num:
+            case 1: 
+                init_val = 0xFFFFFFFF
+            case 2:
+                init_val = 0x0FFFFFFF
+            case 3:
+                init_val = 0x00FFFFFF
+            case 4:
+                init_val = 0x000FFFFF
+
+        idx = crc32_sf(flowId, init_val) % WATERFALL_WIDTH 
+        # logger.info(f"idx of {flowId.hex()} : {idx}")
+        key = table.make_key([gc.KeyTuple('$REGISTER_INDEX', idx)])
+        resp_table = table.entry_get(self.dev_tgt, [key], {"from_hw" : True})
+        data, _ = next(resp_table)
+        data_dict = data.to_dict()
+        entry_val = data_dict[f"WaterfallIngress.{name}.f1"][0]
+        if entry_val > 0:
+            logger.info(f"{name} : {entry_val.to_bytes(2,'big').hex()}")
+
     def evaluateTableFromDict(self, tables, name):
         table = tables[name]
         control_name = ""
@@ -241,7 +269,7 @@ class BfRt_interface():
         while self.isRunning:
             self._read_digest()
 
-        print(f"Received {len(self.recieved_digests)} digest from switch")
+        print(f"Received {len(self.recievedDigest)} digest from switch")
         print(f"Received {len(self.tuples)} tuples from switch")
         for t in self.tuples:
             print(t.hex())
@@ -265,9 +293,10 @@ class BfRt_interface():
             # if parsed_digest % 1000 == 0:
             #     print(f"Parsed {parsed_digest} of {self.recievedDigest} digests; Current tuples {len(self.tuples)}")
 
-        for name, tables in self.table_dict.items():
-            for t, loc in zip(tables, ["hi", "lo"]):
-                self.evaluateTable(t, f"{name}_{loc}")
+        for tuple in self.tuples:
+            for name, tables in self.table_dict.items():
+                for t, loc in zip(tables, ["hi", "lo"]):
+                    self.evalutateEntryInTable(t, f"{name}_{loc}", tuple)
 
 
     def verify(self, in_tuples, iters):
