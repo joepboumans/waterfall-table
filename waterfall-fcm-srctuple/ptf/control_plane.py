@@ -245,7 +245,7 @@ class BfRt_interface():
             self.total_received += len(data_list)
             for data in data_list:
                 tuple_list = bytes(data["src_addr"].val)
-                print(tuple_list.hex())
+                # print(tuple_list.hex())
                 if not self.tuples:
                     self.tuples = {tuple_list}
                 else:
@@ -295,35 +295,6 @@ class BfRt_interface():
             
 
     def run(self):
-        target = self.dev_tgt
-
-        # forward = self.forward
-        # for ig_port, eg_port in zip([132, 148], [148, 132]):
-        #     key = forward.make_key([gc.KeyTuple('ig_intr_md.ingress_port', ig_port)])
-        #     data = forward.make_data([gc.DataTuple('dst_port', eg_port)], "WaterfallIngress.hit")
-        #     forward.entry_add(target, [key], [data])
-
-        # Only resubmit if both are found
-        # resub = self.resub
-        # key = resub.make_key([gc.KeyTuple('ig_md.found_hi', False), gc.KeyTuple('ig_md.found_lo', False)])
-        # data = resub.make_data([], "WaterfallIngress.resubmit_hdr")
-        # resub.entry_add(target, [key], [data])
-
-        # key = resub.make_key([gc.KeyTuple('ig_md.found_hi', True), gc.KeyTuple('ig_md.found_lo', False)])
-        # data = resub.make_data([], "WaterfallIngress.no_action")
-        # resub.entry_add(target, [key], [data])
-        #
-        # key = resub.make_key([gc.KeyTuple('ig_md.found_hi', False), gc.KeyTuple('ig_md.found_lo', True)])
-        # data = resub.make_data([], "WaterfallIngress.no_action")
-        # resub.entry_add(target, [key], [data])
-        #
-        # key = resub.make_key([gc.KeyTuple('ig_md.found_hi', True), gc.KeyTuple('ig_md.found_lo', True)])
-        # data = resub.make_data([], "WaterfallIngress.no_action")
-        # resub.entry_add(target, [key], [data])
-
-        # for name, table in self.swap_dict.items():
-        #     self.addSwapEntry(table, name)
-
         self.isRunning = True
         while self.isRunning:
             self._read_digest()
@@ -334,27 +305,12 @@ class BfRt_interface():
             print(t.hex())
         parsed_digest = 0
         prev_tuple_len = 0
-        # for digest in self.recieved_digests:
-        #     data_list = self.learn_filter.make_data_list(digest)
-        #     self.total_received += len(data_list)
-        #     for data in data_list:
-        #         tuple_list = bytes(data["src_addr"].val)
-        #         if not self.tuples:
-        #             self.tuples = {tuple_list}
-        #         else:
-        #             self.tuples.add(tuple_list)
-        #
-            # print(f"Found {len(data_list)} tuples with {len(self.tuples)} uniques")
-            # print(f"{prev_tuple_len}; In total received {prev_tuple_len + len(data_list) - len(self.tuples)} tuples to many")
-            # prev_tuple_len = len(self.tuples)
 
-            # parsed_digest += 1
-            # if parsed_digest % 1000 == 0:
-            #     print(f"Parsed {parsed_digest} of {self.recievedDigest} digests; Current tuples {len(self.tuples)}")
-
+        # Print every value of Waterfall
         # for name, table in self.table_dict.items():
         #     self.evaluateTable(table, name)
 
+        # Print all values of the found tuples in Waterfall
         # for tup in self.tuples:
         #     print(tup.hex())
         #     for key, data in self.table_dict.items():
@@ -533,8 +489,10 @@ def read_data_set(data_name):
     # print(f"[Dataset Loader] ...done! Waiting for {delay}s before starting test...")
     # time.sleep(delay)
     print(f"[Dataset Loader] Parse data into tuples, found {len(tuples)} tuples!")
-    for t in tuples:
-        print(t.hex())
+
+    # for t in tuples:
+    #     print(t.hex())
+
     print("[Dataset Loader] Done!")
     return tuples
 
