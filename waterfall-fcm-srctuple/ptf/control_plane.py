@@ -321,12 +321,16 @@ class BfRt_interface():
         true_pos = false_pos = true_neg =  false_neg = 0
 
         # Compare dataset tuples with Waterfall Tuples
+        print("False positives:")
         for tup in self.tuples:
             if tup in in_tuples:
                 true_pos += 1
             else:
                 false_pos += 1
+                print(".".join([str(x) for x in tup]), end=", ")
+        print("")
 
+        print("False negatives:")
         for tup in in_tuples:
             if not tup in self.tuples:
                 false_neg += 1
