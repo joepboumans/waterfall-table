@@ -235,7 +235,7 @@ class BfRt_interface():
             self.total_received += len(data_list)
             for data in data_list:
                 tuple_list = bytes(data["src_addr"].val)
-                logger.info(tuple_list)
+                print(tuple_list.hex())
                 if not self.tuples:
                     self.tuples = {tuple_list}
                 else:
