@@ -310,11 +310,11 @@ class BfRt_interface():
         data = resub.make_data([], "WaterfallIngress.no_action")
         resub.entry_add(target, [key], [data])
 
-        for name, tables in self.swap_dict.items():
-            for table in tables:
-                for loc in ["lo", "hi"]:
-                    logger.info(f"{name}_{loc}")
-                    self.addSwapEntry(table, f"{name}_{loc}")
+        # for name, tables in self.swap_dict.items():
+        #     for table in tables:
+        #         for loc in ["lo", "hi"]:
+        #             logger.info(f"{name}_{loc}")
+        #             self.addSwapEntry(table, f"{name}_{loc}")
 
         self.isRunning = True
         while self.isRunning:
