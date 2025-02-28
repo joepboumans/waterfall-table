@@ -80,7 +80,7 @@ class BfRt_interface():
             tables = []
             for loc in ["hi", "lo"]:
                 tables.append(self.bfrt_info.table_get(f"{sname}_{loc}"))
-            self.swap_dict.update({name : tables})
+            self.swap_dict.update({sname : tables})
         # Get FCM counters
         self.fcm_l1_d1 = self.bfrt_info.table_get("sketch_reg_l1_d1")
         self.fcm_l2_d1 = self.bfrt_info.table_get("sketch_reg_l2_d1")
