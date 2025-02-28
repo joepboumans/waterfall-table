@@ -286,7 +286,6 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     ig_intr_dprsr_md.resubmit_type = DPRSR_RESUB;
     ig_md.resubmit_md.type = RESUB;
     ig_md.resubmit_md.remain = hdr.ipv4.src_addr;
-    ig_intr_dprsr_md.digest_type = DIGEST;
   }
 
   action no_action() {
@@ -307,6 +306,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
   }
 
   action do_swap1_lo() {
+    ig_intr_dprsr_md.digest_type = DIGEST;
     ig_md.remain1_lo = table_1_lo_swap.execute(hash1.get({hdr.ipv4.src_addr}));
   }
 
@@ -504,7 +504,6 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     ig_md.found_lo = false;
     ig_intr_dprsr_md.drop_ctl = 0x0;
     ig_intr_dprsr_md.resubmit_type = 0;
-    ig_intr_dprsr_md.digest_type = 0;
   }
   action drop() { ig_intr_dprsr_md.drop_ctl = 0x1; }
 
