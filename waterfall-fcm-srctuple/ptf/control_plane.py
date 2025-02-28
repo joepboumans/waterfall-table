@@ -127,7 +127,7 @@ class BfRt_interface():
                     ))
             print("================")
 
-    def evaluate_table(self, tables, name):
+    def evaluateTableFromDict(self, tables, name):
         table = tables[name]
         control_name = ""
         if "fcm" in name:
@@ -152,6 +152,21 @@ class BfRt_interface():
         print(f"{name} has {nonzero_entries} entries")
 
         return entries
+    
+    def evaluateTable(self, table, name):
+        summed = 0
+        nonzero_entries = 0
+        data_table = table.entry_get(self.dev_tgt, [], {"from_hw" : True})
+        for data, key in data_table:
+            data_dict = data.to_dict()
+            entry_val = data_dict[f"WaterfallIngress.{name}.f1"][0]
+            if entry_val != 0:
+                summed += entry_val
+                nonzero_entries += 1
+                # logger.info(data_dict)
+                # logger.info(entry_val.to_bytes(2,'big'))
+
+        logger.info(f"{name} has {summed} total remainders and {nonzero_entries} entries")
 
     def _read_digest(self):
         try:
@@ -236,9 +251,9 @@ class BfRt_interface():
             # if parsed_digest % 1000 == 0:
             #     print(f"Parsed {parsed_digest} of {self.recievedDigest} digests; Current tuples {len(self.tuples)}")
 
-        for tables in self.table_dict.keys():
-            for t in tables:
-                self.evaluate_table(self.table_dict, t)
+        for name, tables in self.table_dict.items():
+            for t, loc in zip(tables, ["hi", "lo"]:
+                self.evalutateTable(t, f"{name}_{}")
 
 
     def verify(self, in_tuples, iters):
