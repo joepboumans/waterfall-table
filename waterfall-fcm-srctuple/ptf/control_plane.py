@@ -330,8 +330,7 @@ class BfRt_interface():
         for tup in in_tuples:
             if not tup in self.tuples:
                 false_neg += 1
-                int_tup = [x.from_bytes(2, 'big') for x in tup]
-                print(".".join([str(x) for x in int_tup]), end=", ")
+                print(".".join([str(x) for x in tup]), end=", ")
         print("")
 
 
