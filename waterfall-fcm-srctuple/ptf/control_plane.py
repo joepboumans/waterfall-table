@@ -133,6 +133,16 @@ class BfRt_interface():
         data = table.make_data([], f"WaterfallIngress.no_action")
         table.entry_add(self.dev_tgt, [key], [data])
 
+        key = table.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0), gc.KeyTuple('ig_md.found_hi', False), gc.KeyTuple('ig_md.found_lo', True)])
+        data = table.make_data([], f"WaterfallIngress.resubmit_hdr")
+        table.entry_add(self.dev_tgt, [key], [data])
+        key = table.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0), gc.KeyTuple('ig_md.found_hi', True), gc.KeyTuple('ig_md.found_lo', False)])
+        data = table.make_data([], f"WaterfallIngress.resubmit_hdr")
+        table.entry_add(self.dev_tgt, [key], [data])
+        key = table.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0), gc.KeyTuple('ig_md.found_hi', False), gc.KeyTuple('ig_md.found_lo', False)])
+        data = table.make_data([], f"WaterfallIngress.resubmit_hdr")
+        table.entry_add(self.dev_tgt, [key], [data])
+
         key = table.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
         data = table.make_data([], f"WaterfallIngress.do_swap{num}")
         table.entry_add(self.dev_tgt, [key], [data])
