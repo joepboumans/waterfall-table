@@ -311,7 +311,7 @@ class BfRt_interface():
 
         for name, tables in self.swap_dict.items():
             for table in tables:
-                for loc in ["hi", "lo"]:
+                for loc in ["lo", "hi"]:
                     logger.info(f"{name}_{loc}")
                     self.addSwapEntry(table, f"{name}_{loc}")
 
