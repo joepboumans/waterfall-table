@@ -140,7 +140,7 @@ swap4_lo.add_with_no_action(resubmit_flag=0x0, found_hi=True, found_lo=True)
 swap4_lo.add_with_lookup4_lo(resubmit_flag=0x0, found_hi=False, found_lo=True)
 swap4_lo.add_with_lookup4_lo(resubmit_flag=0x0, found_hi=True, found_lo=False)
 swap4_lo.add_with_lookup4_lo(resubmit_flag=0x0, found_hi=False, found_lo=False)
-swap4_hi.add_with_do_swap4_hi(resubmit_flag=0x1)
+swap4_lo.add_with_do_swap4_lo(resubmit_flag=0x1)
 
 # prt = bfrt.port.port
 print("activating ports...")
