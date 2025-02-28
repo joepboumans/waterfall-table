@@ -335,7 +335,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
       lookup1_lo;
       no_action;
     }
-    default_action = no_action;
+    default_action = lookup1_lo;
     size = 8;
   }
 
@@ -350,7 +350,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
       lookup1_hi;
       no_action;
     }
-    default_action = no_action;
+    default_action = lookup1_hi;
     size = 8;
   }
 
@@ -384,7 +384,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
       lookup2_lo;
       no_action;
     }
-    default_action = no_action;
+    default_action = lookup2_lo;
     size = 8;
   }
 
@@ -399,7 +399,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
       lookup2_hi;
       no_action;
     }
-    default_action = no_action;
+    default_action = lookup2_hi;
     size = 8;
   }
 
@@ -433,7 +433,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
       lookup3_lo;
       no_action;
     }
-    default_action = no_action;
+    default_action = lookup3_lo;
     size = 8;
   }
 
@@ -448,7 +448,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
       lookup3_hi;
       no_action;
     }
-    default_action = no_action;
+    default_action = lookup3_hi;
     size = 8;
   }
 
@@ -479,7 +479,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
       lookup4_lo;
       no_action;
     }
-    default_action = no_action;
+    default_action = lookup4_lo;
     size = 8;
   }
 
@@ -494,7 +494,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
       lookup4_hi;
       no_action;
     }
-    default_action = no_action;
+    default_action = lookup4_hi;
     size = 8;
   }
 

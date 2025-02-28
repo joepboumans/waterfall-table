@@ -129,8 +129,8 @@ class BfRt_interface():
 
     def addSwapEntry(self, table, name):
         num = name.replace("swap", "")
-        key = table.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0), gc.KeyTuple('ig_md.found_hi', False), gc.KeyTuple('ig_md.found_lo', False)])
-        data = table.make_data([], f"WaterfallIngress.lookup{num}")
+        key = table.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0), gc.KeyTuple('ig_md.found_hi', True), gc.KeyTuple('ig_md.found_lo', True)])
+        data = table.make_data([], f"WaterfallIngress.no_action")
         table.entry_add(self.dev_tgt, [key], [data])
 
         key = table.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
@@ -299,17 +299,17 @@ class BfRt_interface():
         data = resub.make_data([], "WaterfallIngress.resubmit_hdr")
         resub.entry_add(target, [key], [data])
 
-        key = resub.make_key([gc.KeyTuple('ig_md.found_hi', True), gc.KeyTuple('ig_md.found_lo', False)])
-        data = resub.make_data([], "WaterfallIngress.no_action")
-        resub.entry_add(target, [key], [data])
-
-        key = resub.make_key([gc.KeyTuple('ig_md.found_hi', False), gc.KeyTuple('ig_md.found_lo', True)])
-        data = resub.make_data([], "WaterfallIngress.no_action")
-        resub.entry_add(target, [key], [data])
-
-        key = resub.make_key([gc.KeyTuple('ig_md.found_hi', True), gc.KeyTuple('ig_md.found_lo', True)])
-        data = resub.make_data([], "WaterfallIngress.no_action")
-        resub.entry_add(target, [key], [data])
+        # key = resub.make_key([gc.KeyTuple('ig_md.found_hi', True), gc.KeyTuple('ig_md.found_lo', False)])
+        # data = resub.make_data([], "WaterfallIngress.no_action")
+        # resub.entry_add(target, [key], [data])
+        #
+        # key = resub.make_key([gc.KeyTuple('ig_md.found_hi', False), gc.KeyTuple('ig_md.found_lo', True)])
+        # data = resub.make_data([], "WaterfallIngress.no_action")
+        # resub.entry_add(target, [key], [data])
+        #
+        # key = resub.make_key([gc.KeyTuple('ig_md.found_hi', True), gc.KeyTuple('ig_md.found_lo', True)])
+        # data = resub.make_data([], "WaterfallIngress.no_action")
+        # resub.entry_add(target, [key], [data])
 
         for name, table in self.swap_dict.items():
             self.addSwapEntry(table, name)
