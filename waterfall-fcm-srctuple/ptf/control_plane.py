@@ -132,6 +132,7 @@ class BfRt_interface():
         data = table.make_data([], f"WaterfallIngress.lookup{num}")
         table.entry_add(self.dev_tgt, [key], [data])
 
+        logger.info(table)
         key = table.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
         data = table.make_data([], f"WaterfallIngress.do_swap{num}")
         table.entry_add(self.dev_tgt, [key], [data])
