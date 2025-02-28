@@ -297,7 +297,7 @@ class BfRt_interface():
             self._read_digest()
 
         print(f"Received {self.recievedDigest} digest from switch")
-        print(f"Received {self.tuples_list} total tuples from switch")
+        print(f"Received {len(self.tuples_list)} total tuples from switch")
         self.tuples = {*self.tuples_list}
         print(f"Received {len(self.tuples)} unique tuples from switch")
         # for t in self.tuples:
@@ -330,7 +330,8 @@ class BfRt_interface():
         for tup in in_tuples:
             if not tup in self.tuples:
                 false_neg += 1
-                print(tup.hex(), end=", ")
+                int_tup = [x.from_bytes(2, 'big') for x in tup]
+                print(".".join([str(x) for x in int_tup]), end=", ")
         print("")
 
 
