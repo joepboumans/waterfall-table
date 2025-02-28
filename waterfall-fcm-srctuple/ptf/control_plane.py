@@ -65,6 +65,7 @@ class BfRt_interface():
         self.p4_name = self.bfrt_info.p4_name_get()
         self.interface.bind_pipeline_config(self.p4_name)
 
+        self.resub = self.bfrt_info.table_get("resub")
         self.learn_filter = self.bfrt_info.learn_get("digest")
         self.learn_filter.info.data_field_annotation_add("src_addr", "ipv4")
 
@@ -117,6 +118,15 @@ class BfRt_interface():
         for table in self.fcm_tables.values():
             table.entry_del(self.dev_tgt)
 
+    def addSwapEntry(self, table, name):
+        num = name.replace("swap", "")
+        key = table.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0), gc.KeyTuple('ig_md.found_hi', False), gc.KeyTuple('ig_md.found_lo', False)])
+        data = table.make_data([], f"WaterfallIngress.lookup{num}")
+        table.entry_add(self.dev_tgt, [key], [data])
+
+        key = table.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
+        data = table.make_data([], f"WaterfallIngress.do_swap{num}")
+        table.entry_add(self.dev_tgt, [key], [data])
 
 
     def list_tables(self):
@@ -264,6 +274,31 @@ class BfRt_interface():
             
 
     def run(self):
+        target = self.dev_tgt
+        resub = self.resub
+        # Only resubmit if both are found
+        key = resub.make_key([gc.KeyTuple('ig_md.found_hi', False), gc.KeyTuple('ig_md.found_lo', False)])
+        data = resub.make_data([], "WaterfallIngress.resubmit_hdr")
+        resub.entry_add(target, [key], [data])
+
+        key = resub.make_key([gc.KeyTuple('ig_md.found_hi', True), gc.KeyTuple('ig_md.found_lo', True)])
+        data = resub.make_data([], "WaterfallIngress.no_action")
+        resub.entry_add(target, [key], [data])
+
+
+        key = resub.make_key([gc.KeyTuple('ig_md.found_hi', True), gc.KeyTuple('ig_md.found_lo', False)])
+        data = resub.make_data([], "WaterfallIngress.no_action")
+        resub.entry_add(target, [key], [data])
+
+        key = resub.make_key([gc.KeyTuple('ig_md.found_hi', False), gc.KeyTuple('ig_md.found_lo', True)])
+        data = resub.make_data([], "WaterfallIngress.no_action")
+        resub.entry_add(target, [key], [data])
+
+        for name, tables in self.swap_dict.items():
+            for table in tables:
+                for loc in ["hi", "lo"]:
+                    self.addSwapEntry(table, f"{name}_{loc}")
+
         self.isRunning = True
         while self.isRunning:
             self._read_digest()
@@ -292,10 +327,11 @@ class BfRt_interface():
             # if parsed_digest % 1000 == 0:
             #     print(f"Parsed {parsed_digest} of {self.recievedDigest} digests; Current tuples {len(self.tuples)}")
 
-        for tuple in self.tuples:
+        for tup in self.tuples:
             for name, tables in self.table_dict.items():
-                for t, loc in zip(tables, ["hi", "lo"]):
-                    self.evalutateEntryInTable(t, f"{name}_{loc}", tuple)
+                for t in tables:
+                    for loc in ["hi", "lo"]:
+                        self.evalutateEntryInTable(t, f"{name}_{loc}", tup)
 
 
     def verify(self, in_tuples, iters):
