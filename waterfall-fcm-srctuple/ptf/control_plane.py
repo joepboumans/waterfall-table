@@ -282,37 +282,38 @@ class BfRt_interface():
             
 
     def run(self):
-        target = self.dev_tgt
-
-        forward = self.forward
-        for ig_port, eg_port in zip([132, 148], [148, 132]):
-            key = forward.make_key([gc.KeyTuple('ig_intr_md.ingress_port', ig_port)])
-            data = forward.make_data([gc.DataTuple('dst_port', eg_port)], "WaterfallIngress.hit")
-            forward.entry_add(target, [key], [data])
-
-        # Only resubmit if both are found
-        resub = self.resub
-        key = resub.make_key([gc.KeyTuple('ig_md.found_hi', False), gc.KeyTuple('ig_md.found_lo', False)])
-        data = resub.make_data([], "WaterfallIngress.resubmit_hdr")
-        resub.entry_add(target, [key], [data])
-
-        key = resub.make_key([gc.KeyTuple('ig_md.found_hi', True), gc.KeyTuple('ig_md.found_lo', True)])
-        data = resub.make_data([], "WaterfallIngress.no_action")
-        resub.entry_add(target, [key], [data])
-
-
-        key = resub.make_key([gc.KeyTuple('ig_md.found_hi', True), gc.KeyTuple('ig_md.found_lo', False)])
-        data = resub.make_data([], "WaterfallIngress.no_action")
-        resub.entry_add(target, [key], [data])
-
-        key = resub.make_key([gc.KeyTuple('ig_md.found_hi', False), gc.KeyTuple('ig_md.found_lo', True)])
-        data = resub.make_data([], "WaterfallIngress.no_action")
-        resub.entry_add(target, [key], [data])
-
-        for name, tables in self.swap_dict.items():
-            for table in tables:
-                for loc in ["hi", "lo"]:
-                    self.addSwapEntry(table, f"{name}_{loc}")
+        # target = self.dev_tgt
+        #
+        # forward = self.forward
+        # for ig_port, eg_port in zip([132, 148], [148, 132]):
+        #     key = forward.make_key([gc.KeyTuple('ig_intr_md.ingress_port', ig_port)])
+        #     data = forward.make_data([gc.DataTuple('dst_port', eg_port)], "WaterfallIngress.hit")
+        #     forward.entry_add(target, [key], [data])
+        #
+        # # Only resubmit if both are found
+        # resub = self.resub
+        # key = resub.make_key([gc.KeyTuple('ig_md.found_hi', False), gc.KeyTuple('ig_md.found_lo', False)])
+        # data = resub.make_data([], "WaterfallIngress.resubmit_hdr")
+        # resub.entry_add(target, [key], [data])
+        #
+        # key = resub.make_key([gc.KeyTuple('ig_md.found_hi', True), gc.KeyTuple('ig_md.found_lo', True)])
+        # data = resub.make_data([], "WaterfallIngress.no_action")
+        # resub.entry_add(target, [key], [data])
+        #
+        #
+        # key = resub.make_key([gc.KeyTuple('ig_md.found_hi', True), gc.KeyTuple('ig_md.found_lo', False)])
+        # data = resub.make_data([], "WaterfallIngress.no_action")
+        # resub.entry_add(target, [key], [data])
+        #
+        # key = resub.make_key([gc.KeyTuple('ig_md.found_hi', False), gc.KeyTuple('ig_md.found_lo', True)])
+        # data = resub.make_data([], "WaterfallIngress.no_action")
+        # resub.entry_add(target, [key], [data])
+        #
+        # for name, tables in self.swap_dict.items():
+        #     for table in tables:
+        #         for loc in ["hi", "lo"]:
+        #             logger.info(f"{name}_{loc}")
+        #             self.addSwapEntry(table, f"{name}_{loc}")
 
         self.isRunning = True
         while self.isRunning:
