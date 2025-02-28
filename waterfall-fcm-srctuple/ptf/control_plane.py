@@ -252,8 +252,8 @@ class BfRt_interface():
             #     print(f"Parsed {parsed_digest} of {self.recievedDigest} digests; Current tuples {len(self.tuples)}")
 
         for name, tables in self.table_dict.items():
-            for t, loc in zip(tables, ["hi", "lo"]:
-                self.evalutateTable(t, f"{name}_{}")
+            for t, loc in zip(tables, ["hi", "lo"]):
+                self.evaluateTable(t, f"{name}_{loc}")
 
 
     def verify(self, in_tuples, iters):
