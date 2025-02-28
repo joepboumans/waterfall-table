@@ -102,7 +102,7 @@ swap2_lo.add_with_do_swap2_lo(resubmit_flag=0x1)
 
 swap3_hi = p4.WaterfallIngress.swap3_hi
 swap3_hi.add_with_lookup3_hi(resubmit_flag=0x0, found_hi=False, found_lo=False)
-swap3_hi.add_with_do_swap3_hi(resubmit_flag=0x3)
+swap3_hi.add_with_do_swap3_hi(resubmit_flag=0x1)
 
 swap3_lo = p4.WaterfallIngress.swap3_lo
 swap3_lo.add_with_lookup3_lo(resubmit_flag=0x0, found_hi=False, found_lo=False)
@@ -110,7 +110,7 @@ swap3_lo.add_with_do_swap3_lo(resubmit_flag=0x1)
 
 swap4_hi = p4.WaterfallIngress.swap4_hi
 swap4_hi.add_with_lookup4_hi(resubmit_flag=0x0, found_hi=False, found_lo=False)
-swap4_hi.add_with_do_swap4_hi(resubmit_flag=0x4)
+swap4_hi.add_with_do_swap4_hi(resubmit_flag=0x1)
 
 swap4_lo = p4.WaterfallIngress.swap4_lo
 swap4_lo.add_with_lookup4_lo(resubmit_flag=0x0, found_hi=False, found_lo=False)
