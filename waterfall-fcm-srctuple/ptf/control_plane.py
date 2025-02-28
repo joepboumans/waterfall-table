@@ -65,13 +65,6 @@ class BfRt_interface():
         self.p4_name = self.bfrt_info.p4_name_get()
         self.interface.bind_pipeline_config(self.p4_name)
 
-        self.resub = self.bfrt_info.table_get("resub")
-        self.learn_filter = self.bfrt_info.learn_get("digest")
-        self.learn_filter.info.data_field_annotation_add("src_addr", "ipv4")
-
-        # Get Pkt count register of FCM
-        self.num_pkt = self.bfrt_info.table_get("num_pkt")
-
         self.setupTables()
         self.clearTables()
         self.setupTables()
@@ -80,6 +73,16 @@ class BfRt_interface():
                 dev, self.p4_name, client_id))
 
     def setupTables(self):
+        # Setup forwarding tables
+        self.forward = self.bfrt_info.table_get("forward")
+        self.port_meta = self.bfrt_info.table_get("$PORT_METADATA")
+        self.resub = self.bfrt_info.table_get("resub")
+        self.learn_filter = self.bfrt_info.learn_get("digest")
+        self.learn_filter.info.data_field_annotation_add("src_addr", "ipv4")
+
+        # Get Pkt count register of FCM
+        self.num_pkt = self.bfrt_info.table_get("num_pkt")
+
         # Get Waterfall tables
         self.table_dict = {}
         table_names = ["table_1", "table_2", "table_3", "table_4"]
@@ -107,6 +110,11 @@ class BfRt_interface():
         self.fcm_tables = {"fcm_l1_d1" : self.fcm_l1_d1, "fcm_l2_d1" : self.fcm_l2_d1, "fcm_l3_d1" : self.fcm_l3_d1, "fcm_l1_d2" : self.fcm_l1_d2, "fcm_l2_d2" : self.fcm_l2_d2, "fcm_l3_d2" : self.fcm_l3_d2}
 
     def clearTables(self):
+        logger.info("Tearing down test")
+        self.forward.entry_del(self.dev_tgt)
+        self.resub.entry_del(self.dev_tgt)
+        self.port_meta.entry_del(self.dev_tgt)
+
         for _, tables in self.swap_dict.items():
             for table in tables:
                 table.entry_del(self.dev_tgt)
@@ -275,8 +283,15 @@ class BfRt_interface():
 
     def run(self):
         target = self.dev_tgt
-        resub = self.resub
+
+        forward = self.forward
+        for ig_port, eg_port in zip([132, 148], [148, 132]):
+            key = forward.make_key([gc.KeyTuple('ig_intr_md.ingress_port', ig_port)])
+            data = forward.make_data([gc.DataTuple('dst_port', eg_port)], "WaterfallIngress.hit")
+            forward.entry_add(target, [key], [data])
+
         # Only resubmit if both are found
+        resub = self.resub
         key = resub.make_key([gc.KeyTuple('ig_md.found_hi', False), gc.KeyTuple('ig_md.found_lo', False)])
         data = resub.make_data([], "WaterfallIngress.resubmit_hdr")
         resub.entry_add(target, [key], [data])
