@@ -355,10 +355,10 @@ class BfRt_interface():
         # for name, table in self.table_dict.items():
         #     self.evaluateTable(table, name)
 
-        for tup in self.tuples:
-            print(tup.hex())
-            for key, data in self.table_dict.items():
-                self.evalutateEntryInTable(key, tup)
+        # for tup in self.tuples:
+        #     print(tup.hex())
+        #     for key, data in self.table_dict.items():
+        #         self.evalutateEntryInTable(key, tup)
 
 
     def verify(self, in_tuples, iters):
