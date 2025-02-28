@@ -322,16 +322,21 @@ class BfRt_interface():
         true_pos = false_pos = true_neg =  false_neg = 0
 
         # Compare dataset tuples with Waterfall Tuples
-        for tup in in_tuples.keys():
-            if tup in self.tuples:
+        for tup in self.tuples:
+            if tup in in_tuples:
                 true_pos += 1
             else:
                 false_pos += 1
 
+        for tup in in_tuples:
+            if not tup in self.tuples:
+                false_neg += 1
+
+
         # F1 Score
         recall = precision = f1 = 0.0
-        recall = true_pos / (true_pos + false_pos)
-        precision = 1.0;
+        precision = true_pos / (true_pos + false_pos)
+        recall = true_pos / (true_pos + false_neg);
         f1 = 2 * ((recall * precision) / (precision + recall))
 
         print(f"[WaterfallFcm - verify] {recall = :.5f} {precision = :.5f} | {f1 = :.5f}")
