@@ -53,8 +53,8 @@ class BfRt_interface():
         self.missedDigest = 0
         self.recievedDigest = 0
         self.total_received = 0
-        self.recieved_digests = []
         self.tuples = None
+        self.tuples_list = []
 
         self.dev_tgt = gc.Target(dev, pipe_id=0xFFFF)
         self.bfrt_info = None
@@ -246,10 +246,7 @@ class BfRt_interface():
             for data in data_list:
                 tuple_list = bytes(data["src_addr"].val)
                 # print(tuple_list.hex())
-                if not self.tuples:
-                    self.tuples = {tuple_list}
-                else:
-                    self.tuples.add(tuple_list)
+                self.tuples_list.append(tuple_list)
 
             self.recievedDigest += 1
             if self.recievedDigest % 1000 == 0:
@@ -300,7 +297,9 @@ class BfRt_interface():
             self._read_digest()
 
         print(f"Received {self.recievedDigest} digest from switch")
-        print(f"Received {len(self.tuples)} tuples from switch")
+        print(f"Received {self.tuples_list} total tuples from switch")
+        self.tuples = {*self.tuples_list}
+        print(f"Received {len(self.tuples)} unique tuples from switch")
         # for t in self.tuples:
         #     print(t.hex())
         parsed_digest = 0
@@ -327,10 +326,12 @@ class BfRt_interface():
                 true_pos += 1
             else:
                 false_pos += 1
+                print(tup)
 
         for tup in in_tuples:
             if not tup in self.tuples:
                 false_neg += 1
+                print(tup)
 
 
         # F1 Score
