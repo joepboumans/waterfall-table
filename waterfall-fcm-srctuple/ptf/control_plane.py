@@ -296,15 +296,15 @@ class BfRt_interface():
         # Only resubmit if both are found
         resub = self.resub
         key = resub.make_key([gc.KeyTuple('ig_md.found_hi', False), gc.KeyTuple('ig_md.found_lo', False)])
-        data = resub.make_data([], "WaterfallIngress.resubmit_hdr")
+        data = resub.make_data([], "WaterfallIngress.no_action")
         resub.entry_add(target, [key], [data])
 
         key = resub.make_key([gc.KeyTuple('ig_md.found_hi', True), gc.KeyTuple('ig_md.found_lo', False)])
-        data = resub.make_data([], "WaterfallIngress.resubmit_hdr")
+        data = resub.make_data([], "WaterfallIngress.no_action")
         resub.entry_add(target, [key], [data])
 
         key = resub.make_key([gc.KeyTuple('ig_md.found_hi', False), gc.KeyTuple('ig_md.found_lo', True)])
-        data = resub.make_data([], "WaterfallIngress.resubmit_hdr")
+        data = resub.make_data([], "WaterfallIngress.no_action")
         resub.entry_add(target, [key], [data])
 
         key = resub.make_key([gc.KeyTuple('ig_md.found_hi', True), gc.KeyTuple('ig_md.found_lo', True)])
