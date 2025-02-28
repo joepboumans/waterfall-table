@@ -226,7 +226,7 @@ class BfRt_interface():
         data_table = table.entry_get(self.dev_tgt, [], {"from_hw" : True})
         for data, key in data_table:
             data_dict = data.to_dict()
-            entry_val = data_dict[f"WaterfallIngress.{name}.f1"][0]
+            entry_val = sum(data_dict[f"WaterfallIngress.{name}.f1"])
             if entry_val != 0:
                 summed += entry_val
                 nonzero_entries += 1

@@ -89,7 +89,9 @@ swap1_hi.add_with_no_action(resubmit_flag=0x0, found_hi=True, found_lo=True)
 swap1_hi.add_with_lookup1_hi(resubmit_flag=0x0, found_hi=False, found_lo=True)
 swap1_hi.add_with_lookup1_hi(resubmit_flag=0x0, found_hi=True, found_lo=False)
 swap1_hi.add_with_lookup1_hi(resubmit_flag=0x0, found_hi=False, found_lo=False)
-swap1_hi.add_with_do_swap1_hi(resubmit_flag=0x1)
+swap1_hi.add_with_do_swap1_hi(resubmit_flag=0x1, found_hi=False, found_lo=False)
+swap1_hi.add_with_do_swap1_hi(resubmit_flag=0x1, found_hi=True, found_lo=False)
+swap1_hi.add_with_do_swap1_hi(resubmit_flag=0x1, found_hi=False, found_lo=True)
 
 swap1_lo = p4.WaterfallIngress.swap1_lo
 swap1_lo.add_with_no_action(resubmit_flag=0x0, found_hi=True, found_lo=True)
@@ -138,7 +140,6 @@ swap4_lo.add_with_no_action(resubmit_flag=0x0, found_hi=True, found_lo=True)
 swap4_lo.add_with_lookup4_lo(resubmit_flag=0x0, found_hi=False, found_lo=True)
 swap4_lo.add_with_lookup4_lo(resubmit_flag=0x0, found_hi=True, found_lo=False)
 swap4_lo.add_with_lookup4_lo(resubmit_flag=0x0, found_hi=False, found_lo=False)
-swap4_lo.add_with_do_swap4_lo(resubmit_flag=0x1)
 
 # prt = bfrt.port.port
 print("activating ports...")
