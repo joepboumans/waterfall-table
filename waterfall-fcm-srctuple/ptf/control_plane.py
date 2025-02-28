@@ -118,13 +118,11 @@ class BfRt_interface():
         self.resub.entry_del(self.dev_tgt)
         self.port_meta.entry_del(self.dev_tgt)
 
-        for _, tables in self.swap_dict.items():
-            for table in tables:
-                table.entry_del(self.dev_tgt)
+        for _, table in self.swap_dict.items():
+            table.entry_del(self.dev_tgt)
 
-        for _, tables in self.table_dict.items():
-            for table in tables:
-                table.entry_del(self.dev_tgt)
+        for _, table in self.table_dict.items():
+            table.entry_del(self.dev_tgt)
 
         for table in self.fcm_tables.values():
             table.entry_del(self.dev_tgt)
