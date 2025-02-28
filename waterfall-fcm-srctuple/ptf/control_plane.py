@@ -183,8 +183,8 @@ class BfRt_interface():
         data, _ = next(resp_table)
         data_dict = data.to_dict()
         entry_val = data_dict[f"WaterfallIngress.{name}.f1"][0]
-        if entry_val > 0:
-            logger.info(f"{name} : {entry_val.to_bytes(2,'big').hex()}")
+        # if entry_val > 0:
+        logger.info(f"{name} : {entry_val.to_bytes(2,'big').hex()}")
 
     def evaluateTableFromDict(self, tables, name):
         table = tables[name]
@@ -299,16 +299,15 @@ class BfRt_interface():
         data = resub.make_data([], "WaterfallIngress.resubmit_hdr")
         resub.entry_add(target, [key], [data])
 
-        key = resub.make_key([gc.KeyTuple('ig_md.found_hi', True), gc.KeyTuple('ig_md.found_lo', True)])
-        data = resub.make_data([], "WaterfallIngress.no_action")
-        resub.entry_add(target, [key], [data])
-
-
         key = resub.make_key([gc.KeyTuple('ig_md.found_hi', True), gc.KeyTuple('ig_md.found_lo', False)])
-        data = resub.make_data([], "WaterfallIngress.no_action")
+        data = resub.make_data([], "WaterfallIngress.resubmit_hdr")
         resub.entry_add(target, [key], [data])
 
         key = resub.make_key([gc.KeyTuple('ig_md.found_hi', False), gc.KeyTuple('ig_md.found_lo', True)])
+        data = resub.make_data([], "WaterfallIngress.resubmit_hdr")
+        resub.entry_add(target, [key], [data])
+
+        key = resub.make_key([gc.KeyTuple('ig_md.found_hi', True), gc.KeyTuple('ig_md.found_lo', True)])
         data = resub.make_data([], "WaterfallIngress.no_action")
         resub.entry_add(target, [key], [data])
 

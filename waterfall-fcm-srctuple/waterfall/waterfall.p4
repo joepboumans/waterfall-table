@@ -503,6 +503,8 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     ig_md.found_hi = false;
     ig_md.found_lo = false;
     ig_intr_dprsr_md.drop_ctl = 0x0;
+    ig_intr_dprsr_md.resubmit_type = 0;
+    ig_intr_dprsr_md.digest_type = 0;
   }
   action drop() { ig_intr_dprsr_md.drop_ctl = 0x1; }
 
