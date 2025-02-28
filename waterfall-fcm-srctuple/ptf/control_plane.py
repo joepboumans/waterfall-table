@@ -268,7 +268,7 @@ class BfRt_interface():
         while self.isRunning:
             self._read_digest()
 
-        print(f"Received {len(self.recievedDigest)} digest from switch")
+        print(f"Received {self.recievedDigest} digest from switch")
         print(f"Received {len(self.tuples)} tuples from switch")
         for t in self.tuples:
             print(t.hex())
