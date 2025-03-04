@@ -166,6 +166,8 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     void apply(inout bit<FLOW_ID_BIT_WIDTH> val, out bool read_value) {
       if (hdr.ipv4.src_addr[31:16] == val) {
         read_value = true;
+      } else {
+        read_value = false;
       }
     }
   };
@@ -174,6 +176,8 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     void apply(inout bit<FLOW_ID_BIT_WIDTH> val, out bool read_value) {
       if (hdr.ipv4.src_addr[15:0] == val) {
         read_value = true;
+      } else {
+        read_value = false;
       }
     }
   };
@@ -182,6 +186,8 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     void apply(inout bit<FLOW_ID_BIT_WIDTH> val, out bool read_value) {
       if (hdr.ipv4.src_addr[31:16] == val) {
         read_value = true;
+      } else {
+        read_value = false;
       }
     }
   };
@@ -190,6 +196,8 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     void apply(inout bit<FLOW_ID_BIT_WIDTH> val, out bool read_value) {
       if (hdr.ipv4.src_addr[15:0] == val) {
         read_value = true;
+      } else {
+        read_value = false;
       }
     }
   };
