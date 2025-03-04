@@ -81,6 +81,8 @@ forward_tbl.add_with_hit(ingress_port=140, dst_port=132)
 print("populating resub table...")
 resub = p4.WaterfallIngress.resub
 resub.add_with_resubmit_hdr(found_lo=False, found_hi=False, resubmit_flag=0x0)
+resub.add_with_resubmit_hdr(found_lo=False, found_hi=True, resubmit_flag=0x0)
+resub.add_with_resubmit_hdr(found_lo=True, found_hi=False, resubmit_flag=0x0)
 resub.add_with_no_action(resubmit_flag=0x1)
 
 print("populating swaps table...")

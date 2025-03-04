@@ -321,7 +321,7 @@ class BfRt_interface():
         true_pos = false_pos = true_neg =  false_neg = 0
 
         # Compare dataset tuples with Waterfall Tuples
-        print("False positives:")
+        print("False positives (Halucinations?):")
         for tup in self.tuples:
             if tup in in_tuples:
                 true_pos += 1
@@ -330,7 +330,7 @@ class BfRt_interface():
                 print(".".join([str(x) for x in tup]), end=", ")
         print("")
 
-        print("False negatives:")
+        print("False negatives (Not seen by Waterfall):")
         for tup in in_tuples:
             if not tup in self.tuples:
                 false_neg += 1
