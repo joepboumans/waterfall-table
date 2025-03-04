@@ -1,3 +1,12 @@
+/*
+ * Multi-Threaded packet generator with memory preload. Uses DPDK.
+ *
+ * This version does not compute latency or receive packets back on another interface.
+ * It uses 4 threads to replay packets, after they're preloaded in memory.
+ *
+ * Example usage: bin/click --dpdk -l 0-15 -- trace=/src/dataset.pcap
+ */
+
 define($trace /data/users/jboumans/equinix-chicago.20160121-130000.UTC.pcap)
 define($RATE 10Gbps)
 define($max_packets_in_queue 500000)
