@@ -231,7 +231,7 @@ class BfRt_interface():
             if entry_val != 0:
                 summed += entry_val
                 nonzero_entries += 1
-                print(data_dict)
+                # print(data_dict)
                 print(f"{idx} : {entry_val.to_bytes(2,'big').hex()}")
             idx += 1
 
@@ -310,10 +310,10 @@ class BfRt_interface():
             self.evaluateTable(table, name)
 
         # Print all values of the found tuples in Waterfall
-        # for tup in self.tuples:
-        #     print(tup.hex())
-        #     for key, data in self.table_dict.items():
-        #         self.evalutateEntryInTable(key, tup)
+        for key, data in self.table_dict.items():
+            for tup in self.tuples:
+                print(tup.hex())
+                self.evalutateEntryInTable(key, tup)
 
 
     def verify(self, in_tuples, iters):
