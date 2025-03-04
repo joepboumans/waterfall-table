@@ -31,11 +31,11 @@
               },
               "dst_mask" : {
                 "type" : "immediate",
-                "name" : "1"
+                "name" : "15"
               },
               "src1" : {
                 "type" : "immediate",
-                "name" : "1w0"
+                "name" : "4w0x0"
               }
             },
             {
@@ -47,11 +47,27 @@
               },
               "dst_mask" : {
                 "type" : "immediate",
-                "name" : "1"
+                "name" : "15"
               },
               "src1" : {
                 "type" : "immediate",
-                "name" : "1w0"
+                "name" : "4w0x0"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "ig_intr_md_for_dprsr.resubmit_type"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "7"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "3w0"
               }
             }
           ]
@@ -187,6 +203,22 @@
                   "operand_1_value" : "mem_lo"
                 },
                 "output_dst" : "ig_md.remain1_lo"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "ig_intr_md_for_dprsr.digest_type"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "7"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "3w5"
               }
             }
           ]
@@ -728,22 +760,6 @@
               "src1" : {
                 "type" : "phv",
                 "name" : "hdr.ipv4.src_addr"
-              }
-            },
-            {
-              "name" : "ModifyFieldPrimitive",
-              "operation" : "set",
-              "dst" : {
-                "type" : "phv",
-                "name" : "ig_intr_md_for_dprsr.digest_type"
-              },
-              "dst_mask" : {
-                "type" : "immediate",
-                "name" : "7"
-              },
-              "src1" : {
-                "type" : "immediate",
-                "name" : "3w5"
               }
             }
           ]

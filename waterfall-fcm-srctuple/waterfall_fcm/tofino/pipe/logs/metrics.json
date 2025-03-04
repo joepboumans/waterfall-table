@@ -1,17 +1,17 @@
 {
     "program_name": "waterfall_fcm.p4", 
-    "build_date": "Thu Feb 27 16:47:12 2025", 
-    "run_id": "609d14c6f1544a25", 
+    "build_date": "Tue Mar  4 17:52:23 2025", 
+    "run_id": "7aba71ad623d4344", 
     "compiler_version": "9.11.0", 
     "schema_version": "1.1.0", 
     "target": "tofino", 
-    "compilation_time": "5.969486951828003", 
+    "compilation_time": "6.223243474960327", 
     "phv": {
         "normal": [
             {
                 "bit_width": 8, 
                 "containers_occupied": 9, 
-                "bits_occupied": 41, 
+                "bits_occupied": 47, 
                 "bits_overlaid": 11
             }, 
             {
@@ -67,7 +67,7 @@
         "latency": [
             {
                 "gress": "ingress", 
-                "cycles": 238
+                "cycles": 197
             }, 
             {
                 "gress": "egress", 

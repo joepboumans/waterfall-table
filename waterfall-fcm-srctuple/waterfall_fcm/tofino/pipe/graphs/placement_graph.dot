@@ -1,48 +1,37 @@
 digraph table_deps {
   splines=ortho; rankdir=LR;
   label="Program: waterfall_fcm
-RunId: 609d14c6f1544a25
+RunId: 7aba71ad623d4344
 ";
   labelloc=t; labeljust=l;
   { "WaterfallIngress.forward"; "tbl_fcmsketch_fcm_hash_d2"; "tbl_fcmsketch_fcm_hash_d1"; "fcmsketch_tb_fcm_l1_to_l2_d2$precompute"; "fcmsketch_tb_fcm_l1_to_l2_d1$precompute"; "tbl_count_pkt"; }
-  { rank = same; "WaterfallIngress.swap1_hi"; "tbl_fcmsketch_fcm_action_l1_d2"; "tbl_fcmsketch_fcm_action_l1_d1"; }
-  { rank = same; "WaterfallIngress.swap1_lo"; "FcmEgress.fcmsketch.tb_fcm_l1_to_l2_d2"; "FcmEgress.fcmsketch.tb_fcm_l1_to_l2_d1"; }
-  { rank = same; "WaterfallIngress.swap2_hi"; "FcmEgress.fcmsketch.tb_fcm_l2_to_l3_d2"; "FcmEgress.fcmsketch.tb_fcm_l2_to_l3_d1"; }
-  { rank = same; "WaterfallIngress.swap2_lo"; }
+  { rank = same; "WaterfallIngress.swap1_lo"; "WaterfallIngress.swap1_hi"; "tbl_fcmsketch_fcm_action_l1_d2"; "tbl_fcmsketch_fcm_action_l1_d1"; }
+  { rank = same; "WaterfallIngress.swap2_hi"; "FcmEgress.fcmsketch.tb_fcm_l1_to_l2_d2"; "FcmEgress.fcmsketch.tb_fcm_l1_to_l2_d1"; }
+  { rank = same; "WaterfallIngress.swap2_lo"; "FcmEgress.fcmsketch.tb_fcm_l2_to_l3_d2"; "FcmEgress.fcmsketch.tb_fcm_l2_to_l3_d1"; }
   { rank = same; "WaterfallIngress.swap3_hi"; }
   { rank = same; "WaterfallIngress.swap3_lo"; }
   { rank = same; "WaterfallIngress.swap4_hi"; }
   { rank = same; "WaterfallIngress.swap4_lo"; }
   { rank = same; "WaterfallIngress.resub"; }
-   "WaterfallIngress.forward" -> "WaterfallIngress.swap1_hi" [ label= "",color=gold ];
+   "WaterfallIngress.forward" -> "WaterfallIngress.swap1_lo" [ label= "",color=red ];
    "WaterfallIngress.forward" -> "WaterfallIngress.swap1_hi" [ label= "",color=red ];
-   "WaterfallIngress.forward" -> "WaterfallIngress.swap1_lo" [ label= "",color=gold ];
-   "WaterfallIngress.swap1_hi" -> "WaterfallIngress.swap1_lo" [ label= "",color=gold ];
-   "WaterfallIngress.swap1_hi" -> "WaterfallIngress.swap1_lo" [ label= "",color=pink ];
-   "WaterfallIngress.forward" -> "WaterfallIngress.swap1_lo" [ label= "",color=pink ];
    "WaterfallIngress.forward" -> "WaterfallIngress.swap2_hi" [ label= "",color=gold ];
    "WaterfallIngress.swap1_hi" -> "WaterfallIngress.swap2_hi" [ label= "",color=gold ];
    "WaterfallIngress.swap1_lo" -> "WaterfallIngress.swap2_hi" [ label= "",color=gold ];
-   "WaterfallIngress.swap1_hi" -> "WaterfallIngress.swap2_hi" [ label= "",color=pink ];
-   "WaterfallIngress.swap1_lo" -> "WaterfallIngress.swap2_hi" [ label= "",color=pink ];
    "WaterfallIngress.forward" -> "WaterfallIngress.swap2_hi" [ label= "",color=red ];
    "WaterfallIngress.swap1_hi" -> "WaterfallIngress.swap2_hi" [ label= "",color=red ];
    "WaterfallIngress.forward" -> "WaterfallIngress.swap2_lo" [ label= "",color=gold ];
    "WaterfallIngress.swap1_hi" -> "WaterfallIngress.swap2_lo" [ label= "",color=gold ];
    "WaterfallIngress.swap2_hi" -> "WaterfallIngress.swap2_lo" [ label= "",color=gold ];
    "WaterfallIngress.swap1_lo" -> "WaterfallIngress.swap2_lo" [ label= "",color=gold ];
-   "WaterfallIngress.swap1_hi" -> "WaterfallIngress.swap2_lo" [ label= "",color=pink ];
-   "WaterfallIngress.swap1_lo" -> "WaterfallIngress.swap2_lo" [ label= "",color=pink ];
    "WaterfallIngress.swap2_hi" -> "WaterfallIngress.swap2_lo" [ label= "",color=pink ];
-   "WaterfallIngress.forward" -> "WaterfallIngress.swap2_lo" [ label= "",color=pink ];
+   "WaterfallIngress.forward" -> "WaterfallIngress.swap2_lo" [ label= "",color=red ];
    "WaterfallIngress.swap1_lo" -> "WaterfallIngress.swap2_lo" [ label= "",color=red ];
    "WaterfallIngress.forward" -> "WaterfallIngress.swap3_hi" [ label= "",color=gold ];
    "WaterfallIngress.swap1_hi" -> "WaterfallIngress.swap3_hi" [ label= "",color=gold ];
    "WaterfallIngress.swap2_hi" -> "WaterfallIngress.swap3_hi" [ label= "",color=gold ];
    "WaterfallIngress.swap1_lo" -> "WaterfallIngress.swap3_hi" [ label= "",color=gold ];
    "WaterfallIngress.swap2_lo" -> "WaterfallIngress.swap3_hi" [ label= "",color=gold ];
-   "WaterfallIngress.swap1_hi" -> "WaterfallIngress.swap3_hi" [ label= "",color=pink ];
-   "WaterfallIngress.swap1_lo" -> "WaterfallIngress.swap3_hi" [ label= "",color=pink ];
    "WaterfallIngress.swap2_hi" -> "WaterfallIngress.swap3_hi" [ label= "",color=pink ];
    "WaterfallIngress.swap2_lo" -> "WaterfallIngress.swap3_hi" [ label= "",color=pink ];
    "WaterfallIngress.forward" -> "WaterfallIngress.swap3_hi" [ label= "",color=red ];
@@ -54,12 +43,10 @@ RunId: 609d14c6f1544a25
    "WaterfallIngress.swap3_hi" -> "WaterfallIngress.swap3_lo" [ label= "",color=gold ];
    "WaterfallIngress.swap1_lo" -> "WaterfallIngress.swap3_lo" [ label= "",color=gold ];
    "WaterfallIngress.swap2_lo" -> "WaterfallIngress.swap3_lo" [ label= "",color=gold ];
-   "WaterfallIngress.swap1_hi" -> "WaterfallIngress.swap3_lo" [ label= "",color=pink ];
-   "WaterfallIngress.swap1_lo" -> "WaterfallIngress.swap3_lo" [ label= "",color=pink ];
    "WaterfallIngress.swap2_hi" -> "WaterfallIngress.swap3_lo" [ label= "",color=pink ];
    "WaterfallIngress.swap2_lo" -> "WaterfallIngress.swap3_lo" [ label= "",color=pink ];
    "WaterfallIngress.swap3_hi" -> "WaterfallIngress.swap3_lo" [ label= "",color=pink ];
-   "WaterfallIngress.forward" -> "WaterfallIngress.swap3_lo" [ label= "",color=pink ];
+   "WaterfallIngress.forward" -> "WaterfallIngress.swap3_lo" [ label= "",color=red ];
    "WaterfallIngress.swap1_lo" -> "WaterfallIngress.swap3_lo" [ label= "",color=red ];
    "WaterfallIngress.swap2_lo" -> "WaterfallIngress.swap3_lo" [ label= "",color=red ];
    "WaterfallIngress.forward" -> "WaterfallIngress.swap4_hi" [ label= "",color=gold ];
@@ -69,8 +56,6 @@ RunId: 609d14c6f1544a25
    "WaterfallIngress.swap1_lo" -> "WaterfallIngress.swap4_hi" [ label= "",color=gold ];
    "WaterfallIngress.swap2_lo" -> "WaterfallIngress.swap4_hi" [ label= "",color=gold ];
    "WaterfallIngress.swap3_lo" -> "WaterfallIngress.swap4_hi" [ label= "",color=gold ];
-   "WaterfallIngress.swap1_hi" -> "WaterfallIngress.swap4_hi" [ label= "",color=pink ];
-   "WaterfallIngress.swap1_lo" -> "WaterfallIngress.swap4_hi" [ label= "",color=pink ];
    "WaterfallIngress.swap2_hi" -> "WaterfallIngress.swap4_hi" [ label= "",color=pink ];
    "WaterfallIngress.swap2_lo" -> "WaterfallIngress.swap4_hi" [ label= "",color=pink ];
    "WaterfallIngress.swap3_hi" -> "WaterfallIngress.swap4_hi" [ label= "",color=pink ];
@@ -87,14 +72,12 @@ RunId: 609d14c6f1544a25
    "WaterfallIngress.swap1_lo" -> "WaterfallIngress.swap4_lo" [ label= "",color=gold ];
    "WaterfallIngress.swap2_lo" -> "WaterfallIngress.swap4_lo" [ label= "",color=gold ];
    "WaterfallIngress.swap3_lo" -> "WaterfallIngress.swap4_lo" [ label= "",color=gold ];
-   "WaterfallIngress.swap1_hi" -> "WaterfallIngress.swap4_lo" [ label= "",color=pink ];
-   "WaterfallIngress.swap1_lo" -> "WaterfallIngress.swap4_lo" [ label= "",color=pink ];
    "WaterfallIngress.swap2_hi" -> "WaterfallIngress.swap4_lo" [ label= "",color=pink ];
    "WaterfallIngress.swap2_lo" -> "WaterfallIngress.swap4_lo" [ label= "",color=pink ];
    "WaterfallIngress.swap3_hi" -> "WaterfallIngress.swap4_lo" [ label= "",color=pink ];
    "WaterfallIngress.swap3_lo" -> "WaterfallIngress.swap4_lo" [ label= "",color=pink ];
    "WaterfallIngress.swap4_hi" -> "WaterfallIngress.swap4_lo" [ label= "",color=pink ];
-   "WaterfallIngress.forward" -> "WaterfallIngress.swap4_lo" [ label= "",color=pink ];
+   "WaterfallIngress.forward" -> "WaterfallIngress.swap4_lo" [ label= "",color=red ];
    "WaterfallIngress.swap1_lo" -> "WaterfallIngress.swap4_lo" [ label= "",color=red ];
    "WaterfallIngress.swap2_lo" -> "WaterfallIngress.swap4_lo" [ label= "",color=red ];
    "WaterfallIngress.swap3_lo" -> "WaterfallIngress.swap4_lo" [ label= "",color=red ];
@@ -107,10 +90,11 @@ RunId: 609d14c6f1544a25
    "WaterfallIngress.swap2_lo" -> "WaterfallIngress.resub" [ label= "",color=gold ];
    "WaterfallIngress.swap3_lo" -> "WaterfallIngress.resub" [ label= "",color=gold ];
    "WaterfallIngress.swap4_lo" -> "WaterfallIngress.resub" [ label= "",color=gold ];
-   "WaterfallIngress.swap1_hi" -> "WaterfallIngress.resub" [ label= "",color=pink ];
-   "WaterfallIngress.swap1_hi" -> "WaterfallIngress.resub" [ label= "",color=pink ];
+   "WaterfallIngress.forward" -> "WaterfallIngress.resub" [ label= "",color=red ];
    "WaterfallIngress.swap1_lo" -> "WaterfallIngress.resub" [ label= "",color=pink ];
    "WaterfallIngress.swap1_lo" -> "WaterfallIngress.resub" [ label= "",color=pink ];
+   "WaterfallIngress.swap1_hi" -> "WaterfallIngress.resub" [ label= "",color=pink ];
+   "WaterfallIngress.swap1_hi" -> "WaterfallIngress.resub" [ label= "",color=pink ];
    "tbl_fcmsketch_fcm_hash_d2" -> "tbl_fcmsketch_fcm_action_l1_d2" [ label= "",color=gold ];
    "tbl_fcmsketch_fcm_hash_d1" -> "tbl_fcmsketch_fcm_action_l1_d1" [ label= "",color=gold ];
    "tbl_fcmsketch_fcm_action_l1_d2" -> "FcmEgress.fcmsketch.tb_fcm_l1_to_l2_d2" [ label= "",color=blue ];
@@ -148,6 +132,8 @@ RunId: 609d14c6f1544a25
    "WaterfallIngress.swap2_hi" -> "WaterfallIngress.swap4_hi" [ label= "",color=pink ];
    "WaterfallIngress.swap2_hi" -> "WaterfallIngress.swap4_lo" [ label= "",color=pink ];
    "WaterfallIngress.swap2_hi" -> "WaterfallIngress.resub" [ label= "",color=pink ];
+   "FcmEgress.fcmsketch.tb_fcm_l1_to_l2_d2" -> "FcmEgress.fcmsketch.tb_fcm_l2_to_l3_d2" [ label= "",color=pink ];
+   "FcmEgress.fcmsketch.tb_fcm_l1_to_l2_d1" -> "FcmEgress.fcmsketch.tb_fcm_l2_to_l3_d1" [ label= "",color=pink ];
    "WaterfallIngress.swap1_lo" -> "WaterfallIngress.swap2_hi" [ label= "",color=pink ];
    "WaterfallIngress.swap1_lo" -> "WaterfallIngress.swap2_lo" [ label= "",color=pink ];
    "WaterfallIngress.swap1_lo" -> "WaterfallIngress.swap3_hi" [ label= "",color=pink ];
@@ -155,9 +141,6 @@ RunId: 609d14c6f1544a25
    "WaterfallIngress.swap1_lo" -> "WaterfallIngress.swap4_hi" [ label= "",color=pink ];
    "WaterfallIngress.swap1_lo" -> "WaterfallIngress.swap4_lo" [ label= "",color=pink ];
    "WaterfallIngress.swap1_lo" -> "WaterfallIngress.resub" [ label= "",color=pink ];
-   "FcmEgress.fcmsketch.tb_fcm_l1_to_l2_d2" -> "FcmEgress.fcmsketch.tb_fcm_l2_to_l3_d2" [ label= "",color=pink ];
-   "FcmEgress.fcmsketch.tb_fcm_l1_to_l2_d1" -> "FcmEgress.fcmsketch.tb_fcm_l2_to_l3_d1" [ label= "",color=pink ];
-   "WaterfallIngress.swap1_hi" -> "WaterfallIngress.swap1_lo" [ label= "",color=pink ];
    "WaterfallIngress.swap1_hi" -> "WaterfallIngress.swap2_hi" [ label= "",color=pink ];
    "WaterfallIngress.swap1_hi" -> "WaterfallIngress.swap2_lo" [ label= "",color=pink ];
    "WaterfallIngress.swap1_hi" -> "WaterfallIngress.swap3_hi" [ label= "",color=pink ];
@@ -169,8 +152,8 @@ RunId: 609d14c6f1544a25
    "tbl_fcmsketch_fcm_action_l1_d2" -> "FcmEgress.fcmsketch.tb_fcm_l2_to_l3_d2" [ label= "",color=pink ];
    "tbl_fcmsketch_fcm_action_l1_d1" -> "FcmEgress.fcmsketch.tb_fcm_l1_to_l2_d1" [ label= "",color=pink ];
    "tbl_fcmsketch_fcm_action_l1_d1" -> "FcmEgress.fcmsketch.tb_fcm_l2_to_l3_d1" [ label= "",color=pink ];
-   "WaterfallIngress.forward" -> "WaterfallIngress.swap1_hi" [ label= "",color=pink ];
    "WaterfallIngress.forward" -> "WaterfallIngress.swap1_lo" [ label= "",color=pink ];
+   "WaterfallIngress.forward" -> "WaterfallIngress.swap1_hi" [ label= "",color=pink ];
    "WaterfallIngress.forward" -> "WaterfallIngress.swap2_hi" [ label= "",color=pink ];
    "WaterfallIngress.forward" -> "WaterfallIngress.swap2_lo" [ label= "",color=pink ];
    "WaterfallIngress.forward" -> "WaterfallIngress.swap3_hi" [ label= "",color=pink ];

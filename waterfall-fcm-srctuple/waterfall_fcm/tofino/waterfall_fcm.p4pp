@@ -1601,8 +1601,8 @@ struct digest_t {
 struct waterfall_metadata_t {
   port_metadata_t port_metadata;
   resubmit_md_t resubmit_md;
-  bool found_hi;
-  bool found_lo;
+  bit<4> found_hi;
+  bit<4> found_lo;
   bit<16> idx1;
   bit<16> idx2;
   bit<16> idx3;
@@ -1726,66 +1726,66 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
   Register<bit<16>, bit<16>>(65535, 0) table_4_hi;
   Register<bit<16>, bit<16>>(65535, 0) table_4_lo;
 
-  RegisterAction<bit<16>, bit<16>, bool>(table_1_hi) table_1_hi_lookup = {
-    void apply(inout bit<16> val, out bool read_value) {
+  RegisterAction<bit<16>, bit<16>, bit<4>>(table_1_hi) table_1_hi_lookup = {
+    void apply(inout bit<16> val, out bit<4> read_value) {
       if (hdr.ipv4.src_addr[31:16] == val) {
-        read_value = true;
+        read_value = 0x1;
       }
     }
   };
 
-  RegisterAction<bit<16>, bit<16>, bool>(table_1_lo) table_1_lo_lookup = {
-    void apply(inout bit<16> val, out bool read_value) {
+  RegisterAction<bit<16>, bit<16>, bit<4>>(table_1_lo) table_1_lo_lookup = {
+    void apply(inout bit<16> val, out bit<4> read_value) {
       if (hdr.ipv4.src_addr[15:0] == val) {
-        read_value = true;
+        read_value = 0x1;
       }
     }
   };
 
-  RegisterAction<bit<16>, bit<16>, bool>(table_2_hi) table_2_hi_lookup = {
-    void apply(inout bit<16> val, out bool read_value) {
+  RegisterAction<bit<16>, bit<16>, bit<4>>(table_2_hi) table_2_hi_lookup = {
+    void apply(inout bit<16> val, out bit<4> read_value) {
       if (hdr.ipv4.src_addr[31:16] == val) {
-        read_value = true;
+        read_value = 0x2;
       }
     }
   };
 
-  RegisterAction<bit<16>, bit<16>, bool>(table_2_lo) table_2_lo_lookup = {
-    void apply(inout bit<16> val, out bool read_value) {
+  RegisterAction<bit<16>, bit<16>, bit<4>>(table_2_lo) table_2_lo_lookup = {
+    void apply(inout bit<16> val, out bit<4> read_value) {
       if (hdr.ipv4.src_addr[15:0] == val) {
-        read_value = true;
+        read_value = 0x2;
       }
     }
   };
 
-  RegisterAction<bit<16>, bit<16>, bool>(table_3_hi) table_3_hi_lookup = {
-    void apply(inout bit<16> val, out bool read_value) {
+  RegisterAction<bit<16>, bit<16>, bit<4>>(table_3_hi) table_3_hi_lookup = {
+    void apply(inout bit<16> val, out bit<4> read_value) {
       if (hdr.ipv4.src_addr[31:16] == val) {
-        read_value = true;
+        read_value = 0x3;
       }
     }
   };
 
-  RegisterAction<bit<16>, bit<16>, bool>(table_3_lo) table_3_lo_lookup = {
-    void apply(inout bit<16> val, out bool read_value) {
+  RegisterAction<bit<16>, bit<16>, bit<4>>(table_3_lo) table_3_lo_lookup = {
+    void apply(inout bit<16> val, out bit<4> read_value) {
       if (hdr.ipv4.src_addr[15:0] == val) {
-        read_value = true;
+        read_value = 0x3;
       }
     }
   };
 
-  RegisterAction<bit<16>, bit<16>, bool>(table_4_hi) table_4_hi_lookup = {
-    void apply(inout bit<16> val, out bool read_value) {
+  RegisterAction<bit<16>, bit<16>, bit<4>>(table_4_hi) table_4_hi_lookup = {
+    void apply(inout bit<16> val, out bit<4> read_value) {
       if (hdr.ipv4.src_addr[31:16] == val) {
-        read_value = true;
+        read_value = 0x4;
       }
     }
   };
 
-  RegisterAction<bit<16>, bit<16>, bool>(table_4_lo) table_4_lo_lookup = {
-    void apply(inout bit<16> val, out bool read_value) {
+  RegisterAction<bit<16>, bit<16>, bit<4>>(table_4_lo) table_4_lo_lookup = {
+    void apply(inout bit<16> val, out bit<4> read_value) {
       if (hdr.ipv4.src_addr[15:0] == val) {
-        read_value = true;
+        read_value = 0x4;
       }
     }
   };
@@ -1850,7 +1850,6 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     ig_intr_dprsr_md.resubmit_type = DPRSR_RESUB;
     ig_md.resubmit_md.type = RESUB;
     ig_md.resubmit_md.remain = hdr.ipv4.src_addr;
-    ig_intr_dprsr_md.digest_type = DIGEST;
   }
 
   action no_action() {
@@ -1866,11 +1865,12 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
       resubmit_hdr;
       no_action;
     }
-    default_action = no_action;
-    size = 8;
+    default_action = resubmit_hdr;
+    size = 512;
   }
 
   action do_swap1_lo() {
+    ig_intr_dprsr_md.digest_type = DIGEST;
     ig_md.remain1_lo = table_1_lo_swap.execute(hash1.get({hdr.ipv4.src_addr}));
   }
 
@@ -1891,8 +1891,6 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
   table swap1_lo {
     key = {
       ig_intr_md.resubmit_flag : exact;
-      ig_md.found_hi : exact;
-      ig_md.found_lo : exact;
     }
     actions = {
       do_swap1_lo;
@@ -1900,14 +1898,12 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
       no_action;
     }
     default_action = no_action;
-    size = 8;
+    size = 2;
   }
 
   table swap1_hi {
     key = {
       ig_intr_md.resubmit_flag : exact;
-      ig_md.found_hi : exact;
-      ig_md.found_lo : exact;
     }
     actions = {
       do_swap1_hi;
@@ -1915,7 +1911,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
       no_action;
     }
     default_action = no_action;
-    size = 8;
+    size = 2;
   }
 
 
@@ -1949,7 +1945,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
       no_action;
     }
     default_action = no_action;
-    size = 8;
+    size = 512;
   }
 
   table swap2_hi {
@@ -1964,7 +1960,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
       no_action;
     }
     default_action = no_action;
-    size = 8;
+    size = 512;
   }
 
 
@@ -1984,6 +1980,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
   action lookup3_hi(){
     ig_md.found_hi = table_3_hi_lookup.execute(hash3.get({ig_md.remain2_hi, ig_md.remain2_lo}));
     ig_md.remain3_hi = hdr.ipv4.src_addr[31:16];
+
   }
 
   table swap3_lo {
@@ -1998,7 +1995,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
       no_action;
     }
     default_action = no_action;
-    size = 8;
+    size = 512;
   }
 
   table swap3_hi {
@@ -2013,7 +2010,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
       no_action;
     }
     default_action = no_action;
-    size = 8;
+    size = 512;
   }
 
   action do_swap4_lo() {
@@ -2021,7 +2018,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
   }
 
   action lookup4_lo(){
-    ig_md.found_lo = table_4_lo_lookup.execute(hash4.get({ig_md.remain3_hi, ig_md.remain3_lo}));
+    ig_md.found_lo =table_4_lo_lookup.execute(hash4.get({ig_md.remain3_hi, ig_md.remain3_lo}));
   }
 
   action do_swap4_hi() {
@@ -2044,7 +2041,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
       no_action;
     }
     default_action = no_action;
-    size = 8;
+    size = 512;
   }
 
   table swap4_hi {
@@ -2059,14 +2056,15 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
       no_action;
     }
     default_action = no_action;
-    size = 8;
+    size = 512;
   }
 
   action hit(PortId_t dst_port) {
     ig_intr_tm_md.ucast_egress_port = dst_port;
-    ig_md.found_hi = false;
-    ig_md.found_lo = false;
+    ig_md.found_hi = 0x0;
+    ig_md.found_lo = 0x0;
     ig_intr_dprsr_md.drop_ctl = 0x0;
+    ig_intr_dprsr_md.resubmit_type = 0;
   }
   action drop() { ig_intr_dprsr_md.drop_ctl = 0x1; }
 
@@ -2114,7 +2112,7 @@ control WaterfallIngressDeparser( packet_out pkt, inout header_t hdr, in waterfa
 
   apply {
     if (ig_intr_dprsr_md.digest_type == DIGEST) {
-      digest.pack({hdr.ipv4.src_addr});
+      digest.pack({ig_md.resubmit_md.remain});
     }
     if (ig_intr_dprsr_md.resubmit_type == DPRSR_RESUB) {
       resubmit.emit(ig_md.resubmit_md);
