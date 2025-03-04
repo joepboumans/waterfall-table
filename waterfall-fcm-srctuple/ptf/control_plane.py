@@ -259,7 +259,7 @@ class BfRt_interface():
             if self.hasFirstData and self.missedDigest >= 10:
                 self.isRunning = False
                 print("")
-            time.sleep(0.1)
+            time.sleep(0.5)
 
 
     def _get_FCM_counters(self):
