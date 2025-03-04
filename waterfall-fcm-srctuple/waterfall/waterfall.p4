@@ -14,7 +14,8 @@
 // Waterfall defines
 #define FLOW_ID_BIT_WIDTH 16 // SrcAddr / 2
 #define IDX_BIT_WIDTH 16
-#define WATERFALL_WIDTH 65535 // 2 ^ IDX_BIT_WIDTH - 1 = WATERFALL_WIDTH
+/*#define WATERFALL_WIDTH 65535 // 2 ^ IDX_BIT_WIDTH - 1 = WATERFALL_WIDTH*/
+#define WATERFALL_WIDTH 256 // 2 ^ IDX_BIT_WIDTH - 1 = WATERFALL_WIDTH
 
 const bit<8> RESUB = 3;
 const bit<3> DPRSR_RESUB = 3;
@@ -315,20 +316,20 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
 
   action do_swap1_lo() {
     ig_intr_dprsr_md.digest_type = DIGEST;
-    ig_md.remain1_lo = table_1_lo_swap.execute(hash1.get({hdr.ipv4.src_addr}));
+    ig_md.remain1_lo = table_1_lo_swap.execute(hash1.get({hdr.ipv4.src_addr})[7:0]);
   }
 
   action lookup1_lo(){
-    ig_md.found_lo = table_1_lo_lookup.execute(hash1.get({hdr.ipv4.src_addr}));
+    ig_md.found_lo = table_1_lo_lookup.execute(hash1.get({hdr.ipv4.src_addr})[7:0]);
     ig_md.remain1_lo = hdr.ipv4.src_addr[15:0];
   }
 
   action do_swap1_hi() {
-    ig_md.remain1_hi = table_1_hi_swap.execute(hash1.get({hdr.ipv4.src_addr}));
+    ig_md.remain1_hi = table_1_hi_swap.execute(hash1.get({hdr.ipv4.src_addr})[7:0]);
   }
 
   action lookup1_hi(){
-    ig_md.found_hi = table_1_hi_lookup.execute(hash1.get({hdr.ipv4.src_addr}));
+    ig_md.found_hi = table_1_hi_lookup.execute(hash1.get({hdr.ipv4.src_addr})[7:0]);
     ig_md.remain1_hi = hdr.ipv4.src_addr[31:16];
   }
 
@@ -364,20 +365,20 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
 
 
   action do_swap2_lo() {
-    ig_md.remain2_lo = table_2_lo_swap.execute(hash2.get({ig_md.remain1_hi, ig_md.remain1_lo}));
+    ig_md.remain2_lo = table_2_lo_swap.execute(hash2.get({ig_md.remain1_hi, ig_md.remain1_lo})[7:0]);
   }
 
   action lookup2_lo(){
-    ig_md.found_lo = table_2_lo_lookup.execute(hash2.get({ig_md.remain1_hi, ig_md.remain1_lo}));
+    ig_md.found_lo = table_2_lo_lookup.execute(hash2.get({ig_md.remain1_hi, ig_md.remain1_lo})[7:0]);
     ig_md.remain2_lo = hdr.ipv4.src_addr[15:0];
   }
 
   action do_swap2_hi() {
-    ig_md.remain2_hi = table_2_hi_swap.execute(hash2.get({ig_md.remain1_hi, ig_md.remain1_lo}));
+    ig_md.remain2_hi = table_2_hi_swap.execute(hash2.get({ig_md.remain1_hi, ig_md.remain1_lo})[7:0]);
   }
 
   action lookup2_hi(){
-    ig_md.found_hi = table_2_hi_lookup.execute(hash2.get({ig_md.remain1_hi, ig_md.remain1_lo}));
+    ig_md.found_hi = table_2_hi_lookup.execute(hash2.get({ig_md.remain1_hi, ig_md.remain1_lo})[7:0]);
     ig_md.remain2_hi = hdr.ipv4.src_addr[31:16];
   }
 
@@ -413,20 +414,20 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
 
 
   action do_swap3_lo() {
-    ig_md.remain3_lo = table_3_lo_swap.execute(hash3.get({ig_md.remain2_hi, ig_md.remain2_lo}));
+    ig_md.remain3_lo = table_3_lo_swap.execute(hash3.get({ig_md.remain2_hi, ig_md.remain2_lo})[7:0]);
   }
 
   action lookup3_lo(){
-    ig_md.found_lo = table_3_lo_lookup.execute(hash3.get({ig_md.remain2_hi, ig_md.remain2_lo}));
+    ig_md.found_lo = table_3_lo_lookup.execute(hash3.get({ig_md.remain2_hi, ig_md.remain2_lo})[7:0]);
     ig_md.remain3_lo = hdr.ipv4.src_addr[15:0];
   }
 
   action do_swap3_hi() {
-    ig_md.remain3_hi = table_3_hi_swap.execute(hash3.get({ig_md.remain2_hi, ig_md.remain2_lo}));
+    ig_md.remain3_hi = table_3_hi_swap.execute(hash3.get({ig_md.remain2_hi, ig_md.remain2_lo})[7:0]);
   }
 
   action lookup3_hi(){
-    ig_md.found_hi = table_3_hi_lookup.execute(hash3.get({ig_md.remain2_hi, ig_md.remain2_lo}));
+    ig_md.found_hi = table_3_hi_lookup.execute(hash3.get({ig_md.remain2_hi, ig_md.remain2_lo})[7:0]);
     ig_md.remain3_hi = hdr.ipv4.src_addr[31:16];
   }
 
@@ -461,11 +462,11 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
   }
 
   action do_swap4_lo() {
-    table_4_lo_swap.execute(hash4.get({ig_md.remain3_hi, ig_md.remain3_lo}));
+    table_4_lo_swap.execute(hash4.get({ig_md.remain3_hi, ig_md.remain3_lo})[7:0]);
   }
 
   action lookup4_lo(){
-    ig_md.found_lo = table_4_lo_lookup.execute(hash4.get({ig_md.remain3_hi, ig_md.remain3_lo}));
+    ig_md.found_lo = table_4_lo_lookup.execute(hash4.get({ig_md.remain3_hi, ig_md.remain3_lo})[7:0]);
   }
 
   action do_swap4_hi() {
@@ -473,7 +474,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
   }
 
   action lookup4_hi(){
-    ig_md.found_hi = table_4_hi_lookup.execute(hash4.get({ig_md.remain3_hi, ig_md.remain3_lo}));
+    ig_md.found_hi = table_4_hi_lookup.execute(hash4.get({ig_md.remain3_hi, ig_md.remain3_lo})[7:0]);
   }
 
   table swap4_lo {
