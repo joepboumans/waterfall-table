@@ -306,8 +306,8 @@ class BfRt_interface():
         prev_tuple_len = 0
 
         # Print every value of Waterfall
-        # for name, table in self.table_dict.items():
-        #     self.evaluateTable(table, name)
+        for name, table in self.table_dict.items():
+            self.evaluateTable(table, name)
 
         # Print all values of the found tuples in Waterfall
         # for tup in self.tuples:
