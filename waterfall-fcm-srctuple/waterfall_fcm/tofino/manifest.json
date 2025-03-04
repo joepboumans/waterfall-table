@@ -1,11 +1,11 @@
 {
   "schema_version": "2.0.6",
   "target": "tofino",
-  "build_date": "Tue Mar  4 17:52:23 2025",
+  "build_date": "Tue Mar  4 18:02:15 2025",
   "compiler_version": "9.11.0 (fdd358c)",
   "compilation_succeeded": true,
-  "compilation_time": "6.223243474960327",
-  "run_id": "7aba71ad623d4344",
+  "compilation_time": "5.6333417892456055",
+  "run_id": "94853f3c1e9740cb",
   "architecture": "tna",
   "architectureConfig": {
     "name": "64q",
@@ -65,15 +65,15 @@
             ],
             "graphs": [
               {
-                "path": "pipe/graphs/FcmEgress.dot",
-                "gress": "egress",
-                "graph_type": "control",
-                "graph_format": ".dot"
-              },
-              {
                 "path": "pipe/graphs/program_graph.dot",
                 "gress": "ingress",
                 "graph_type": "table",
+                "graph_format": ".dot"
+              },
+              {
+                "path": "pipe/graphs/FcmEgress.dot",
+                "gress": "egress",
+                "graph_type": "control",
                 "graph_format": ".dot"
               },
               {
@@ -101,10 +101,10 @@
                 "graph_format": ".dot"
               },
               {
-                "path": "pipe/graphs/dep.json",
+                "path": "pipe/graphs/placement_graph.dot",
                 "gress": "ingress",
                 "graph_type": "table",
-                "graph_format": ".json"
+                "graph_format": ".dot"
               },
               {
                 "path": "pipe/graphs/power_graph.dot",
@@ -113,10 +113,10 @@
                 "graph_format": ".dot"
               },
               {
-                "path": "pipe/graphs/placement_graph.dot",
+                "path": "pipe/graphs/dep.json",
                 "gress": "ingress",
                 "graph_type": "table",
-                "graph_format": ".dot"
+                "graph_format": ".json"
               }
             ],
             "logs": [
