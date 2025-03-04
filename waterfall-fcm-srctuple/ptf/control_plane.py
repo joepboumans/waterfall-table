@@ -334,7 +334,8 @@ class BfRt_interface():
         for tup in in_tuples:
             if not tup in self.tuples:
                 false_neg += 1
-                print(".".join([str(x) for x in tup]), end=", ")
+                print(".".join([str(x) for x in tup]))
+                print(tup.hex())
                 for key, data in self.table_dict.items():
                     self.evalutateEntryInTable(key, tup)
         print("")
