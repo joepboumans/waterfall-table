@@ -38,6 +38,7 @@ struct waterfall_metadata_t {
   port_metadata_t port_metadata;
   resubmit_md_t resubmit_md;
   bool found_hi;
+  bool found_tmp;
   bool found_lo;
   bit<IDX_BIT_WIDTH> idx1;
   bit<IDX_BIT_WIDTH> idx2;
@@ -376,7 +377,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
   table swap2_lo {
     key = {
       ig_intr_md.resubmit_flag : exact;
-      ig_md.found_hi : exact;
+      ig_md.found_tmp : exact;
       ig_md.found_lo : exact;
     }
     actions = {
@@ -425,7 +426,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
   table swap3_lo {
     key = {
       ig_intr_md.resubmit_flag : exact;
-      ig_md.found_hi : exact;
+      ig_md.found_tmp : exact;
       ig_md.found_lo : exact;
     }
     actions = {
@@ -471,7 +472,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
   table swap4_lo {
     key = {
       ig_intr_md.resubmit_flag : exact;
-      ig_md.found_hi : exact;
+      ig_md.found_tmp : exact;
       ig_md.found_lo : exact;
     }
     actions = {
@@ -527,12 +528,15 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     swap1_hi.apply();
     swap1_lo.apply();
 
+    ig_md.found_tmp = ig_md.found_hi;
     swap2_hi.apply();
     swap2_lo.apply();
 
+    ig_md.found_tmp = ig_md.found_hi;
     swap3_hi.apply();
     swap3_lo.apply();
 
+    ig_md.found_tmp = ig_md.found_hi;
     swap4_hi.apply();
     swap4_lo.apply();
 
