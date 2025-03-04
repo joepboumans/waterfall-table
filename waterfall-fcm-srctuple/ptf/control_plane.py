@@ -192,7 +192,7 @@ class BfRt_interface():
         data_dict = data.to_dict()
         entry_val = sum(data_dict[f"WaterfallIngress.{name}.f1"])
         if entry_val > 0:
-            print(f"{name} : {entry_val.to_bytes(2,'big').hex()}")
+            print(f"{name}| {idx} : {entry_val.to_bytes(2,'big').hex()}")
 
     def evaluateTableFromDict(self, tables, name):
         table = tables[name]
