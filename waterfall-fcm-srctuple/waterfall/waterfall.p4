@@ -13,7 +13,7 @@
 
 // Waterfall defines
 #define FLOW_ID_BIT_WIDTH 16 // SrcAddr / 2
-#define IDX_BIT_WIDTH 16
+#define IDX_BIT_WIDTH 8
 /*#define WATERFALL_WIDTH 65535 // 2 ^ IDX_BIT_WIDTH - 1 = WATERFALL_WIDTH*/
 #define WATERFALL_WIDTH 256 // 2 ^ IDX_BIT_WIDTH - 1 = WATERFALL_WIDTH
 
