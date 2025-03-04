@@ -185,14 +185,14 @@ class BfRt_interface():
 
         table = self.table_dict[name]
         idx = crc32_sf(flowId, init_val) % WATERFALL_WIDTH 
-        print(f"idx of {flowId.hex()} : {idx}")
+        # print(f"idx of {flowId.hex()} : {idx}")
         key = table.make_key([gc.KeyTuple('$REGISTER_INDEX', idx)])
         resp_table = table.entry_get(self.dev_tgt, [key], {"from_hw" : True})
         data, _ = next(resp_table)
         data_dict = data.to_dict()
         entry_val = sum(data_dict[f"WaterfallIngress.{name}.f1"])
-        # if entry_val > 0:
-        print(f"{name} : {entry_val.to_bytes(2,'big').hex()}")
+        if entry_val > 0:
+            print(f"{name} : {entry_val.to_bytes(2,'big').hex()}")
 
     def evaluateTableFromDict(self, tables, name):
         table = tables[name]
