@@ -306,13 +306,13 @@ class BfRt_interface():
         prev_tuple_len = 0
 
         # Print every value of Waterfall
-        for name, table in self.table_dict.items():
-            self.evaluateTable(table, name)
+        # for name, table in self.table_dict.items():
+        #     self.evaluateTable(table, name)
 
         # Print all values of the found tuples in Waterfall
-        for key, data in self.table_dict.items():
-            for tup in self.tuples:
-                print(tup.hex())
+        for tup in self.tuples:
+            print(tup.hex())
+            for key, data in self.table_dict.items():
                 self.evalutateEntryInTable(key, tup)
 
 
@@ -335,6 +335,8 @@ class BfRt_interface():
             if not tup in self.tuples:
                 false_neg += 1
                 print(".".join([str(x) for x in tup]), end=", ")
+                for key, data in self.table_dict.items():
+                    self.evalutateEntryInTable(key, tup)
         print("")
 
 
