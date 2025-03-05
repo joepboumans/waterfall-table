@@ -107,7 +107,8 @@ swap4_lo.add_with_do_swap4_lo(resubmit_flag=0x1)
 
 for i in range(0, 5):
     for j in range(0, 5):
-        if i == j:
+
+        if i > 0 and j > 0 and i == j:
             resub.add_with_no_action(resubmit_flag=0x0, found_hi=i, found_lo=j)
             swap2_hi.add_with_no_action(resubmit_flag=0x0, found_hi=i, found_lo=j)
             swap2_lo.add_with_no_action(resubmit_flag=0x0, found_hi=i, found_lo=j)
