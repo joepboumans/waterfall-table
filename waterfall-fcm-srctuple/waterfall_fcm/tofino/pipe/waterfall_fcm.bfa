@@ -1,10 +1,11 @@
 version:
   version: 1.0.1
-  run_id: "94853f3c1e9740cb"
+  run_id: "d1c5297a5c514ec9"
   target: Tofino
 phv ingress:
-  ig_intr_md.resubmit_flag: {  stage 0..8: H1(15) } 
-  ig_intr_md.ingress_port: {  stage 0: H1(0..8) } 
+  ig_intr_md.resubmit_flag: {  stage 0..8: B7(7) } 
+  ig_intr_md.ingress_port.0-7: {  stage 0: H1(0..7) } 
+  ig_intr_md.ingress_port.8-8: {  stage 0: B7(0) } 
   hdr.ethernet.dst_addr.0-7: TB4
   hdr.ethernet.dst_addr.8-15: TB5
   hdr.ethernet.dst_addr.16-23: TB6
@@ -14,45 +15,47 @@ phv ingress:
   hdr.ethernet.src_addr.16-31: TH11
   hdr.ethernet.src_addr.32-47: TH13
   hdr.ethernet.ether_type: TH12
-  hdr.ipv4.version: TW5(28..31)
-  hdr.ipv4.ihl: TW5(24..27)
-  hdr.ipv4.diffserv: TW5(16..23)
-  hdr.ipv4.total_len: TW5(0..15)
+  hdr.ipv4.version: TW4(28..31)
+  hdr.ipv4.ihl: TW4(24..27)
+  hdr.ipv4.diffserv: TW4(16..23)
+  hdr.ipv4.total_len: TW4(0..15)
   hdr.ipv4.identification: TW7(16..31)
   hdr.ipv4.flags: TW7(13..15)
   hdr.ipv4.frag_offset: TW7(0..12)
   hdr.ipv4.ttl: TW6(24..31)
   hdr.ipv4.protocol: TW6(16..23)
   hdr.ipv4.hdr_checksum: TW6(0..15)
-  hdr.ipv4.src_addr: W0
-  hdr.ipv4.dst_addr: TW10
+  hdr.ipv4.src_addr.0-15: H2
+  hdr.ipv4.src_addr.16-31: H5
+  hdr.ipv4.dst_addr: TW8
   hdr.udp.src_port: TH7
   hdr.udp.dst_port: TH6
-  hdr.udp.hdr_length: TW4(16..31)
-  hdr.udp.checksum: TW4(0..15)
+  hdr.udp.hdr_length: TW5(16..31)
+  hdr.udp.checksum: TW5(0..15)
   hdr.tcp.src_port: TH9
   hdr.tcp.dst_port: TH8
-  hdr.tcp.seq_no: TW9
-  hdr.tcp.ack_no: TW8
-  hdr.tcp.data_offset: TW4(28..31)
-  hdr.tcp.res: TW4(24..27)
-  hdr.tcp.flags: TW4(16..23)
-  hdr.tcp.window: TW4(0..15)
+  hdr.tcp.seq_no: TW10
+  hdr.tcp.ack_no: TW9
+  hdr.tcp.data_offset: TW5(28..31)
+  hdr.tcp.res: TW5(24..27)
+  hdr.tcp.flags: TW5(16..23)
+  hdr.tcp.window: TW5(0..15)
   hdr.tcp.checksum: TH7
   hdr.tcp.urgent_ptr: TH6
   ig_md.resubmit_md.type: B5
-  ig_md.resubmit_md.remain: W3
+  ig_md.resubmit_md.remain_hi: H6
+  ig_md.resubmit_md.remain_lo: H3
   ig_intr_md_for_tm.ucast_egress_port: {  stage 1..12: H0(0..8) } 
-  ig_md.found_hi: {  stage 1..8: B4(3..6) } 
-  ig_md.found_lo: {  stage 1..8: B6(4..7) } 
-  ig_md.remain1_hi: {  stage 2..3: W4(0..15) } 
-  ig_md.remain1_lo: {  stage 2..3: W1(0..15) } 
-  ig_md.remain2_hi: {  stage 3..5: W5(0..15) } 
-  ig_md.remain2_lo: {  stage 4..5: W2(0..15) } 
-  ig_md.remain3_hi: {  stage 5..7: W4(0..15) } 
-  ig_md.remain3_lo: {  stage 6..7: W1(0..15) } 
+  ig_md.found_hi: {  stage 1..8: B7(1..4) } 
+  ig_md.found_lo: {  stage 1..8: B4(3..6) } 
+  ig_md.remain1_hi: {  stage 2..3: H7 } 
+  ig_md.remain1_lo: {  stage 2..3: H1 } 
+  ig_md.remain2_hi: {  stage 4..5: H8 } 
+  ig_md.remain2_lo: {  stage 3..5: H4 } 
+  ig_md.remain3_hi: {  stage 5..7: H7 } 
+  ig_md.remain3_lo: {  stage 6..7: H1 } 
   ig_intr_md_for_dprsr.drop_ctl: {  stage 1..12: B4(0..2) } 
-  ig_intr_md_for_dprsr.digest_type: {  stage 2..12: B1(0..2) } 
+  ig_intr_md_for_dprsr.digest_type: {  stage 9..12: B1(0..2) } 
   ig_intr_md_for_dprsr.resubmit_type: {  stage 1..12: B2(0..2) } 
   ig_intr_md_for_dprsr.mirror_type: {  stage 12: B3(0..2) } 
   $tmp2: {  stage 12: H1(0..9) } 
@@ -69,42 +72,47 @@ phv ingress:
     - { name : $tmp3, live_start : deparser, live_end : deparser, mutually_exclusive_with: [  ] }
     - { name : $tmp3, live_start : deparser, live_end : deparser, mutually_exclusive_with: [  ] }
     B1:
-    - { name : ig_intr_md_for_dprsr.digest_type, live_start : 2, live_end : deparser, mutually_exclusive_with: [  ] }
+    - { name : ig_intr_md_for_dprsr.digest_type, live_start : 9, live_end : deparser, mutually_exclusive_with: [  ] }
     B2:
     - { name : ig_intr_md_for_dprsr.resubmit_type, live_start : 1, live_end : deparser, mutually_exclusive_with: [  ] }
     B3:
     - { name : ig_intr_md_for_dprsr.mirror_type, live_start : deparser, live_end : deparser, mutually_exclusive_with: [  ] }
     B4:
-    - { name : ig_md.found_hi, live_start : 1, live_end : 8, mutually_exclusive_with: [  ] }
+    - { name : ig_md.found_lo, live_start : 1, live_end : 8, mutually_exclusive_with: [  ] }
     - { name : ig_intr_md_for_dprsr.drop_ctl, live_start : 1, live_end : deparser, mutually_exclusive_with: [  ] }
     B5:
     - { name : ig_md.resubmit_md.type, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
     B6:
-    - { name : ig_md.found_lo, live_start : 1, live_end : 8, mutually_exclusive_with: [  ] }
     - { name : hdr.ethernet.$valid, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
     - { name : hdr.ipv4.$valid, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
     - { name : hdr.udp.$valid, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
     - { name : hdr.tcp.$valid, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    B7:
+    - { name : ig_intr_md.resubmit_flag, live_start : parser, live_end : 8, mutually_exclusive_with: [  ] }
+    - { name : ig_intr_md.ingress_port, live_start : parser, live_end : 0, mutually_exclusive_with: [  ] }
+    - { name : ig_md.found_hi, live_start : 1, live_end : 8, mutually_exclusive_with: [  ] }
     H0:
     - { name : ig_intr_md_for_tm.ucast_egress_port, live_start : 1, live_end : deparser, mutually_exclusive_with: [  ] }
     H1:
-    - { name : ig_intr_md.resubmit_flag, live_start : parser, live_end : 8, mutually_exclusive_with: [  ] }
     - { name : ig_intr_md.ingress_port, live_start : parser, live_end : 0, mutually_exclusive_with: [  ] }
-    - { name : $tmp2, live_start : deparser, live_end : deparser, mutually_exclusive_with: [  ] }
-    W0:
-    - { name : hdr.ipv4.src_addr, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
-    W1:
     - { name : ig_md.remain1_lo, live_start : 2, live_end : 3, mutually_exclusive_with: [  ] }
     - { name : ig_md.remain3_lo, live_start : 6, live_end : 7, mutually_exclusive_with: [  ] }
-    W2:
-    - { name : ig_md.remain2_lo, live_start : 4, live_end : 5, mutually_exclusive_with: [  ] }
-    W3:
-    - { name : ig_md.resubmit_md.remain, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
-    W4:
+    - { name : $tmp2, live_start : deparser, live_end : deparser, mutually_exclusive_with: [  ] }
+    H2:
+    - { name : hdr.ipv4.src_addr, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    H3:
+    - { name : ig_md.resubmit_md.remain_lo, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    H4:
+    - { name : ig_md.remain2_lo, live_start : 3, live_end : 5, mutually_exclusive_with: [  ] }
+    H5:
+    - { name : hdr.ipv4.src_addr, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    H6:
+    - { name : ig_md.resubmit_md.remain_hi, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    H7:
     - { name : ig_md.remain1_hi, live_start : 2, live_end : 3, mutually_exclusive_with: [  ] }
     - { name : ig_md.remain3_hi, live_start : 5, live_end : 7, mutually_exclusive_with: [  ] }
-    W5:
-    - { name : ig_md.remain2_hi, live_start : 3, live_end : 5, mutually_exclusive_with: [  ] }
+    H8:
+    - { name : ig_md.remain2_hi, live_start : 4, live_end : 5, mutually_exclusive_with: [  ] }
 phv egress:
   hdr.min_parse_depth_padding_0$0.packet_payload.0-31: TW3
   hdr.min_parse_depth_padding_0$0.packet_payload.32-47: TH0
@@ -200,7 +208,7 @@ phv egress:
     - { name : eg_md.hash_meta_d2, live_start : 1, live_end : 5, mutually_exclusive_with: [  ] }
 parser ingress:
   start: $entry_point
-  init_zero: [ B4, B6, W4, W1, W5, W2, B3, B0, B0 ]
+  init_zero: [ B4, H7, H8, H4, B3, B0, B6, B0 ]
   bitwise_or: [ B6 ]
   hdr_len_adj: 16
   states:
@@ -212,16 +220,18 @@ parser ingress:
     start:
       match: [ byte1 ]
       0b0*******:
-        0..1: H1
-            # - bit[0] -> H1 bit[15]: ingress::ig_intr_md.resubmit_flag
-            # - bit[7..15] -> H1 bit[8..0]: ingress::ig_intr_md.ingress_port
+        0: B7
+            # - bit[0] -> B7 bit[7]: ingress::ig_intr_md.resubmit_flag
+            # - bit[7] -> B7 bit[0]: ingress::ig_intr_md.ingress_port[8:8].8-8
+        0..1: H1  # bit[8..15] -> H1 bit[7..0]: ingress::ig_intr_md.ingress_port[7:0].0-7
         shift: 16
         buf_req: 16
         next: parse_ethernet
       0b1*******:
-        0..1: H1
-            # - bit[0] -> H1 bit[15]: ingress::ig_intr_md.resubmit_flag
-            # - bit[7..15] -> H1 bit[8..0]: ingress::ig_intr_md.ingress_port
+        0: B7
+            # - bit[0] -> B7 bit[7]: ingress::ig_intr_md.resubmit_flag
+            # - bit[7] -> B7 bit[0]: ingress::ig_intr_md.ingress_port[8:8].8-8
+        0..1: H1  # bit[8..15] -> H1 bit[7..0]: ingress::ig_intr_md.ingress_port[7:0].0-7
         shift: 8
         buf_req: 8
         next: parse_resubmit
@@ -244,8 +254,9 @@ parser ingress:
       0x0800:
         0..1: TH12  # ingress::hdr.ethernet.ether_type
         B6: 1  # value 1 -> B6 bit[0]: ingress::hdr.ethernet.$valid
+        load: { byte1 : 11 }
         shift: 2
-        buf_req: 2
+        buf_req: 12
         next: parse_ipv4
       0x****:
         0..1: TH12  # ingress::hdr.ethernet.ether_type
@@ -254,12 +265,13 @@ parser ingress:
         buf_req: 2
         next: end
     parse_ipv4:
-      *:
-        0..3: TW5
-            # - bit[0..3] -> TW5 bit[31..28]: ingress::hdr.ipv4.version
-            # - bit[4..7] -> TW5 bit[27..24]: ingress::hdr.ipv4.ihl
-            # - bit[8..15] -> TW5 bit[23..16]: ingress::hdr.ipv4.diffserv
-            # - bit[16..31] -> TW5 bit[15..0]: ingress::hdr.ipv4.total_len
+      match: [ byte1 ]
+      0x11:
+        0..3: TW4
+            # - bit[0..3] -> TW4 bit[31..28]: ingress::hdr.ipv4.version
+            # - bit[4..7] -> TW4 bit[27..24]: ingress::hdr.ipv4.ihl
+            # - bit[8..15] -> TW4 bit[23..16]: ingress::hdr.ipv4.diffserv
+            # - bit[16..31] -> TW4 bit[15..0]: ingress::hdr.ipv4.total_len
         4..7: TW7
             # - bit[32..47] -> TW7 bit[31..16]: ingress::hdr.ipv4.identification
             # - bit[48..50] -> TW7 bit[15..13]: ingress::hdr.ipv4.flags
@@ -268,36 +280,62 @@ parser ingress:
             # - bit[64..71] -> TW6 bit[31..24]: ingress::hdr.ipv4.ttl
             # - bit[72..79] -> TW6 bit[23..16]: ingress::hdr.ipv4.protocol
             # - bit[80..95] -> TW6 bit[15..0]: ingress::hdr.ipv4.hdr_checksum
-        12..15: W0  # ingress::hdr.ipv4.src_addr
+        12..13: H5  # ingress::hdr.ipv4.src_addr[31:16].16-31
+        14..15: H2  # ingress::hdr.ipv4.src_addr[15:0].0-15
+        16..19: TW8  # ingress::hdr.ipv4.dst_addr
         B6: 2  # value 1 -> B6 bit[1]: ingress::hdr.ipv4.$valid
-        load: { byte1 : 9 }
-        shift: 16
-        buf_req: 16
-        next: parse_ipv4.$split_0
-    parse_ipv4.$split_0:
-      match: [ byte1 ]
-      0x11:
-        0..3: TW10  # ingress::hdr.ipv4.dst_addr
-        shift: 4
-        buf_req: 4
+        shift: 20
+        buf_req: 20
         next: parse_udp
       0x06:
-        0..3: TW10  # ingress::hdr.ipv4.dst_addr
-        shift: 4
-        buf_req: 4
+        0..3: TW4
+            # - bit[0..3] -> TW4 bit[31..28]: ingress::hdr.ipv4.version
+            # - bit[4..7] -> TW4 bit[27..24]: ingress::hdr.ipv4.ihl
+            # - bit[8..15] -> TW4 bit[23..16]: ingress::hdr.ipv4.diffserv
+            # - bit[16..31] -> TW4 bit[15..0]: ingress::hdr.ipv4.total_len
+        4..7: TW7
+            # - bit[32..47] -> TW7 bit[31..16]: ingress::hdr.ipv4.identification
+            # - bit[48..50] -> TW7 bit[15..13]: ingress::hdr.ipv4.flags
+            # - bit[51..63] -> TW7 bit[12..0]: ingress::hdr.ipv4.frag_offset
+        8..11: TW6
+            # - bit[64..71] -> TW6 bit[31..24]: ingress::hdr.ipv4.ttl
+            # - bit[72..79] -> TW6 bit[23..16]: ingress::hdr.ipv4.protocol
+            # - bit[80..95] -> TW6 bit[15..0]: ingress::hdr.ipv4.hdr_checksum
+        12..13: H5  # ingress::hdr.ipv4.src_addr[31:16].16-31
+        14..15: H2  # ingress::hdr.ipv4.src_addr[15:0].0-15
+        16..19: TW8  # ingress::hdr.ipv4.dst_addr
+        B6: 2  # value 1 -> B6 bit[1]: ingress::hdr.ipv4.$valid
+        shift: 20
+        buf_req: 20
         next: parse_tcp
       0x**:
-        0..3: TW10  # ingress::hdr.ipv4.dst_addr
-        shift: 4
-        buf_req: 4
+        0..3: TW4
+            # - bit[0..3] -> TW4 bit[31..28]: ingress::hdr.ipv4.version
+            # - bit[4..7] -> TW4 bit[27..24]: ingress::hdr.ipv4.ihl
+            # - bit[8..15] -> TW4 bit[23..16]: ingress::hdr.ipv4.diffserv
+            # - bit[16..31] -> TW4 bit[15..0]: ingress::hdr.ipv4.total_len
+        4..7: TW7
+            # - bit[32..47] -> TW7 bit[31..16]: ingress::hdr.ipv4.identification
+            # - bit[48..50] -> TW7 bit[15..13]: ingress::hdr.ipv4.flags
+            # - bit[51..63] -> TW7 bit[12..0]: ingress::hdr.ipv4.frag_offset
+        8..11: TW6
+            # - bit[64..71] -> TW6 bit[31..24]: ingress::hdr.ipv4.ttl
+            # - bit[72..79] -> TW6 bit[23..16]: ingress::hdr.ipv4.protocol
+            # - bit[80..95] -> TW6 bit[15..0]: ingress::hdr.ipv4.hdr_checksum
+        12..13: H5  # ingress::hdr.ipv4.src_addr[31:16].16-31
+        14..15: H2  # ingress::hdr.ipv4.src_addr[15:0].0-15
+        16..19: TW8  # ingress::hdr.ipv4.dst_addr
+        B6: 2  # value 1 -> B6 bit[1]: ingress::hdr.ipv4.$valid
+        shift: 20
+        buf_req: 20
         next: end
     parse_udp:
       *:
         0..1: TH7  # ingress::hdr.udp.src_port
         2..3: TH6  # ingress::hdr.udp.dst_port
-        4..7: TW4
-            # - bit[32..47] -> TW4 bit[31..16]: ingress::hdr.udp.hdr_length
-            # - bit[48..63] -> TW4 bit[15..0]: ingress::hdr.udp.checksum
+        4..7: TW5
+            # - bit[32..47] -> TW5 bit[31..16]: ingress::hdr.udp.hdr_length
+            # - bit[48..63] -> TW5 bit[15..0]: ingress::hdr.udp.checksum
         B6: 4  # value 1 -> B6 bit[2]: ingress::hdr.udp.$valid
         shift: 8
         buf_req: 8
@@ -306,13 +344,13 @@ parser ingress:
       *:
         0..1: TH9  # ingress::hdr.tcp.src_port
         2..3: TH8  # ingress::hdr.tcp.dst_port
-        4..7: TW9  # ingress::hdr.tcp.seq_no
-        8..11: TW8  # ingress::hdr.tcp.ack_no
-        12..15: TW4
-            # - bit[96..99] -> TW4 bit[31..28]: ingress::hdr.tcp.data_offset
-            # - bit[100..103] -> TW4 bit[27..24]: ingress::hdr.tcp.res
-            # - bit[104..111] -> TW4 bit[23..16]: ingress::hdr.tcp.flags
-            # - bit[112..127] -> TW4 bit[15..0]: ingress::hdr.tcp.window
+        4..7: TW10  # ingress::hdr.tcp.seq_no
+        8..11: TW9  # ingress::hdr.tcp.ack_no
+        12..15: TW5
+            # - bit[96..99] -> TW5 bit[31..28]: ingress::hdr.tcp.data_offset
+            # - bit[100..103] -> TW5 bit[27..24]: ingress::hdr.tcp.res
+            # - bit[104..111] -> TW5 bit[23..16]: ingress::hdr.tcp.flags
+            # - bit[112..127] -> TW5 bit[15..0]: ingress::hdr.tcp.window
         16..17: TH7  # ingress::hdr.tcp.checksum
         18..19: TH6  # ingress::hdr.tcp.urgent_ptr
         B6: 8  # value 1 -> B6 bit[3]: ingress::hdr.tcp.$valid
@@ -322,7 +360,8 @@ parser ingress:
     parse_resubmit:
       *:
         0: B5  # ingress::ig_md.resubmit_md.type
-        1..4: W3  # ingress::ig_md.resubmit_md.remain
+        1..2: H6  # ingress::ig_md.resubmit_md.remain_hi
+        3..4: H3  # ingress::ig_md.resubmit_md.remain_lo
         shift: 8
         buf_req: 8
         next: parse_ethernet
@@ -337,7 +376,7 @@ deparser ingress:
     TH11: B6(0)  # ingress::hdr.ethernet.src_addr.16-31 if ingress::hdr.ethernet.$valid
     TH10: B6(0)  # ingress::hdr.ethernet.src_addr.0-15 if ingress::hdr.ethernet.$valid
     TH12: B6(0)  # ingress::hdr.ethernet.ether_type if ingress::hdr.ethernet.$valid
-    TW5: B6(1)
+    TW4: B6(1)
         # - bit[31..28]: ingress::hdr.ipv4.version if ingress::hdr.ipv4.$valid
         # - bit[27..24]: ingress::hdr.ipv4.ihl if ingress::hdr.ipv4.$valid
         # - bit[23..16]: ingress::hdr.ipv4.diffserv if ingress::hdr.ipv4.$valid
@@ -350,13 +389,14 @@ deparser ingress:
         # - bit[31..24]: ingress::hdr.ipv4.ttl if ingress::hdr.ipv4.$valid
         # - bit[23..16]: ingress::hdr.ipv4.protocol if ingress::hdr.ipv4.$valid
         # - bit[15..0]: ingress::hdr.ipv4.hdr_checksum if ingress::hdr.ipv4.$valid
-    W0: B6(1)  # ingress::hdr.ipv4.src_addr if ingress::hdr.ipv4.$valid
-    TW10: B6(1)  # ingress::hdr.ipv4.dst_addr if ingress::hdr.ipv4.$valid
+    H5: B6(1)  # ingress::hdr.ipv4.src_addr.16-31 if ingress::hdr.ipv4.$valid
+    H2: B6(1)  # ingress::hdr.ipv4.src_addr.0-15 if ingress::hdr.ipv4.$valid
+    TW8: B6(1)  # ingress::hdr.ipv4.dst_addr if ingress::hdr.ipv4.$valid
     TH9: B6(3)  # ingress::hdr.tcp.src_port if ingress::hdr.tcp.$valid
     TH8: B6(3)  # ingress::hdr.tcp.dst_port if ingress::hdr.tcp.$valid
-    TW9: B6(3)  # ingress::hdr.tcp.seq_no if ingress::hdr.tcp.$valid
-    TW8: B6(3)  # ingress::hdr.tcp.ack_no if ingress::hdr.tcp.$valid
-    TW4: B6(3)
+    TW10: B6(3)  # ingress::hdr.tcp.seq_no if ingress::hdr.tcp.$valid
+    TW9: B6(3)  # ingress::hdr.tcp.ack_no if ingress::hdr.tcp.$valid
+    TW5: B6(3)
         # - bit[31..28]: ingress::hdr.tcp.data_offset if ingress::hdr.tcp.$valid
         # - bit[27..24]: ingress::hdr.tcp.res if ingress::hdr.tcp.$valid
         # - bit[23..16]: ingress::hdr.tcp.flags if ingress::hdr.tcp.$valid
@@ -365,7 +405,7 @@ deparser ingress:
     TH6: B6(3)  # ingress::hdr.tcp.urgent_ptr if ingress::hdr.tcp.$valid
     TH7: B6(2)  # ingress::hdr.udp.src_port if ingress::hdr.udp.$valid
     TH6: B6(2)  # ingress::hdr.udp.dst_port if ingress::hdr.udp.$valid
-    TW4: B6(2)
+    TW5: B6(2)
         # - bit[31..16]: ingress::hdr.udp.hdr_length if ingress::hdr.udp.$valid
         # - bit[15..0]: ingress::hdr.udp.checksum if ingress::hdr.udp.$valid
   egress_unicast_port: H0(0..8)  # bit[8..0]: ingress::ig_intr_md_for_tm.ucast_egress_port
@@ -374,10 +414,12 @@ deparser ingress:
     select: B1(0..2)  # bit[2..0]: ingress::ig_intr_md_for_dprsr.digest_type
     5:
       - B1(0..2)  # bit[2..0]: ingress::ig_intr_md_for_dprsr.digest_type
-      - W3  # ingress::ig_md.resubmit_md.remain
+      - H5  # ingress::hdr.ipv4.src_addr.16-31
+      - H2  # ingress::hdr.ipv4.src_addr.0-15
     context_json:
       5:
-        - [ ig_md.resubmit_md.remain, 1, 32, 7, 0]
+        - [ hdr.ipv4.src_addr, 1, 16, 7, 16]
+        - [ hdr.ipv4.src_addr, 3, 16, 7, 0]
       name: [ WaterfallIngressDeparser.digest ]
   mirror:
     select: B3(0..2)  # bit[2..0]: ingress::ig_intr_md_for_dprsr.mirror_type
@@ -387,7 +429,8 @@ deparser ingress:
     select: B2(0..2)  # bit[2..0]: ingress::ig_intr_md_for_dprsr.resubmit_type
     3:
       - B5  # ingress::ig_md.resubmit_md.type
-      - W3  # ingress::ig_md.resubmit_md.remain
+      - H6  # ingress::ig_md.resubmit_md.remain_hi
+      - H3  # ingress::ig_md.resubmit_md.remain_lo
       - B0  # ingress::$tmp3.16-23
       - B0  # ingress::$tmp3.8-15
       - B0  # ingress::$tmp3.0-7
@@ -708,10 +751,10 @@ stage 0 ingress:
     ways:
       - { group: 0, index: 0..9, select: 40..51 & 0x0, rams: [[7, 2]] }
     input_xbar:
-      exact group 0: { 0: ig_intr_md.ingress_port }
+      exact group 0: { 0: ig_intr_md.ingress_port.0-7, 8: ig_intr_md.ingress_port.8-8 }
       hash 0:
-        0..7: ig_intr_md.ingress_port(0..7)
-        8: ig_intr_md.ingress_port(8)
+        0..7: ig_intr_md.ingress_port.0-7
+        8: ig_intr_md.ingress_port.8-8
       hash group 0:
         table: [0]
         seed: 0x0
@@ -748,9 +791,9 @@ stage 0 ingress:
       - {  }
     default_action: WaterfallIngress.drop
 stage 1 ingress:
-  dependency: action
+  dependency: match
   exact_match swap1_lo_0 0:
-    p4: { name: WaterfallIngress.swap1_lo, size: 2 }
+    p4: { name: WaterfallIngress.swap1_lo, size: 512 }
     p4_param_order: 
       ig_intr_md.resubmit_flag: { type: exact, size: 1, full_size: 1 }
     row: 7
@@ -763,25 +806,25 @@ stage 1 ingress:
     ways:
       - { group: 0, index: 0..9, select: 40..51 & 0x0, rams: [[7, 2]] }
     hash_dist:
-      0: { hash: 2, mask: 0xffff, shift: 4 }
+      0: { hash: 1, mask: 0xffff, shift: 4 }
     input_xbar:
-      exact group 0: { 15: ig_intr_md.resubmit_flag }
+      exact group 0: { 7: ig_intr_md.resubmit_flag }
       hash 0:
         0: ig_intr_md.resubmit_flag
       hash group 0:
         table: [0]
         seed: 0x0
-      exact group 1: { 0: hdr.ipv4.src_addr }
-      hash 2:
-        0..15: slice(stripe(crc_rev(0x82608edb, 0xffffffff, 0xffffffff, 32, { 0: hdr.ipv4.src_addr }, { })), 0..15)
-      hash group 2:
-        table: [2]
+      exact group 0: { 80: hdr.ipv4.src_addr.0-15, 96: hdr.ipv4.src_addr.16-31 }
+      hash 1:
+        0..15: slice(stripe(crc_rev(0x82608edb, 0xffffffff, 0xffffffff, 32, { 0: hdr.ipv4.src_addr.0-15, 16: hdr.ipv4.src_addr.16-31 }, { })), 0..15)
+      hash group 1:
+        table: [1]
         seed: 0xdf1c
     format: { action(0): 0..1, version(0): 112..115, meter_addr(0): 4..19, meter_pfe(0): 20..20, meter_type(0): 21..23, action(1): 2..3, version(1): 116..119, meter_addr(1): 24..39, meter_pfe(1): 40..40, meter_type(1): 41..43 }
     match_group_map: [ [ 0, 1 ] ]
     hit: [  swap1_hi_0 ]
     miss:  swap1_hi_0
-    action_bus: { 0 : swap1_lo_0$salu.WaterfallIngress.table_1_lo(0..7), 96..99 : swap1_lo_0$salu.WaterfallIngress.table_1_lo(0..31) }
+    action_bus: { 0 : swap1_lo_0$salu.WaterfallIngress.table_1_lo(0..7), 32..33 : swap1_lo_0$salu.WaterfallIngress.table_1_lo(0..15) }
     stateful: swap1_lo_0$salu.WaterfallIngress.table_1_lo(hash_dist 0, meter_pfe, meter_type)
     instruction: swap1_lo_0(action, $DEFAULT)
     actions:
@@ -790,16 +833,15 @@ stage 1 ingress:
       - default_action: { allowed: true }
       - handle: 0x20000007
       - next_table: 0
-      - set ig_intr_md_for_dprsr.digest_type, 5
-      - set W1(0..15), swap1_lo_0$salu.WaterfallIngress.table_1_lo
+      - set H1(0..15), swap1_lo_0$salu.WaterfallIngress.table_1_lo
       - swap1_lo_0$salu.WaterfallIngress.table_1_lo(table_1_lo_swap_0, $hash_dist)
       WaterfallIngress.lookup1_lo(1, 2):
       - hit_allowed: { allowed: true }
       - default_action: { allowed: true }
       - handle: 0x20000008
       - next_table: 0
-      - set ig_md.remain1_lo, hdr.ipv4.src_addr(0..15)
-      - set B6(4..7), swap1_lo_0$salu.WaterfallIngress.table_1_lo
+      - set ig_md.remain1_lo, hdr.ipv4.src_addr.0-15
+      - set B4(3..6), swap1_lo_0$salu.WaterfallIngress.table_1_lo
       - swap1_lo_0$salu.WaterfallIngress.table_1_lo(table_1_lo_lookup_0, $hash_dist)
       WaterfallIngress.no_action(2, 0):
       - hit_allowed: { allowed: true }
@@ -819,14 +861,8 @@ stage 1 ingress:
     - [ 0, 1, 2 ]
     home_row: 15
     input_xbar:
-      exact group 0: { 64: hdr.ipv4.src_addr(0..15), 96: ig_md.resubmit_md.remain(0..15) }
-      hash 1:
-        0..15: ig_md.resubmit_md.remain(0..15)
-        16..31: hdr.ipv4.src_addr(0..15)
-      hash group 1:
-        table: [1]
-        seed: 0x0
-    hash_bytemask: 15
+      exact group 0: { 64: ig_md.resubmit_md.remain_lo, 80: hdr.ipv4.src_addr.0-15 }
+    data_bytemask: 15
     format: { lo: 16 }
     actions:
       table_1_lo_swap_0:
@@ -837,7 +873,7 @@ stage 1 ingress:
       - alu_a cmplo, hi, 1
       - output cmplo, alu_hi
   exact_match swap1_hi_0 1:
-    p4: { name: WaterfallIngress.swap1_hi, size: 2 }
+    p4: { name: WaterfallIngress.swap1_hi, size: 512 }
     p4_param_order: 
       ig_intr_md.resubmit_flag: { type: exact, size: 1, full_size: 1 }
     row: 7
@@ -850,25 +886,25 @@ stage 1 ingress:
     ways:
       - { group: 0, index: 10..19, select: 40..51 & 0x0, rams: [[7, 3]] }
     hash_dist:
-      1: { hash: 2, mask: 0xffff, shift: 4 }
+      1: { hash: 1, mask: 0xffff, shift: 4 }
     input_xbar:
-      exact group 0: { 15: ig_intr_md.resubmit_flag }
+      exact group 0: { 7: ig_intr_md.resubmit_flag }
       hash 0:
         10: ig_intr_md.resubmit_flag
       hash group 0:
         table: [0]
         seed: 0x0
-      exact group 1: { 0: hdr.ipv4.src_addr }
-      hash 2:
-        16..31: slice(stripe(crc_rev(0x82608edb, 0xffffffff, 0xffffffff, 32, { 0: hdr.ipv4.src_addr }, { })), 0..15)
-      hash group 2:
-        table: [2]
+      exact group 0: { 80: hdr.ipv4.src_addr.0-15, 96: hdr.ipv4.src_addr.16-31 }
+      hash 1:
+        16..31: slice(stripe(crc_rev(0x82608edb, 0xffffffff, 0xffffffff, 32, { 0: hdr.ipv4.src_addr.0-15, 16: hdr.ipv4.src_addr.16-31 }, { })), 0..15)
+      hash group 1:
+        table: [1]
         seed: 0xdf1c0000
     format: { action(0): 0..1, version(0): 112..115, meter_addr(0): 4..19, meter_pfe(0): 20..20, meter_type(0): 21..23, action(1): 2..3, version(1): 116..119, meter_addr(1): 24..39, meter_pfe(1): 40..40, meter_type(1): 41..43 }
     match_group_map: [ [ 0, 1 ] ]
-    hit: [  swap2_hi_0 ]
-    miss:  swap2_hi_0
-    action_bus: { 2 : swap1_hi_0$salu.WaterfallIngress.table_1_hi(0..7), 104..107 : swap1_hi_0$salu.WaterfallIngress.table_1_hi(0..31) }
+    hit: [  swap2_lo_0 ]
+    miss:  swap2_lo_0
+    action_bus: { 2 : swap1_hi_0$salu.WaterfallIngress.table_1_hi(0..7), 36..37 : swap1_hi_0$salu.WaterfallIngress.table_1_hi(0..15) }
     stateful: swap1_hi_0$salu.WaterfallIngress.table_1_hi(hash_dist 1, meter_pfe, meter_type)
     instruction: swap1_hi_0(action, $DEFAULT)
     actions:
@@ -877,15 +913,15 @@ stage 1 ingress:
       - default_action: { allowed: true }
       - handle: 0x20000004
       - next_table: 0
-      - set W4(0..15), swap1_hi_0$salu.WaterfallIngress.table_1_hi
+      - set H7(0..15), swap1_hi_0$salu.WaterfallIngress.table_1_hi
       - swap1_hi_0$salu.WaterfallIngress.table_1_hi(table_1_hi_swap_0, $hash_dist)
       WaterfallIngress.lookup1_hi(1, 4):
       - hit_allowed: { allowed: true }
       - default_action: { allowed: true }
       - handle: 0x20000005
       - next_table: 0
-      - set ig_md.remain1_hi, hdr.ipv4.src_addr(16..31)
-      - set B4(3..6), swap1_hi_0$salu.WaterfallIngress.table_1_hi
+      - set ig_md.remain1_hi, hdr.ipv4.src_addr.16-31
+      - set B7(1..4), swap1_hi_0$salu.WaterfallIngress.table_1_hi
       - swap1_hi_0$salu.WaterfallIngress.table_1_hi(table_1_hi_lookup_0, $hash_dist)
       WaterfallIngress.no_action(2, 0):
       - hit_allowed: { allowed: true }
@@ -905,14 +941,8 @@ stage 1 ingress:
     - [ 0, 1, 2 ]
     home_row: 11
     input_xbar:
-      exact group 1: { 80: hdr.ipv4.src_addr(16..31), 112: ig_md.resubmit_md.remain(16..31) }
-      hash 3:
-        0..15: ig_md.resubmit_md.remain(16..31)
-        16..31: hdr.ipv4.src_addr(16..31)
-      hash group 3:
-        table: [3]
-        seed: 0x0
-    hash_bytemask: 15
+      exact group 1: { 64: ig_md.resubmit_md.remain_hi, 80: hdr.ipv4.src_addr.16-31 }
+    data_bytemask: 15
     format: { lo: 16 }
     actions:
       table_1_hi_swap_0:
@@ -923,6 +953,92 @@ stage 1 ingress:
       - alu_a cmplo, hi, 1
       - output cmplo, alu_hi
 stage 2 ingress:
+  dependency: match
+  exact_match swap2_lo_0 0:
+    p4: { name: WaterfallIngress.swap2_lo, size: 512 }
+    p4_param_order: 
+      ig_intr_md.resubmit_flag: { type: exact, size: 1, full_size: 1 }
+      ig_md.found_hi: { type: exact, size: 4, full_size: 4 }
+      ig_md.found_lo: { type: exact, size: 4, full_size: 4 }
+    row: 7
+    bus: 0
+    column: 2
+    stash: 
+      row: [ 7 ]
+      col: [ 2 ]
+      unit: [ 0 ]
+    ways:
+      - { group: 0, index: 0..9, select: 40..51 & 0x0, rams: [[7, 2]] }
+    hash_dist:
+      0: { hash: 1, mask: 0xffff, shift: 4 }
+    input_xbar:
+      exact group 0: { 3: ig_md.found_lo, 9: ig_md.found_hi, 15: ig_intr_md.resubmit_flag }
+      hash 0:
+        0..3: ig_md.found_lo
+        4..7: ig_md.found_hi
+        8: ig_intr_md.resubmit_flag
+      hash group 0:
+        table: [0]
+        seed: 0x0
+      exact group 0: { 64: ig_md.remain1_lo, 96: ig_md.remain1_hi }
+      hash 1:
+        0..15: slice(stripe(crc_rev(0x82608edb, 0xfffffff0, 0xffffffff, 32, { 0: ig_md.remain1_lo, 16: ig_md.remain1_hi }, { })), 0..15)
+      hash group 1:
+        table: [1]
+        seed: 0x2d00
+    format: { action(0): 0..1, version(0): 112..115, meter_addr(0): 4..19, meter_pfe(0): 20..20, meter_type(0): 21..23, action(1): 2..3, version(1): 116..119, meter_addr(1): 24..39, meter_pfe(1): 40..40, meter_type(1): 41..43 }
+    match_group_map: [ [ 0, 1 ] ]
+    hit: [  swap2_hi_0 ]
+    miss:  swap2_hi_0
+    action_bus: { 0 : swap2_lo_0$salu.WaterfallIngress.table_2_lo(0..7), 32..33 : swap2_lo_0$salu.WaterfallIngress.table_2_lo(0..15) }
+    stateful: swap2_lo_0$salu.WaterfallIngress.table_2_lo(hash_dist 0, meter_pfe, meter_type)
+    instruction: swap2_lo_0(action, $DEFAULT)
+    actions:
+      WaterfallIngress.do_swap2_lo(0, 1):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true }
+      - handle: 0x2000000a
+      - next_table: 0
+      - set H4(0..15), swap2_lo_0$salu.WaterfallIngress.table_2_lo
+      - swap2_lo_0$salu.WaterfallIngress.table_2_lo(table_2_lo_swap_0, $hash_dist)
+      WaterfallIngress.lookup2_lo(1, 2):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true }
+      - handle: 0x2000000b
+      - next_table: 0
+      - set ig_md.remain2_lo, hdr.ipv4.src_addr.0-15
+      - set B4(3..6), swap2_lo_0$salu.WaterfallIngress.table_2_lo
+      - swap2_lo_0$salu.WaterfallIngress.table_2_lo(table_2_lo_lookup_0, $hash_dist)
+      WaterfallIngress.no_action(2, 0):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true }
+      - handle: 0x2000000c
+      - next_table: 0
+    default_action: WaterfallIngress.no_action
+  stateful swap2_lo_0$salu.WaterfallIngress.table_2_lo:
+    p4: { name: WaterfallIngress.table_2_lo, size: 65535 }
+    row: [ 3, 1 ]
+    logical_bus: [ S, O ]
+    column:
+    - [ 0, 1, 2, 3, 4, 5 ]
+    - [ 0, 1, 2 ]
+    maprams: 
+    - [ 0, 1, 2, 3, 4, 5 ]
+    - [ 0, 1, 2 ]
+    home_row: 3
+    input_xbar:
+      exact group 0: { 64: ig_md.remain1_lo, 80: hdr.ipv4.src_addr.0-15 }
+    data_bytemask: 15
+    format: { lo: 16 }
+    actions:
+      table_2_lo_swap_0:
+      - alu_a lo, phv_lo
+      - output mem_lo
+      table_2_lo_lookup_0:
+      - equ lo, phv_hi, -lo
+      - alu_a cmplo, hi, 2
+      - output cmplo, alu_hi
+stage 3 ingress:
   dependency: match
   exact_match swap2_hi_0 0:
     p4: { name: WaterfallIngress.swap2_hi, size: 512 }
@@ -942,11 +1058,11 @@ stage 2 ingress:
     hash_dist:
       0: { hash: 1, mask: 0xffff, shift: 4 }
     input_xbar:
-      exact group 0: { 3: ig_md.found_hi, 15: ig_intr_md.resubmit_flag, 20: ig_md.found_lo }
+      exact group 0: { 3: ig_md.found_lo, 9: ig_md.found_hi, 15: ig_intr_md.resubmit_flag }
       hash 0:
-        0..3: ig_md.found_hi
-        4: ig_intr_md.resubmit_flag
-        5..8: ig_md.found_lo
+        0..3: ig_md.found_lo
+        4..7: ig_md.found_hi
+        8: ig_intr_md.resubmit_flag
       hash group 0:
         table: [0]
         seed: 0x0
@@ -958,31 +1074,31 @@ stage 2 ingress:
         seed: 0x2d00
     format: { action(0): 0..1, version(0): 112..115, meter_addr(0): 4..19, meter_pfe(0): 20..20, meter_type(0): 21..23, action(1): 2..3, version(1): 116..119, meter_addr(1): 24..39, meter_pfe(1): 40..40, meter_type(1): 41..43 }
     match_group_map: [ [ 0, 1 ] ]
-    hit: [  swap2_lo_0 ]
-    miss:  swap2_lo_0
-    action_bus: { 0 : swap2_hi_0$salu.WaterfallIngress.table_2_hi(0..7), 96..99 : swap2_hi_0$salu.WaterfallIngress.table_2_hi(0..31) }
+    hit: [  swap3_hi_0 ]
+    miss:  swap3_hi_0
+    action_bus: { 0 : swap2_hi_0$salu.WaterfallIngress.table_2_hi(0..7), 32..33 : swap2_hi_0$salu.WaterfallIngress.table_2_hi(0..15) }
     stateful: swap2_hi_0$salu.WaterfallIngress.table_2_hi(hash_dist 0, meter_pfe, meter_type)
     instruction: swap2_hi_0(action, $DEFAULT)
     actions:
       WaterfallIngress.do_swap2_hi(0, 1):
       - hit_allowed: { allowed: true }
       - default_action: { allowed: true }
-      - handle: 0x2000000a
+      - handle: 0x2000000d
       - next_table: 0
-      - set W5(0..15), swap2_hi_0$salu.WaterfallIngress.table_2_hi
+      - set H8(0..15), swap2_hi_0$salu.WaterfallIngress.table_2_hi
       - swap2_hi_0$salu.WaterfallIngress.table_2_hi(table_2_hi_swap_0, $hash_dist)
       WaterfallIngress.lookup2_hi(1, 2):
       - hit_allowed: { allowed: true }
       - default_action: { allowed: true }
-      - handle: 0x2000000b
+      - handle: 0x2000000e
       - next_table: 0
-      - set ig_md.remain2_hi, hdr.ipv4.src_addr(16..31)
-      - set B4(3..6), swap2_hi_0$salu.WaterfallIngress.table_2_hi
+      - set ig_md.remain2_hi, hdr.ipv4.src_addr.16-31
+      - set B7(1..4), swap2_hi_0$salu.WaterfallIngress.table_2_hi
       - swap2_hi_0$salu.WaterfallIngress.table_2_hi(table_2_hi_lookup_0, $hash_dist)
       WaterfallIngress.no_action(2, 0):
       - hit_allowed: { allowed: true }
       - default_action: { allowed: true }
-      - handle: 0x2000000c
+      - handle: 0x2000000f
       - next_table: 0
     default_action: WaterfallIngress.no_action
   stateful swap2_hi_0$salu.WaterfallIngress.table_2_hi:
@@ -997,7 +1113,7 @@ stage 2 ingress:
     - [ 0, 1, 2 ]
     home_row: 3
     input_xbar:
-      exact group 0: { 64: ig_md.remain1_hi, 80: hdr.ipv4.src_addr(16..31) }
+      exact group 0: { 64: ig_md.remain1_hi, 80: hdr.ipv4.src_addr.16-31 }
     data_bytemask: 15
     format: { lo: 16 }
     actions:
@@ -1005,98 +1121,6 @@ stage 2 ingress:
       - alu_a lo, phv_lo
       - output mem_lo
       table_2_hi_lookup_0:
-      - equ lo, phv_hi, -lo
-      - alu_a cmplo, hi, 2
-      - output cmplo, alu_hi
-stage 3 ingress:
-  dependency: match
-  exact_match swap2_lo_0 0:
-    p4: { name: WaterfallIngress.swap2_lo, size: 512 }
-    p4_param_order: 
-      ig_intr_md.resubmit_flag: { type: exact, size: 1, full_size: 1 }
-      ig_md.found_hi: { type: exact, size: 4, full_size: 4 }
-      ig_md.found_lo: { type: exact, size: 4, full_size: 4 }
-    row: 7
-    bus: 0
-    column: 2
-    stash: 
-      row: [ 7 ]
-      col: [ 2 ]
-      unit: [ 0 ]
-    ways:
-      - { group: 0, index: 0..9, select: 40..51 & 0x0, rams: [[7, 2]] }
-    hash_dist:
-      0: { hash: 2, mask: 0xffff, shift: 4 }
-    input_xbar:
-      exact group 0: { 3: ig_md.found_hi, 15: ig_intr_md.resubmit_flag, 20: ig_md.found_lo }
-      hash 0:
-        0..3: ig_md.found_hi
-        4: ig_intr_md.resubmit_flag
-        5..8: ig_md.found_lo
-      hash group 0:
-        table: [0]
-        seed: 0x0
-      exact group 1: { 0: ig_md.remain1_lo, 32: ig_md.remain1_hi }
-      hash 2:
-        0..15: slice(stripe(crc_rev(0x82608edb, 0xfffffff0, 0xffffffff, 32, { 0: ig_md.remain1_lo, 16: ig_md.remain1_hi }, { })), 0..15)
-      hash group 2:
-        table: [2]
-        seed: 0x2d00
-    format: { action(0): 0..1, version(0): 112..115, meter_addr(0): 4..19, meter_pfe(0): 20..20, meter_type(0): 21..23, action(1): 2..3, version(1): 116..119, meter_addr(1): 24..39, meter_pfe(1): 40..40, meter_type(1): 41..43 }
-    match_group_map: [ [ 0, 1 ] ]
-    hit: [  swap3_hi_0 ]
-    miss:  swap3_hi_0
-    action_bus: { 0 : swap2_lo_0$salu.WaterfallIngress.table_2_lo(0..7), 96..99 : swap2_lo_0$salu.WaterfallIngress.table_2_lo(0..31) }
-    stateful: swap2_lo_0$salu.WaterfallIngress.table_2_lo(hash_dist 0, meter_pfe, meter_type)
-    instruction: swap2_lo_0(action, $DEFAULT)
-    actions:
-      WaterfallIngress.do_swap2_lo(0, 1):
-      - hit_allowed: { allowed: true }
-      - default_action: { allowed: true }
-      - handle: 0x2000000d
-      - next_table: 0
-      - set W2(0..15), swap2_lo_0$salu.WaterfallIngress.table_2_lo
-      - swap2_lo_0$salu.WaterfallIngress.table_2_lo(table_2_lo_swap_0, $hash_dist)
-      WaterfallIngress.lookup2_lo(1, 2):
-      - hit_allowed: { allowed: true }
-      - default_action: { allowed: true }
-      - handle: 0x2000000e
-      - next_table: 0
-      - set ig_md.remain2_lo, hdr.ipv4.src_addr(0..15)
-      - set B6(4..7), swap2_lo_0$salu.WaterfallIngress.table_2_lo
-      - swap2_lo_0$salu.WaterfallIngress.table_2_lo(table_2_lo_lookup_0, $hash_dist)
-      WaterfallIngress.no_action(2, 0):
-      - hit_allowed: { allowed: true }
-      - default_action: { allowed: true }
-      - handle: 0x2000000f
-      - next_table: 0
-    default_action: WaterfallIngress.no_action
-  stateful swap2_lo_0$salu.WaterfallIngress.table_2_lo:
-    p4: { name: WaterfallIngress.table_2_lo, size: 65535 }
-    row: [ 3, 1 ]
-    logical_bus: [ S, O ]
-    column:
-    - [ 0, 1, 2, 3, 4, 5 ]
-    - [ 0, 1, 2 ]
-    maprams: 
-    - [ 0, 1, 2, 3, 4, 5 ]
-    - [ 0, 1, 2 ]
-    home_row: 3
-    input_xbar:
-      exact group 0: { 64: hdr.ipv4.src_addr(0..15), 96: ig_md.remain1_lo }
-      hash 1:
-        0..15: ig_md.remain1_lo
-        16..31: hdr.ipv4.src_addr(0..15)
-      hash group 1:
-        table: [1]
-        seed: 0x0
-    hash_bytemask: 15
-    format: { lo: 16 }
-    actions:
-      table_2_lo_swap_0:
-      - alu_a lo, phv_lo
-      - output mem_lo
-      table_2_lo_lookup_0:
       - equ lo, phv_hi, -lo
       - alu_a cmplo, hi, 2
       - output cmplo, alu_hi
@@ -1120,11 +1144,11 @@ stage 4 ingress:
     hash_dist:
       0: { hash: 1, mask: 0xffff, shift: 4 }
     input_xbar:
-      exact group 0: { 3: ig_md.found_hi, 15: ig_intr_md.resubmit_flag, 20: ig_md.found_lo }
+      exact group 0: { 3: ig_md.found_lo, 9: ig_md.found_hi, 15: ig_intr_md.resubmit_flag }
       hash 0:
-        0..3: ig_md.found_hi
-        4: ig_intr_md.resubmit_flag
-        5..8: ig_md.found_lo
+        0..3: ig_md.found_lo
+        4..7: ig_md.found_hi
+        8: ig_intr_md.resubmit_flag
       hash group 0:
         table: [0]
         seed: 0x0
@@ -1138,7 +1162,7 @@ stage 4 ingress:
     match_group_map: [ [ 0, 1 ] ]
     hit: [  swap3_lo_0 ]
     miss:  swap3_lo_0
-    action_bus: { 0 : swap3_hi_0$salu.WaterfallIngress.table_3_hi(0..7), 96..99 : swap3_hi_0$salu.WaterfallIngress.table_3_hi(0..31) }
+    action_bus: { 0 : swap3_hi_0$salu.WaterfallIngress.table_3_hi(0..7), 32..33 : swap3_hi_0$salu.WaterfallIngress.table_3_hi(0..15) }
     stateful: swap3_hi_0$salu.WaterfallIngress.table_3_hi(hash_dist 0, meter_pfe, meter_type)
     instruction: swap3_hi_0(action, $DEFAULT)
     actions:
@@ -1147,15 +1171,15 @@ stage 4 ingress:
       - default_action: { allowed: true }
       - handle: 0x20000010
       - next_table: 0
-      - set W4(0..15), swap3_hi_0$salu.WaterfallIngress.table_3_hi
+      - set H7(0..15), swap3_hi_0$salu.WaterfallIngress.table_3_hi
       - swap3_hi_0$salu.WaterfallIngress.table_3_hi(table_3_hi_swap_0, $hash_dist)
       WaterfallIngress.lookup3_hi(1, 2):
       - hit_allowed: { allowed: true }
       - default_action: { allowed: true }
       - handle: 0x20000011
       - next_table: 0
-      - set ig_md.remain3_hi, hdr.ipv4.src_addr(16..31)
-      - set B4(3..6), swap3_hi_0$salu.WaterfallIngress.table_3_hi
+      - set ig_md.remain3_hi, hdr.ipv4.src_addr.16-31
+      - set B7(1..4), swap3_hi_0$salu.WaterfallIngress.table_3_hi
       - swap3_hi_0$salu.WaterfallIngress.table_3_hi(table_3_hi_lookup_0, $hash_dist)
       WaterfallIngress.no_action(2, 0):
       - hit_allowed: { allowed: true }
@@ -1175,7 +1199,7 @@ stage 4 ingress:
     - [ 0, 1, 2 ]
     home_row: 11
     input_xbar:
-      exact group 0: { 64: ig_md.remain2_hi, 80: hdr.ipv4.src_addr(16..31) }
+      exact group 0: { 64: ig_md.remain2_hi, 80: hdr.ipv4.src_addr.16-31 }
     data_bytemask: 15
     format: { lo: 16 }
     actions:
@@ -1204,27 +1228,27 @@ stage 5 ingress:
     ways:
       - { group: 0, index: 0..9, select: 40..51 & 0x0, rams: [[7, 2]] }
     hash_dist:
-      0: { hash: 2, mask: 0xffff, shift: 4 }
+      0: { hash: 1, mask: 0xffff, shift: 4 }
     input_xbar:
-      exact group 0: { 3: ig_md.found_hi, 15: ig_intr_md.resubmit_flag, 20: ig_md.found_lo }
+      exact group 0: { 3: ig_md.found_lo, 9: ig_md.found_hi, 15: ig_intr_md.resubmit_flag }
       hash 0:
-        0..3: ig_md.found_hi
-        4: ig_intr_md.resubmit_flag
-        5..8: ig_md.found_lo
+        0..3: ig_md.found_lo
+        4..7: ig_md.found_hi
+        8: ig_intr_md.resubmit_flag
       hash group 0:
         table: [0]
         seed: 0x0
-      exact group 1: { 0: ig_md.remain2_lo, 32: ig_md.remain2_hi }
-      hash 2:
+      exact group 0: { 64: ig_md.remain2_lo, 96: ig_md.remain2_hi }
+      hash 1:
         0..15: slice(stripe(crc_rev(0x82608edb, 0xffffff00, 0xffffffff, 32, { 0: ig_md.remain2_lo, 16: ig_md.remain2_hi }, { })), 0..15)
-      hash group 2:
-        table: [2]
+      hash group 1:
+        table: [1]
         seed: 0x3091
     format: { action(0): 0..1, version(0): 112..115, meter_addr(0): 4..19, meter_pfe(0): 20..20, meter_type(0): 21..23, action(1): 2..3, version(1): 116..119, meter_addr(1): 24..39, meter_pfe(1): 40..40, meter_type(1): 41..43 }
     match_group_map: [ [ 0, 1 ] ]
     hit: [  swap4_hi_0 ]
     miss:  swap4_hi_0
-    action_bus: { 0 : swap3_lo_0$salu.WaterfallIngress.table_3_lo(0..7), 96..99 : swap3_lo_0$salu.WaterfallIngress.table_3_lo(0..31) }
+    action_bus: { 0 : swap3_lo_0$salu.WaterfallIngress.table_3_lo(0..7), 32..33 : swap3_lo_0$salu.WaterfallIngress.table_3_lo(0..15) }
     stateful: swap3_lo_0$salu.WaterfallIngress.table_3_lo(hash_dist 0, meter_pfe, meter_type)
     instruction: swap3_lo_0(action, $DEFAULT)
     actions:
@@ -1233,15 +1257,15 @@ stage 5 ingress:
       - default_action: { allowed: true }
       - handle: 0x20000013
       - next_table: 0
-      - set W1(0..15), swap3_lo_0$salu.WaterfallIngress.table_3_lo
+      - set H1(0..15), swap3_lo_0$salu.WaterfallIngress.table_3_lo
       - swap3_lo_0$salu.WaterfallIngress.table_3_lo(table_3_lo_swap_0, $hash_dist)
       WaterfallIngress.lookup3_lo(1, 2):
       - hit_allowed: { allowed: true }
       - default_action: { allowed: true }
       - handle: 0x20000014
       - next_table: 0
-      - set ig_md.remain3_lo, hdr.ipv4.src_addr(0..15)
-      - set B6(4..7), swap3_lo_0$salu.WaterfallIngress.table_3_lo
+      - set ig_md.remain3_lo, hdr.ipv4.src_addr.0-15
+      - set B4(3..6), swap3_lo_0$salu.WaterfallIngress.table_3_lo
       - swap3_lo_0$salu.WaterfallIngress.table_3_lo(table_3_lo_lookup_0, $hash_dist)
       WaterfallIngress.no_action(2, 0):
       - hit_allowed: { allowed: true }
@@ -1261,14 +1285,8 @@ stage 5 ingress:
     - [ 0, 1, 2 ]
     home_row: 15
     input_xbar:
-      exact group 0: { 64: hdr.ipv4.src_addr(0..15), 96: ig_md.remain2_lo }
-      hash 1:
-        0..15: ig_md.remain2_lo
-        16..31: hdr.ipv4.src_addr(0..15)
-      hash group 1:
-        table: [1]
-        seed: 0x0
-    hash_bytemask: 15
+      exact group 0: { 64: ig_md.remain2_lo, 80: hdr.ipv4.src_addr.0-15 }
+    data_bytemask: 15
     format: { lo: 16 }
     actions:
       table_3_lo_swap_0:
@@ -1298,11 +1316,11 @@ stage 6 ingress:
     hash_dist:
       0: { hash: 1, mask: 0xffff, shift: 4 }
     input_xbar:
-      exact group 0: { 3: ig_md.found_hi, 15: ig_intr_md.resubmit_flag, 20: ig_md.found_lo }
+      exact group 0: { 3: ig_md.found_lo, 9: ig_md.found_hi, 15: ig_intr_md.resubmit_flag }
       hash 0:
-        0..3: ig_md.found_hi
-        4: ig_intr_md.resubmit_flag
-        5..8: ig_md.found_lo
+        0..3: ig_md.found_lo
+        4..7: ig_md.found_hi
+        8: ig_intr_md.resubmit_flag
       hash group 0:
         table: [0]
         seed: 0x0
@@ -1331,7 +1349,7 @@ stage 6 ingress:
       - default_action: { allowed: true }
       - handle: 0x20000017
       - next_table: 0
-      - set B4(3..6), swap4_hi_0$salu.WaterfallIngress.table_4_hi
+      - set B7(1..4), swap4_hi_0$salu.WaterfallIngress.table_4_hi
       - swap4_hi_0$salu.WaterfallIngress.table_4_hi(table_4_hi_lookup_0, $hash_dist)
       WaterfallIngress.no_action(2, 2):
       - hit_allowed: { allowed: true }
@@ -1351,7 +1369,7 @@ stage 6 ingress:
     - [ 0, 1, 2 ]
     home_row: 15
     input_xbar:
-      exact group 0: { 64: ig_md.remain3_hi, 80: hdr.ipv4.src_addr(16..31) }
+      exact group 0: { 64: ig_md.remain3_hi, 80: hdr.ipv4.src_addr.16-31 }
     data_bytemask: 15
     format: { lo: 16 }
     actions:
@@ -1380,21 +1398,21 @@ stage 7 ingress:
     ways:
       - { group: 0, index: 0..9, select: 40..51 & 0x0, rams: [[7, 2]] }
     hash_dist:
-      0: { hash: 2, mask: 0xffff, shift: 4 }
+      0: { hash: 1, mask: 0xffff, shift: 4 }
     input_xbar:
-      exact group 0: { 3: ig_md.found_hi, 15: ig_intr_md.resubmit_flag, 20: ig_md.found_lo }
+      exact group 0: { 3: ig_md.found_lo, 9: ig_md.found_hi, 15: ig_intr_md.resubmit_flag }
       hash 0:
-        0..3: ig_md.found_hi
-        4: ig_intr_md.resubmit_flag
-        5..8: ig_md.found_lo
+        0..3: ig_md.found_lo
+        4..7: ig_md.found_hi
+        8: ig_intr_md.resubmit_flag
       hash group 0:
         table: [0]
         seed: 0x0
-      exact group 1: { 0: ig_md.remain3_lo, 32: ig_md.remain3_hi }
-      hash 2:
+      exact group 0: { 64: ig_md.remain3_lo, 96: ig_md.remain3_hi }
+      hash 1:
         0..15: slice(stripe(crc_rev(0x82608edb, 0xfffff000, 0xffffffff, 32, { 0: ig_md.remain3_lo, 16: ig_md.remain3_hi }, { })), 0..15)
-      hash group 2:
-        table: [2]
+      hash group 1:
+        table: [1]
         seed: 0xd12c
     format: { action(0): 0..1, version(0): 112..115, meter_addr(0): 4..19, meter_pfe(0): 20..20, meter_type(0): 21..23, action(1): 2..3, version(1): 116..119, meter_addr(1): 24..39, meter_pfe(1): 40..40, meter_type(1): 41..43 }
     match_group_map: [ [ 0, 1 ] ]
@@ -1415,7 +1433,7 @@ stage 7 ingress:
       - default_action: { allowed: true }
       - handle: 0x2000001a
       - next_table: 0
-      - set B6(4..7), swap4_lo_0$salu.WaterfallIngress.table_4_lo
+      - set B4(3..6), swap4_lo_0$salu.WaterfallIngress.table_4_lo
       - swap4_lo_0$salu.WaterfallIngress.table_4_lo(table_4_lo_lookup_0, $hash_dist)
       WaterfallIngress.no_action(2, 2):
       - hit_allowed: { allowed: true }
@@ -1435,14 +1453,8 @@ stage 7 ingress:
     - [ 0, 1, 2 ]
     home_row: 15
     input_xbar:
-      exact group 0: { 64: hdr.ipv4.src_addr(0..15), 96: ig_md.remain3_lo }
-      hash 1:
-        0..15: ig_md.remain3_lo
-        16..31: hdr.ipv4.src_addr(0..15)
-      hash group 1:
-        table: [1]
-        seed: 0x0
-    hash_bytemask: 15
+      exact group 0: { 64: ig_md.remain3_lo, 80: hdr.ipv4.src_addr.0-15 }
+    data_bytemask: 15
     format: { lo: 16 }
     actions:
       table_4_lo_swap_0:
@@ -1470,11 +1482,11 @@ stage 8 ingress:
     ways:
       - { group: 0, index: 0..9, select: 40..51 & 0x0, rams: [[7, 2]] }
     input_xbar:
-      exact group 0: { 3: ig_md.found_hi, 15: ig_intr_md.resubmit_flag, 20: ig_md.found_lo }
+      exact group 0: { 3: ig_md.found_lo, 9: ig_md.found_hi, 15: ig_intr_md.resubmit_flag }
       hash 0:
-        0..3: ig_md.found_hi
-        4: ig_intr_md.resubmit_flag
-        5..8: ig_md.found_lo
+        0..3: ig_md.found_lo
+        4..7: ig_md.found_hi
+        8: ig_intr_md.resubmit_flag
       hash group 0:
         table: [0]
         seed: 0x0
@@ -1491,7 +1503,9 @@ stage 8 ingress:
       - next_table: 0
       - set ig_intr_md_for_dprsr.resubmit_type, 3
       - set ig_md.resubmit_md.type, 3
-      - set ig_md.resubmit_md.remain, hdr.ipv4.src_addr
+      - set ig_md.resubmit_md.remain_hi, hdr.ipv4.src_addr.16-31
+      - set ig_md.resubmit_md.remain_lo, hdr.ipv4.src_addr.0-15
+      - set ig_intr_md_for_dprsr.digest_type, 5
       WaterfallIngress.no_action(1, 0):
       - hit_allowed: { allowed: true }
       - default_action: { allowed: true }
@@ -1680,7 +1694,7 @@ stage 2 egress:
         true:  tbl_fcmsketch_fcm_action_l1_d1
         false:  tbl_fcmsketch_fcm_action_l1_d1
     next: []
-    action_bus: { 104..107 : tbl_fcmsketch_fcm_action_l1_d2$salu.FcmEgress.fcmsketch.sketch_reg_l1_d2(0..31) }
+    action_bus: { 96..99 : tbl_fcmsketch_fcm_action_l1_d2$salu.FcmEgress.fcmsketch.sketch_reg_l1_d2(0..31) }
     stateful: tbl_fcmsketch_fcm_action_l1_d2$salu.FcmEgress.fcmsketch.sketch_reg_l1_d2(hash_dist 1, $DEFAULT, $DEFAULT)
     instruction: tbl_fcmsketch_fcm_action_l1_d2($DEFAULT, $DEFAULT)
     actions:
@@ -1723,17 +1737,14 @@ stage 3 egress:
     row: 0
     result_bus: 0
     hash_dist:
-      1: { hash: 2, mask: 0x7ffff, shift: 3, expand: 7 }
+      1: { hash: 1, mask: 0x7ffff, shift: 3, expand: 7 }
     input_xbar:
-      exact group 1: { 16: eg_md.hash_meta_d1(16..18), 64: eg_md.hash_meta_d1(0..15) }
+      exact group 1: { 0: eg_md.hash_meta_d1(0..18) }
       hash 2:
-        16..31: 0
-        39..41: eg_md.hash_meta_d1(16..18)
-      hash 3:
         16..31: eg_md.hash_meta_d1(0..15)
-        39..41: 0
-      hash group 2:
-        table: [2, 3]
+        39..41: eg_md.hash_meta_d1(16..18)
+      hash group 1:
+        table: [2]
         seed: 0x0
     gateway:
       name: tbl_fcmsketch_fcm_action_l1_d1-gateway
@@ -1747,7 +1758,7 @@ stage 3 egress:
         true:  fcmsketch_tb_fcm_l1_to_l2_d2
         false:  fcmsketch_tb_fcm_l1_to_l2_d2
     next: []
-    action_bus: { 104..107 : tbl_fcmsketch_fcm_action_l1_d1$salu.FcmEgress.fcmsketch.sketch_reg_l1_d1(0..31) }
+    action_bus: { 96..99 : tbl_fcmsketch_fcm_action_l1_d1$salu.FcmEgress.fcmsketch.sketch_reg_l1_d1(0..31) }
     stateful: tbl_fcmsketch_fcm_action_l1_d1$salu.FcmEgress.fcmsketch.sketch_reg_l1_d1(hash_dist 1, $DEFAULT, $DEFAULT)
     instruction: tbl_fcmsketch_fcm_action_l1_d1($DEFAULT, $DEFAULT)
     actions:
@@ -1803,7 +1814,7 @@ stage 4 egress:
     gateway:
       name: fcmsketch_tb_fcm_l1_to_l2_d2-gateway
       input_xbar:
-        exact group 0: { 24: eg_md.result_d2(24..31), 32: eg_md.result_d2(0..23) }
+        exact group 0: { 16: eg_md.result_d2(16..31), 32: eg_md.result_d2(0..15) }
       row: 7
       bus: 0
       unit: 0
@@ -1819,7 +1830,7 @@ stage 4 egress:
         run_table: true
     hit: [  fcmsketch_tb_fcm_l1_to_l2_d1 ]
     miss:  fcmsketch_tb_fcm_l1_to_l2_d1
-    action_bus: { 104..107 : fcmsketch_tb_fcm_l1_to_l2_d2$salu.FcmEgress.fcmsketch.sketch_reg_l2_d2(0..31) }
+    action_bus: { 96..99 : fcmsketch_tb_fcm_l1_to_l2_d2$salu.FcmEgress.fcmsketch.sketch_reg_l2_d2(0..31) }
     stateful: fcmsketch_tb_fcm_l1_to_l2_d2$salu.FcmEgress.fcmsketch.sketch_reg_l2_d2(hash_dist 1, meter_pfe, meter_type)
     instruction: fcmsketch_tb_fcm_l1_to_l2_d2(action, $DEFAULT)
     actions:
@@ -1887,7 +1898,7 @@ stage 4 egress:
         run_table: true
     hit: [  fcmsketch_tb_fcm_l2_to_l3_d2 ]
     miss:  fcmsketch_tb_fcm_l2_to_l3_d2
-    action_bus: { 112..115 : fcmsketch_tb_fcm_l1_to_l2_d1$salu.FcmEgress.fcmsketch.sketch_reg_l2_d1(0..31) }
+    action_bus: { 104..107 : fcmsketch_tb_fcm_l1_to_l2_d1$salu.FcmEgress.fcmsketch.sketch_reg_l2_d1(0..31) }
     stateful: fcmsketch_tb_fcm_l1_to_l2_d1$salu.FcmEgress.fcmsketch.sketch_reg_l2_d1(hash_dist 2, meter_pfe, meter_type)
     instruction: fcmsketch_tb_fcm_l1_to_l2_d1(action, $DEFAULT)
     actions:
@@ -1930,23 +1941,19 @@ stage 5 egress:
     row: 0
     result_bus: 0
     hash_dist:
-      1: { hash: 2, mask: 0x1fff, shift: 5 }
+      1: { hash: 1, mask: 0x1fff, shift: 5 }
     input_xbar:
-      exact group 1: { 16: eg_md.hash_meta_d2(16..18), 102: eg_md.hash_meta_d2(6..15) }
+      exact group 1: { 6: eg_md.hash_meta_d2(6..18) }
       hash 2:
-        16..25: 0
-        26..28: eg_md.hash_meta_d2(16..18)
-      hash 3:
-        16..25: eg_md.hash_meta_d2(6..15)
-        26..28: 0
-      hash group 2:
-        table: [2, 3]
+        16..28: eg_md.hash_meta_d2(6..18)
+      hash group 1:
+        table: [2]
         seed: 0x0
     gateway:
       name: fcmsketch_tb_fcm_l2_to_l3_d2-gateway
       input_xbar:
-        exact group 1: { 64: eg_md.result_d2 }
-      row: 0
+        exact group 0: { 16: eg_md.result_d2(16..31), 32: eg_md.result_d2(0..15) }
+      row: 7
       bus: 0
       unit: 0
       payload_row: 0
@@ -1997,19 +2004,19 @@ stage 5 egress:
     row: 0
     result_bus: 1
     hash_dist:
-      2: { hash: 2, mask: 0x1fff, shift: 5 }
+      2: { hash: 1, mask: 0x1fff, shift: 5 }
     input_xbar:
-      exact group 2: { 6: eg_md.hash_meta_d1(6..18) }
-      hash 4:
+      exact group 1: { 38: eg_md.hash_meta_d1(6..18) }
+      hash 2:
         32..44: eg_md.hash_meta_d1(6..18)
-      hash group 2:
-        table: [4]
+      hash group 1:
+        table: [2]
         seed: 0x0
     gateway:
       name: fcmsketch_tb_fcm_l2_to_l3_d1-gateway
       input_xbar:
-        exact group 0: { 24: eg_md.result_d1(24..31), 32: eg_md.result_d1(0..23) }
-      row: 7
+        exact group 1: { 64: eg_md.result_d1 }
+      row: 0
       bus: 0
       unit: 0
       payload_row: 0

@@ -1,30 +1,30 @@
 {
     "program_name": "waterfall_fcm.p4", 
-    "build_date": "Tue Mar  4 18:02:15 2025", 
-    "run_id": "94853f3c1e9740cb", 
+    "build_date": "Wed Mar  5 15:09:11 2025", 
+    "run_id": "d1c5297a5c514ec9", 
     "compiler_version": "9.11.0", 
     "schema_version": "1.1.0", 
     "target": "tofino", 
-    "compilation_time": "5.6333417892456055", 
+    "compilation_time": "4.9082722663879395", 
     "phv": {
         "normal": [
             {
                 "bit_width": 8, 
-                "containers_occupied": 9, 
-                "bits_occupied": 47, 
+                "containers_occupied": 10, 
+                "bits_occupied": 49, 
                 "bits_overlaid": 11
             }, 
             {
                 "bit_width": 16, 
-                "containers_occupied": 3, 
-                "bits_occupied": 29, 
-                "bits_overlaid": 9
+                "containers_occupied": 10, 
+                "bits_occupied": 146, 
+                "bits_overlaid": 32
             }, 
             {
                 "bit_width": 32, 
-                "containers_occupied": 13, 
-                "bits_occupied": 352, 
-                "bits_overlaid": 32
+                "containers_occupied": 7, 
+                "bits_occupied": 224, 
+                "bits_overlaid": 0
             }
         ], 
         "tagalong": [
@@ -50,7 +50,7 @@
     }, 
     "parser": {
         "ingress": {
-            "tcam_rows": 13
+            "tcam_rows": 12
         }, 
         "egress": {
             "tcam_rows": 22
@@ -61,13 +61,13 @@
         "tcams": 0, 
         "map_rams": 164, 
         "logical_tables": 21, 
-        "action_bus_bytes": 58, 
-        "exact_crossbar_bytes": 120, 
+        "action_bus_bytes": 46, 
+        "exact_crossbar_bytes": 105, 
         "ternary_crossbar_bytes": 0, 
         "latency": [
             {
                 "gress": "ingress", 
-                "cycles": 197
+                "cycles": 215
             }, 
             {
                 "gress": "egress", 

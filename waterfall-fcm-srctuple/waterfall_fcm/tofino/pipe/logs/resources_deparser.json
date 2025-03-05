@@ -79,10 +79,10 @@
         "pov_bit": 1,
         "pov_name": "hdr.ipv4.$valid",
         "chunks": [
-          { "chunk_number": 0, "chunk": { "phv_container": 261 } },
-          { "chunk_number": 1, "chunk": { "phv_container": 261 } },
-          { "chunk_number": 2, "chunk": { "phv_container": 261 } },
-          { "chunk_number": 3, "chunk": { "phv_container": 261 } }
+          { "chunk_number": 0, "chunk": { "phv_container": 260 } },
+          { "chunk_number": 1, "chunk": { "phv_container": 260 } },
+          { "chunk_number": 2, "chunk": { "phv_container": 260 } },
+          { "chunk_number": 3, "chunk": { "phv_container": 260 } }
         ]
       },
       {
@@ -112,10 +112,10 @@
         "pov_bit": 1,
         "pov_name": "hdr.ipv4.$valid",
         "chunks": [
-          { "chunk_number": 0, "chunk": { "phv_container": 0 } },
-          { "chunk_number": 1, "chunk": { "phv_container": 0 } },
-          { "chunk_number": 2, "chunk": { "phv_container": 0 } },
-          { "chunk_number": 3, "chunk": { "phv_container": 0 } }
+          { "chunk_number": 0, "chunk": { "phv_container": 133 } },
+          { "chunk_number": 1, "chunk": { "phv_container": 133 } },
+          { "chunk_number": 2, "chunk": { "phv_container": 130 } },
+          { "chunk_number": 3, "chunk": { "phv_container": 130 } }
         ]
       },
       {
@@ -123,10 +123,10 @@
         "pov_bit": 1,
         "pov_name": "hdr.ipv4.$valid",
         "chunks": [
-          { "chunk_number": 0, "chunk": { "phv_container": 266 } },
-          { "chunk_number": 1, "chunk": { "phv_container": 266 } },
-          { "chunk_number": 2, "chunk": { "phv_container": 266 } },
-          { "chunk_number": 3, "chunk": { "phv_container": 266 } }
+          { "chunk_number": 0, "chunk": { "phv_container": 264 } },
+          { "chunk_number": 1, "chunk": { "phv_container": 264 } },
+          { "chunk_number": 2, "chunk": { "phv_container": 264 } },
+          { "chunk_number": 3, "chunk": { "phv_container": 264 } }
         ]
       },
       {
@@ -145,10 +145,10 @@
         "pov_bit": 3,
         "pov_name": "hdr.tcp.$valid",
         "chunks": [
-          { "chunk_number": 0, "chunk": { "phv_container": 265 } },
-          { "chunk_number": 1, "chunk": { "phv_container": 265 } },
-          { "chunk_number": 2, "chunk": { "phv_container": 265 } },
-          { "chunk_number": 3, "chunk": { "phv_container": 265 } }
+          { "chunk_number": 0, "chunk": { "phv_container": 266 } },
+          { "chunk_number": 1, "chunk": { "phv_container": 266 } },
+          { "chunk_number": 2, "chunk": { "phv_container": 266 } },
+          { "chunk_number": 3, "chunk": { "phv_container": 266 } }
         ]
       },
       {
@@ -156,10 +156,10 @@
         "pov_bit": 3,
         "pov_name": "hdr.tcp.$valid",
         "chunks": [
-          { "chunk_number": 0, "chunk": { "phv_container": 264 } },
-          { "chunk_number": 1, "chunk": { "phv_container": 264 } },
-          { "chunk_number": 2, "chunk": { "phv_container": 264 } },
-          { "chunk_number": 3, "chunk": { "phv_container": 264 } }
+          { "chunk_number": 0, "chunk": { "phv_container": 265 } },
+          { "chunk_number": 1, "chunk": { "phv_container": 265 } },
+          { "chunk_number": 2, "chunk": { "phv_container": 265 } },
+          { "chunk_number": 3, "chunk": { "phv_container": 265 } }
         ]
       },
       {
@@ -167,10 +167,10 @@
         "pov_bit": 3,
         "pov_name": "hdr.tcp.$valid",
         "chunks": [
-          { "chunk_number": 0, "chunk": { "phv_container": 260 } },
-          { "chunk_number": 1, "chunk": { "phv_container": 260 } },
-          { "chunk_number": 2, "chunk": { "phv_container": 260 } },
-          { "chunk_number": 3, "chunk": { "phv_container": 260 } }
+          { "chunk_number": 0, "chunk": { "phv_container": 261 } },
+          { "chunk_number": 1, "chunk": { "phv_container": 261 } },
+          { "chunk_number": 2, "chunk": { "phv_container": 261 } },
+          { "chunk_number": 3, "chunk": { "phv_container": 261 } }
         ]
       },
       {
@@ -209,31 +209,33 @@
     },
     "resubmit_table": {
       "nTables": 1,
-      "maxBytes": 5,
+      "maxBytes": 6,
       "index_phv": 66,
       "table_phv": [
         {
           "table_id": 3,
           "bytes": [
             { "byte_number": 0, "phv_container": 69 },
-            { "byte_number": 1, "phv_container": 3 },
-            { "byte_number": 2, "phv_container": 64 },
+            { "byte_number": 1, "phv_container": 134 },
+            { "byte_number": 2, "phv_container": 131 },
             { "byte_number": 3, "phv_container": 64 },
-            { "byte_number": 4, "phv_container": 64 }
+            { "byte_number": 4, "phv_container": 64 },
+            { "byte_number": 5, "phv_container": 64 }
           ]
         }
       ]
     },
     "learning_table": {
       "nTables": 1,
-      "maxBytes": 2,
+      "maxBytes": 3,
       "index_phv": 65,
       "table_phv": [
         {
           "table_id": 5,
           "bytes": [
             { "byte_number": 0, "phv_container": 65 },
-            { "byte_number": 1, "phv_container": 3 }
+            { "byte_number": 1, "phv_container": 133 },
+            { "byte_number": 2, "phv_container": 130 }
           ]
         }
       ]

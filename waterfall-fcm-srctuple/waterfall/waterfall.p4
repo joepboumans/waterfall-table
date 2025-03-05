@@ -22,7 +22,8 @@ const bit<3> DIGEST = 5;
 
 header resubmit_md_t {
   bit<8> type;
-  bit<32> remain;
+  bit<FLOW_ID_BIT_WIDTH> remain_hi;
+  bit<FLOW_ID_BIT_WIDTH> remain_lo;
 }
 
 struct port_metadata_t {
@@ -229,14 +230,14 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
   RegisterAction<bit<FLOW_ID_BIT_WIDTH>, bit<IDX_BIT_WIDTH>, bit<FLOW_ID_BIT_WIDTH>>(table_1_hi) table_1_hi_swap = {
     void apply(inout bit<FLOW_ID_BIT_WIDTH> val, out bit<FLOW_ID_BIT_WIDTH> read_value) {
       read_value = val;
-      val = ig_md.resubmit_md.remain[31:16];
+      val = ig_md.resubmit_md.remain_hi;
     }
   };
 
   RegisterAction<bit<FLOW_ID_BIT_WIDTH>, bit<IDX_BIT_WIDTH>, bit<FLOW_ID_BIT_WIDTH>>(table_1_lo) table_1_lo_swap = {
     void apply(inout bit<FLOW_ID_BIT_WIDTH> val, out bit<FLOW_ID_BIT_WIDTH> read_value) {
       read_value = val;
-      val = ig_md.resubmit_md.remain[15:0];
+      val = ig_md.resubmit_md.remain_lo;
     }
   };
 
@@ -283,10 +284,11 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
   };
 
   action resubmit_hdr() {
-    ig_intr_dprsr_md.digest_type = DIGEST;
     ig_intr_dprsr_md.resubmit_type = DPRSR_RESUB;
     ig_md.resubmit_md.type = RESUB;
-    ig_md.resubmit_md.remain = hdr.ipv4.src_addr;
+    ig_md.resubmit_md.remain_hi = hdr.ipv4.src_addr[31:16];
+    ig_md.resubmit_md.remain_lo = hdr.ipv4.src_addr[15:0];
+    ig_intr_dprsr_md.digest_type = DIGEST;
   }
 
   action no_action() {
@@ -334,7 +336,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
       no_action;
     }
     default_action = no_action;
-    size = 2;
+    size = 512;
   }
 
   table swap1_hi {
@@ -347,7 +349,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
       no_action;
     }
     default_action = no_action;
-    size = 2;
+    size = 512;
   }
 
 
@@ -454,7 +456,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
   }
 
   action lookup4_lo(){
-    ig_md.found_lo =table_4_lo_lookup.execute(hash4.get({ig_md.remain3_hi, ig_md.remain3_lo}));
+    ig_md.found_lo = table_4_lo_lookup.execute(hash4.get({ig_md.remain3_hi, ig_md.remain3_lo}));
   }
 
   action do_swap4_hi() {
@@ -524,8 +526,8 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     swap1_hi.apply();
     swap1_lo.apply();
 
-    swap2_hi.apply();
     swap2_lo.apply();
+    swap2_hi.apply();
 
     swap3_hi.apply();
     swap3_lo.apply();
@@ -548,7 +550,7 @@ control WaterfallIngressDeparser( packet_out pkt, inout header_t hdr, in waterfa
 
   apply {
     if (ig_intr_dprsr_md.digest_type == DIGEST) {
-      digest.pack({ig_md.resubmit_md.remain});
+      digest.pack({hdr.ipv4.src_addr});
     }
     if (ig_intr_dprsr_md.resubmit_type == DPRSR_RESUB) {
       resubmit.emit(ig_md.resubmit_md);

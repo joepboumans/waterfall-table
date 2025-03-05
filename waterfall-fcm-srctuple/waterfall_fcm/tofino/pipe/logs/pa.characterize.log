@@ -1,8 +1,8 @@
 +---------------------------------------------------------------------+
 |  Log file: pa.characterize.log                                      |
 |  Compiler version: 9.11.0                                           |
-|  Created on: Tue Mar  4 18:02:15 2025                               |
-|  Run ID: 94853f3c1e9740cb                                           |
+|  Created on: Wed Mar  5 15:09:11 2025                               |
+|  Run ID: d1c5297a5c514ec9                                           |
 +---------------------------------------------------------------------+
 
 Program: waterfall_fcm.p4
@@ -10,20 +10,12 @@ Program: waterfall_fcm.p4
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Container |  Gress  |                          Name                          | Class |  | P | 0 | 1 | 2  | 3  | 4  | 5  | 6  | 7  | 8 | 9 | 10 | 11 | D |
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
-|    phv0   | ingress |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
-|   [31:0]  | ingress |                hdr.ipv4.src_addr[31:0]                 |  pkt  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | R | ~ | ~  | ~  | R |
-|    phv1   | ingress |                                                        | OL,SH |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
-|   [15:0]  | ingress |                 ig_md.remain1_lo[15:0]                 |  meta |  |   |   | W |    |    |    |    |    |    |   |   |    |    |   |
-|   [15:0]  | ingress |                 ig_md.remain3_lo[15:0]                 |  meta |  |   |   |   |    |    |    | W  |    |    |   |   |    |    |   |
-|    phv2   | ingress |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
-|   [15:0]  | ingress |                 ig_md.remain2_lo[15:0]                 |  meta |  |   |   |   |    | W  |    |    |    |    |   |   |    |    |   |
-|    phv3   | ingress |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
-|   [31:0]  | ingress |             ig_md.resubmit_md.remain[31:0]             |  pkt  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | W | ~ | ~  | ~  | R |
-|    phv4   | ingress |                                                        | OL,SH |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
-|   [15:0]  | ingress |                 ig_md.remain1_hi[15:0]                 |  meta |  |   |   | W |    |    |    |    |    |    |   |   |    |    |   |
-|   [15:0]  | ingress |                 ig_md.remain3_hi[15:0]                 |  meta |  |   |   |   |    |    | W  |    |    |    |   |   |    |    |   |
-|    phv5   | ingress |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
-|   [15:0]  | ingress |                 ig_md.remain2_hi[15:0]                 |  meta |  |   |   |   | W  |    |    |    |    |    |   |   |    |    |   |
+|    phv0   |    -    |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
+|    phv1   |    -    |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
+|    phv2   |    -    |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
+|    phv3   |    -    |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
+|    phv4   |    -    |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
+|    phv5   |    -    |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
 |    phv6   |    -    |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
 |    phv7   |    -    |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
 |    phv8   |    -    |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
@@ -95,23 +87,25 @@ Program: waterfall_fcm.p4
 |    [7:0]  | ingress |                      $tmp3[15:8]                       |  meta |  |   |   |   |    |    |    |    |    |    |   |   |    |    | R |
 |    [7:0]  | ingress |                       $tmp3[7:0]                       |  meta |  |   |   |   |    |    |    |    |    |    |   |   |    |    | R |
 |   phv65   | ingress |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
-|    [2:0]  | ingress |         ig_intr_md_for_dprsr.digest_type[2:0]          | imeta |  |   |   | W | ~  | ~  | ~  | ~  | ~  | ~  | ~ | ~ | ~  | ~  | R |
+|    [2:0]  | ingress |         ig_intr_md_for_dprsr.digest_type[2:0]          | imeta |  |   |   |   |    |    |    |    |    |    | W | ~ | ~  | ~  | R |
 |   phv66   | ingress |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
 |    [2:0]  | ingress |        ig_intr_md_for_dprsr.resubmit_type[2:0]         | imeta |  |   | W | ~ | ~  | ~  | ~  | ~  | ~  | ~  | W | ~ | ~  | ~  | R |
 |   phv67   | ingress |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
 |    [2:0]  | ingress |         ig_intr_md_for_dprsr.mirror_type[2:0]          | imeta |  |   |   |   |    |    |    |    |    |    |   |   |    |    | R |
 |   phv68   | ingress |                                                        |   SH  |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
-|    [6:3]  | ingress |                  ig_md.found_hi[3:0]                   |  meta |  |   | W | W | RW | R  | RW | R  | RW | R  | R |   |    |    |   |
+|    [6:3]  | ingress |                  ig_md.found_lo[3:0]                   |  meta |  |   | W | W | RW | R  | R  | RW | R  | RW | R |   |    |    |   |
 |    [2:0]  | ingress |           ig_intr_md_for_dprsr.drop_ctl[2:0]           | imeta |  |   | W | ~ | ~  | ~  | ~  | ~  | ~  | ~  | ~ | ~ | ~  | ~  | R |
 |   phv69   | ingress |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
 |    [7:0]  | ingress |              ig_md.resubmit_md.type[7:0]               |  pkt  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | W | ~ | ~  | ~  | R |
 |   phv70   | ingress |                                                        |   SH  |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
-|    [7:4]  | ingress |                  ig_md.found_lo[3:0]                   |  meta |  |   | W | W | R  | RW | R  | RW | R  | RW | R |   |    |    |   |
 |    [3:3]  | ingress |                  hdr.tcp.$valid[0:0]                   |  pov  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | ~ | ~ | ~  | ~  | R |
 |    [2:2]  | ingress |                  hdr.udp.$valid[0:0]                   |  pov  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | ~ | ~ | ~  | ~  | R |
 |    [1:1]  | ingress |                  hdr.ipv4.$valid[0:0]                  |  pov  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | ~ | ~ | ~  | ~  | R |
 |    [0:0]  | ingress |                hdr.ethernet.$valid[0:0]                |  pov  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | ~ | ~ | ~  | ~  | R |
-|   phv71   |    -    |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
+|   phv71   | ingress |                                                        |   SH  |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
+|    [7:7]  | ingress |             ig_intr_md.resubmit_flag[0:0]              | imeta |  | W | ~ | R | R  | R  | R  | R  | R  | R  | R |   |    |    |   |
+|    [4:1]  | ingress |                  ig_md.found_hi[3:0]                   |  meta |  |   | W | W | R  | RW | RW | R  | RW | R  | R |   |    |    |   |
+|    [0:0]  | ingress |              ig_intr_md.ingress_port[8:8]              | imeta |  | W | R |   |    |    |    |    |    |    |   |   |    |    |   |
 |   phv72   |    -    |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
 |   phv73   |    -    |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
 |   phv74   |    -    |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
@@ -180,16 +174,25 @@ Program: waterfall_fcm.p4
 |   phv128  | ingress |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
 |    [8:0]  | ingress |        ig_intr_md_for_tm.ucast_egress_port[8:0]        | imeta |  |   | W | ~ | ~  | ~  | ~  | ~  | ~  | ~  | ~ | ~ | ~  | ~  | R |
 |   phv129  | ingress |                                                        | OL,SH |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
-|   [15:15] | ingress |             ig_intr_md.resubmit_flag[0:0]              | imeta |  | W | ~ | R | R  | R  | R  | R  | R  | R  | R |   |    |    |   |
+|   [15:0]  | ingress |                 ig_md.remain1_lo[15:0]                 |  meta |  |   |   | W |    |    |    |    |    |    |   |   |    |    |   |
+|   [15:0]  | ingress |                 ig_md.remain3_lo[15:0]                 |  meta |  |   |   |   |    |    |    | W  |    |    |   |   |    |    |   |
 |    [9:0]  | ingress |                       $tmp2[9:0]                       |  meta |  |   |   |   |    |    |    |    |    |    |   |   |    |    | R |
-|    [8:0]  | ingress |              ig_intr_md.ingress_port[8:0]              | imeta |  | W | R |   |    |    |    |    |    |    |   |   |    |    |   |
-|   phv130  |    -    |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
-|   phv131  |    -    |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
-|   phv132  |    -    |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
-|   phv133  |    -    |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
-|   phv134  |    -    |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
-|   phv135  |    -    |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
-|   phv136  |    -    |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
+|    [7:0]  | ingress |              ig_intr_md.ingress_port[7:0]              | imeta |  | W | R |   |    |    |    |    |    |    |   |   |    |    |   |
+|   phv130  | ingress |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
+|   [15:0]  | ingress |                hdr.ipv4.src_addr[15:0]                 |  pkt  |  | W | ~ | R | R  | ~  | ~  | R  | ~  | ~  | R | ~ | ~  | ~  | R |
+|   phv131  | ingress |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
+|   [15:0]  | ingress |           ig_md.resubmit_md.remain_lo[15:0]            |  pkt  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | W | ~ | ~  | ~  | R |
+|   phv132  | ingress |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
+|   [15:0]  | ingress |                 ig_md.remain2_lo[15:0]                 |  meta |  |   |   |   | W  |    |    |    |    |    |   |   |    |    |   |
+|   phv133  | ingress |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
+|   [15:0]  | ingress |                hdr.ipv4.src_addr[31:16]                |  pkt  |  | W | ~ | R | ~  | R  | R  | ~  | ~  | ~  | R | ~ | ~  | ~  | R |
+|   phv134  | ingress |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
+|   [15:0]  | ingress |           ig_md.resubmit_md.remain_hi[15:0]            |  pkt  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | W | ~ | ~  | ~  | R |
+|   phv135  | ingress |                                                        | OL,SH |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
+|   [15:0]  | ingress |                 ig_md.remain1_hi[15:0]                 |  meta |  |   |   | W |    |    |    |    |    |    |   |   |    |    |   |
+|   [15:0]  | ingress |                 ig_md.remain3_hi[15:0]                 |  meta |  |   |   |   |    |    | W  |    |    |    |   |   |    |    |   |
+|   phv136  | ingress |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
+|   [15:0]  | ingress |                 ig_md.remain2_hi[15:0]                 |  meta |  |   |   |   |    | W  |    |    |    |    |   |   |    |    |   |
 |   phv137  |    -    |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
 |   phv138  |    -    |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
 |   phv139  |    -    |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
@@ -330,18 +333,18 @@ Program: waterfall_fcm.p4
 |   [31:0]  |  egress | hdr.min_parse_depth_padding_0[0].packet_payload[31:0]  |  pkt  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | ~ | ~ | ~  | ~  | R |
 |   [15:0]  |  egress |                hdr.tcp.urgent_ptr[15:0]                |  pkt  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | ~ | ~ | ~  | ~  | R |
 |   [15:0]  |  egress |                 hdr.udp.checksum[15:0]                 |  pkt  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | ~ | ~ | ~  | ~  | R |
-|   phv260  | ingress |                                                        | OL,SH |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
+|   phv260  | ingress |                                                        |   SH  |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
+|   [31:28] | ingress |                 hdr.ipv4.version[3:0]                  |  pkt  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | ~ | ~ | ~  | ~  | R |
+|   [27:24] | ingress |                   hdr.ipv4.ihl[3:0]                    |  pkt  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | ~ | ~ | ~  | ~  | R |
+|   [23:16] | ingress |                 hdr.ipv4.diffserv[7:0]                 |  pkt  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | ~ | ~ | ~  | ~  | R |
+|   [15:0]  | ingress |                hdr.ipv4.total_len[15:0]                |  pkt  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | ~ | ~ | ~  | ~  | R |
+|   phv261  | ingress |                                                        | OL,SH |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
 |   [31:28] | ingress |                hdr.tcp.data_offset[3:0]                |  pkt  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | ~ | ~ | ~  | ~  | R |
 |   [31:16] | ingress |                hdr.udp.hdr_length[15:0]                |  pkt  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | ~ | ~ | ~  | ~  | R |
 |   [27:24] | ingress |                    hdr.tcp.res[3:0]                    |  pkt  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | ~ | ~ | ~  | ~  | R |
 |   [23:16] | ingress |                   hdr.tcp.flags[7:0]                   |  pkt  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | ~ | ~ | ~  | ~  | R |
 |   [15:0]  | ingress |                 hdr.udp.checksum[15:0]                 |  pkt  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | ~ | ~ | ~  | ~  | R |
 |   [15:0]  | ingress |                  hdr.tcp.window[15:0]                  |  pkt  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | ~ | ~ | ~  | ~  | R |
-|   phv261  | ingress |                                                        |   SH  |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
-|   [31:28] | ingress |                 hdr.ipv4.version[3:0]                  |  pkt  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | ~ | ~ | ~  | ~  | R |
-|   [27:24] | ingress |                   hdr.ipv4.ihl[3:0]                    |  pkt  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | ~ | ~ | ~  | ~  | R |
-|   [23:16] | ingress |                 hdr.ipv4.diffserv[7:0]                 |  pkt  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | ~ | ~ | ~  | ~  | R |
-|   [15:0]  | ingress |                hdr.ipv4.total_len[15:0]                |  pkt  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | ~ | ~ | ~  | ~  | R |
 |   phv262  | ingress |                                                        |   SH  |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
 |   [31:24] | ingress |                   hdr.ipv4.ttl[7:0]                    |  pkt  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | ~ | ~ | ~  | ~  | R |
 |   [23:16] | ingress |                 hdr.ipv4.protocol[7:0]                 |  pkt  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | ~ | ~ | ~  | ~  | R |
@@ -351,11 +354,11 @@ Program: waterfall_fcm.p4
 |   [15:13] | ingress |                  hdr.ipv4.flags[2:0]                   |  pkt  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | ~ | ~ | ~  | ~  | R |
 |   [12:0]  | ingress |               hdr.ipv4.frag_offset[12:0]               |  pkt  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | ~ | ~ | ~  | ~  | R |
 |   phv264  | ingress |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
-|   [31:0]  | ingress |                  hdr.tcp.ack_no[31:0]                  |  pkt  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | ~ | ~ | ~  | ~  | R |
-|   phv265  | ingress |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
-|   [31:0]  | ingress |                  hdr.tcp.seq_no[31:0]                  |  pkt  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | ~ | ~ | ~  | ~  | R |
-|   phv266  | ingress |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
 |   [31:0]  | ingress |                hdr.ipv4.dst_addr[31:0]                 |  pkt  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | ~ | ~ | ~  | ~  | R |
+|   phv265  | ingress |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
+|   [31:0]  | ingress |                  hdr.tcp.ack_no[31:0]                  |  pkt  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | ~ | ~ | ~  | ~  | R |
+|   phv266  | ingress |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
+|   [31:0]  | ingress |                  hdr.tcp.seq_no[31:0]                  |  pkt  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | ~ | ~ | ~  | ~  | R |
 |   phv267  |    -    |                                                        |       |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
 |   phv268  |  egress |                                                        | OL,SH |  |   |   |   |    |    |    |    |    |    |   |   |    |    |   |
 |   [31:0]  |  egress | hdr.min_parse_depth_padding_0[2].packet_payload[31:0]  |  pkt  |  | W | ~ | ~ | ~  | ~  | ~  | ~  | ~  | ~  | ~ | ~ | ~  | ~  | R |
@@ -511,9 +514,9 @@ Program: waterfall_fcm.p4
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-Containers used: 72
-Containers with data overlayed: 17  (23.61%)
-Containers shared: 26  (36.11%)
+Containers used: 74
+Containers with data overlayed: 16  (21.62%)
+Containers shared: 26  (35.14%)
 
 ------------------------
   Legend:
@@ -534,20 +537,20 @@ Containers shared: 26  (36.11%)
 ---------------------------------------------------------------------------------------------------------------------------------------
 | Direction | Location | Fields Live | Bits Live | Header Fields Live | Header Bits Live | Metadata Fields Live | Metadata Bits Live |
 ---------------------------------------------------------------------------------------------------------------------------------------
-|  ingress  |  Parser  | 37 (71.15%) |    550    |    31 (100.00%)    |       536        |      6 (28.57%)      |         14         |
-|  ingress  | Stage 0  | 41 (78.85%) |    564    |    31 (100.00%)    |       536        |     10 (47.62%)      |         28         |
-|  ingress  | Stage 1  | 44 (84.62%) |    599    |    31 (100.00%)    |       536        |     13 (61.90%)      |         63         |
-|  ingress  | Stage 2  | 43 (82.69%) |    583    |    31 (100.00%)    |       536        |     12 (57.14%)      |         47         |
-|  ingress  | Stage 3  | 43 (82.69%) |    583    |    31 (100.00%)    |       536        |     12 (57.14%)      |         47         |
-|  ingress  | Stage 4  | 43 (82.69%) |    583    |    31 (100.00%)    |       536        |     12 (57.14%)      |         47         |
-|  ingress  | Stage 5  | 43 (82.69%) |    583    |    31 (100.00%)    |       536        |     12 (57.14%)      |         47         |
-|  ingress  | Stage 6  | 42 (80.77%) |    567    |    31 (100.00%)    |       536        |     11 (52.38%)      |         31         |
-|  ingress  | Stage 7  | 42 (80.77%) |    567    |    31 (100.00%)    |       536        |     11 (52.38%)      |         31         |
-|  ingress  | Stage 8  | 41 (78.85%) |    566    |    31 (100.00%)    |       536        |     10 (47.62%)      |         30         |
-|  ingress  | Stage 9  | 39 (75.00%) |    558    |    31 (100.00%)    |       536        |      8 (38.10%)      |         22         |
-|  ingress  | Stage 10 | 39 (75.00%) |    558    |    31 (100.00%)    |       536        |      8 (38.10%)      |         22         |
-|  ingress  | Stage 11 | 39 (75.00%) |    558    |    31 (100.00%)    |       536        |      8 (38.10%)      |         22         |
-|  ingress  | Deparser | 42 (80.77%) |    595    |    31 (100.00%)    |       536        |     11 (52.38%)      |         59         |
+|  ingress  |  Parser  | 38 (71.70%) |    550    |    32 (100.00%)    |       536        |      6 (28.57%)      |         14         |
+|  ingress  | Stage 0  | 42 (79.25%) |    564    |    32 (100.00%)    |       536        |     10 (47.62%)      |         28         |
+|  ingress  | Stage 1  | 44 (83.02%) |    596    |    32 (100.00%)    |       536        |     12 (57.14%)      |         60         |
+|  ingress  | Stage 2  | 43 (81.13%) |    580    |    32 (100.00%)    |       536        |     11 (52.38%)      |         44         |
+|  ingress  | Stage 3  | 43 (81.13%) |    580    |    32 (100.00%)    |       536        |     11 (52.38%)      |         44         |
+|  ingress  | Stage 4  | 43 (81.13%) |    580    |    32 (100.00%)    |       536        |     11 (52.38%)      |         44         |
+|  ingress  | Stage 5  | 43 (81.13%) |    580    |    32 (100.00%)    |       536        |     11 (52.38%)      |         44         |
+|  ingress  | Stage 6  | 42 (79.25%) |    564    |    32 (100.00%)    |       536        |     10 (47.62%)      |         28         |
+|  ingress  | Stage 7  | 42 (79.25%) |    564    |    32 (100.00%)    |       536        |     10 (47.62%)      |         28         |
+|  ingress  | Stage 8  | 42 (79.25%) |    566    |    32 (100.00%)    |       536        |     10 (47.62%)      |         30         |
+|  ingress  | Stage 9  | 40 (75.47%) |    558    |    32 (100.00%)    |       536        |      8 (38.10%)      |         22         |
+|  ingress  | Stage 10 | 40 (75.47%) |    558    |    32 (100.00%)    |       536        |      8 (38.10%)      |         22         |
+|  ingress  | Stage 11 | 40 (75.47%) |    558    |    32 (100.00%)    |       536        |      8 (38.10%)      |         22         |
+|  ingress  | Deparser | 43 (81.13%) |    595    |    32 (100.00%)    |       536        |     11 (52.38%)      |         59         |
 |           |          |             |           |                    |                  |                      |                    |
 |   egress  |  Parser  | 40 (85.11%) |    778    |    32 (100.00%)    |       760        |      8 (53.33%)      |         18         |
 |   egress  | Stage 0  | 43 (91.49%) |    903    |    32 (100.00%)    |       760        |     11 (73.33%)      |        143         |
@@ -571,12 +574,6 @@ Containers shared: 26  (36.11%)
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Direction | Container |    Parser   |   Stage 0   |   Stage 1   |   Stage 2   |   Stage 3   |   Stage 4   |   Stage 5   |   Stage 6   |   Stage 7   |   Stage 8   |   Stage 9   |   Stage 10  |   Stage 11  |   Deparser  |
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-|  ingress  |    phv0   | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) |
-|  ingress  |    phv1   |      -      |      -      | 1 (16 bits) |      -      |      -      |      -      | 1 (16 bits) |      -      |      -      |      -      |      -      |      -      |      -      |      -      |
-|  ingress  |    phv2   |      -      |      -      |      -      |      -      | 1 (16 bits) |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |
-|  ingress  |    phv3   | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) |
-|  ingress  |    phv4   |      -      |      -      | 1 (16 bits) |      -      |      -      | 1 (16 bits) |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |
-|  ingress  |    phv5   |      -      |      -      |      -      | 1 (16 bits) |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |
 |   egress  |   phv16   |      -      |      -      |      -      |      -      | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) |      -      |      -      |      -      |      -      |      -      |      -      |      -      |
 |   egress  |   phv17   |      -      | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |
 |   egress  |   phv18   |      -      |      -      |      -      | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |
@@ -586,25 +583,33 @@ Containers shared: 26  (36.11%)
 |   egress  |   phv22   |      -      | 1 (32 bits) |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |
 |           |           |             |             |             |             |             |             |             |             |             |             |             |             |             |             |
 |  ingress  |   phv64   |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |  1 (8 bits) |
-|  ingress  |   phv65   |      -      |      -      |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |
+|  ingress  |   phv65   |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |
 |  ingress  |   phv66   |      -      |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |
 |  ingress  |   phv67   |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |  1 (3 bits) |
 |  ingress  |   phv68   |      -      |  2 (7 bits) |  2 (7 bits) |  2 (7 bits) |  2 (7 bits) |  2 (7 bits) |  2 (7 bits) |  2 (7 bits) |  2 (7 bits) |  2 (7 bits) |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |  1 (3 bits) |
 |  ingress  |   phv69   |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |  1 (8 bits) |
-|  ingress  |   phv70   |  4 (4 bits) |  5 (8 bits) |  5 (8 bits) |  5 (8 bits) |  5 (8 bits) |  5 (8 bits) |  5 (8 bits) |  5 (8 bits) |  5 (8 bits) |  5 (8 bits) |  4 (4 bits) |  4 (4 bits) |  4 (4 bits) |  4 (4 bits) |
+|  ingress  |   phv70   |  4 (4 bits) |  4 (4 bits) |  4 (4 bits) |  4 (4 bits) |  4 (4 bits) |  4 (4 bits) |  4 (4 bits) |  4 (4 bits) |  4 (4 bits) |  4 (4 bits) |  4 (4 bits) |  4 (4 bits) |  4 (4 bits) |  4 (4 bits) |
+|  ingress  |   phv71   |  2 (2 bits) |  2 (5 bits) |  2 (5 bits) |  2 (5 bits) |  2 (5 bits) |  2 (5 bits) |  2 (5 bits) |  2 (5 bits) |  2 (5 bits) |  1 (4 bits) |      -      |      -      |      -      |      -      |
 |   egress  |   phv80   |  3 (3 bits) |  2 (2 bits) |  2 (2 bits) |  2 (2 bits) |  2 (2 bits) |  2 (2 bits) |  2 (2 bits) |  2 (2 bits) |  2 (2 bits) |  2 (2 bits) |  2 (2 bits) |  2 (2 bits) |  2 (2 bits) |  3 (3 bits) |
 |   egress  |   phv81   |  4 (4 bits) |  4 (4 bits) |  4 (4 bits) |  4 (4 bits) |  4 (4 bits) |  4 (4 bits) |  4 (4 bits) |  4 (4 bits) |  4 (4 bits) |  4 (4 bits) |  4 (4 bits) |  4 (4 bits) |  4 (4 bits) |  4 (4 bits) |
 |           |           |             |             |             |             |             |             |             |             |             |             |             |             |             |             |
 |  ingress  |   phv128  |      -      |  1 (9 bits) |  1 (9 bits) |  1 (9 bits) |  1 (9 bits) |  1 (9 bits) |  1 (9 bits) |  1 (9 bits) |  1 (9 bits) |  1 (9 bits) |  1 (9 bits) |  1 (9 bits) |  1 (9 bits) |  1 (9 bits) |
-|  ingress  |   phv129  | 2 (10 bits) |  1 (1 bits) |  1 (1 bits) |  1 (1 bits) |  1 (1 bits) |  1 (1 bits) |  1 (1 bits) |  1 (1 bits) |  1 (1 bits) |      -      |      -      |      -      |      -      | 1 (10 bits) |
+|  ingress  |   phv129  |  1 (8 bits) |      -      | 1 (16 bits) |      -      |      -      |      -      | 1 (16 bits) |      -      |      -      |      -      |      -      |      -      |      -      | 1 (10 bits) |
+|  ingress  |   phv130  | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) |
+|  ingress  |   phv131  | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) |
+|  ingress  |   phv132  |      -      |      -      |      -      | 1 (16 bits) |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |
+|  ingress  |   phv133  | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) |
+|  ingress  |   phv134  | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) | 1 (16 bits) |
+|  ingress  |   phv135  |      -      |      -      | 1 (16 bits) |      -      |      -      | 1 (16 bits) |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |
+|  ingress  |   phv136  |      -      |      -      |      -      |      -      | 1 (16 bits) |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |      -      |
 |   egress  |   phv144  |  1 (9 bits) |  1 (9 bits) |  1 (9 bits) |  1 (9 bits) |  1 (9 bits) |  1 (9 bits) |  1 (9 bits) |  1 (9 bits) |  1 (9 bits) |  1 (9 bits) |  1 (9 bits) |  1 (9 bits) |  1 (9 bits) |  1 (9 bits) |
 |           |           |             |             |             |             |             |             |             |             |             |             |             |             |             |             |
 |   egress  |   phv256  | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) |
 |   egress  |   phv257  | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) |
 |   egress  |   phv258  | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) |
 |   egress  |   phv259  | 5 (32 bits) | 5 (32 bits) | 5 (32 bits) | 5 (32 bits) | 5 (32 bits) | 5 (32 bits) | 5 (32 bits) | 5 (32 bits) | 5 (32 bits) | 5 (32 bits) | 5 (32 bits) | 5 (32 bits) | 5 (32 bits) | 5 (32 bits) |
-|  ingress  |   phv260  | 6 (32 bits) | 6 (32 bits) | 6 (32 bits) | 6 (32 bits) | 6 (32 bits) | 6 (32 bits) | 6 (32 bits) | 6 (32 bits) | 6 (32 bits) | 6 (32 bits) | 6 (32 bits) | 6 (32 bits) | 6 (32 bits) | 6 (32 bits) |
-|  ingress  |   phv261  | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) |
+|  ingress  |   phv260  | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) | 4 (32 bits) |
+|  ingress  |   phv261  | 6 (32 bits) | 6 (32 bits) | 6 (32 bits) | 6 (32 bits) | 6 (32 bits) | 6 (32 bits) | 6 (32 bits) | 6 (32 bits) | 6 (32 bits) | 6 (32 bits) | 6 (32 bits) | 6 (32 bits) | 6 (32 bits) | 6 (32 bits) |
 |  ingress  |   phv262  | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) |
 |  ingress  |   phv263  | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) | 3 (32 bits) |
 |  ingress  |   phv264  | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) | 1 (32 bits) |

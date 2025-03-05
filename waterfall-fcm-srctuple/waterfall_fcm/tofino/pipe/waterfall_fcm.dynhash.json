@@ -1015,193 +1015,193 @@
               "stage_number" : 1,
               "crossbar" : [
                 {
-                  "byte_number" : 16,
+                  "byte_number" : 10,
                   "bit_in_byte" : 0,
                   "name" : "hdr.ipv4.src_addr",
                   "field_bit" : 0
                 },
                 {
-                  "byte_number" : 16,
+                  "byte_number" : 10,
                   "bit_in_byte" : 1,
                   "name" : "hdr.ipv4.src_addr",
                   "field_bit" : 1
                 },
                 {
-                  "byte_number" : 16,
+                  "byte_number" : 10,
                   "bit_in_byte" : 2,
                   "name" : "hdr.ipv4.src_addr",
                   "field_bit" : 2
                 },
                 {
-                  "byte_number" : 16,
+                  "byte_number" : 10,
                   "bit_in_byte" : 3,
                   "name" : "hdr.ipv4.src_addr",
                   "field_bit" : 3
                 },
                 {
-                  "byte_number" : 16,
+                  "byte_number" : 10,
                   "bit_in_byte" : 4,
                   "name" : "hdr.ipv4.src_addr",
                   "field_bit" : 4
                 },
                 {
-                  "byte_number" : 16,
+                  "byte_number" : 10,
                   "bit_in_byte" : 5,
                   "name" : "hdr.ipv4.src_addr",
                   "field_bit" : 5
                 },
                 {
-                  "byte_number" : 16,
+                  "byte_number" : 10,
                   "bit_in_byte" : 6,
                   "name" : "hdr.ipv4.src_addr",
                   "field_bit" : 6
                 },
                 {
-                  "byte_number" : 16,
+                  "byte_number" : 10,
                   "bit_in_byte" : 7,
                   "name" : "hdr.ipv4.src_addr",
                   "field_bit" : 7
                 },
                 {
-                  "byte_number" : 17,
+                  "byte_number" : 11,
                   "bit_in_byte" : 0,
                   "name" : "hdr.ipv4.src_addr",
                   "field_bit" : 8
                 },
                 {
-                  "byte_number" : 17,
+                  "byte_number" : 11,
                   "bit_in_byte" : 1,
                   "name" : "hdr.ipv4.src_addr",
                   "field_bit" : 9
                 },
                 {
-                  "byte_number" : 17,
+                  "byte_number" : 11,
                   "bit_in_byte" : 2,
                   "name" : "hdr.ipv4.src_addr",
                   "field_bit" : 10
                 },
                 {
-                  "byte_number" : 17,
+                  "byte_number" : 11,
                   "bit_in_byte" : 3,
                   "name" : "hdr.ipv4.src_addr",
                   "field_bit" : 11
                 },
                 {
-                  "byte_number" : 17,
+                  "byte_number" : 11,
                   "bit_in_byte" : 4,
                   "name" : "hdr.ipv4.src_addr",
                   "field_bit" : 12
                 },
                 {
-                  "byte_number" : 17,
+                  "byte_number" : 11,
                   "bit_in_byte" : 5,
                   "name" : "hdr.ipv4.src_addr",
                   "field_bit" : 13
                 },
                 {
-                  "byte_number" : 17,
+                  "byte_number" : 11,
                   "bit_in_byte" : 6,
                   "name" : "hdr.ipv4.src_addr",
                   "field_bit" : 14
                 },
                 {
-                  "byte_number" : 17,
+                  "byte_number" : 11,
                   "bit_in_byte" : 7,
                   "name" : "hdr.ipv4.src_addr",
                   "field_bit" : 15
                 },
                 {
-                  "byte_number" : 18,
+                  "byte_number" : 12,
                   "bit_in_byte" : 0,
                   "name" : "hdr.ipv4.src_addr",
                   "field_bit" : 16
                 },
                 {
-                  "byte_number" : 18,
+                  "byte_number" : 12,
                   "bit_in_byte" : 1,
                   "name" : "hdr.ipv4.src_addr",
                   "field_bit" : 17
                 },
                 {
-                  "byte_number" : 18,
+                  "byte_number" : 12,
                   "bit_in_byte" : 2,
                   "name" : "hdr.ipv4.src_addr",
                   "field_bit" : 18
                 },
                 {
-                  "byte_number" : 18,
+                  "byte_number" : 12,
                   "bit_in_byte" : 3,
                   "name" : "hdr.ipv4.src_addr",
                   "field_bit" : 19
                 },
                 {
-                  "byte_number" : 18,
+                  "byte_number" : 12,
                   "bit_in_byte" : 4,
                   "name" : "hdr.ipv4.src_addr",
                   "field_bit" : 20
                 },
                 {
-                  "byte_number" : 18,
+                  "byte_number" : 12,
                   "bit_in_byte" : 5,
                   "name" : "hdr.ipv4.src_addr",
                   "field_bit" : 21
                 },
                 {
-                  "byte_number" : 18,
+                  "byte_number" : 12,
                   "bit_in_byte" : 6,
                   "name" : "hdr.ipv4.src_addr",
                   "field_bit" : 22
                 },
                 {
-                  "byte_number" : 18,
+                  "byte_number" : 12,
                   "bit_in_byte" : 7,
                   "name" : "hdr.ipv4.src_addr",
                   "field_bit" : 23
                 },
                 {
-                  "byte_number" : 19,
+                  "byte_number" : 13,
                   "bit_in_byte" : 0,
                   "name" : "hdr.ipv4.src_addr",
                   "field_bit" : 24
                 },
                 {
-                  "byte_number" : 19,
+                  "byte_number" : 13,
                   "bit_in_byte" : 1,
                   "name" : "hdr.ipv4.src_addr",
                   "field_bit" : 25
                 },
                 {
-                  "byte_number" : 19,
+                  "byte_number" : 13,
                   "bit_in_byte" : 2,
                   "name" : "hdr.ipv4.src_addr",
                   "field_bit" : 26
                 },
                 {
-                  "byte_number" : 19,
+                  "byte_number" : 13,
                   "bit_in_byte" : 3,
                   "name" : "hdr.ipv4.src_addr",
                   "field_bit" : 27
                 },
                 {
-                  "byte_number" : 19,
+                  "byte_number" : 13,
                   "bit_in_byte" : 4,
                   "name" : "hdr.ipv4.src_addr",
                   "field_bit" : 28
                 },
                 {
-                  "byte_number" : 19,
+                  "byte_number" : 13,
                   "bit_in_byte" : 5,
                   "name" : "hdr.ipv4.src_addr",
                   "field_bit" : 29
                 },
                 {
-                  "byte_number" : 19,
+                  "byte_number" : 13,
                   "bit_in_byte" : 6,
                   "name" : "hdr.ipv4.src_addr",
                   "field_bit" : 30
                 },
                 {
-                  "byte_number" : 19,
+                  "byte_number" : 13,
                   "bit_in_byte" : 7,
                   "name" : "hdr.ipv4.src_addr",
                   "field_bit" : 31
@@ -1216,7 +1216,7 @@
         {
           "stage_number" : 1,
           "hash" : {
-            "hash_id" : 2,
+            "hash_id" : 1,
             "num_hash_bits" : 32,
             "hash_bits" : [
               {
@@ -1404,193 +1404,193 @@
               "stage_number" : 2,
               "crossbar" : [
                 {
-                  "byte_number" : 12,
+                  "byte_number" : 8,
                   "bit_in_byte" : 0,
                   "name" : "ig_md.remain1_lo",
                   "field_bit" : 0
                 },
                 {
-                  "byte_number" : 12,
+                  "byte_number" : 8,
                   "bit_in_byte" : 1,
                   "name" : "ig_md.remain1_lo",
                   "field_bit" : 1
                 },
                 {
-                  "byte_number" : 12,
+                  "byte_number" : 8,
                   "bit_in_byte" : 2,
                   "name" : "ig_md.remain1_lo",
                   "field_bit" : 2
                 },
                 {
-                  "byte_number" : 12,
+                  "byte_number" : 8,
                   "bit_in_byte" : 3,
                   "name" : "ig_md.remain1_lo",
                   "field_bit" : 3
                 },
                 {
-                  "byte_number" : 12,
+                  "byte_number" : 8,
                   "bit_in_byte" : 4,
                   "name" : "ig_md.remain1_lo",
                   "field_bit" : 4
                 },
                 {
-                  "byte_number" : 12,
+                  "byte_number" : 8,
                   "bit_in_byte" : 5,
                   "name" : "ig_md.remain1_lo",
                   "field_bit" : 5
                 },
                 {
-                  "byte_number" : 12,
+                  "byte_number" : 8,
                   "bit_in_byte" : 6,
                   "name" : "ig_md.remain1_lo",
                   "field_bit" : 6
                 },
                 {
-                  "byte_number" : 12,
+                  "byte_number" : 8,
                   "bit_in_byte" : 7,
                   "name" : "ig_md.remain1_lo",
                   "field_bit" : 7
                 },
                 {
-                  "byte_number" : 13,
+                  "byte_number" : 9,
                   "bit_in_byte" : 0,
                   "name" : "ig_md.remain1_lo",
                   "field_bit" : 8
                 },
                 {
-                  "byte_number" : 13,
+                  "byte_number" : 9,
                   "bit_in_byte" : 1,
                   "name" : "ig_md.remain1_lo",
                   "field_bit" : 9
                 },
                 {
-                  "byte_number" : 13,
+                  "byte_number" : 9,
                   "bit_in_byte" : 2,
                   "name" : "ig_md.remain1_lo",
                   "field_bit" : 10
                 },
                 {
-                  "byte_number" : 13,
+                  "byte_number" : 9,
                   "bit_in_byte" : 3,
                   "name" : "ig_md.remain1_lo",
                   "field_bit" : 11
                 },
                 {
-                  "byte_number" : 13,
+                  "byte_number" : 9,
                   "bit_in_byte" : 4,
                   "name" : "ig_md.remain1_lo",
                   "field_bit" : 12
                 },
                 {
-                  "byte_number" : 13,
+                  "byte_number" : 9,
                   "bit_in_byte" : 5,
                   "name" : "ig_md.remain1_lo",
                   "field_bit" : 13
                 },
                 {
-                  "byte_number" : 13,
+                  "byte_number" : 9,
                   "bit_in_byte" : 6,
                   "name" : "ig_md.remain1_lo",
                   "field_bit" : 14
                 },
                 {
-                  "byte_number" : 13,
+                  "byte_number" : 9,
                   "bit_in_byte" : 7,
                   "name" : "ig_md.remain1_lo",
                   "field_bit" : 15
                 },
                 {
-                  "byte_number" : 8,
+                  "byte_number" : 12,
                   "bit_in_byte" : 0,
                   "name" : "ig_md.remain1_hi",
                   "field_bit" : 0
                 },
                 {
-                  "byte_number" : 8,
+                  "byte_number" : 12,
                   "bit_in_byte" : 1,
                   "name" : "ig_md.remain1_hi",
                   "field_bit" : 1
                 },
                 {
-                  "byte_number" : 8,
+                  "byte_number" : 12,
                   "bit_in_byte" : 2,
                   "name" : "ig_md.remain1_hi",
                   "field_bit" : 2
                 },
                 {
-                  "byte_number" : 8,
+                  "byte_number" : 12,
                   "bit_in_byte" : 3,
                   "name" : "ig_md.remain1_hi",
                   "field_bit" : 3
                 },
                 {
-                  "byte_number" : 8,
+                  "byte_number" : 12,
                   "bit_in_byte" : 4,
                   "name" : "ig_md.remain1_hi",
                   "field_bit" : 4
                 },
                 {
-                  "byte_number" : 8,
+                  "byte_number" : 12,
                   "bit_in_byte" : 5,
                   "name" : "ig_md.remain1_hi",
                   "field_bit" : 5
                 },
                 {
-                  "byte_number" : 8,
+                  "byte_number" : 12,
                   "bit_in_byte" : 6,
                   "name" : "ig_md.remain1_hi",
                   "field_bit" : 6
                 },
                 {
-                  "byte_number" : 8,
+                  "byte_number" : 12,
                   "bit_in_byte" : 7,
                   "name" : "ig_md.remain1_hi",
                   "field_bit" : 7
                 },
                 {
-                  "byte_number" : 9,
+                  "byte_number" : 13,
                   "bit_in_byte" : 0,
                   "name" : "ig_md.remain1_hi",
                   "field_bit" : 8
                 },
                 {
-                  "byte_number" : 9,
+                  "byte_number" : 13,
                   "bit_in_byte" : 1,
                   "name" : "ig_md.remain1_hi",
                   "field_bit" : 9
                 },
                 {
-                  "byte_number" : 9,
+                  "byte_number" : 13,
                   "bit_in_byte" : 2,
                   "name" : "ig_md.remain1_hi",
                   "field_bit" : 10
                 },
                 {
-                  "byte_number" : 9,
+                  "byte_number" : 13,
                   "bit_in_byte" : 3,
                   "name" : "ig_md.remain1_hi",
                   "field_bit" : 11
                 },
                 {
-                  "byte_number" : 9,
+                  "byte_number" : 13,
                   "bit_in_byte" : 4,
                   "name" : "ig_md.remain1_hi",
                   "field_bit" : 12
                 },
                 {
-                  "byte_number" : 9,
+                  "byte_number" : 13,
                   "bit_in_byte" : 5,
                   "name" : "ig_md.remain1_hi",
                   "field_bit" : 13
                 },
                 {
-                  "byte_number" : 9,
+                  "byte_number" : 13,
                   "bit_in_byte" : 6,
                   "name" : "ig_md.remain1_hi",
                   "field_bit" : 14
                 },
                 {
-                  "byte_number" : 9,
+                  "byte_number" : 13,
                   "bit_in_byte" : 7,
                   "name" : "ig_md.remain1_hi",
                   "field_bit" : 15
@@ -1602,193 +1602,193 @@
               "stage_number" : 3,
               "crossbar" : [
                 {
-                  "byte_number" : 16,
+                  "byte_number" : 12,
                   "bit_in_byte" : 0,
                   "name" : "ig_md.remain1_lo",
                   "field_bit" : 0
                 },
                 {
-                  "byte_number" : 16,
+                  "byte_number" : 12,
                   "bit_in_byte" : 1,
                   "name" : "ig_md.remain1_lo",
                   "field_bit" : 1
                 },
                 {
-                  "byte_number" : 16,
+                  "byte_number" : 12,
                   "bit_in_byte" : 2,
                   "name" : "ig_md.remain1_lo",
                   "field_bit" : 2
                 },
                 {
-                  "byte_number" : 16,
+                  "byte_number" : 12,
                   "bit_in_byte" : 3,
                   "name" : "ig_md.remain1_lo",
                   "field_bit" : 3
                 },
                 {
-                  "byte_number" : 16,
+                  "byte_number" : 12,
                   "bit_in_byte" : 4,
                   "name" : "ig_md.remain1_lo",
                   "field_bit" : 4
                 },
                 {
-                  "byte_number" : 16,
+                  "byte_number" : 12,
                   "bit_in_byte" : 5,
                   "name" : "ig_md.remain1_lo",
                   "field_bit" : 5
                 },
                 {
-                  "byte_number" : 16,
+                  "byte_number" : 12,
                   "bit_in_byte" : 6,
                   "name" : "ig_md.remain1_lo",
                   "field_bit" : 6
                 },
                 {
-                  "byte_number" : 16,
+                  "byte_number" : 12,
                   "bit_in_byte" : 7,
                   "name" : "ig_md.remain1_lo",
                   "field_bit" : 7
                 },
                 {
-                  "byte_number" : 17,
+                  "byte_number" : 13,
                   "bit_in_byte" : 0,
                   "name" : "ig_md.remain1_lo",
                   "field_bit" : 8
                 },
                 {
-                  "byte_number" : 17,
+                  "byte_number" : 13,
                   "bit_in_byte" : 1,
                   "name" : "ig_md.remain1_lo",
                   "field_bit" : 9
                 },
                 {
-                  "byte_number" : 17,
+                  "byte_number" : 13,
                   "bit_in_byte" : 2,
                   "name" : "ig_md.remain1_lo",
                   "field_bit" : 10
                 },
                 {
-                  "byte_number" : 17,
+                  "byte_number" : 13,
                   "bit_in_byte" : 3,
                   "name" : "ig_md.remain1_lo",
                   "field_bit" : 11
                 },
                 {
-                  "byte_number" : 17,
+                  "byte_number" : 13,
                   "bit_in_byte" : 4,
                   "name" : "ig_md.remain1_lo",
                   "field_bit" : 12
                 },
                 {
-                  "byte_number" : 17,
+                  "byte_number" : 13,
                   "bit_in_byte" : 5,
                   "name" : "ig_md.remain1_lo",
                   "field_bit" : 13
                 },
                 {
-                  "byte_number" : 17,
+                  "byte_number" : 13,
                   "bit_in_byte" : 6,
                   "name" : "ig_md.remain1_lo",
                   "field_bit" : 14
                 },
                 {
-                  "byte_number" : 17,
+                  "byte_number" : 13,
                   "bit_in_byte" : 7,
                   "name" : "ig_md.remain1_lo",
                   "field_bit" : 15
                 },
                 {
-                  "byte_number" : 20,
+                  "byte_number" : 8,
                   "bit_in_byte" : 0,
                   "name" : "ig_md.remain1_hi",
                   "field_bit" : 0
                 },
                 {
-                  "byte_number" : 20,
+                  "byte_number" : 8,
                   "bit_in_byte" : 1,
                   "name" : "ig_md.remain1_hi",
                   "field_bit" : 1
                 },
                 {
-                  "byte_number" : 20,
+                  "byte_number" : 8,
                   "bit_in_byte" : 2,
                   "name" : "ig_md.remain1_hi",
                   "field_bit" : 2
                 },
                 {
-                  "byte_number" : 20,
+                  "byte_number" : 8,
                   "bit_in_byte" : 3,
                   "name" : "ig_md.remain1_hi",
                   "field_bit" : 3
                 },
                 {
-                  "byte_number" : 20,
+                  "byte_number" : 8,
                   "bit_in_byte" : 4,
                   "name" : "ig_md.remain1_hi",
                   "field_bit" : 4
                 },
                 {
-                  "byte_number" : 20,
+                  "byte_number" : 8,
                   "bit_in_byte" : 5,
                   "name" : "ig_md.remain1_hi",
                   "field_bit" : 5
                 },
                 {
-                  "byte_number" : 20,
+                  "byte_number" : 8,
                   "bit_in_byte" : 6,
                   "name" : "ig_md.remain1_hi",
                   "field_bit" : 6
                 },
                 {
-                  "byte_number" : 20,
+                  "byte_number" : 8,
                   "bit_in_byte" : 7,
                   "name" : "ig_md.remain1_hi",
                   "field_bit" : 7
                 },
                 {
-                  "byte_number" : 21,
+                  "byte_number" : 9,
                   "bit_in_byte" : 0,
                   "name" : "ig_md.remain1_hi",
                   "field_bit" : 8
                 },
                 {
-                  "byte_number" : 21,
+                  "byte_number" : 9,
                   "bit_in_byte" : 1,
                   "name" : "ig_md.remain1_hi",
                   "field_bit" : 9
                 },
                 {
-                  "byte_number" : 21,
+                  "byte_number" : 9,
                   "bit_in_byte" : 2,
                   "name" : "ig_md.remain1_hi",
                   "field_bit" : 10
                 },
                 {
-                  "byte_number" : 21,
+                  "byte_number" : 9,
                   "bit_in_byte" : 3,
                   "name" : "ig_md.remain1_hi",
                   "field_bit" : 11
                 },
                 {
-                  "byte_number" : 21,
+                  "byte_number" : 9,
                   "bit_in_byte" : 4,
                   "name" : "ig_md.remain1_hi",
                   "field_bit" : 12
                 },
                 {
-                  "byte_number" : 21,
+                  "byte_number" : 9,
                   "bit_in_byte" : 5,
                   "name" : "ig_md.remain1_hi",
                   "field_bit" : 13
                 },
                 {
-                  "byte_number" : 21,
+                  "byte_number" : 9,
                   "bit_in_byte" : 6,
                   "name" : "ig_md.remain1_hi",
                   "field_bit" : 14
                 },
                 {
-                  "byte_number" : 21,
+                  "byte_number" : 9,
                   "bit_in_byte" : 7,
                   "name" : "ig_md.remain1_hi",
                   "field_bit" : 15
@@ -1881,7 +1881,7 @@
         {
           "stage_number" : 3,
           "hash" : {
-            "hash_id" : 2,
+            "hash_id" : 1,
             "num_hash_bits" : 16,
             "hash_bits" : [
               {
@@ -2203,193 +2203,193 @@
               "stage_number" : 5,
               "crossbar" : [
                 {
-                  "byte_number" : 16,
+                  "byte_number" : 8,
                   "bit_in_byte" : 0,
                   "name" : "ig_md.remain2_lo",
                   "field_bit" : 0
                 },
                 {
-                  "byte_number" : 16,
+                  "byte_number" : 8,
                   "bit_in_byte" : 1,
                   "name" : "ig_md.remain2_lo",
                   "field_bit" : 1
                 },
                 {
-                  "byte_number" : 16,
+                  "byte_number" : 8,
                   "bit_in_byte" : 2,
                   "name" : "ig_md.remain2_lo",
                   "field_bit" : 2
                 },
                 {
-                  "byte_number" : 16,
+                  "byte_number" : 8,
                   "bit_in_byte" : 3,
                   "name" : "ig_md.remain2_lo",
                   "field_bit" : 3
                 },
                 {
-                  "byte_number" : 16,
+                  "byte_number" : 8,
                   "bit_in_byte" : 4,
                   "name" : "ig_md.remain2_lo",
                   "field_bit" : 4
                 },
                 {
-                  "byte_number" : 16,
+                  "byte_number" : 8,
                   "bit_in_byte" : 5,
                   "name" : "ig_md.remain2_lo",
                   "field_bit" : 5
                 },
                 {
-                  "byte_number" : 16,
+                  "byte_number" : 8,
                   "bit_in_byte" : 6,
                   "name" : "ig_md.remain2_lo",
                   "field_bit" : 6
                 },
                 {
-                  "byte_number" : 16,
+                  "byte_number" : 8,
                   "bit_in_byte" : 7,
                   "name" : "ig_md.remain2_lo",
                   "field_bit" : 7
                 },
                 {
-                  "byte_number" : 17,
+                  "byte_number" : 9,
                   "bit_in_byte" : 0,
                   "name" : "ig_md.remain2_lo",
                   "field_bit" : 8
                 },
                 {
-                  "byte_number" : 17,
+                  "byte_number" : 9,
                   "bit_in_byte" : 1,
                   "name" : "ig_md.remain2_lo",
                   "field_bit" : 9
                 },
                 {
-                  "byte_number" : 17,
+                  "byte_number" : 9,
                   "bit_in_byte" : 2,
                   "name" : "ig_md.remain2_lo",
                   "field_bit" : 10
                 },
                 {
-                  "byte_number" : 17,
+                  "byte_number" : 9,
                   "bit_in_byte" : 3,
                   "name" : "ig_md.remain2_lo",
                   "field_bit" : 11
                 },
                 {
-                  "byte_number" : 17,
+                  "byte_number" : 9,
                   "bit_in_byte" : 4,
                   "name" : "ig_md.remain2_lo",
                   "field_bit" : 12
                 },
                 {
-                  "byte_number" : 17,
+                  "byte_number" : 9,
                   "bit_in_byte" : 5,
                   "name" : "ig_md.remain2_lo",
                   "field_bit" : 13
                 },
                 {
-                  "byte_number" : 17,
+                  "byte_number" : 9,
                   "bit_in_byte" : 6,
                   "name" : "ig_md.remain2_lo",
                   "field_bit" : 14
                 },
                 {
-                  "byte_number" : 17,
+                  "byte_number" : 9,
                   "bit_in_byte" : 7,
                   "name" : "ig_md.remain2_lo",
                   "field_bit" : 15
                 },
                 {
-                  "byte_number" : 20,
+                  "byte_number" : 12,
                   "bit_in_byte" : 0,
                   "name" : "ig_md.remain2_hi",
                   "field_bit" : 0
                 },
                 {
-                  "byte_number" : 20,
+                  "byte_number" : 12,
                   "bit_in_byte" : 1,
                   "name" : "ig_md.remain2_hi",
                   "field_bit" : 1
                 },
                 {
-                  "byte_number" : 20,
+                  "byte_number" : 12,
                   "bit_in_byte" : 2,
                   "name" : "ig_md.remain2_hi",
                   "field_bit" : 2
                 },
                 {
-                  "byte_number" : 20,
+                  "byte_number" : 12,
                   "bit_in_byte" : 3,
                   "name" : "ig_md.remain2_hi",
                   "field_bit" : 3
                 },
                 {
-                  "byte_number" : 20,
+                  "byte_number" : 12,
                   "bit_in_byte" : 4,
                   "name" : "ig_md.remain2_hi",
                   "field_bit" : 4
                 },
                 {
-                  "byte_number" : 20,
+                  "byte_number" : 12,
                   "bit_in_byte" : 5,
                   "name" : "ig_md.remain2_hi",
                   "field_bit" : 5
                 },
                 {
-                  "byte_number" : 20,
+                  "byte_number" : 12,
                   "bit_in_byte" : 6,
                   "name" : "ig_md.remain2_hi",
                   "field_bit" : 6
                 },
                 {
-                  "byte_number" : 20,
+                  "byte_number" : 12,
                   "bit_in_byte" : 7,
                   "name" : "ig_md.remain2_hi",
                   "field_bit" : 7
                 },
                 {
-                  "byte_number" : 21,
+                  "byte_number" : 13,
                   "bit_in_byte" : 0,
                   "name" : "ig_md.remain2_hi",
                   "field_bit" : 8
                 },
                 {
-                  "byte_number" : 21,
+                  "byte_number" : 13,
                   "bit_in_byte" : 1,
                   "name" : "ig_md.remain2_hi",
                   "field_bit" : 9
                 },
                 {
-                  "byte_number" : 21,
+                  "byte_number" : 13,
                   "bit_in_byte" : 2,
                   "name" : "ig_md.remain2_hi",
                   "field_bit" : 10
                 },
                 {
-                  "byte_number" : 21,
+                  "byte_number" : 13,
                   "bit_in_byte" : 3,
                   "name" : "ig_md.remain2_hi",
                   "field_bit" : 11
                 },
                 {
-                  "byte_number" : 21,
+                  "byte_number" : 13,
                   "bit_in_byte" : 4,
                   "name" : "ig_md.remain2_hi",
                   "field_bit" : 12
                 },
                 {
-                  "byte_number" : 21,
+                  "byte_number" : 13,
                   "bit_in_byte" : 5,
                   "name" : "ig_md.remain2_hi",
                   "field_bit" : 13
                 },
                 {
-                  "byte_number" : 21,
+                  "byte_number" : 13,
                   "bit_in_byte" : 6,
                   "name" : "ig_md.remain2_hi",
                   "field_bit" : 14
                 },
                 {
-                  "byte_number" : 21,
+                  "byte_number" : 13,
                   "bit_in_byte" : 7,
                   "name" : "ig_md.remain2_hi",
                   "field_bit" : 15
@@ -2482,7 +2482,7 @@
         {
           "stage_number" : 5,
           "hash" : {
-            "hash_id" : 2,
+            "hash_id" : 1,
             "num_hash_bits" : 16,
             "hash_bits" : [
               {
@@ -2804,193 +2804,193 @@
               "stage_number" : 7,
               "crossbar" : [
                 {
-                  "byte_number" : 16,
+                  "byte_number" : 8,
                   "bit_in_byte" : 0,
                   "name" : "ig_md.remain3_lo",
                   "field_bit" : 0
                 },
                 {
-                  "byte_number" : 16,
+                  "byte_number" : 8,
                   "bit_in_byte" : 1,
                   "name" : "ig_md.remain3_lo",
                   "field_bit" : 1
                 },
                 {
-                  "byte_number" : 16,
+                  "byte_number" : 8,
                   "bit_in_byte" : 2,
                   "name" : "ig_md.remain3_lo",
                   "field_bit" : 2
                 },
                 {
-                  "byte_number" : 16,
+                  "byte_number" : 8,
                   "bit_in_byte" : 3,
                   "name" : "ig_md.remain3_lo",
                   "field_bit" : 3
                 },
                 {
-                  "byte_number" : 16,
+                  "byte_number" : 8,
                   "bit_in_byte" : 4,
                   "name" : "ig_md.remain3_lo",
                   "field_bit" : 4
                 },
                 {
-                  "byte_number" : 16,
+                  "byte_number" : 8,
                   "bit_in_byte" : 5,
                   "name" : "ig_md.remain3_lo",
                   "field_bit" : 5
                 },
                 {
-                  "byte_number" : 16,
+                  "byte_number" : 8,
                   "bit_in_byte" : 6,
                   "name" : "ig_md.remain3_lo",
                   "field_bit" : 6
                 },
                 {
-                  "byte_number" : 16,
+                  "byte_number" : 8,
                   "bit_in_byte" : 7,
                   "name" : "ig_md.remain3_lo",
                   "field_bit" : 7
                 },
                 {
-                  "byte_number" : 17,
+                  "byte_number" : 9,
                   "bit_in_byte" : 0,
                   "name" : "ig_md.remain3_lo",
                   "field_bit" : 8
                 },
                 {
-                  "byte_number" : 17,
+                  "byte_number" : 9,
                   "bit_in_byte" : 1,
                   "name" : "ig_md.remain3_lo",
                   "field_bit" : 9
                 },
                 {
-                  "byte_number" : 17,
+                  "byte_number" : 9,
                   "bit_in_byte" : 2,
                   "name" : "ig_md.remain3_lo",
                   "field_bit" : 10
                 },
                 {
-                  "byte_number" : 17,
+                  "byte_number" : 9,
                   "bit_in_byte" : 3,
                   "name" : "ig_md.remain3_lo",
                   "field_bit" : 11
                 },
                 {
-                  "byte_number" : 17,
+                  "byte_number" : 9,
                   "bit_in_byte" : 4,
                   "name" : "ig_md.remain3_lo",
                   "field_bit" : 12
                 },
                 {
-                  "byte_number" : 17,
+                  "byte_number" : 9,
                   "bit_in_byte" : 5,
                   "name" : "ig_md.remain3_lo",
                   "field_bit" : 13
                 },
                 {
-                  "byte_number" : 17,
+                  "byte_number" : 9,
                   "bit_in_byte" : 6,
                   "name" : "ig_md.remain3_lo",
                   "field_bit" : 14
                 },
                 {
-                  "byte_number" : 17,
+                  "byte_number" : 9,
                   "bit_in_byte" : 7,
                   "name" : "ig_md.remain3_lo",
                   "field_bit" : 15
                 },
                 {
-                  "byte_number" : 20,
+                  "byte_number" : 12,
                   "bit_in_byte" : 0,
                   "name" : "ig_md.remain3_hi",
                   "field_bit" : 0
                 },
                 {
-                  "byte_number" : 20,
+                  "byte_number" : 12,
                   "bit_in_byte" : 1,
                   "name" : "ig_md.remain3_hi",
                   "field_bit" : 1
                 },
                 {
-                  "byte_number" : 20,
+                  "byte_number" : 12,
                   "bit_in_byte" : 2,
                   "name" : "ig_md.remain3_hi",
                   "field_bit" : 2
                 },
                 {
-                  "byte_number" : 20,
+                  "byte_number" : 12,
                   "bit_in_byte" : 3,
                   "name" : "ig_md.remain3_hi",
                   "field_bit" : 3
                 },
                 {
-                  "byte_number" : 20,
+                  "byte_number" : 12,
                   "bit_in_byte" : 4,
                   "name" : "ig_md.remain3_hi",
                   "field_bit" : 4
                 },
                 {
-                  "byte_number" : 20,
+                  "byte_number" : 12,
                   "bit_in_byte" : 5,
                   "name" : "ig_md.remain3_hi",
                   "field_bit" : 5
                 },
                 {
-                  "byte_number" : 20,
+                  "byte_number" : 12,
                   "bit_in_byte" : 6,
                   "name" : "ig_md.remain3_hi",
                   "field_bit" : 6
                 },
                 {
-                  "byte_number" : 20,
+                  "byte_number" : 12,
                   "bit_in_byte" : 7,
                   "name" : "ig_md.remain3_hi",
                   "field_bit" : 7
                 },
                 {
-                  "byte_number" : 21,
+                  "byte_number" : 13,
                   "bit_in_byte" : 0,
                   "name" : "ig_md.remain3_hi",
                   "field_bit" : 8
                 },
                 {
-                  "byte_number" : 21,
+                  "byte_number" : 13,
                   "bit_in_byte" : 1,
                   "name" : "ig_md.remain3_hi",
                   "field_bit" : 9
                 },
                 {
-                  "byte_number" : 21,
+                  "byte_number" : 13,
                   "bit_in_byte" : 2,
                   "name" : "ig_md.remain3_hi",
                   "field_bit" : 10
                 },
                 {
-                  "byte_number" : 21,
+                  "byte_number" : 13,
                   "bit_in_byte" : 3,
                   "name" : "ig_md.remain3_hi",
                   "field_bit" : 11
                 },
                 {
-                  "byte_number" : 21,
+                  "byte_number" : 13,
                   "bit_in_byte" : 4,
                   "name" : "ig_md.remain3_hi",
                   "field_bit" : 12
                 },
                 {
-                  "byte_number" : 21,
+                  "byte_number" : 13,
                   "bit_in_byte" : 5,
                   "name" : "ig_md.remain3_hi",
                   "field_bit" : 13
                 },
                 {
-                  "byte_number" : 21,
+                  "byte_number" : 13,
                   "bit_in_byte" : 6,
                   "name" : "ig_md.remain3_hi",
                   "field_bit" : 14
                 },
                 {
-                  "byte_number" : 21,
+                  "byte_number" : 13,
                   "bit_in_byte" : 7,
                   "name" : "ig_md.remain3_hi",
                   "field_bit" : 15
@@ -3083,7 +3083,7 @@
         {
           "stage_number" : 7,
           "hash" : {
-            "hash_id" : 2,
+            "hash_id" : 1,
             "num_hash_bits" : 16,
             "hash_bits" : [
               {

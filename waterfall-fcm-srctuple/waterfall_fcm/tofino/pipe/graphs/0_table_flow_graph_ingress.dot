@@ -13,7 +13,7 @@ swap1_hi_0 [ shape=record, style="filled", fillcolor=cornsilk, label="swap1_hi_0
 M:\l
  ig_intr_md.resubmit_flag\l
 \lR:\l
- ig_md.resubmit_md.remain\l
+ ig_md.resubmit_md.remain_hi\l
  hdr.ipv4.src_addr\l
 \lW:\l
  ig_md.remain1_hi\l
@@ -23,11 +23,22 @@ swap1_lo_0 [ shape=record, style="filled", fillcolor=cornsilk, label="swap1_lo_0
 M:\l
  ig_intr_md.resubmit_flag\l
 \lR:\l
- ig_md.resubmit_md.remain\l
+ ig_md.resubmit_md.remain_lo\l
  hdr.ipv4.src_addr\l
 \lW:\l
- ig_intr_md_for_dprsr.digest_type\l
  ig_md.remain1_lo\l
+ ig_md.found_lo\l
+ "];
+swap2_lo_0 [ shape=record, style="filled", fillcolor=cornsilk, label="swap2_lo_0\l\l
+M:\l
+ ig_intr_md.resubmit_flag\l
+ ig_md.found_hi\l
+ ig_md.found_lo\l
+\lR:\l
+ ig_md.remain1_lo\l
+ hdr.ipv4.src_addr\l
+\lW:\l
+ ig_md.remain2_lo\l
  ig_md.found_lo\l
  "];
 swap2_hi_0 [ shape=record, style="filled", fillcolor=cornsilk, label="swap2_hi_0\l\l
@@ -41,18 +52,6 @@ M:\l
 \lW:\l
  ig_md.remain2_hi\l
  ig_md.found_hi\l
- "];
-swap2_lo_0 [ shape=record, style="filled", fillcolor=cornsilk, label="swap2_lo_0\l\l
-M:\l
- ig_intr_md.resubmit_flag\l
- ig_md.found_hi\l
- ig_md.found_lo\l
-\lR:\l
- ig_md.remain1_lo\l
- hdr.ipv4.src_addr\l
-\lW:\l
- ig_md.remain2_lo\l
- ig_md.found_lo\l
  "];
 swap3_hi_0 [ shape=record, style="filled", fillcolor=cornsilk, label="swap3_hi_0\l\l
 M:\l
@@ -110,14 +109,16 @@ M:\l
 \lW:\l
  ig_intr_md_for_dprsr.resubmit_type\l
  ig_md.resubmit_md.type\l
- ig_md.resubmit_md.remain\l
+ ig_md.resubmit_md.remain_hi\l
+ ig_md.resubmit_md.remain_lo\l
+ ig_intr_md_for_dprsr.digest_type\l
  "];
     PARSER -> forward_0
     forward_0 -> swap1_hi_0
     swap1_hi_0 -> swap1_lo_0
-    swap1_lo_0 -> swap2_hi_0
-    swap2_hi_0 -> swap2_lo_0
-    swap2_lo_0 -> swap3_hi_0
+    swap1_lo_0 -> swap2_lo_0
+    swap2_lo_0 -> swap2_hi_0
+    swap2_hi_0 -> swap3_hi_0
     swap3_hi_0 -> swap3_lo_0
     swap3_lo_0 -> swap4_hi_0
     swap4_hi_0 -> swap4_lo_0

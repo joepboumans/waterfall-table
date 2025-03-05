@@ -1,6 +1,3 @@
-ingress::parse_ipv4 is split into 2 states:
-  ingress::parse_ipv4
-  ingress::parse_ipv4.$split_0
 ingress::parse_ethernet is split into 2 states:
   ingress::parse_ethernet
   ingress::parse_ethernet.$split_0
@@ -24,7 +21,7 @@ egress::start is split into 2 states:
   egress::start.$split_0
 allocated { $byte1 } to {  [ ingress::start : inbuf bit[0] ig_intr_md.resubmit_flag; ] }
 allocated { $half } to {  [ ingress::parse_ethernet.$split_0 : inbuf bit[0..15] hdr.ethernet/ethernet.ether_type; ] }
-allocated { $byte1 } to {  [ ingress::parse_ipv4.$split_0 : inbuf bit[-56..-49] hdr.ipv4/ipv4.protocol; ] }
+allocated { $byte1 } to {  [ ingress::parse_ipv4 : inbuf bit[72..79] hdr.ipv4/ipv4.protocol; ] }
 allocated { $half } to {  [ egress::start.$split_0 : inbuf bit[80..95] hdr.ethernet/ethernet.ether_type; ] }
 allocated { $byte1 } to {  [ egress::parse_ipv4 : inbuf bit[72..79] hdr.ipv4/ipv4.protocol; ] }
 allocated { $half } to {  [ egress::parse_tcp.$split_0 : inbuf bit[-304..-289] hdr.ipv4/ipv4.total_len; ] }
@@ -71,7 +68,8 @@ ComputeLoweredParserIR preorder on Header : header tcp_h {
   bit<16> urgent_ptr; }
 ComputeLoweredParserIR preorder on Header : header resubmit_md_t {
   bit<8> type;
-  bit<32> remain;
+  bit<16> remain_hi;
+  bit<16> remain_lo;
   @padding @overlayable bit<24> __pad_0; }
 ComputeLoweredParserIR preorder on Header : header egress_intrinsic_metadata_t @__intrinsic_metadata {
   @padding @__intrinsic_metadata bit<7> _pad0;

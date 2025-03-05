@@ -4,6 +4,7 @@ from collections import namedtuple
 from math import radians
 import random
 import time
+import re
 
 from ptf import config
 import ptf.testutils as testutils
@@ -122,13 +123,25 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         logger.info("...cleared all tables")
 
     def addSwapEntry(self, table, name):
-        num = name.replace("swap", "")
-        key = table.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0), gc.KeyTuple('ig_md.found_hi', False), gc.KeyTuple('ig_md.found_lo', False)])
-        data = table.make_data([], f"WaterfallIngress.lookup{num}")
-        table.entry_add(self.target, [key], [data])
+        num_loc = name.replace("swap", "")
+        num = int(re.search(r'\d+', name).group())
+
+        if num == 1:
+            key = table.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0)])
+            data = table.make_data([], f"WaterfallIngress.lookup{num_loc}")
+            table.entry_add(self.target, [key], [data])
+        else:
+            for i in range(0, num + 1):
+                for j in range(0, num + 1):
+                    if j == i:
+                        continue
+
+                    key = table.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0), gc.KeyTuple('ig_md.found_hi', i), gc.KeyTuple('ig_md.found_lo', j)])
+                    data = table.make_data([], f"WaterfallIngress.lookup{num_loc}")
+                    table.entry_add(self.target, [key], [data])
 
         key = table.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
-        data = table.make_data([], f"WaterfallIngress.do_swap{num}")
+        data = table.make_data([], f"WaterfallIngress.do_swap{num_loc}")
         table.entry_add(self.target, [key], [data])
 
     def resetWaterfall(self):
@@ -223,20 +236,12 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
 
         resub = self.resub
         # Only resubmit if both are found
-        key = resub.make_key([gc.KeyTuple('ig_md.found_hi', False), gc.KeyTuple('ig_md.found_lo', False)])
-        data = resub.make_data([], "WaterfallIngress.resubmit_hdr")
-        resub.entry_add(target, [key], [data])
+        for i in range(1, 5):
+            key = resub.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', False), gc.KeyTuple('ig_md.found_hi', i), gc.KeyTuple('ig_md.found_lo', i)])
+            data = resub.make_data([], "WaterfallIngress.no_action")
+            resub.entry_add(target, [key], [data])
 
-        key = resub.make_key([gc.KeyTuple('ig_md.found_hi', True), gc.KeyTuple('ig_md.found_lo', True)])
-        data = resub.make_data([], "WaterfallIngress.no_action")
-        resub.entry_add(target, [key], [data])
-
-
-        key = resub.make_key([gc.KeyTuple('ig_md.found_hi', True), gc.KeyTuple('ig_md.found_lo', False)])
-        data = resub.make_data([], "WaterfallIngress.no_action")
-        resub.entry_add(target, [key], [data])
-
-        key = resub.make_key([gc.KeyTuple('ig_md.found_hi', False), gc.KeyTuple('ig_md.found_lo', True)])
+        key = resub.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', True)])
         data = resub.make_data([], "WaterfallIngress.no_action")
         resub.entry_add(target, [key], [data])
 
@@ -257,13 +262,13 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
         logger.info(f"Start sending {num_entries_src } entries")
         for src_ip in src_ip_list:
             src_addr = getattr(src_ip, "ip")
+            logger.info(f"Sending {src_addr}")
             src_port = random.randrange(0, 0xFFFF)
             dst_port = random.randrange(0, 0xFFFF)
             flow_size = int(min(MAX_FLOW_SIZE, max(MAX_FLOW_SIZE * abs(random.gauss(mu=0, sigma=0.0001)), 1.0)))
 
             pkt_in = testutils.simple_tcp_packet(ip_src=src_addr, tcp_sport=src_port, tcp_dport=dst_port)
             testutils.send_packet(self, ig_port, pkt_in, count=flow_size)
-            # testutils.verify_packet(self, pkt_in, hwports[ig_port])
             testutils.verify_packet(self, pkt_in, eg_port)
             total_pkts_sends += flow_size
 
@@ -277,7 +282,10 @@ class WaterfallFcmUnitTests(BfRuntimeTest):
             print(f"Sent {flow_size} pkts with total {total_pkts_sends}", flush=True)
 
         logger.info(f"...done sending {total_pkts_sends} packets send")
-        ''' TC:3 Look for data in digest'''
+        # ''' TC:3 Look for data in digest'''
+        # for key, table in self.table_dict.items():
+        #     self.evaluate_table(self.table_dict, key)
+
         tuples = self.evaluate_digest(num_entries_src)
 
         register_pktcount = self.num_pkt

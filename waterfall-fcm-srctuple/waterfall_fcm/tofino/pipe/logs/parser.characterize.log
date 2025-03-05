@@ -1,16 +1,15 @@
 Parser Characterization Report:
-Number of states on ingress: 9
+Number of states on ingress: 8
 
-Number of matches on ingress: 13
+Number of matches on ingress: 12
 
-Longest path (8 states) on ingress:
+Longest path (7 states) on ingress:
     $entry_point
     start
     parse_resubmit
     parse_ethernet
     parse_ethernet.$split_0
     parse_ipv4
-    parse_ipv4.$split_0
     parse_udp
 
 Shortest path (4 states) on ingress:
@@ -19,25 +18,22 @@ Shortest path (4 states) on ingress:
     parse_ethernet
     parse_ethernet.$split_0
 
-Average rate: 9.125 Bps
-Min packet size at 100 Gbps: 82 B (9 B payload)
-Max data rate for min-sized packets: 89.06 Gbps / 152.5 MPps
+Timing is met for min-sized packet (73 B) running at 100 Gbps
 
 Extractor usage:
 +-------------------------+------------+-------+--------+--------+------------------+-------+
 |State                    |Match       |8-bit  |16-bit  |32-bit  |Total Extractors  |Other  |
 +-------------------------+------------+-------+--------+--------+------------------+-------+
 |$entry_point             |*           |0      |0       |0       |0                 |       |
-|start                    |0b0*******  |0      |1       |0       |1                 |       |
-|-                        |0b1*******  |0      |1       |0       |1                 |       |
-|parse_resubmit           |*           |1      |0       |1       |2                 |       |
+|start                    |0b0*******  |1      |1       |0       |2                 |       |
+|-                        |0b1*******  |1      |1       |0       |2                 |       |
+|parse_resubmit           |*           |1      |2       |0       |3                 |       |
 |parse_ethernet           |*           |4      |4       |0       |8                 |       |
 |parse_ethernet.$split_0  |0x0800      |1      |1       |0       |2                 |       |
 |-                        |0x****      |1      |1       |0       |2                 |       |
-|parse_ipv4               |*           |1      |0       |4       |5                 |       |
-|parse_ipv4.$split_0      |0x11        |0      |0       |1       |1                 |       |
-|-                        |0x06        |0      |0       |1       |1                 |       |
-|-                        |0x**        |0      |0       |1       |1                 |       |
+|parse_ipv4               |0x11        |1      |2       |4       |7                 |       |
+|-                        |0x06        |1      |2       |4       |7                 |       |
+|-                        |0x**        |1      |2       |4       |7                 |       |
 |parse_tcp                |*           |1      |4       |3       |8                 |       |
 |parse_udp                |*           |1      |2       |1       |4                 |       |
 +-------------------------+------------+-------+--------+--------+------------------+-------+

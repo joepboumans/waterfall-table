@@ -5,10 +5,10 @@ ingress: [3] 0 00 000 0000 00000 000000 0000000 00000000 000000000
     stateful WaterfallIngress.table_1_hi  66K
   swap1_lo_0
     stateful WaterfallIngress.table_1_lo  66K
-  swap2_hi_0
-    stateful WaterfallIngress.table_2_hi  66K
   swap2_lo_0
     stateful WaterfallIngress.table_2_lo  66K
+  swap2_hi_0
+    stateful WaterfallIngress.table_2_hi  66K
   swap3_hi_0
     stateful WaterfallIngress.table_3_hi  66K
   swap3_lo_0
@@ -42,8 +42,8 @@ egress: [4] 0 00 000 0000 00000 000000 0000000 00000000 000000000 0000000000 000
 DepStagesThruDomFrontier postorder : forward_0
 DepStagesThruDomFrontier postorder : swap1_hi_0
 DepStagesThruDomFrontier postorder : swap1_lo_0
-DepStagesThruDomFrontier postorder : swap2_hi_0
 DepStagesThruDomFrontier postorder : swap2_lo_0
+DepStagesThruDomFrontier postorder : swap2_hi_0
 DepStagesThruDomFrontier postorder : swap3_hi_0
 DepStagesThruDomFrontier postorder : swap3_lo_0
 DepStagesThruDomFrontier postorder : swap4_hi_0
@@ -67,25 +67,25 @@ DepStagesThruDomFrontier postorder : tbl_fcm386
 GRAPH
     forward_0 -- OUTPUT --> swap1_hi_0
     forward_0 -- OUTPUT --> swap1_lo_0
+    forward_0 -- IXBAR_READ --> swap2_lo_0
+    swap1_hi_0 -- IXBAR_READ --> swap2_lo_0
+    swap1_lo_0 -- IXBAR_READ --> swap2_lo_0
+    forward_0 -- OUTPUT --> swap2_lo_0
+    swap1_lo_0 -- OUTPUT --> swap2_lo_0
     forward_0 -- IXBAR_READ --> swap2_hi_0
     swap1_hi_0 -- IXBAR_READ --> swap2_hi_0
     swap1_lo_0 -- IXBAR_READ --> swap2_hi_0
+    swap2_lo_0 -- IXBAR_READ --> swap2_hi_0
+    swap2_lo_0 -- ANTI_ACTION_READ --> swap2_hi_0
     forward_0 -- OUTPUT --> swap2_hi_0
     swap1_hi_0 -- OUTPUT --> swap2_hi_0
-    forward_0 -- IXBAR_READ --> swap2_lo_0
-    swap1_hi_0 -- IXBAR_READ --> swap2_lo_0
-    swap2_hi_0 -- IXBAR_READ --> swap2_lo_0
-    swap1_lo_0 -- IXBAR_READ --> swap2_lo_0
-    swap2_hi_0 -- ANTI_ACTION_READ --> swap2_lo_0
-    forward_0 -- OUTPUT --> swap2_lo_0
-    swap1_lo_0 -- OUTPUT --> swap2_lo_0
     forward_0 -- IXBAR_READ --> swap3_hi_0
     swap1_hi_0 -- IXBAR_READ --> swap3_hi_0
     swap2_hi_0 -- IXBAR_READ --> swap3_hi_0
     swap1_lo_0 -- IXBAR_READ --> swap3_hi_0
     swap2_lo_0 -- IXBAR_READ --> swap3_hi_0
-    swap2_hi_0 -- ANTI_ACTION_READ --> swap3_hi_0
     swap2_lo_0 -- ANTI_ACTION_READ --> swap3_hi_0
+    swap2_hi_0 -- ANTI_ACTION_READ --> swap3_hi_0
     forward_0 -- OUTPUT --> swap3_hi_0
     swap1_hi_0 -- OUTPUT --> swap3_hi_0
     swap2_hi_0 -- OUTPUT --> swap3_hi_0
@@ -95,8 +95,8 @@ GRAPH
     swap3_hi_0 -- IXBAR_READ --> swap3_lo_0
     swap1_lo_0 -- IXBAR_READ --> swap3_lo_0
     swap2_lo_0 -- IXBAR_READ --> swap3_lo_0
-    swap2_hi_0 -- ANTI_ACTION_READ --> swap3_lo_0
     swap2_lo_0 -- ANTI_ACTION_READ --> swap3_lo_0
+    swap2_hi_0 -- ANTI_ACTION_READ --> swap3_lo_0
     swap3_hi_0 -- ANTI_ACTION_READ --> swap3_lo_0
     forward_0 -- OUTPUT --> swap3_lo_0
     swap1_lo_0 -- OUTPUT --> swap3_lo_0
@@ -108,8 +108,8 @@ GRAPH
     swap1_lo_0 -- IXBAR_READ --> swap4_hi_0
     swap2_lo_0 -- IXBAR_READ --> swap4_hi_0
     swap3_lo_0 -- IXBAR_READ --> swap4_hi_0
-    swap2_hi_0 -- ANTI_ACTION_READ --> swap4_hi_0
     swap2_lo_0 -- ANTI_ACTION_READ --> swap4_hi_0
+    swap2_hi_0 -- ANTI_ACTION_READ --> swap4_hi_0
     swap3_hi_0 -- ANTI_ACTION_READ --> swap4_hi_0
     swap3_lo_0 -- ANTI_ACTION_READ --> swap4_hi_0
     forward_0 -- OUTPUT --> swap4_hi_0
@@ -124,8 +124,8 @@ GRAPH
     swap1_lo_0 -- IXBAR_READ --> swap4_lo_0
     swap2_lo_0 -- IXBAR_READ --> swap4_lo_0
     swap3_lo_0 -- IXBAR_READ --> swap4_lo_0
-    swap2_hi_0 -- ANTI_ACTION_READ --> swap4_lo_0
     swap2_lo_0 -- ANTI_ACTION_READ --> swap4_lo_0
+    swap2_hi_0 -- ANTI_ACTION_READ --> swap4_lo_0
     swap3_hi_0 -- ANTI_ACTION_READ --> swap4_lo_0
     swap3_lo_0 -- ANTI_ACTION_READ --> swap4_lo_0
     swap4_hi_0 -- ANTI_ACTION_READ --> swap4_lo_0
@@ -179,28 +179,28 @@ GRAPH
     swap3_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
     swap3_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
     swap3_hi_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
-    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
-    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
-    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
-    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
-    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
-    swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap2_lo_0
     swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
     swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
     swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
     swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
     swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
     fcmsketch_tb_fcm_l1_to_l2_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d1
     fcmsketch_tb_fcm_l1_to_l2_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d2
-    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
     swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap2_lo_0
+    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
     swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
     swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
     swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
     swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
     swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
-    swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
     swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap2_lo_0
+    swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
     swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
     swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
     swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
@@ -212,8 +212,8 @@ GRAPH
     tbl_fcmsketch_fcm_action_l1_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d2
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap1_hi_0
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap1_lo_0
-    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap2_lo_0
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
@@ -249,10 +249,10 @@ MIN STAGE INFO
      tbl_fcmsketch_fcm_action_l1_d2 2 2
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_hash_d2
  Stage #2
-     swap2_hi_0 6 6
+     swap2_lo_0 6 6
 	- Edge IXBAR_READ swap1_hi_0
 	- Edge IXBAR_READ swap1_lo_0
-	- Edge OUTPUT swap1_hi_0
+	- Edge OUTPUT swap1_lo_0
      fcmsketch_tb_fcm_l1_to_l2_d1 1 1
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_action_l1_d1
 	- Edge OUTPUT tbl_fcmsketch_fcm_action_l1_d1
@@ -260,8 +260,8 @@ MIN STAGE INFO
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_action_l1_d2
 	- Edge OUTPUT tbl_fcmsketch_fcm_action_l1_d2
  Stage #3
-     swap2_lo_0 5 5
-	- Edge IXBAR_READ swap2_hi_0
+     swap2_hi_0 5 5
+	- Edge IXBAR_READ swap2_lo_0
      fcmsketch_tb_fcm_l2_to_l3_d1 0 0
 	- Edge IXBAR_READ fcmsketch_tb_fcm_l1_to_l2_d1
 	- Edge OUTPUT fcmsketch_tb_fcm_l1_to_l2_d1
@@ -270,7 +270,8 @@ MIN STAGE INFO
 	- Edge OUTPUT fcmsketch_tb_fcm_l1_to_l2_d2
  Stage #4
      swap3_hi_0 4 4
-	- Edge IXBAR_READ swap2_lo_0
+	- Edge IXBAR_READ swap2_hi_0
+	- Edge OUTPUT swap2_hi_0
  Stage #5
      swap3_lo_0 3 3
 	- Edge IXBAR_READ swap3_hi_0
@@ -291,10 +292,10 @@ ingress: [3] 0 00 000 0000 00000 000000 0000000 00000000 000000000
     stateful WaterfallIngress.table_1_hi  66K
   swap1_lo_0
     stateful WaterfallIngress.table_1_lo  66K
-  swap2_hi_0
-    stateful WaterfallIngress.table_2_hi  66K
   swap2_lo_0
     stateful WaterfallIngress.table_2_lo  66K
+  swap2_hi_0
+    stateful WaterfallIngress.table_2_hi  66K
   swap3_hi_0
     stateful WaterfallIngress.table_3_hi  66K
   swap3_lo_0
@@ -327,8 +328,8 @@ egress: [4] 0 00 000 0000 00000 000000 0000000 00000000 000000000 0000000000
 DepStagesThruDomFrontier postorder : forward_0
 DepStagesThruDomFrontier postorder : swap1_hi_0
 DepStagesThruDomFrontier postorder : swap1_lo_0
-DepStagesThruDomFrontier postorder : swap2_hi_0
 DepStagesThruDomFrontier postorder : swap2_lo_0
+DepStagesThruDomFrontier postorder : swap2_hi_0
 DepStagesThruDomFrontier postorder : swap3_hi_0
 DepStagesThruDomFrontier postorder : swap3_lo_0
 DepStagesThruDomFrontier postorder : swap4_hi_0
@@ -351,25 +352,25 @@ DepStagesThruDomFrontier postorder : fcmsketch_tb_fcm_l2_to_l3_d2
 GRAPH
     forward_0 -- OUTPUT --> swap1_hi_0
     forward_0 -- OUTPUT --> swap1_lo_0
+    forward_0 -- IXBAR_READ --> swap2_lo_0
+    swap1_hi_0 -- IXBAR_READ --> swap2_lo_0
+    swap1_lo_0 -- IXBAR_READ --> swap2_lo_0
+    forward_0 -- OUTPUT --> swap2_lo_0
+    swap1_lo_0 -- OUTPUT --> swap2_lo_0
     forward_0 -- IXBAR_READ --> swap2_hi_0
     swap1_hi_0 -- IXBAR_READ --> swap2_hi_0
     swap1_lo_0 -- IXBAR_READ --> swap2_hi_0
+    swap2_lo_0 -- IXBAR_READ --> swap2_hi_0
+    swap2_lo_0 -- ANTI_ACTION_READ --> swap2_hi_0
     forward_0 -- OUTPUT --> swap2_hi_0
     swap1_hi_0 -- OUTPUT --> swap2_hi_0
-    forward_0 -- IXBAR_READ --> swap2_lo_0
-    swap1_hi_0 -- IXBAR_READ --> swap2_lo_0
-    swap2_hi_0 -- IXBAR_READ --> swap2_lo_0
-    swap1_lo_0 -- IXBAR_READ --> swap2_lo_0
-    swap2_hi_0 -- ANTI_ACTION_READ --> swap2_lo_0
-    forward_0 -- OUTPUT --> swap2_lo_0
-    swap1_lo_0 -- OUTPUT --> swap2_lo_0
     forward_0 -- IXBAR_READ --> swap3_hi_0
     swap1_hi_0 -- IXBAR_READ --> swap3_hi_0
     swap2_hi_0 -- IXBAR_READ --> swap3_hi_0
     swap1_lo_0 -- IXBAR_READ --> swap3_hi_0
     swap2_lo_0 -- IXBAR_READ --> swap3_hi_0
-    swap2_hi_0 -- ANTI_ACTION_READ --> swap3_hi_0
     swap2_lo_0 -- ANTI_ACTION_READ --> swap3_hi_0
+    swap2_hi_0 -- ANTI_ACTION_READ --> swap3_hi_0
     forward_0 -- OUTPUT --> swap3_hi_0
     swap1_hi_0 -- OUTPUT --> swap3_hi_0
     swap2_hi_0 -- OUTPUT --> swap3_hi_0
@@ -379,8 +380,8 @@ GRAPH
     swap3_hi_0 -- IXBAR_READ --> swap3_lo_0
     swap1_lo_0 -- IXBAR_READ --> swap3_lo_0
     swap2_lo_0 -- IXBAR_READ --> swap3_lo_0
-    swap2_hi_0 -- ANTI_ACTION_READ --> swap3_lo_0
     swap2_lo_0 -- ANTI_ACTION_READ --> swap3_lo_0
+    swap2_hi_0 -- ANTI_ACTION_READ --> swap3_lo_0
     swap3_hi_0 -- ANTI_ACTION_READ --> swap3_lo_0
     forward_0 -- OUTPUT --> swap3_lo_0
     swap1_lo_0 -- OUTPUT --> swap3_lo_0
@@ -392,8 +393,8 @@ GRAPH
     swap1_lo_0 -- IXBAR_READ --> swap4_hi_0
     swap2_lo_0 -- IXBAR_READ --> swap4_hi_0
     swap3_lo_0 -- IXBAR_READ --> swap4_hi_0
-    swap2_hi_0 -- ANTI_ACTION_READ --> swap4_hi_0
     swap2_lo_0 -- ANTI_ACTION_READ --> swap4_hi_0
+    swap2_hi_0 -- ANTI_ACTION_READ --> swap4_hi_0
     swap3_hi_0 -- ANTI_ACTION_READ --> swap4_hi_0
     swap3_lo_0 -- ANTI_ACTION_READ --> swap4_hi_0
     forward_0 -- OUTPUT --> swap4_hi_0
@@ -408,8 +409,8 @@ GRAPH
     swap1_lo_0 -- IXBAR_READ --> swap4_lo_0
     swap2_lo_0 -- IXBAR_READ --> swap4_lo_0
     swap3_lo_0 -- IXBAR_READ --> swap4_lo_0
-    swap2_hi_0 -- ANTI_ACTION_READ --> swap4_lo_0
     swap2_lo_0 -- ANTI_ACTION_READ --> swap4_lo_0
+    swap2_hi_0 -- ANTI_ACTION_READ --> swap4_lo_0
     swap3_hi_0 -- ANTI_ACTION_READ --> swap4_lo_0
     swap3_lo_0 -- ANTI_ACTION_READ --> swap4_lo_0
     swap4_hi_0 -- ANTI_ACTION_READ --> swap4_lo_0
@@ -457,28 +458,28 @@ GRAPH
     swap3_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
     swap3_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
     swap3_hi_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
-    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
-    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
-    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
-    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
-    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
-    swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap2_lo_0
     swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
     swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
     swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
     swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
     swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
     fcmsketch_tb_fcm_l1_to_l2_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d1
     fcmsketch_tb_fcm_l1_to_l2_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d2
-    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
     swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap2_lo_0
+    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
     swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
     swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
     swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
     swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
     swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
-    swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
     swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap2_lo_0
+    swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
     swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
     swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
     swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
@@ -490,8 +491,8 @@ GRAPH
     tbl_fcmsketch_fcm_action_l1_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d2
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap1_hi_0
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap1_lo_0
-    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap2_lo_0
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
@@ -526,10 +527,10 @@ MIN STAGE INFO
      tbl_fcmsketch_fcm_action_l1_d2 2 2
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_hash_d2
  Stage #2
-     swap2_hi_0 6 6
+     swap2_lo_0 6 6
 	- Edge IXBAR_READ swap1_hi_0
 	- Edge IXBAR_READ swap1_lo_0
-	- Edge OUTPUT swap1_hi_0
+	- Edge OUTPUT swap1_lo_0
      fcmsketch_tb_fcm_l1_to_l2_d1 1 1
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_action_l1_d1
 	- Edge OUTPUT tbl_fcmsketch_fcm_action_l1_d1
@@ -537,15 +538,16 @@ MIN STAGE INFO
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_action_l1_d2
 	- Edge OUTPUT tbl_fcmsketch_fcm_action_l1_d2
  Stage #3
-     swap2_lo_0 5 5
-	- Edge IXBAR_READ swap2_hi_0
+     swap2_hi_0 5 5
+	- Edge IXBAR_READ swap2_lo_0
      fcmsketch_tb_fcm_l2_to_l3_d1 0 0
 	- Edge IXBAR_READ fcmsketch_tb_fcm_l1_to_l2_d1
      fcmsketch_tb_fcm_l2_to_l3_d2 0 0
 	- Edge IXBAR_READ fcmsketch_tb_fcm_l1_to_l2_d2
  Stage #4
      swap3_hi_0 4 4
-	- Edge IXBAR_READ swap2_lo_0
+	- Edge IXBAR_READ swap2_hi_0
+	- Edge OUTPUT swap2_hi_0
  Stage #5
      swap3_lo_0 3 3
 	- Edge IXBAR_READ swap3_hi_0
@@ -565,10 +567,10 @@ ingress: [3] 1 10 111 1111 11111 111111 1111111 11111111 111111111
     stateful WaterfallIngress.table_1_hi  66K
   swap1_lo_0{ E -9+2, 0 0K }
     stateful WaterfallIngress.table_1_lo  66K
-  swap2_hi_0{ E -1+2, 0 0K }
-    stateful WaterfallIngress.table_2_hi  66K
   swap2_lo_0{ E -1+2, 0 0K }
     stateful WaterfallIngress.table_2_lo  66K
+  swap2_hi_0{ E -1+2, 0 0K }
+    stateful WaterfallIngress.table_2_hi  66K
   swap3_hi_0{ E -1+2, 0 0K }
     stateful WaterfallIngress.table_3_hi  66K
   swap3_lo_0{ E -1+2, 0 0K }
@@ -601,8 +603,8 @@ egress: [4] 0 00 010 0010 00000 010101 0000000 00101001 010101100 0010100110
 DepStagesThruDomFrontier postorder : forward_0
 DepStagesThruDomFrontier postorder : swap1_hi_0
 DepStagesThruDomFrontier postorder : swap1_lo_0
-DepStagesThruDomFrontier postorder : swap2_hi_0
 DepStagesThruDomFrontier postorder : swap2_lo_0
+DepStagesThruDomFrontier postorder : swap2_hi_0
 DepStagesThruDomFrontier postorder : swap3_hi_0
 DepStagesThruDomFrontier postorder : swap3_lo_0
 DepStagesThruDomFrontier postorder : swap4_hi_0
@@ -623,35 +625,41 @@ DepStagesThruDomFrontier postorder : fcmsketch_tb_fcm_l2_to_l3_d2
       INGRESS: 8
       EGRESS: 3
 GRAPH
-    swap2_hi_0 -- ANTI_NEXT_TABLE_METADATA --> swap4_hi_0
-    swap2_hi_0 -- ANTI_NEXT_TABLE_METADATA --> swap4_lo_0
-    swap2_hi_0 -- ANTI_NEXT_TABLE_METADATA --> swap3_hi_0
-    swap2_hi_0 -- ANTI_NEXT_TABLE_METADATA --> swap3_lo_0
+    forward_0 -- ANTI_NEXT_TABLE_METADATA --> swap2_lo_0
+    forward_0 -- ANTI_NEXT_TABLE_METADATA --> swap2_hi_0
+    forward_0 -- ANTI_NEXT_TABLE_METADATA --> swap1_lo_0
+    forward_0 -- ANTI_NEXT_TABLE_METADATA --> swap4_hi_0
+    forward_0 -- ANTI_NEXT_TABLE_METADATA --> swap4_lo_0
+    forward_0 -- ANTI_NEXT_TABLE_METADATA --> swap3_lo_0
     swap2_lo_0 -- ANTI_NEXT_TABLE_METADATA --> swap4_hi_0
     swap2_lo_0 -- ANTI_NEXT_TABLE_METADATA --> swap4_lo_0
     swap2_lo_0 -- ANTI_NEXT_TABLE_METADATA --> swap3_hi_0
     swap2_lo_0 -- ANTI_NEXT_TABLE_METADATA --> swap3_lo_0
+    swap2_hi_0 -- ANTI_NEXT_TABLE_METADATA --> swap4_hi_0
+    swap2_hi_0 -- ANTI_NEXT_TABLE_METADATA --> swap4_lo_0
+    swap2_hi_0 -- ANTI_NEXT_TABLE_METADATA --> swap3_hi_0
+    swap2_hi_0 -- ANTI_NEXT_TABLE_METADATA --> swap3_lo_0
     forward_0 -- OUTPUT --> swap1_hi_0
     forward_0 -- OUTPUT --> swap1_lo_0
+    forward_0 -- IXBAR_READ --> swap2_lo_0
+    swap1_hi_0 -- IXBAR_READ --> swap2_lo_0
+    swap1_lo_0 -- IXBAR_READ --> swap2_lo_0
+    forward_0 -- OUTPUT --> swap2_lo_0
+    swap1_lo_0 -- OUTPUT --> swap2_lo_0
     forward_0 -- IXBAR_READ --> swap2_hi_0
     swap1_hi_0 -- IXBAR_READ --> swap2_hi_0
     swap1_lo_0 -- IXBAR_READ --> swap2_hi_0
+    swap2_lo_0 -- IXBAR_READ --> swap2_hi_0
+    swap2_lo_0 -- ANTI_ACTION_READ --> swap2_hi_0
     forward_0 -- OUTPUT --> swap2_hi_0
     swap1_hi_0 -- OUTPUT --> swap2_hi_0
-    forward_0 -- IXBAR_READ --> swap2_lo_0
-    swap1_hi_0 -- IXBAR_READ --> swap2_lo_0
-    swap2_hi_0 -- IXBAR_READ --> swap2_lo_0
-    swap1_lo_0 -- IXBAR_READ --> swap2_lo_0
-    swap2_hi_0 -- ANTI_ACTION_READ --> swap2_lo_0
-    forward_0 -- OUTPUT --> swap2_lo_0
-    swap1_lo_0 -- OUTPUT --> swap2_lo_0
     forward_0 -- IXBAR_READ --> swap3_hi_0
     swap1_hi_0 -- IXBAR_READ --> swap3_hi_0
     swap2_hi_0 -- IXBAR_READ --> swap3_hi_0
     swap1_lo_0 -- IXBAR_READ --> swap3_hi_0
     swap2_lo_0 -- IXBAR_READ --> swap3_hi_0
-    swap2_hi_0 -- ANTI_ACTION_READ --> swap3_hi_0
     swap2_lo_0 -- ANTI_ACTION_READ --> swap3_hi_0
+    swap2_hi_0 -- ANTI_ACTION_READ --> swap3_hi_0
     forward_0 -- OUTPUT --> swap3_hi_0
     swap1_hi_0 -- OUTPUT --> swap3_hi_0
     swap2_hi_0 -- OUTPUT --> swap3_hi_0
@@ -661,8 +669,8 @@ GRAPH
     swap3_hi_0 -- IXBAR_READ --> swap3_lo_0
     swap1_lo_0 -- IXBAR_READ --> swap3_lo_0
     swap2_lo_0 -- IXBAR_READ --> swap3_lo_0
-    swap2_hi_0 -- ANTI_ACTION_READ --> swap3_lo_0
     swap2_lo_0 -- ANTI_ACTION_READ --> swap3_lo_0
+    swap2_hi_0 -- ANTI_ACTION_READ --> swap3_lo_0
     swap3_hi_0 -- ANTI_ACTION_READ --> swap3_lo_0
     forward_0 -- OUTPUT --> swap3_lo_0
     swap1_lo_0 -- OUTPUT --> swap3_lo_0
@@ -674,8 +682,8 @@ GRAPH
     swap1_lo_0 -- IXBAR_READ --> swap4_hi_0
     swap2_lo_0 -- IXBAR_READ --> swap4_hi_0
     swap3_lo_0 -- IXBAR_READ --> swap4_hi_0
-    swap2_hi_0 -- ANTI_ACTION_READ --> swap4_hi_0
     swap2_lo_0 -- ANTI_ACTION_READ --> swap4_hi_0
+    swap2_hi_0 -- ANTI_ACTION_READ --> swap4_hi_0
     swap3_hi_0 -- ANTI_ACTION_READ --> swap4_hi_0
     swap3_lo_0 -- ANTI_ACTION_READ --> swap4_hi_0
     forward_0 -- OUTPUT --> swap4_hi_0
@@ -690,8 +698,8 @@ GRAPH
     swap1_lo_0 -- IXBAR_READ --> swap4_lo_0
     swap2_lo_0 -- IXBAR_READ --> swap4_lo_0
     swap3_lo_0 -- IXBAR_READ --> swap4_lo_0
-    swap2_hi_0 -- ANTI_ACTION_READ --> swap4_lo_0
     swap2_lo_0 -- ANTI_ACTION_READ --> swap4_lo_0
+    swap2_hi_0 -- ANTI_ACTION_READ --> swap4_lo_0
     swap3_hi_0 -- ANTI_ACTION_READ --> swap4_lo_0
     swap3_lo_0 -- ANTI_ACTION_READ --> swap4_lo_0
     swap4_hi_0 -- ANTI_ACTION_READ --> swap4_lo_0
@@ -739,45 +747,45 @@ GRAPH
     swap3_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
     swap3_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
     swap3_hi_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
-    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
-    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
-    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
-    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
-    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
     swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
     swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
     swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
     swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
-    swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap2_lo_0
     swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
     fcmsketch_tb_fcm_l1_to_l2_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d1
     fcmsketch_tb_fcm_l1_to_l2_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d2
-    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
-    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap2_lo_0
-    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
-    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
-    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
-    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
-    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
-    swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
     swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap2_lo_0
+    swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
     swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
     swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
     swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
     swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
     swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
+    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap2_lo_0
+    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
+    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
+    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
+    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
+    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
+    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
     tbl_fcmsketch_fcm_action_l1_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l1_to_l2_d1
     tbl_fcmsketch_fcm_action_l1_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d1
     tbl_fcmsketch_fcm_action_l1_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l1_to_l2_d2
     tbl_fcmsketch_fcm_action_l1_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d2
-    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap1_hi_0
-    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap1_lo_0
-    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap2_lo_0
-    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
-    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap1_lo_0
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap1_hi_0
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
     forward_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
     tbl_fcmsketch_fcm_hash_d1 -- ANTI_NEXT_TABLE_DATA --> tbl_fcmsketch_fcm_action_l1_d1
     tbl_fcmsketch_fcm_hash_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l1_to_l2_d1
@@ -799,19 +807,19 @@ MIN STAGE INFO
      fcmsketch_tb_fcm_l1_to_l2_d1$precompute 2 2
      fcmsketch_tb_fcm_l1_to_l2_d2$precompute 2 2
  Stage #1
-     swap1_hi_0 7 7
-	- Edge OUTPUT forward_0
      swap1_lo_0 7 7
+	- Edge OUTPUT forward_0
+     swap1_hi_0 7 7
 	- Edge OUTPUT forward_0
      tbl_fcmsketch_fcm_action_l1_d1 2 2
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_hash_d1
      tbl_fcmsketch_fcm_action_l1_d2 2 2
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_hash_d2
  Stage #2
-     swap2_hi_0 6 6
+     swap2_lo_0 6 6
 	- Edge IXBAR_READ swap1_hi_0
 	- Edge IXBAR_READ swap1_lo_0
-	- Edge OUTPUT swap1_hi_0
+	- Edge OUTPUT swap1_lo_0
      fcmsketch_tb_fcm_l1_to_l2_d1 1 1
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_action_l1_d1
 	- Edge OUTPUT tbl_fcmsketch_fcm_action_l1_d1
@@ -819,15 +827,16 @@ MIN STAGE INFO
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_action_l1_d2
 	- Edge OUTPUT tbl_fcmsketch_fcm_action_l1_d2
  Stage #3
-     swap2_lo_0 5 5
-	- Edge IXBAR_READ swap2_hi_0
+     swap2_hi_0 5 5
+	- Edge IXBAR_READ swap2_lo_0
      fcmsketch_tb_fcm_l2_to_l3_d1 0 0
 	- Edge IXBAR_READ fcmsketch_tb_fcm_l1_to_l2_d1
      fcmsketch_tb_fcm_l2_to_l3_d2 0 0
 	- Edge IXBAR_READ fcmsketch_tb_fcm_l1_to_l2_d2
  Stage #4
      swap3_hi_0 4 4
-	- Edge IXBAR_READ swap2_lo_0
+	- Edge IXBAR_READ swap2_hi_0
+	- Edge OUTPUT swap2_hi_0
  Stage #5
      swap3_lo_0 3 3
 	- Edge IXBAR_READ swap3_hi_0
@@ -848,10 +857,10 @@ ingress: [3] 1 10 111 1111 11111 111111 1111111 11111111 111111111
     stateful WaterfallIngress.table_1_hi  66K
   swap1_lo_0{ E -9+2, 0 0K }
     stateful WaterfallIngress.table_1_lo  66K
-  swap2_hi_0{ E -1+2, 0 0K }
-    stateful WaterfallIngress.table_2_hi  66K
   swap2_lo_0{ E -1+2, 0 0K }
     stateful WaterfallIngress.table_2_lo  66K
+  swap2_hi_0{ E -1+2, 0 0K }
+    stateful WaterfallIngress.table_2_hi  66K
   swap3_hi_0{ E -1+2, 0 0K }
     stateful WaterfallIngress.table_3_hi  66K
   swap3_lo_0{ E -1+2, 0 0K }
@@ -884,8 +893,8 @@ egress: [4] 0 00 010 0010 00000 010101 0000000 00101001 010101100 0010100110
 DepStagesThruDomFrontier postorder : forward_0
 DepStagesThruDomFrontier postorder : swap1_hi_0
 DepStagesThruDomFrontier postorder : swap1_lo_0
-DepStagesThruDomFrontier postorder : swap2_hi_0
 DepStagesThruDomFrontier postorder : swap2_lo_0
+DepStagesThruDomFrontier postorder : swap2_hi_0
 DepStagesThruDomFrontier postorder : swap3_hi_0
 DepStagesThruDomFrontier postorder : swap3_lo_0
 DepStagesThruDomFrontier postorder : swap4_hi_0
@@ -906,35 +915,41 @@ DepStagesThruDomFrontier postorder : fcmsketch_tb_fcm_l2_to_l3_d2
       INGRESS: 8
       EGRESS: 3
 GRAPH
-    swap2_hi_0 -- ANTI_NEXT_TABLE_METADATA --> swap4_hi_0
-    swap2_hi_0 -- ANTI_NEXT_TABLE_METADATA --> swap4_lo_0
-    swap2_hi_0 -- ANTI_NEXT_TABLE_METADATA --> swap3_hi_0
-    swap2_hi_0 -- ANTI_NEXT_TABLE_METADATA --> swap3_lo_0
+    forward_0 -- ANTI_NEXT_TABLE_METADATA --> swap2_lo_0
+    forward_0 -- ANTI_NEXT_TABLE_METADATA --> swap2_hi_0
+    forward_0 -- ANTI_NEXT_TABLE_METADATA --> swap1_lo_0
+    forward_0 -- ANTI_NEXT_TABLE_METADATA --> swap4_hi_0
+    forward_0 -- ANTI_NEXT_TABLE_METADATA --> swap4_lo_0
+    forward_0 -- ANTI_NEXT_TABLE_METADATA --> swap3_lo_0
     swap2_lo_0 -- ANTI_NEXT_TABLE_METADATA --> swap4_hi_0
     swap2_lo_0 -- ANTI_NEXT_TABLE_METADATA --> swap4_lo_0
     swap2_lo_0 -- ANTI_NEXT_TABLE_METADATA --> swap3_hi_0
     swap2_lo_0 -- ANTI_NEXT_TABLE_METADATA --> swap3_lo_0
+    swap2_hi_0 -- ANTI_NEXT_TABLE_METADATA --> swap4_hi_0
+    swap2_hi_0 -- ANTI_NEXT_TABLE_METADATA --> swap4_lo_0
+    swap2_hi_0 -- ANTI_NEXT_TABLE_METADATA --> swap3_hi_0
+    swap2_hi_0 -- ANTI_NEXT_TABLE_METADATA --> swap3_lo_0
     forward_0 -- OUTPUT --> swap1_hi_0
     forward_0 -- OUTPUT --> swap1_lo_0
+    forward_0 -- IXBAR_READ --> swap2_lo_0
+    swap1_hi_0 -- IXBAR_READ --> swap2_lo_0
+    swap1_lo_0 -- IXBAR_READ --> swap2_lo_0
+    forward_0 -- OUTPUT --> swap2_lo_0
+    swap1_lo_0 -- OUTPUT --> swap2_lo_0
     forward_0 -- IXBAR_READ --> swap2_hi_0
     swap1_hi_0 -- IXBAR_READ --> swap2_hi_0
     swap1_lo_0 -- IXBAR_READ --> swap2_hi_0
+    swap2_lo_0 -- IXBAR_READ --> swap2_hi_0
+    swap2_lo_0 -- ANTI_ACTION_READ --> swap2_hi_0
     forward_0 -- OUTPUT --> swap2_hi_0
     swap1_hi_0 -- OUTPUT --> swap2_hi_0
-    forward_0 -- IXBAR_READ --> swap2_lo_0
-    swap1_hi_0 -- IXBAR_READ --> swap2_lo_0
-    swap2_hi_0 -- IXBAR_READ --> swap2_lo_0
-    swap1_lo_0 -- IXBAR_READ --> swap2_lo_0
-    swap2_hi_0 -- ANTI_ACTION_READ --> swap2_lo_0
-    forward_0 -- OUTPUT --> swap2_lo_0
-    swap1_lo_0 -- OUTPUT --> swap2_lo_0
     forward_0 -- IXBAR_READ --> swap3_hi_0
     swap1_hi_0 -- IXBAR_READ --> swap3_hi_0
     swap2_hi_0 -- IXBAR_READ --> swap3_hi_0
     swap1_lo_0 -- IXBAR_READ --> swap3_hi_0
     swap2_lo_0 -- IXBAR_READ --> swap3_hi_0
-    swap2_hi_0 -- ANTI_ACTION_READ --> swap3_hi_0
     swap2_lo_0 -- ANTI_ACTION_READ --> swap3_hi_0
+    swap2_hi_0 -- ANTI_ACTION_READ --> swap3_hi_0
     forward_0 -- OUTPUT --> swap3_hi_0
     swap1_hi_0 -- OUTPUT --> swap3_hi_0
     swap2_hi_0 -- OUTPUT --> swap3_hi_0
@@ -944,8 +959,8 @@ GRAPH
     swap3_hi_0 -- IXBAR_READ --> swap3_lo_0
     swap1_lo_0 -- IXBAR_READ --> swap3_lo_0
     swap2_lo_0 -- IXBAR_READ --> swap3_lo_0
-    swap2_hi_0 -- ANTI_ACTION_READ --> swap3_lo_0
     swap2_lo_0 -- ANTI_ACTION_READ --> swap3_lo_0
+    swap2_hi_0 -- ANTI_ACTION_READ --> swap3_lo_0
     swap3_hi_0 -- ANTI_ACTION_READ --> swap3_lo_0
     forward_0 -- OUTPUT --> swap3_lo_0
     swap1_lo_0 -- OUTPUT --> swap3_lo_0
@@ -957,8 +972,8 @@ GRAPH
     swap1_lo_0 -- IXBAR_READ --> swap4_hi_0
     swap2_lo_0 -- IXBAR_READ --> swap4_hi_0
     swap3_lo_0 -- IXBAR_READ --> swap4_hi_0
-    swap2_hi_0 -- ANTI_ACTION_READ --> swap4_hi_0
     swap2_lo_0 -- ANTI_ACTION_READ --> swap4_hi_0
+    swap2_hi_0 -- ANTI_ACTION_READ --> swap4_hi_0
     swap3_hi_0 -- ANTI_ACTION_READ --> swap4_hi_0
     swap3_lo_0 -- ANTI_ACTION_READ --> swap4_hi_0
     forward_0 -- OUTPUT --> swap4_hi_0
@@ -973,8 +988,8 @@ GRAPH
     swap1_lo_0 -- IXBAR_READ --> swap4_lo_0
     swap2_lo_0 -- IXBAR_READ --> swap4_lo_0
     swap3_lo_0 -- IXBAR_READ --> swap4_lo_0
-    swap2_hi_0 -- ANTI_ACTION_READ --> swap4_lo_0
     swap2_lo_0 -- ANTI_ACTION_READ --> swap4_lo_0
+    swap2_hi_0 -- ANTI_ACTION_READ --> swap4_lo_0
     swap3_hi_0 -- ANTI_ACTION_READ --> swap4_lo_0
     swap3_lo_0 -- ANTI_ACTION_READ --> swap4_lo_0
     swap4_hi_0 -- ANTI_ACTION_READ --> swap4_lo_0
@@ -1022,45 +1037,45 @@ GRAPH
     swap3_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
     swap3_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
     swap3_hi_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
-    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
-    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
-    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
-    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
-    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
     swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
     swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
     swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
     swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
-    swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap2_lo_0
     swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
     fcmsketch_tb_fcm_l1_to_l2_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d1
     fcmsketch_tb_fcm_l1_to_l2_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d2
-    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
-    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap2_lo_0
-    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
-    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
-    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
-    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
-    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
-    swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
     swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap2_lo_0
+    swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
     swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
     swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
     swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
     swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
     swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
+    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap2_lo_0
+    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
+    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
+    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
+    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
+    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
+    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
     tbl_fcmsketch_fcm_action_l1_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l1_to_l2_d1
     tbl_fcmsketch_fcm_action_l1_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d1
     tbl_fcmsketch_fcm_action_l1_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l1_to_l2_d2
     tbl_fcmsketch_fcm_action_l1_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d2
-    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap1_hi_0
-    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap1_lo_0
-    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap2_lo_0
-    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
-    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap1_lo_0
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap1_hi_0
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
     forward_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
     tbl_fcmsketch_fcm_hash_d1 -- ANTI_NEXT_TABLE_DATA --> tbl_fcmsketch_fcm_action_l1_d1
     tbl_fcmsketch_fcm_hash_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l1_to_l2_d1
@@ -1082,19 +1097,19 @@ MIN STAGE INFO
      fcmsketch_tb_fcm_l1_to_l2_d1$precompute 2 2
      fcmsketch_tb_fcm_l1_to_l2_d2$precompute 2 2
  Stage #1
-     swap1_hi_0 7 7
-	- Edge OUTPUT forward_0
      swap1_lo_0 7 7
+	- Edge OUTPUT forward_0
+     swap1_hi_0 7 7
 	- Edge OUTPUT forward_0
      tbl_fcmsketch_fcm_action_l1_d1 2 2
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_hash_d1
      tbl_fcmsketch_fcm_action_l1_d2 2 2
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_hash_d2
  Stage #2
-     swap2_hi_0 6 6
+     swap2_lo_0 6 6
 	- Edge IXBAR_READ swap1_hi_0
 	- Edge IXBAR_READ swap1_lo_0
-	- Edge OUTPUT swap1_hi_0
+	- Edge OUTPUT swap1_lo_0
      fcmsketch_tb_fcm_l1_to_l2_d1 1 1
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_action_l1_d1
 	- Edge OUTPUT tbl_fcmsketch_fcm_action_l1_d1
@@ -1102,15 +1117,16 @@ MIN STAGE INFO
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_action_l1_d2
 	- Edge OUTPUT tbl_fcmsketch_fcm_action_l1_d2
  Stage #3
-     swap2_lo_0 5 5
-	- Edge IXBAR_READ swap2_hi_0
+     swap2_hi_0 5 5
+	- Edge IXBAR_READ swap2_lo_0
      fcmsketch_tb_fcm_l2_to_l3_d1 0 0
 	- Edge IXBAR_READ fcmsketch_tb_fcm_l1_to_l2_d1
      fcmsketch_tb_fcm_l2_to_l3_d2 0 0
 	- Edge IXBAR_READ fcmsketch_tb_fcm_l1_to_l2_d2
  Stage #4
      swap3_hi_0 4 4
-	- Edge IXBAR_READ swap2_lo_0
+	- Edge IXBAR_READ swap2_hi_0
+	- Edge OUTPUT swap2_hi_0
  Stage #5
      swap3_lo_0 3 3
 	- Edge IXBAR_READ swap3_hi_0
@@ -1131,10 +1147,10 @@ ingress: [3] 1 10 111 1111 11111 111111 1111111 11111111 111111111
     stateful WaterfallIngress.table_1_lo 66 K
   11: swap1_hi_0{ E -9+22, 0 [1x2 2K] }
     stateful WaterfallIngress.table_1_hi 66 K
-  20: swap2_hi_0{ E -1+22, 0 [1x2 2K] }
-    stateful WaterfallIngress.table_2_hi 66 K
-  30: swap2_lo_0{ E -1+22, 0 [1x2 2K] }
+  20: swap2_lo_0{ E -1+22, 0 [1x2 2K] }
     stateful WaterfallIngress.table_2_lo 66 K
+  30: swap2_hi_0{ E -1+22, 0 [1x2 2K] }
+    stateful WaterfallIngress.table_2_hi 66 K
   40: swap3_hi_0{ E -1+22, 0 [1x2 2K] }
     stateful WaterfallIngress.table_3_hi 66 K
   50: swap3_lo_0{ E -1+22, 0 [1x2 2K] }
@@ -1171,8 +1187,8 @@ egress: [4] 0 00 000 0000 10000 010000 1010010 01010010 101001010 0101001010
 DepStagesThruDomFrontier postorder : forward_0
 DepStagesThruDomFrontier postorder : swap1_lo_0
 DepStagesThruDomFrontier postorder : swap1_hi_0
-DepStagesThruDomFrontier postorder : swap2_hi_0
 DepStagesThruDomFrontier postorder : swap2_lo_0
+DepStagesThruDomFrontier postorder : swap2_hi_0
 DepStagesThruDomFrontier postorder : swap3_hi_0
 DepStagesThruDomFrontier postorder : swap3_lo_0
 DepStagesThruDomFrontier postorder : swap4_hi_0
@@ -1195,25 +1211,25 @@ DepStagesThruDomFrontier postorder : fcmsketch_tb_fcm_l2_to_l3_d1
 GRAPH
     forward_0 -- OUTPUT --> swap1_lo_0
     forward_0 -- OUTPUT --> swap1_hi_0
+    forward_0 -- IXBAR_READ --> swap2_lo_0
+    swap1_hi_0 -- IXBAR_READ --> swap2_lo_0
+    swap1_lo_0 -- IXBAR_READ --> swap2_lo_0
+    forward_0 -- OUTPUT --> swap2_lo_0
+    swap1_lo_0 -- OUTPUT --> swap2_lo_0
     forward_0 -- IXBAR_READ --> swap2_hi_0
     swap1_hi_0 -- IXBAR_READ --> swap2_hi_0
     swap1_lo_0 -- IXBAR_READ --> swap2_hi_0
+    swap2_lo_0 -- IXBAR_READ --> swap2_hi_0
+    swap2_lo_0 -- ANTI_ACTION_READ --> swap2_hi_0
     forward_0 -- OUTPUT --> swap2_hi_0
     swap1_hi_0 -- OUTPUT --> swap2_hi_0
-    forward_0 -- IXBAR_READ --> swap2_lo_0
-    swap1_hi_0 -- IXBAR_READ --> swap2_lo_0
-    swap2_hi_0 -- IXBAR_READ --> swap2_lo_0
-    swap1_lo_0 -- IXBAR_READ --> swap2_lo_0
-    swap2_hi_0 -- ANTI_ACTION_READ --> swap2_lo_0
-    forward_0 -- OUTPUT --> swap2_lo_0
-    swap1_lo_0 -- OUTPUT --> swap2_lo_0
     forward_0 -- IXBAR_READ --> swap3_hi_0
     swap1_hi_0 -- IXBAR_READ --> swap3_hi_0
     swap2_hi_0 -- IXBAR_READ --> swap3_hi_0
     swap1_lo_0 -- IXBAR_READ --> swap3_hi_0
     swap2_lo_0 -- IXBAR_READ --> swap3_hi_0
-    swap2_hi_0 -- ANTI_ACTION_READ --> swap3_hi_0
     swap2_lo_0 -- ANTI_ACTION_READ --> swap3_hi_0
+    swap2_hi_0 -- ANTI_ACTION_READ --> swap3_hi_0
     forward_0 -- OUTPUT --> swap3_hi_0
     swap1_hi_0 -- OUTPUT --> swap3_hi_0
     swap2_hi_0 -- OUTPUT --> swap3_hi_0
@@ -1223,8 +1239,8 @@ GRAPH
     swap3_hi_0 -- IXBAR_READ --> swap3_lo_0
     swap1_lo_0 -- IXBAR_READ --> swap3_lo_0
     swap2_lo_0 -- IXBAR_READ --> swap3_lo_0
-    swap2_hi_0 -- ANTI_ACTION_READ --> swap3_lo_0
     swap2_lo_0 -- ANTI_ACTION_READ --> swap3_lo_0
+    swap2_hi_0 -- ANTI_ACTION_READ --> swap3_lo_0
     swap3_hi_0 -- ANTI_ACTION_READ --> swap3_lo_0
     forward_0 -- OUTPUT --> swap3_lo_0
     swap1_lo_0 -- OUTPUT --> swap3_lo_0
@@ -1236,8 +1252,8 @@ GRAPH
     swap1_lo_0 -- IXBAR_READ --> swap4_hi_0
     swap2_lo_0 -- IXBAR_READ --> swap4_hi_0
     swap3_lo_0 -- IXBAR_READ --> swap4_hi_0
-    swap2_hi_0 -- ANTI_ACTION_READ --> swap4_hi_0
     swap2_lo_0 -- ANTI_ACTION_READ --> swap4_hi_0
+    swap2_hi_0 -- ANTI_ACTION_READ --> swap4_hi_0
     swap3_hi_0 -- ANTI_ACTION_READ --> swap4_hi_0
     swap3_lo_0 -- ANTI_ACTION_READ --> swap4_hi_0
     forward_0 -- OUTPUT --> swap4_hi_0
@@ -1252,8 +1268,8 @@ GRAPH
     swap1_lo_0 -- IXBAR_READ --> swap4_lo_0
     swap2_lo_0 -- IXBAR_READ --> swap4_lo_0
     swap3_lo_0 -- IXBAR_READ --> swap4_lo_0
-    swap2_hi_0 -- ANTI_ACTION_READ --> swap4_lo_0
     swap2_lo_0 -- ANTI_ACTION_READ --> swap4_lo_0
+    swap2_hi_0 -- ANTI_ACTION_READ --> swap4_lo_0
     swap3_hi_0 -- ANTI_ACTION_READ --> swap4_lo_0
     swap3_lo_0 -- ANTI_ACTION_READ --> swap4_lo_0
     swap4_hi_0 -- ANTI_ACTION_READ --> swap4_lo_0
@@ -1271,10 +1287,10 @@ GRAPH
     swap3_lo_0 -- IXBAR_READ --> resub_0
     swap4_lo_0 -- IXBAR_READ --> resub_0
     forward_0 -- OUTPUT --> resub_0
-    swap1_lo_0 -- ANTI_ACTION_READ --> resub_0
-    swap1_lo_0 -- ANTI_TABLE_READ --> resub_0
     swap1_hi_0 -- ANTI_ACTION_READ --> resub_0
     swap1_hi_0 -- ANTI_TABLE_READ --> resub_0
+    swap1_lo_0 -- ANTI_ACTION_READ --> resub_0
+    swap1_lo_0 -- ANTI_TABLE_READ --> resub_0
     tbl_fcmsketch_fcm_hash_d2 -- IXBAR_READ --> tbl_fcmsketch_fcm_action_l1_d2
     tbl_fcmsketch_fcm_hash_d1 -- IXBAR_READ --> tbl_fcmsketch_fcm_action_l1_d1
     tbl_fcmsketch_fcm_action_l1_d2 -- ACTION_READ --> fcmsketch_tb_fcm_l1_to_l2_d2
@@ -1301,28 +1317,28 @@ GRAPH
     swap3_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
     swap3_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
     swap3_hi_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
-    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
-    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
-    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
-    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
-    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
-    swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap2_lo_0
     swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
     swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
     swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
     swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
     swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
     fcmsketch_tb_fcm_l1_to_l2_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d2
     fcmsketch_tb_fcm_l1_to_l2_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d1
-    swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
     swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap2_lo_0
+    swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
     swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
     swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
     swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
     swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
     swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
-    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
     swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap2_lo_0
+    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
     swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
     swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
     swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
@@ -1334,8 +1350,8 @@ GRAPH
     tbl_fcmsketch_fcm_action_l1_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d1
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap1_lo_0
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap1_hi_0
-    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap2_lo_0
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
@@ -1370,10 +1386,10 @@ MIN STAGE INFO
      tbl_fcmsketch_fcm_action_l1_d1 2 2
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_hash_d1
  Stage #2
-     swap2_hi_0 6 6
+     swap2_lo_0 6 6
 	- Edge IXBAR_READ swap1_hi_0
 	- Edge IXBAR_READ swap1_lo_0
-	- Edge OUTPUT swap1_hi_0
+	- Edge OUTPUT swap1_lo_0
      fcmsketch_tb_fcm_l1_to_l2_d2 1 1
 	- Edge ACTION_READ tbl_fcmsketch_fcm_action_l1_d2
 	- Edge OUTPUT tbl_fcmsketch_fcm_action_l1_d2
@@ -1381,15 +1397,16 @@ MIN STAGE INFO
 	- Edge ACTION_READ tbl_fcmsketch_fcm_action_l1_d1
 	- Edge OUTPUT tbl_fcmsketch_fcm_action_l1_d1
  Stage #3
-     swap2_lo_0 5 5
-	- Edge IXBAR_READ swap2_hi_0
+     swap2_hi_0 5 5
+	- Edge IXBAR_READ swap2_lo_0
      fcmsketch_tb_fcm_l2_to_l3_d2 0 0
 	- Edge ACTION_READ fcmsketch_tb_fcm_l1_to_l2_d2
      fcmsketch_tb_fcm_l2_to_l3_d1 0 0
 	- Edge ACTION_READ fcmsketch_tb_fcm_l1_to_l2_d1
  Stage #4
      swap3_hi_0 4 4
-	- Edge IXBAR_READ swap2_lo_0
+	- Edge IXBAR_READ swap2_hi_0
+	- Edge OUTPUT swap2_hi_0
  Stage #5
      swap3_lo_0 3 3
 	- Edge IXBAR_READ swap3_hi_0
@@ -1410,10 +1427,10 @@ ingress: [3] 1 10 111 1111 11111 111111 1111111 11111111 111111111
     stateful WaterfallIngress.table_1_lo 66 K
   11: swap1_hi_0{ E -9+22, 0 [1x2 2K] }
     stateful WaterfallIngress.table_1_hi 66 K
-  20: swap2_hi_0{ E -1+22, 0 [1x2 2K] }
-    stateful WaterfallIngress.table_2_hi 66 K
-  30: swap2_lo_0{ E -1+22, 0 [1x2 2K] }
+  20: swap2_lo_0{ E -1+22, 0 [1x2 2K] }
     stateful WaterfallIngress.table_2_lo 66 K
+  30: swap2_hi_0{ E -1+22, 0 [1x2 2K] }
+    stateful WaterfallIngress.table_2_hi 66 K
   40: swap3_hi_0{ E -1+22, 0 [1x2 2K] }
     stateful WaterfallIngress.table_3_hi 66 K
   50: swap3_lo_0{ E -1+22, 0 [1x2 2K] }
@@ -1450,8 +1467,8 @@ egress: [4] 0 00 000 0000 10000 010000 1010010 01010010 101001010 0101001010
 DepStagesThruDomFrontier postorder : forward_0
 DepStagesThruDomFrontier postorder : swap1_lo_0
 DepStagesThruDomFrontier postorder : swap1_hi_0
-DepStagesThruDomFrontier postorder : swap2_hi_0
 DepStagesThruDomFrontier postorder : swap2_lo_0
+DepStagesThruDomFrontier postorder : swap2_hi_0
 DepStagesThruDomFrontier postorder : swap3_hi_0
 DepStagesThruDomFrontier postorder : swap3_lo_0
 DepStagesThruDomFrontier postorder : swap4_hi_0
@@ -1474,25 +1491,25 @@ DepStagesThruDomFrontier postorder : fcmsketch_tb_fcm_l2_to_l3_d1
 GRAPH
     forward_0 -- OUTPUT --> swap1_lo_0
     forward_0 -- OUTPUT --> swap1_hi_0
+    forward_0 -- IXBAR_READ --> swap2_lo_0
+    swap1_hi_0 -- IXBAR_READ --> swap2_lo_0
+    swap1_lo_0 -- IXBAR_READ --> swap2_lo_0
+    forward_0 -- OUTPUT --> swap2_lo_0
+    swap1_lo_0 -- OUTPUT --> swap2_lo_0
     forward_0 -- IXBAR_READ --> swap2_hi_0
     swap1_hi_0 -- IXBAR_READ --> swap2_hi_0
     swap1_lo_0 -- IXBAR_READ --> swap2_hi_0
+    swap2_lo_0 -- IXBAR_READ --> swap2_hi_0
+    swap2_lo_0 -- ANTI_ACTION_READ --> swap2_hi_0
     forward_0 -- OUTPUT --> swap2_hi_0
     swap1_hi_0 -- OUTPUT --> swap2_hi_0
-    forward_0 -- IXBAR_READ --> swap2_lo_0
-    swap1_hi_0 -- IXBAR_READ --> swap2_lo_0
-    swap2_hi_0 -- IXBAR_READ --> swap2_lo_0
-    swap1_lo_0 -- IXBAR_READ --> swap2_lo_0
-    swap2_hi_0 -- ANTI_ACTION_READ --> swap2_lo_0
-    forward_0 -- OUTPUT --> swap2_lo_0
-    swap1_lo_0 -- OUTPUT --> swap2_lo_0
     forward_0 -- IXBAR_READ --> swap3_hi_0
     swap1_hi_0 -- IXBAR_READ --> swap3_hi_0
     swap2_hi_0 -- IXBAR_READ --> swap3_hi_0
     swap1_lo_0 -- IXBAR_READ --> swap3_hi_0
     swap2_lo_0 -- IXBAR_READ --> swap3_hi_0
-    swap2_hi_0 -- ANTI_ACTION_READ --> swap3_hi_0
     swap2_lo_0 -- ANTI_ACTION_READ --> swap3_hi_0
+    swap2_hi_0 -- ANTI_ACTION_READ --> swap3_hi_0
     forward_0 -- OUTPUT --> swap3_hi_0
     swap1_hi_0 -- OUTPUT --> swap3_hi_0
     swap2_hi_0 -- OUTPUT --> swap3_hi_0
@@ -1502,8 +1519,8 @@ GRAPH
     swap3_hi_0 -- IXBAR_READ --> swap3_lo_0
     swap1_lo_0 -- IXBAR_READ --> swap3_lo_0
     swap2_lo_0 -- IXBAR_READ --> swap3_lo_0
-    swap2_hi_0 -- ANTI_ACTION_READ --> swap3_lo_0
     swap2_lo_0 -- ANTI_ACTION_READ --> swap3_lo_0
+    swap2_hi_0 -- ANTI_ACTION_READ --> swap3_lo_0
     swap3_hi_0 -- ANTI_ACTION_READ --> swap3_lo_0
     forward_0 -- OUTPUT --> swap3_lo_0
     swap1_lo_0 -- OUTPUT --> swap3_lo_0
@@ -1515,8 +1532,8 @@ GRAPH
     swap1_lo_0 -- IXBAR_READ --> swap4_hi_0
     swap2_lo_0 -- IXBAR_READ --> swap4_hi_0
     swap3_lo_0 -- IXBAR_READ --> swap4_hi_0
-    swap2_hi_0 -- ANTI_ACTION_READ --> swap4_hi_0
     swap2_lo_0 -- ANTI_ACTION_READ --> swap4_hi_0
+    swap2_hi_0 -- ANTI_ACTION_READ --> swap4_hi_0
     swap3_hi_0 -- ANTI_ACTION_READ --> swap4_hi_0
     swap3_lo_0 -- ANTI_ACTION_READ --> swap4_hi_0
     forward_0 -- OUTPUT --> swap4_hi_0
@@ -1531,8 +1548,8 @@ GRAPH
     swap1_lo_0 -- IXBAR_READ --> swap4_lo_0
     swap2_lo_0 -- IXBAR_READ --> swap4_lo_0
     swap3_lo_0 -- IXBAR_READ --> swap4_lo_0
-    swap2_hi_0 -- ANTI_ACTION_READ --> swap4_lo_0
     swap2_lo_0 -- ANTI_ACTION_READ --> swap4_lo_0
+    swap2_hi_0 -- ANTI_ACTION_READ --> swap4_lo_0
     swap3_hi_0 -- ANTI_ACTION_READ --> swap4_lo_0
     swap3_lo_0 -- ANTI_ACTION_READ --> swap4_lo_0
     swap4_hi_0 -- ANTI_ACTION_READ --> swap4_lo_0
@@ -1550,10 +1567,10 @@ GRAPH
     swap3_lo_0 -- IXBAR_READ --> resub_0
     swap4_lo_0 -- IXBAR_READ --> resub_0
     forward_0 -- OUTPUT --> resub_0
-    swap1_lo_0 -- ANTI_ACTION_READ --> resub_0
-    swap1_lo_0 -- ANTI_TABLE_READ --> resub_0
     swap1_hi_0 -- ANTI_ACTION_READ --> resub_0
     swap1_hi_0 -- ANTI_TABLE_READ --> resub_0
+    swap1_lo_0 -- ANTI_ACTION_READ --> resub_0
+    swap1_lo_0 -- ANTI_TABLE_READ --> resub_0
     tbl_fcmsketch_fcm_hash_d2 -- IXBAR_READ --> tbl_fcmsketch_fcm_action_l1_d2
     tbl_fcmsketch_fcm_hash_d1 -- IXBAR_READ --> tbl_fcmsketch_fcm_action_l1_d1
     tbl_fcmsketch_fcm_action_l1_d2 -- ACTION_READ --> fcmsketch_tb_fcm_l1_to_l2_d2
@@ -1580,28 +1597,28 @@ GRAPH
     swap3_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
     swap3_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
     swap3_hi_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
-    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
-    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
-    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
-    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
-    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
-    swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap2_lo_0
     swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
     swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
     swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
     swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
     swap2_hi_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
+    swap2_lo_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
     fcmsketch_tb_fcm_l1_to_l2_d2 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d2
     fcmsketch_tb_fcm_l1_to_l2_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d1
-    swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
     swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap2_lo_0
+    swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
     swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
     swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
     swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
     swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> swap4_lo_0
     swap1_lo_0 -- ANTI_NEXT_TABLE_DATA --> resub_0
-    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
     swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap2_lo_0
+    swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
     swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
     swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
     swap1_hi_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
@@ -1613,8 +1630,8 @@ GRAPH
     tbl_fcmsketch_fcm_action_l1_d1 -- ANTI_NEXT_TABLE_DATA --> fcmsketch_tb_fcm_l2_to_l3_d1
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap1_lo_0
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap1_hi_0
-    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap2_lo_0
+    forward_0 -- ANTI_NEXT_TABLE_DATA --> swap2_hi_0
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap3_hi_0
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap3_lo_0
     forward_0 -- ANTI_NEXT_TABLE_DATA --> swap4_hi_0
@@ -1649,10 +1666,10 @@ MIN STAGE INFO
      tbl_fcmsketch_fcm_action_l1_d1 2 2
 	- Edge IXBAR_READ tbl_fcmsketch_fcm_hash_d1
  Stage #2
-     swap2_hi_0 6 6
+     swap2_lo_0 6 6
 	- Edge IXBAR_READ swap1_hi_0
 	- Edge IXBAR_READ swap1_lo_0
-	- Edge OUTPUT swap1_hi_0
+	- Edge OUTPUT swap1_lo_0
      fcmsketch_tb_fcm_l1_to_l2_d2 1 1
 	- Edge ACTION_READ tbl_fcmsketch_fcm_action_l1_d2
 	- Edge OUTPUT tbl_fcmsketch_fcm_action_l1_d2
@@ -1660,15 +1677,16 @@ MIN STAGE INFO
 	- Edge ACTION_READ tbl_fcmsketch_fcm_action_l1_d1
 	- Edge OUTPUT tbl_fcmsketch_fcm_action_l1_d1
  Stage #3
-     swap2_lo_0 5 5
-	- Edge IXBAR_READ swap2_hi_0
+     swap2_hi_0 5 5
+	- Edge IXBAR_READ swap2_lo_0
      fcmsketch_tb_fcm_l2_to_l3_d2 0 0
 	- Edge ACTION_READ fcmsketch_tb_fcm_l1_to_l2_d2
      fcmsketch_tb_fcm_l2_to_l3_d1 0 0
 	- Edge ACTION_READ fcmsketch_tb_fcm_l1_to_l2_d1
  Stage #4
      swap3_hi_0 4 4
-	- Edge IXBAR_READ swap2_lo_0
+	- Edge IXBAR_READ swap2_hi_0
+	- Edge OUTPUT swap2_hi_0
  Stage #5
      swap3_lo_0 3 3
 	- Edge IXBAR_READ swap3_hi_0
