@@ -96,40 +96,36 @@ swap1_lo.add_with_lookup1_lo(resubmit_flag=0x0)
 swap1_lo.add_with_do_swap1_lo(resubmit_flag=0x1)
 
 swap2_hi = p4.WaterfallIngress.swap2_hi
-swap2_hi.add_with_no_action(resubmit_flag=0x0, found_hi=0x1, found_lo=0x1)
-swap2_hi.add_with_lookup2_hi(resubmit_flag=0x0)
-swap2_hi.add_with_do_swap2_hi(resubmit_flag=0x1)
-
 swap2_lo = p4.WaterfallIngress.swap2_lo
-swap2_lo.add_with_no_action(resubmit_flag=0x0, found_hi=0x1, found_lo=0x1)
-swap2_lo.add_with_lookup2_lo(resubmit_flag=0x0)
-swap2_lo.add_with_do_swap2_lo(resubmit_flag=0x1)
-
 swap3_hi = p4.WaterfallIngress.swap3_hi
-swap3_hi.add_with_no_action(resubmit_flag=0x0, found_hi=0x1, found_lo=0x1)
-swap3_hi.add_with_no_action(resubmit_flag=0x0, found_hi=0x2, found_lo=0x2)
-swap3_hi.add_with_lookup3_hi(resubmit_flag=0x0)
-swap3_hi.add_with_do_swap3_hi(resubmit_flag=0x1)
-
 swap3_lo = p4.WaterfallIngress.swap3_lo
-swap3_lo.add_with_no_action(resubmit_flag=0x0, found_hi=0x1, found_lo=0x1)
-swap3_lo.add_with_no_action(resubmit_flag=0x0, found_hi=0x2, found_lo=0x2)
-swap3_lo.add_with_lookup3_lo(resubmit_flag=0x0)
-swap3_lo.add_with_do_swap3_lo(resubmit_flag=0x1)
-
 swap4_hi = p4.WaterfallIngress.swap4_hi
-swap4_hi.add_with_no_action(resubmit_flag=0x0, found_hi=0x1, found_lo=0x1)
-swap4_hi.add_with_no_action(resubmit_flag=0x0, found_hi=0x2, found_lo=0x2)
-swap4_hi.add_with_no_action(resubmit_flag=0x0, found_hi=0x3, found_lo=0x3)
-swap4_hi.add_with_lookup4_hi(resubmit_flag=0x0)
-swap4_hi.add_with_do_swap4_hi(resubmit_flag=0x1)
-
 swap4_lo = p4.WaterfallIngress.swap4_lo
-swap4_lo.add_with_no_action(resubmit_flag=0x0, found_hi=0x1, found_lo=0x1)
-swap4_lo.add_with_no_action(resubmit_flag=0x0, found_hi=0x2, found_lo=0x2)
-swap4_lo.add_with_no_action(resubmit_flag=0x0, found_hi=0x3, found_lo=0x3)
-swap4_lo.add_with_lookup4_lo(resubmit_flag=0x0)
+
+swap2_hi.add_with_do_swap2_hi(resubmit_flag=0x1)
+swap2_lo.add_with_do_swap2_lo(resubmit_flag=0x1)
+swap3_hi.add_with_do_swap3_hi(resubmit_flag=0x1)
+swap3_lo.add_with_do_swap3_lo(resubmit_flag=0x1)
+swap4_hi.add_with_do_swap4_hi(resubmit_flag=0x1)
 swap4_lo.add_with_do_swap4_lo(resubmit_flag=0x1)
+
+for i in range(0, 5):
+    for j in range(0, 5):
+        if i == j:
+            swap2_hi.add_with_no_action(resubmit_flag=0x0, found_hi=i, found_lo=j)
+            swap2_lo.add_with_no_action(resubmit_flag=0x0, found_hi=i, found_lo=j)
+            swap3_hi.add_with_no_action(resubmit_flag=0x0, found_hi=i, found_lo=j)
+            swap3_lo.add_with_no_action(resubmit_flag=0x0, found_hi=i, found_lo=j)
+            swap4_hi.add_with_no_action(resubmit_flag=0x0, found_hi=i, found_lo=j)
+            swap4_lo.add_with_no_action(resubmit_flag=0x0, found_hi=i, found_lo=j)
+            continue
+
+        swap2_hi.add_with_lookup2_hi(resubmit_flag=0x0, found_hi=i, found_lo=j)
+        swap2_lo.add_with_lookup2_lo(resubmit_flag=0x0, found_hi=i, found_lo=j)
+        swap3_hi.add_with_lookup3_hi(resubmit_flag=0x0, found_hi=i, found_lo=j)
+        swap3_lo.add_with_lookup3_lo(resubmit_flag=0x0, found_hi=i, found_lo=j)
+        swap4_hi.add_with_lookup4_hi(resubmit_flag=0x0, found_hi=i, found_lo=j)
+        swap4_lo.add_with_lookup4_lo(resubmit_flag=0x0, found_hi=i, found_lo=j)
 
 # prt = bfrt.port.port
 print("activating ports...")
