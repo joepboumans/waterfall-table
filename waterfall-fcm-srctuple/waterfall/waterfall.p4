@@ -304,7 +304,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
       resubmit_hdr;
       no_action;
     }
-    default_action = resubmit_hdr;
+    default_action = no_action;
     size = 512;
   }
 
