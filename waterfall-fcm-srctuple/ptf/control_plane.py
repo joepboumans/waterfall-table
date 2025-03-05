@@ -240,7 +240,6 @@ class BfRt_interface():
     def _read_digest(self):
         try:
             digest = self.interface.digest_get(3)
-            # self.recieved_digests.append(digest)
             data_list = self.learn_filter.make_data_list(digest)
             self.total_received += len(data_list)
             for data in data_list:
@@ -256,10 +255,10 @@ class BfRt_interface():
         except Exception as err:
             self.missedDigest += 1
             print(f"error reading digest {self.missedDigest}, {err} ", end="", flush=True)
-            if self.hasFirstData and self.missedDigest >= 10:
+            if self.hasFirstData and self.missedDigest >= 3:
                 self.isRunning = False
                 print("")
-            time.sleep(0.5)
+            time.sleep(0.05)
 
 
     def _get_FCM_counters(self):
