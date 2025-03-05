@@ -239,7 +239,7 @@ class BfRt_interface():
 
     def _read_digest(self):
         try:
-            digest = self.interface.digest_get(1)
+            digest = self.interface.digest_get(3)
             # self.recieved_digests.append(digest)
             data_list = self.learn_filter.make_data_list(digest)
             self.total_received += len(data_list)
