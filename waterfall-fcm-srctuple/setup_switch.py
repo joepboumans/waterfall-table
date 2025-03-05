@@ -80,10 +80,6 @@ forward_tbl.add_with_hit(ingress_port=140, dst_port=132)
 
 print("populating resub table...")
 resub = p4.WaterfallIngress.resub
-resub.add_with_no_action(found_lo=0x1, found_hi=0x1, resubmit_flag=0x0)
-resub.add_with_no_action(found_lo=0x2, found_hi=0x2, resubmit_flag=0x0)
-resub.add_with_no_action(found_lo=0x3, found_hi=0x3, resubmit_flag=0x0)
-resub.add_with_no_action(found_lo=0x4, found_hi=0x4, resubmit_flag=0x0)
 resub.add_with_no_action(resubmit_flag=0x1)
 
 print("populating swaps table...")
@@ -112,6 +108,7 @@ swap4_lo.add_with_do_swap4_lo(resubmit_flag=0x1)
 for i in range(0, 5):
     for j in range(0, 5):
         if i == j:
+            resub.add_with_no_action(resubmit_flag=0x0, found_hi=i, found_lo=j)
             swap2_hi.add_with_no_action(resubmit_flag=0x0, found_hi=i, found_lo=j)
             swap2_lo.add_with_no_action(resubmit_flag=0x0, found_hi=i, found_lo=j)
             swap3_hi.add_with_no_action(resubmit_flag=0x0, found_hi=i, found_lo=j)
@@ -120,6 +117,7 @@ for i in range(0, 5):
             swap4_lo.add_with_no_action(resubmit_flag=0x0, found_hi=i, found_lo=j)
             continue
 
+        resub.add_with_resubmit_hdr(resubmit_flag=0x0, found_hi=i, found_lo=j)
         swap2_hi.add_with_lookup2_hi(resubmit_flag=0x0, found_hi=i, found_lo=j)
         swap2_lo.add_with_lookup2_lo(resubmit_flag=0x0, found_hi=i, found_lo=j)
         swap3_hi.add_with_lookup3_hi(resubmit_flag=0x0, found_hi=i, found_lo=j)
