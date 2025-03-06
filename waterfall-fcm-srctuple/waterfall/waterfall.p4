@@ -230,14 +230,14 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
   RegisterAction<bit<FLOW_ID_BIT_WIDTH>, bit<IDX_BIT_WIDTH>, bit<FLOW_ID_BIT_WIDTH>>(table_1_hi) table_1_hi_swap = {
     void apply(inout bit<FLOW_ID_BIT_WIDTH> val, out bit<FLOW_ID_BIT_WIDTH> read_value) {
       read_value = val;
-      val = ig_md.resubmit_md.remain_hi;
+      val = hdr.ipv4.src_addr[31:16];
     }
   };
 
   RegisterAction<bit<FLOW_ID_BIT_WIDTH>, bit<IDX_BIT_WIDTH>, bit<FLOW_ID_BIT_WIDTH>>(table_1_lo) table_1_lo_swap = {
     void apply(inout bit<FLOW_ID_BIT_WIDTH> val, out bit<FLOW_ID_BIT_WIDTH> read_value) {
       read_value = val;
-      val = ig_md.resubmit_md.remain_lo;
+      val = hdr.ipv4.src_addr[15:0];
     }
   };
 
