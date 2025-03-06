@@ -13,6 +13,32 @@ def get_pg_info(dev_port, queue_id):
 
    return pipe_num, pg_id, pg_queue
 
+def print_all():
+    global p4
+
+    # The order is important. We do want to clear from the top, i.e.
+    # delete objects that use other objects, e.g. table entries use
+    # selector groups and selector groups use action profile members
+
+    # Clear Match Tables
+    for table in p4.info(return_info=True, print_info=False):
+        if table['type'] in ['MATCH_DIRECT', 'MATCH_INDIRECT_SELECTOR']:
+            print("Clearing table {}".format(table['full_name']))
+    # Clear Selectors
+    for table in p4.info(return_info=True, print_info=False):
+        if table['type'] in ['SELECTOR']:
+            print("Clearing ActionSelector {}".format(table['full_name']))
+    # Clear Action Profiles
+    for table in p4.info(return_info=True, print_info=False):
+        if table['type'] in ['ACTION_PROFILE']:
+            print("Clearing ActionProfile {}".format(table['full_name']))
+
+    # Clearing register
+    for table in p4.info(return_info=True, print_info=False):
+        if table['type'] in ['REGISTER']:
+            print("Clearing Register {}".format(table['full_name']))
+
+print_all()
 # Clear All tables
 def clear_all():
     global p4
@@ -107,7 +133,6 @@ swap4_lo.add_with_do_swap4_lo(resubmit_flag=0x1)
 
 for i in range(0, 5):
     for j in range(0, 5):
-
         if i > 0 and j > 0 and i == j:
             resub.add_with_no_action(resubmit_flag=0x0, found_hi=i, found_lo=j)
             swap2_hi.add_with_no_action(resubmit_flag=0x0, found_hi=i, found_lo=j)

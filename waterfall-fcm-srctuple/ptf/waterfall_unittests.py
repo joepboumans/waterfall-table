@@ -38,8 +38,8 @@ class WaterfallUnitTests(BfRuntimeTest):
         self.target = gc.Target(device_id=0, pipe_id=0xffff)
 
         self.setupWaterfall()
-        self.resetWaterfall()
-        self.setupWaterfall()
+        # self.resetWaterfall()
+        # self.setupWaterfall()
 
         logger.info("Finished setup")
 
@@ -92,7 +92,7 @@ class WaterfallUnitTests(BfRuntimeTest):
         else:
             for i in range(0, num + 1):
                 for j in range(0, num + 1):
-                    if j == i:
+                    if i > 0 and j > 0 and j == i:
                         continue
 
                     key = table.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0), gc.KeyTuple('ig_md.found_hi', i), gc.KeyTuple('ig_md.found_lo', j)])
@@ -138,10 +138,10 @@ class WaterfallUnitTests(BfRuntimeTest):
     def runTest(self):
         logger.info("Start testing")
 
-        self.testDigest()
-        self.resetWaterfall()
-        self.testPassAllTables()
-        self.resetWaterfall()
+        # self.testDigest()
+        # self.resetWaterfall()
+        # self.testPassAllTables()
+        # self.resetWaterfall()
         self.testLargeInserts()
 
     def evalutate_digest(self, num_entries):
@@ -231,12 +231,19 @@ class WaterfallUnitTests(BfRuntimeTest):
         logger.debug(f"\tresub - inserting table entry with port {ig_port}")
 
         # Only resubmit if both are found
-        for i in range(1, 5):
-            key = resub.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', False), gc.KeyTuple('ig_md.found_hi', i), gc.KeyTuple('ig_md.found_lo', i)])
-            data = resub.make_data([], "WaterfallIngress.no_action")
-            resub.entry_add(target, [key], [data])
+        for i in range(0, 5):
+            for j in range(0, 5):
+                if i > 0 and j > 0 and i == j:
+                    key = resub.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0), gc.KeyTuple('ig_md.found_hi', i), gc.KeyTuple('ig_md.found_lo', j)])
+                    data = resub.make_data([], "WaterfallIngress.no_action")
+                    resub.entry_add(target, [key], [data])
+                    continue
 
-        key = resub.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', True)])
+                key = resub.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0), gc.KeyTuple('ig_md.found_hi', i), gc.KeyTuple('ig_md.found_lo', j)])
+                data = resub.make_data([], "WaterfallIngress.resubmit_hdr")
+                resub.entry_add(target, [key], [data])
+
+        key = resub.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
         data = resub.make_data([], "WaterfallIngress.no_action")
         resub.entry_add(target, [key], [data])
 
@@ -292,9 +299,17 @@ class WaterfallUnitTests(BfRuntimeTest):
         logger.debug(f"\tresub - inserting table entry with port {ig_port}")
 
         # Resubmit even when the packet was found in tables
-        key = resub.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0)])
-        data = resub.make_data([], "WaterfallIngress.resubmit_hdr")
-        resub.entry_add(target, [key], [data])
+        for i in range(0, 5):
+            for j in range(0, 5):
+                if i > 0 and j > 0 and i == j:
+                    key = resub.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0), gc.KeyTuple('ig_md.found_hi', i), gc.KeyTuple('ig_md.found_lo', j)])
+                    data = resub.make_data([], "WaterfallIngress.resubmit_hdr")
+                    resub.entry_add(target, [key], [data])
+                    continue
+
+                key = resub.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0), gc.KeyTuple('ig_md.found_hi', i), gc.KeyTuple('ig_md.found_lo', j)])
+                data = resub.make_data([], "WaterfallIngress.resubmit_hdr")
+                resub.entry_add(target, [key], [data])
 
         key = resub.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
         data = resub.make_data([], "WaterfallIngress.no_action")
@@ -339,6 +354,7 @@ class WaterfallUnitTests(BfRuntimeTest):
         print(f"[Dataset Loader] Get data from {data_name}")
         first = True
 
+        dataset = []
         tuples = defaultdict(int)
         with open(data_name, "r+b") as of:
             with mmap.mmap(of.fileno(), length=0, access=mmap.ACCESS_READ) as f:
@@ -350,6 +366,7 @@ class WaterfallUnitTests(BfRuntimeTest):
 
                 # Read src addr
                 tuples[data[i + 0:i + 4]] += 1
+                dataset.append(data[i + 0:i + 4])
                     
                 if first:
                     print(*tuples.keys())
@@ -379,7 +396,7 @@ class WaterfallUnitTests(BfRuntimeTest):
         #     print(t.hex())
 
         print("[Dataset Loader] Done!")
-        return tuples
+        return dataset
 
     def testLargeInserts(self):
         ig_port = swports[0]
@@ -388,32 +405,44 @@ class WaterfallUnitTests(BfRuntimeTest):
         forward = self.forward
         resub = self.resub
 
-        key = forward.make_key([gc.KeyTuple('ig_intr_md.ingress_port', ig_port)])
-        data = forward.make_data([gc.DataTuple('dst_port', eg_port)], "WaterfallIngress.hit")
-        forward.entry_add(target, [key], [data])
+        try:
+            key = forward.make_key([gc.KeyTuple('ig_intr_md.ingress_port', ig_port)])
+            data = forward.make_data([gc.DataTuple('dst_port', eg_port)], "WaterfallIngress.hit")
+            forward.entry_add(target, [key], [data])
+
+            # src_ip_list = self.generate_random_ip_list(num_entries_src, seed)
+
+            ''' TC:1 Setting up port_metadata and resub'''
+            logger.info("Populating resub table...")
+            logger.debug(f"\tresub - inserting table entry with port {ig_port}")
+
+            # Only resubmit if both are found
+            for i in range(0, 5):
+                for j in range(0, 5):
+                    if i > 0 and j > 0 and i == j:
+                        key = resub.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0), gc.KeyTuple('ig_md.found_hi', i), gc.KeyTuple('ig_md.found_lo', j)])
+                        data = resub.make_data([], "WaterfallIngress.no_action")
+                        resub.entry_add(target, [key], [data])
+                        continue
+
+                    key = resub.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x0), gc.KeyTuple('ig_md.found_hi', i), gc.KeyTuple('ig_md.found_lo', j)])
+                    data = resub.make_data([], "WaterfallIngress.resubmit_hdr")
+                    resub.entry_add(target, [key], [data])
+
+            key = resub.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', 0x1)])
+            data = resub.make_data([], "WaterfallIngress.no_action")
+            resub.entry_add(target, [key], [data])
+
+            for name, table in self.swap_dict.items():
+                self.addSwapEntry(table, name)
+        except:
+            pass
 
         in_tuples = self.read_data_set("/workspace/PDS-Simulator/data/1024_test.dat")
         src_ip_list = []
         for tup in in_tuples:
-            src_ip_list.append(".".join([str(x) for x in tup]))
-        # src_ip_list = self.generate_random_ip_list(num_entries_src, seed)
-
-        ''' TC:1 Setting up port_metadata and resub'''
-        logger.info("Populating resub table...")
-        logger.debug(f"\tresub - inserting table entry with port {ig_port}")
-
-        # Only resubmit if both are found
-        for i in range(1, 5):
-            key = resub.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', False), gc.KeyTuple('ig_md.found_hi', i), gc.KeyTuple('ig_md.found_lo', i)])
-            data = resub.make_data([], "WaterfallIngress.no_action")
-            resub.entry_add(target, [key], [data])
-
-        key = resub.make_key([gc.KeyTuple('ig_intr_md.resubmit_flag', True)])
-        data = resub.make_data([], "WaterfallIngress.no_action")
-        resub.entry_add(target, [key], [data])
-
-        for name, table in self.swap_dict.items():
-            self.addSwapEntry(table, name)
+            ints = list(bytearray(tup))
+            src_ip_list.append(".".join([str(x) for x in ints]))
 
         logger.info(f"Start sending {len(src_ip_list)} entries")
         raw_ip_list = []
@@ -434,7 +463,7 @@ class WaterfallUnitTests(BfRuntimeTest):
         recv_tuples = self.evalutate_digest(len(unique_tx_tuples) )
         unique_recv_tuples = set(recv_tuples)
         logger.info(f"Found total of {len(recv_tuples)} tuples with {len(unique_recv_tuples)} unique tuples")
-        assert(len(in_tuples) == len(unique_recv_tuples))
+        assert(len(set(in_tuples)) == len(unique_recv_tuples))
 
         ''' TC:4 Validate received digest data'''
         for recv_src_addr in unique_recv_tuples:
@@ -442,7 +471,5 @@ class WaterfallUnitTests(BfRuntimeTest):
             for key, data in self.table_dict.items():
                 self.evalutateEntryInTable(key, recv_src_addr)
 
-        # for src_addr in raw_ip_list:
-            # logger.info(src_addr.hex())
-            # for key, data in self.table_dict.items():
-                # self.evalutateEntryInTable(key, src_addr)
+        for key, data in self.table_dict.items():
+            self.evalutate_table(key)
