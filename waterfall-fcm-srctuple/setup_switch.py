@@ -124,12 +124,6 @@ swap3_lo = p4.WaterfallIngress.swap3_lo
 swap4_hi = p4.WaterfallIngress.swap4_hi
 swap4_lo = p4.WaterfallIngress.swap4_lo
 
-swap2_hi.add_with_do_swap2_hi(resubmit_flag=0x1)
-swap2_lo.add_with_do_swap2_lo(resubmit_flag=0x1)
-swap3_hi.add_with_do_swap3_hi(resubmit_flag=0x1)
-swap3_lo.add_with_do_swap3_lo(resubmit_flag=0x1)
-swap4_hi.add_with_do_swap4_hi(resubmit_flag=0x1)
-swap4_lo.add_with_do_swap4_lo(resubmit_flag=0x1)
 
 for i in range(0, 5):
     for j in range(0, 5):
@@ -141,6 +135,12 @@ for i in range(0, 5):
             swap3_lo.add_with_no_action(resubmit_flag=0x0, found_hi=i, found_lo=j)
             swap4_hi.add_with_no_action(resubmit_flag=0x0, found_hi=i, found_lo=j)
             swap4_lo.add_with_no_action(resubmit_flag=0x0, found_hi=i, found_lo=j)
+            swap2_hi.add_with_no_action(resubmit_flag=0x1, found_hi=i, found_lo=j)
+            swap2_lo.add_with_no_action(resubmit_flag=0x1, found_hi=i, found_lo=j)
+            swap3_hi.add_with_no_action(resubmit_flag=0x1, found_hi=i, found_lo=j)
+            swap3_lo.add_with_no_action(resubmit_flag=0x1, found_hi=i, found_lo=j)
+            swap4_hi.add_with_no_action(resubmit_flag=0x1, found_hi=i, found_lo=j)
+            swap4_lo.add_with_no_action(resubmit_flag=0x1, found_hi=i, found_lo=j)
             continue
 
         resub.add_with_resubmit_hdr(resubmit_flag=0x0, found_hi=i, found_lo=j)
@@ -150,6 +150,12 @@ for i in range(0, 5):
         swap3_lo.add_with_lookup3_lo(resubmit_flag=0x0, found_hi=i, found_lo=j)
         swap4_hi.add_with_lookup4_hi(resubmit_flag=0x0, found_hi=i, found_lo=j)
         swap4_lo.add_with_lookup4_lo(resubmit_flag=0x0, found_hi=i, found_lo=j)
+        swap2_hi.add_with_do_swap2_hi(resubmit_flag=0x1, found_hi=i, found_lo=j)
+        swap2_lo.add_with_do_swap2_lo(resubmit_flag=0x1, found_hi=i, found_lo=j)
+        swap3_hi.add_with_do_swap3_hi(resubmit_flag=0x1, found_hi=i, found_lo=j)
+        swap3_lo.add_with_do_swap3_lo(resubmit_flag=0x1, found_hi=i, found_lo=j)
+        swap4_hi.add_with_do_swap4_hi(resubmit_flag=0x1, found_hi=i, found_lo=j)
+        swap4_lo.add_with_do_swap4_lo(resubmit_flag=0x1, found_hi=i, found_lo=j)
 
 # prt = bfrt.port.port
 print("activating ports...")
