@@ -55,6 +55,7 @@ class BfRt_interface():
         self.total_received = 0
         self.tuples = None
         self.tuples_list = []
+        self.digestList = []
 
         self.dev_tgt = gc.Target(dev, pipe_id=0xFFFF)
         self.bfrt_info = None
@@ -239,13 +240,14 @@ class BfRt_interface():
 
     def _read_digest(self):
         try:
-            digest = self.interface.digest_get(3)
+            digest = self.interface.digest_get(0.1)
             data_list = self.learn_filter.make_data_list(digest)
             self.total_received += len(data_list)
-            for data in data_list:
-                tuple_list = bytes(data["src_addr"].val)
+            self.digestList.append(data_list)
+            # for data in data_list:
+                # tuple_list = bytes(data["src_addr"].val)
                 # print(tuple_list.hex())
-                self.tuples_list.append(tuple_list)
+                # self.tuples_list.append(tuple_list)
 
             self.recievedDigest += 1
             if self.recievedDigest % 1000 == 0:
@@ -294,6 +296,12 @@ class BfRt_interface():
         self.isRunning = True
         while self.isRunning:
             self._read_digest()
+
+        for data_list in self.digestList:
+            for data in data_list:
+                tuple_list = bytes(data["src_addr"].val)
+                print(tuple_list.hex())
+                self.tuples_list.append(tuple_list)
 
         print(f"Received {self.recievedDigest} digest from switch")
         print(f"Received {len(self.tuples_list)} total tuples from switch")
