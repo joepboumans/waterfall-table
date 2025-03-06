@@ -14,7 +14,7 @@
 // Waterfall defines
 #define FLOW_ID_BIT_WIDTH 16 // SrcAddr / 2
 #define IDX_BIT_WIDTH 16
-#define WATERFALL_WIDTH 65535 // 2 ^ IDX_BIT_WIDTH - 1 = WATERFALL_WIDTH
+#define WATERFALL_WIDTH 65536 // 2 ^ IDX_BIT_WIDTH - 1 = WATERFALL_WIDTH
 
 const bit<8> RESUB = 3;
 const bit<3> DPRSR_RESUB = 3;
