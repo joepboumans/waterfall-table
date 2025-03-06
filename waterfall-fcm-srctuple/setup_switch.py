@@ -128,7 +128,7 @@ swap4_lo = p4.WaterfallIngress.swap4_lo
 for i in range(0, 5):
     for j in range(0, 5):
         if i > 0 and j > 0 and i == j:
-            resub.add_with_no_action(resubmit_flag=0x0, found_hi=i, found_lo=j)
+            resub.add_with_no_resubmit(resubmit_flag=0x0, found_hi=i, found_lo=j)
             swap2_hi.add_with_no_action(resubmit_flag=0x0, found_hi=i, found_lo=j)
             swap2_lo.add_with_no_action(resubmit_flag=0x0, found_hi=i, found_lo=j)
             swap3_hi.add_with_no_action(resubmit_flag=0x0, found_hi=i, found_lo=j)

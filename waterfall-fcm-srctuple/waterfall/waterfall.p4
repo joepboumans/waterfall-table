@@ -291,6 +291,14 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     ig_intr_dprsr_md.digest_type = DIGEST;
   }
 
+  action no_resubmit() {
+    ig_md.resubmit_md.remain_hi = 0;
+    ig_md.resubmit_md.remain_lo = 0;
+    ig_md.resubmit_md.type = 0;
+    ig_intr_dprsr_md.resubmit_type = 0;
+    ig_intr_dprsr_md.digest_type = 0;
+  }
+
   action no_action() {
   }
 
@@ -302,9 +310,9 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     }
     actions = {
       resubmit_hdr;
-      no_action;
+      no_resubmit;
     }
-    default_action = no_action;
+    default_action = no_resubmit;
     size = 512;
   }
 
