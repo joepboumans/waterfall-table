@@ -52,7 +52,7 @@ ControlPlane::ControlPlane(string programName) {
 
   /* Always set "skip port add" so that ports are not automatically created when
    * running on either model or HW. */
-  mSwitchContext->skip_port_add = true;
+  mSwitchContext->skip_port_add = false;
   mSwitchContext->install_dir = getenv("SDE_INSTALL");
 
   // Set separately to keek pointer intact
@@ -188,6 +188,26 @@ void ControlPlane::addEntry(shared_ptr<const BfRtTable> table,
     }
     tableData->setValue(fieldId, dataValue);
   }
+
+  const uint64_t flags = 0;
+  table->tableEntryAdd(*mSession, mDeviceTarget, flags, *tableKey, *tableData);
+}
+
+void ControlPlane::addEntry(shared_ptr<const BfRtTable> table,
+                            vector<pair<string, uint64_t>> keys,
+                            string action) {
+  unique_ptr<BfRtTableKey> tableKey;
+  table->keyAllocate(&tableKey);
+  for (const auto [keyName, keyValue] : keys) {
+    bf_rt_id_t fieldId;
+    table->keyFieldIdGet(keyName, &fieldId);
+    tableKey->setValue(fieldId, keyValue);
+  }
+
+  unique_ptr<BfRtTableData> tableData;
+  bf_rt_id_t actionId;
+  table->actionIdGet(action, &actionId);
+  table->dataAllocate(actionId, &tableData);
 
   const uint64_t flags = 0;
   table->tableEntryAdd(*mSession, mDeviceTarget, flags, *tableKey, *tableData);

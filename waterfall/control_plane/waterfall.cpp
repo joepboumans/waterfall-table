@@ -3,10 +3,14 @@
 
 #include "waterfall.hpp"
 #include "ControlPlane.hpp"
+#include <bf_rt/bf_rt_table.hpp>
 #include <chrono>
+#include <cinttypes>
 #include <cstdint>
 #include <iostream>
+#include <memory>
 #include <stdexcept>
+#include <string>
 #include <unistd.h>
 
 extern "C" {
@@ -14,16 +18,16 @@ extern "C" {
 #include <traffic_mgr/traffic_mgr.h>
 }
 
-Waterfall::Waterfall() : ControlPlane("simple_digest") {
-  const auto forwardTable = ControlPlane::getTable("SwitchIngress.forward");
-  ControlPlane::addEntry(forwardTable, {{"ig_intr_md.ingress_port", 132}},
-                         {{"dst_port", 140}}, "SwitchIngress.hit");
-  ControlPlane::addEntry(forwardTable, {{"ig_intr_md.ingress_port", 140}},
-                         {{"dst_port", 132}}, "SwitchIngress.hit");
-
+Waterfall::Waterfall() : ControlPlane("waterfall") {
+  /*const auto forwardTable = ControlPlane::getTable("SwitchIngress.forward");*/
+  /*ControlPlane::addEntry(forwardTable, {{"ig_intr_md.ingress_port", 132}},*/
+  /*                       {{"dst_port", 140}}, "SwitchIngress.hit");*/
+  /*ControlPlane::addEntry(forwardTable, {{"ig_intr_md.ingress_port", 140}},*/
+  /*                       {{"dst_port", 132}}, "SwitchIngress.hit");*/
+  /**/
   std::array<uint32_t, 2> ports = {
-      132,
-      140,
+      0,
+      1,
   };
 
   for (auto &port : ports) {
@@ -40,6 +44,43 @@ Waterfall::Waterfall() : ControlPlane("simple_digest") {
     }
     std::cout << "Added port " << port << " to pm" << std::endl;
   }
+
+  auto resubTable = Waterfall::getTable("resub");
+  ControlPlane::addEntry(resubTable, {{"ig_md.found", true}},
+                         "SwitchIngress.no_action");
+  ControlPlane::addEntry(resubTable, {{"ig_md.found", false}},
+                         "SwitchIngress.resubmit_hdr");
+
+  std::cout << "Start adding Swap entries" << std::endl;
+
+  mTablesVec = Waterfall::getTableList("table_", 4);
+  mSwapVec = Waterfall::getTableList("swap", 4);
+
+  ControlPlane::addEntry(mSwapVec[0], {{"ig_intr_md.resubmit_flag", 0}},
+                         "SwitchIngress.lookup1");
+  ControlPlane::addEntry(mSwapVec[0], {{"ig_intr_md.resubmit_flag", 1}},
+                         "SwitchIngress.do_swap1");
+  for (size_t i = 2; i < 5; i++) {
+    std::string currLookup = "SwitchIngress.lookup" + std::to_string(i);
+
+    ControlPlane::addEntry(mSwapVec[i - 1], {{"ig_intr_md.resubmit_flag", 0}},
+                           currLookup);
+
+    std::string currDoSwap = "SwitchIngress.do_swap" + std::to_string(i);
+    ControlPlane::addEntry(mSwapVec[i - 1], {{"ig_intr_md.resubmit_flag", 1}},
+                           currDoSwap);
+  }
+}
+
+// Returns a list of len tables which all share the same name
+std::vector<std::shared_ptr<const bfrt::BfRtTable>>
+Waterfall::getTableList(std::string name, uint32_t len) {
+  std::vector<std::shared_ptr<const bfrt::BfRtTable>> vec(len);
+  for (uint32_t x = 1; x < len + 1; x++) {
+    std::string currName = name + std::to_string(x);
+    vec[x - 1] = ControlPlane::getTable(currName);
+  }
+  return vec;
 }
 
 void Waterfall::run() {
@@ -78,11 +119,11 @@ void Waterfall::run() {
                 << ControlPlane::mLearnInterface.mLearnDataVec.size()
                 << " total packets" << std::endl;
 
-      /*std::cout << "Recieved data from digest" << std::endl;*/
-      /*for (const auto &x : ControlPlane::mLearnInterface.mLearnDataVec) {*/
-      /*  std::cout << x << " ";*/
-      /*}*/
-      /*std::cout << std::endl;*/
+      std::cout << "Recieved data from digest" << std::endl;
+      for (const auto &x : ControlPlane::mLearnInterface.mLearnDataVec) {
+        std::cout << x << " ";
+      }
+      std::cout << std::endl;
 
       break;
     }

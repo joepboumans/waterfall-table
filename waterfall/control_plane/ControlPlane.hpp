@@ -32,6 +32,10 @@ public:
                 std::vector<std::pair<std::string, std::uint64_t>> keys,
                 std::vector<std::pair<std::string, std::uint64_t>> data,
                 std::string action = std::string());
+  void addEntry(std::shared_ptr<const bfrt::BfRtTable> table,
+                std::vector<std::pair<std::string, std::uint64_t>> keys,
+                std::string action = std::string());
+
   std::unordered_map<std::string, std::uint64_t>
   getEntry(std::shared_ptr<const bfrt::BfRtTable> table,
            std::vector<std::pair<std::string, std::uint64_t>> keys,
