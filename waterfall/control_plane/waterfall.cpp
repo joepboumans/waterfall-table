@@ -1,7 +1,7 @@
 #ifndef _SIMPLE_DIGEST_CPP
 #define _SIMPLE_DIGEST_CPP
 
-#include "simple_digest.hpp"
+#include "waterfall.hpp"
 #include "ControlPlane.hpp"
 #include <chrono>
 #include <cstdint>
@@ -14,10 +14,8 @@ extern "C" {
 #include <traffic_mgr/traffic_mgr.h>
 }
 
-SimpleDigest::SimpleDigest() : ControlPlane("simple_digest") {
+Waterfall::Waterfall() : ControlPlane("simple_digest") {
   const auto forwardTable = ControlPlane::getTable("SwitchIngress.forward");
-  /*ControlPlane::addEntry(forwardTable, {{"ig_intr_md.ingress_port", 0}},*/
-  /*                       {{"dst_port", 0}}, "SwitchIngress.hit");*/
   ControlPlane::addEntry(forwardTable, {{"ig_intr_md.ingress_port", 132}},
                          {{"dst_port", 140}}, "SwitchIngress.hit");
   ControlPlane::addEntry(forwardTable, {{"ig_intr_md.ingress_port", 140}},
@@ -44,7 +42,7 @@ SimpleDigest::SimpleDigest() : ControlPlane("simple_digest") {
   }
 }
 
-void SimpleDigest::run() {
+void Waterfall::run() {
   const auto digest = ControlPlane::getLearnFilter("digest");
   printf("Setup learnfilter with callback\n");
 
@@ -59,9 +57,6 @@ void SimpleDigest::run() {
         hasReceivedFirstDigest = true;
       }
 
-      /*std::cout << "Recieved data from digest "*/
-      /*          << ControlPlane::mLearnInterface.mLearnDataVec.size()*/
-      /*          << " total packets\r";*/
       ControlPlane::mLearnInterface.hasNewData = false;
       lastReceivedTime = std::chrono::high_resolution_clock::now();
     }
@@ -95,10 +90,11 @@ void SimpleDigest::run() {
     /*usleep(100);*/
   }
   std::set<uint64_t> uniqueSrcAddress;
-  for    (const auto &x : ControlPlane::mLearnInterface.mLearnDataVec) {
+  for (const auto &x : ControlPlane::mLearnInterface.mLearnDataVec) {
     uniqueSrcAddress.insert(x);
   }
-  std::cout << "Found " << uniqueSrcAddress.size() << " unique tupels" << std::endl;
+  std::cout << "Found " << uniqueSrcAddress.size() << " unique tupels"
+            << std::endl;
   std::cout << "Finished the test exit via ctrl-z or keep using the switch cli"
             << std::endl;
   while (true) {

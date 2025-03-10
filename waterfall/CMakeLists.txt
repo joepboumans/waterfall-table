@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
-project(simple_digest VERSION 0.1 LANGUAGES CXX)
+project(waterfall VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # Thank ChatGPT for this code to extract the last folder in a path
@@ -17,4 +17,4 @@ endif()
 add_subdirectory(control_plane)
 add_subdirectory(p4)
 
-add_custom_target(default DEPENDS main simple_digest)
+add_custom_target(default DEPENDS main waterfall)

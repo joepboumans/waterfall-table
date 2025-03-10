@@ -19,7 +19,7 @@ find_library(TARGET_SYS_LIBRARY libtarget_sys.so PATHS ${SDE_LIB_PATH})
 # Optimization flags...
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Og -flto -march=native -ftree-vectorize")
 
-add_executable(main main.cpp ControlPlane.cpp simple_digest.cpp)
+add_executable(main main.cpp ControlPlane.cpp waterfall.cpp)
 target_link_libraries(main Threads::Threads)
 
 target_link_libraries(main
