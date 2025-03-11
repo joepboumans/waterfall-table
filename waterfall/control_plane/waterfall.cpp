@@ -185,11 +185,13 @@ void Waterfall::run() {
                 << ControlPlane::mLearnInterface.mLearnDataVec.size()
                 << " total packets" << std::endl;
 
-      /*std::cout << "Recieved data from digest" << std::endl;*/
-      /*for (const auto &x : ControlPlane::mLearnInterface.mLearnDataVec) {*/
-      /*  std::cout << x << " ";*/
-      /*}*/
-      /*std::cout << std::endl;*/
+      if (ControlPlane::mLearnInterface.mLearnDataVec.size() <= 1024) {
+        std::cout << "Recieved data from digest" << std::endl;
+        for (const auto &x : ControlPlane::mLearnInterface.mLearnDataVec) {
+          std::cout << x << " ";
+        }
+        std::cout << std::endl;
+      }
 
       break;
     }
@@ -202,8 +204,7 @@ void Waterfall::run() {
   }
   std::cout << "Found " << uniqueSrcAddress.size() << " unique tupels"
             << std::endl;
-  std::cout << "Finished the test exit via ctrl-c"
-            << std::endl;
+  std::cout << "Finished the test exit via ctrl-c" << std::endl;
   while (true) {
     sleep(100);
   }
