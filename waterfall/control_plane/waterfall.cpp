@@ -191,7 +191,7 @@ void Waterfall::run() {
           uint8_t src_addr[4];
           memcpy(src_addr, &x, 4);
           for (size_t i = 0; i < 4; i++) {
-            std::cout << src_addr[i] << " ";
+            std::cout << int(src_addr[i]) << " ";
           }
         }
         std::cout << std::endl;
