@@ -185,11 +185,15 @@ void Waterfall::run() {
                 << ControlPlane::mLearnInterface.mLearnDataVec.size()
                 << " total packets" << std::endl;
 
-      if (ControlPlane::mLearnInterface.mLearnDataVec.size() <= 1024) {
+      if (ControlPlane::mLearnInterface.mLearnDataVec.size() <= 10000) {
         std::cout << "Recieved data from digest" << std::endl;
         for (const uint32_t &x : ControlPlane::mLearnInterface.mLearnDataVec) {
           uint8_t src_addr[4];
           memcpy(src_addr, &x, 4);
+          // Skip local messages
+          if(src_addr[3] == 192 and src_addr[2] == 168) {
+            continue;
+          }
           for (int i = 3; i >= 0; i--) {
             std::cout << int(src_addr[i]);
             if (i > 0) {
