@@ -187,8 +187,12 @@ void Waterfall::run() {
 
       if (ControlPlane::mLearnInterface.mLearnDataVec.size() <= 1024) {
         std::cout << "Recieved data from digest" << std::endl;
-        for (const auto &x : ControlPlane::mLearnInterface.mLearnDataVec) {
-          std::cout << x << " ";
+        for (const uint32_t &x : ControlPlane::mLearnInterface.mLearnDataVec) {
+          uint8_t src_addr[4];
+          memcpy(src_addr, &x, 4);
+          for (size_t i = 0; i < 4; i++) {
+            std::cout << src_addr[i] << " ";
+          }
         }
         std::cout << std::endl;
       }
