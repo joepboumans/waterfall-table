@@ -208,6 +208,12 @@ void Waterfall::run() {
   }
   std::set<uint64_t> uniqueSrcAddress;
   for (const auto &x : ControlPlane::mLearnInterface.mLearnDataVec) {
+    uint8_t src_addr[4];
+    memcpy(src_addr, &x, 4);
+    // Skip local messages
+    if(src_addr[3] == 192 and src_addr[2] == 168) {
+      continue;
+    }
     uniqueSrcAddress.insert(x);
   }
   std::cout << "Found " << uniqueSrcAddress.size() << " unique tupels"
