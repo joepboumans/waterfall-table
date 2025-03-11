@@ -26,8 +26,8 @@ Waterfall::Waterfall() : ControlPlane("waterfall") {
   /*                       {{"dst_port", 132}}, "SwitchIngress.hit");*/
   /**/
   std::array<uint32_t, 2> ports = {
-      0,
-      1,
+      132,
+      140,
   };
 
   for (auto &port : ports) {
