@@ -1,0 +1,4626 @@
+{
+  "graphs" : [
+    {
+      "metadata" : {
+        "gress" : "ingress",
+        "description" : "Before Table Placement Round 1",
+        "placement_complete" : false
+      },
+      "nodes" : [
+        {
+          "id" : "0",
+          "metadata" : {
+            "tables" : [
+              {
+                "name" : "WaterfallIngress.swap3_hi",
+                "table_type" : "match",
+                "match_type" : "exact"
+              },
+              {
+                "name" : "WaterfallIngress.table_3_hi",
+                "table_type" : "stateful"
+              }
+            ],
+            "min_stage" : 3,
+            "dep_chain" : 4
+          }
+        },
+        {
+          "id" : "1",
+          "metadata" : {
+            "tables" : [
+              {
+                "name" : "WaterfallIngress.resub",
+                "table_type" : "match",
+                "match_type" : "exact"
+              }
+            ],
+            "min_stage" : 7,
+            "dep_chain" : 0
+          }
+        },
+        {
+          "id" : "2",
+          "metadata" : {
+            "tables" : [
+              {
+                "name" : "WaterfallIngress.swap3_lo",
+                "table_type" : "match",
+                "match_type" : "exact"
+              },
+              {
+                "name" : "WaterfallIngress.table_3_lo",
+                "table_type" : "stateful"
+              }
+            ],
+            "min_stage" : 4,
+            "dep_chain" : 3
+          }
+        },
+        {
+          "id" : "3",
+          "metadata" : {
+            "tables" : [
+              {
+                "name" : "WaterfallIngress.swap2_lo",
+                "table_type" : "match",
+                "match_type" : "exact"
+              },
+              {
+                "name" : "WaterfallIngress.table_2_lo",
+                "table_type" : "stateful"
+              }
+            ],
+            "min_stage" : 1,
+            "dep_chain" : 6
+          }
+        },
+        {
+          "id" : "4",
+          "metadata" : {
+            "tables" : [
+              {
+                "name" : "WaterfallIngress.swap4_hi",
+                "table_type" : "match",
+                "match_type" : "exact"
+              },
+              {
+                "name" : "WaterfallIngress.table_4_hi",
+                "table_type" : "stateful"
+              }
+            ],
+            "min_stage" : 5,
+            "dep_chain" : 2
+          }
+        },
+        {
+          "id" : "5",
+          "metadata" : {
+            "tables" : [
+              {
+                "name" : "WaterfallIngress.swap4_lo",
+                "table_type" : "match",
+                "match_type" : "exact"
+              },
+              {
+                "name" : "WaterfallIngress.table_4_lo",
+                "table_type" : "stateful"
+              }
+            ],
+            "min_stage" : 6,
+            "dep_chain" : 1
+          }
+        },
+        {
+          "id" : "6",
+          "metadata" : {
+            "tables" : [
+              {
+                "name" : "WaterfallIngress.swap2_hi",
+                "table_type" : "match",
+                "match_type" : "exact"
+              },
+              {
+                "name" : "WaterfallIngress.table_2_hi",
+                "table_type" : "stateful"
+              }
+            ],
+            "min_stage" : 2,
+            "dep_chain" : 5
+          }
+        },
+        {
+          "id" : "7",
+          "metadata" : {
+            "tables" : [
+              {
+                "name" : "WaterfallIngress.swap1_hi",
+                "table_type" : "match",
+                "match_type" : "exact"
+              },
+              {
+                "name" : "WaterfallIngress.table_1_hi",
+                "table_type" : "stateful"
+              }
+            ],
+            "min_stage" : 0,
+            "dep_chain" : 7
+          }
+        },
+        {
+          "id" : "8",
+          "metadata" : {
+            "tables" : [
+              {
+                "name" : "WaterfallIngress.swap1_lo",
+                "table_type" : "match",
+                "match_type" : "exact"
+              },
+              {
+                "name" : "WaterfallIngress.table_1_lo",
+                "table_type" : "stateful"
+              }
+            ],
+            "min_stage" : 0,
+            "dep_chain" : 7
+          }
+        },
+        {
+          "id" : "9",
+          "metadata" : {
+            "tables" : [
+              {
+                "name" : "tbl_bypass_egress",
+                "table_type" : "match",
+                "match_type" : "ternary"
+              }
+            ],
+            "min_stage" : 0,
+            "dep_chain" : 0
+          }
+        },
+        {
+          "id" : "10",
+          "metadata" : {
+            "tables" : [
+              {
+                "name" : "SINK",
+                "table_type" : "condition",
+                "condition" : "<null>"
+              }
+            ],
+            "min_stage" : -1,
+            "dep_chain" : -1
+          }
+        }
+      ],
+      "edges" : [
+        {
+          "id" : "0",
+          "source" : "0",
+          "target" : "1",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "table_metadata",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain2_hi",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "1",
+          "source" : "2",
+          "target" : "1",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "table_metadata",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain2_hi",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "2",
+          "source" : "3",
+          "target" : "4",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "table_metadata",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain1_hi",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "3",
+          "source" : "3",
+          "target" : "5",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "table_metadata",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain1_hi",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "4",
+          "source" : "3",
+          "target" : "0",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "table_metadata",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain1_hi",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "5",
+          "source" : "3",
+          "target" : "2",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "table_metadata",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain1_lo",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "6",
+          "source" : "6",
+          "target" : "4",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "table_metadata",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain1_hi",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "7",
+          "source" : "6",
+          "target" : "5",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "table_metadata",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain1_hi",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "8",
+          "source" : "6",
+          "target" : "0",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "table_metadata",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain1_hi",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "9",
+          "source" : "6",
+          "target" : "2",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "table_metadata",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain1_lo",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "10",
+          "source" : "7",
+          "target" : "3",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              },
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain1_hi",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "is_critical" : true,
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "11",
+          "source" : "8",
+          "target" : "3",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              },
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain1_lo",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "is_critical" : true,
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "12",
+          "source" : "8",
+          "target" : "3",
+          "metadata" : {
+            "type" : "action",
+            "sub_type" : "output",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "is_critical" : true,
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "13",
+          "source" : "7",
+          "target" : "6",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              },
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain1_hi",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "14",
+          "source" : "8",
+          "target" : "6",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              },
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain1_lo",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "15",
+          "source" : "3",
+          "target" : "6",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "is_critical" : true,
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "16",
+          "source" : "3",
+          "target" : "6",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "action_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "17",
+          "source" : "7",
+          "target" : "6",
+          "metadata" : {
+            "type" : "action",
+            "sub_type" : "output",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "18",
+          "source" : "7",
+          "target" : "0",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "19",
+          "source" : "6",
+          "target" : "0",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              },
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain2_hi",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "is_critical" : true,
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "20",
+          "source" : "8",
+          "target" : "0",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "21",
+          "source" : "3",
+          "target" : "0",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              },
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain2_lo",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "22",
+          "source" : "3",
+          "target" : "0",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "action_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "23",
+          "source" : "6",
+          "target" : "0",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "action_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "24",
+          "source" : "7",
+          "target" : "0",
+          "metadata" : {
+            "type" : "action",
+            "sub_type" : "output",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "25",
+          "source" : "6",
+          "target" : "0",
+          "metadata" : {
+            "type" : "action",
+            "sub_type" : "output",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "is_critical" : true,
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "26",
+          "source" : "7",
+          "target" : "2",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "27",
+          "source" : "6",
+          "target" : "2",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              },
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain2_hi",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "28",
+          "source" : "0",
+          "target" : "2",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "is_critical" : true,
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "29",
+          "source" : "8",
+          "target" : "2",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "30",
+          "source" : "3",
+          "target" : "2",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              },
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain2_lo",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "31",
+          "source" : "3",
+          "target" : "2",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "action_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "32",
+          "source" : "6",
+          "target" : "2",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "action_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "33",
+          "source" : "0",
+          "target" : "2",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "action_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "34",
+          "source" : "8",
+          "target" : "2",
+          "metadata" : {
+            "type" : "action",
+            "sub_type" : "output",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "35",
+          "source" : "3",
+          "target" : "2",
+          "metadata" : {
+            "type" : "action",
+            "sub_type" : "output",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "36",
+          "source" : "7",
+          "target" : "4",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "37",
+          "source" : "6",
+          "target" : "4",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "38",
+          "source" : "0",
+          "target" : "4",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              },
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain3_hi",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "39",
+          "source" : "8",
+          "target" : "4",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "40",
+          "source" : "3",
+          "target" : "4",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "41",
+          "source" : "2",
+          "target" : "4",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              },
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain3_lo",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "is_critical" : true,
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "42",
+          "source" : "3",
+          "target" : "4",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "action_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "43",
+          "source" : "6",
+          "target" : "4",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "action_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "44",
+          "source" : "0",
+          "target" : "4",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "action_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "45",
+          "source" : "2",
+          "target" : "4",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "action_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "46",
+          "source" : "7",
+          "target" : "4",
+          "metadata" : {
+            "type" : "action",
+            "sub_type" : "output",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "47",
+          "source" : "6",
+          "target" : "4",
+          "metadata" : {
+            "type" : "action",
+            "sub_type" : "output",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "48",
+          "source" : "0",
+          "target" : "4",
+          "metadata" : {
+            "type" : "action",
+            "sub_type" : "output",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "49",
+          "source" : "7",
+          "target" : "5",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "50",
+          "source" : "6",
+          "target" : "5",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "51",
+          "source" : "0",
+          "target" : "5",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              },
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain3_hi",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "52",
+          "source" : "4",
+          "target" : "5",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "is_critical" : true,
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "53",
+          "source" : "8",
+          "target" : "5",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "54",
+          "source" : "3",
+          "target" : "5",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "55",
+          "source" : "2",
+          "target" : "5",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              },
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain3_lo",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "56",
+          "source" : "3",
+          "target" : "5",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "action_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "57",
+          "source" : "6",
+          "target" : "5",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "action_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "58",
+          "source" : "0",
+          "target" : "5",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "action_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "59",
+          "source" : "2",
+          "target" : "5",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "action_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "60",
+          "source" : "4",
+          "target" : "5",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "action_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "61",
+          "source" : "8",
+          "target" : "5",
+          "metadata" : {
+            "type" : "action",
+            "sub_type" : "output",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "62",
+          "source" : "3",
+          "target" : "5",
+          "metadata" : {
+            "type" : "action",
+            "sub_type" : "output",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "63",
+          "source" : "2",
+          "target" : "5",
+          "metadata" : {
+            "type" : "action",
+            "sub_type" : "output",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "64",
+          "source" : "7",
+          "target" : "1",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "65",
+          "source" : "6",
+          "target" : "1",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "66",
+          "source" : "0",
+          "target" : "1",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "67",
+          "source" : "4",
+          "target" : "1",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "68",
+          "source" : "8",
+          "target" : "1",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "69",
+          "source" : "3",
+          "target" : "1",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "70",
+          "source" : "2",
+          "target" : "1",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "71",
+          "source" : "5",
+          "target" : "1",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "is_critical" : true,
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "72",
+          "source" : "5",
+          "target" : "1",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "73",
+          "source" : "4",
+          "target" : "5",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "74",
+          "source" : "4",
+          "target" : "1",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "75",
+          "source" : "2",
+          "target" : "1",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "76",
+          "source" : "2",
+          "target" : "4",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "77",
+          "source" : "2",
+          "target" : "5",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "78",
+          "source" : "0",
+          "target" : "1",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "79",
+          "source" : "0",
+          "target" : "2",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "80",
+          "source" : "0",
+          "target" : "4",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "81",
+          "source" : "0",
+          "target" : "5",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "82",
+          "source" : "6",
+          "target" : "4",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "83",
+          "source" : "6",
+          "target" : "5",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "84",
+          "source" : "6",
+          "target" : "0",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "85",
+          "source" : "6",
+          "target" : "2",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "86",
+          "source" : "6",
+          "target" : "1",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "87",
+          "source" : "3",
+          "target" : "4",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "88",
+          "source" : "3",
+          "target" : "5",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "89",
+          "source" : "3",
+          "target" : "0",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "90",
+          "source" : "3",
+          "target" : "2",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "91",
+          "source" : "3",
+          "target" : "6",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "92",
+          "source" : "3",
+          "target" : "1",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "93",
+          "source" : "7",
+          "target" : "3",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              },
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain1_hi",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "94",
+          "source" : "7",
+          "target" : "6",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "95",
+          "source" : "7",
+          "target" : "0",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "96",
+          "source" : "7",
+          "target" : "2",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "97",
+          "source" : "7",
+          "target" : "4",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "98",
+          "source" : "7",
+          "target" : "5",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "99",
+          "source" : "7",
+          "target" : "1",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "100",
+          "source" : "8",
+          "target" : "3",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "101",
+          "source" : "8",
+          "target" : "6",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              },
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain1_lo",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "102",
+          "source" : "8",
+          "target" : "0",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "103",
+          "source" : "8",
+          "target" : "2",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "104",
+          "source" : "8",
+          "target" : "4",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "105",
+          "source" : "8",
+          "target" : "5",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "106",
+          "source" : "8",
+          "target" : "1",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "107",
+          "source" : "7",
+          "target" : "8",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "default_next_table",
+            "tags" : ["flow"]
+          }
+        },
+        {
+          "id" : "108",
+          "source" : "8",
+          "target" : "3",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "default_next_table",
+            "is_critical" : true,
+            "tags" : ["flow"]
+          }
+        },
+        {
+          "id" : "109",
+          "source" : "3",
+          "target" : "6",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "default_next_table",
+            "is_critical" : true,
+            "tags" : ["flow"]
+          }
+        },
+        {
+          "id" : "110",
+          "source" : "6",
+          "target" : "0",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "default_next_table",
+            "is_critical" : true,
+            "tags" : ["flow"]
+          }
+        },
+        {
+          "id" : "111",
+          "source" : "0",
+          "target" : "2",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "default_next_table",
+            "is_critical" : true,
+            "tags" : ["flow"]
+          }
+        },
+        {
+          "id" : "112",
+          "source" : "2",
+          "target" : "4",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "default_next_table",
+            "is_critical" : true,
+            "tags" : ["flow"]
+          }
+        },
+        {
+          "id" : "113",
+          "source" : "4",
+          "target" : "5",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "default_next_table",
+            "is_critical" : true,
+            "tags" : ["flow"]
+          }
+        },
+        {
+          "id" : "114",
+          "source" : "5",
+          "target" : "1",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "default_next_table",
+            "is_critical" : true,
+            "tags" : ["flow"]
+          }
+        },
+        {
+          "id" : "115",
+          "source" : "1",
+          "target" : "9",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "default_next_table",
+            "tags" : ["flow"]
+          }
+        },
+        {
+          "id" : "116",
+          "source" : "9",
+          "target" : "10",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "default_next_table",
+            "tags" : ["flow"]
+          }
+        }
+      ]
+    },
+    {
+      "metadata" : {
+        "gress" : "ingress",
+        "description" : "After Table Placement Round 1",
+        "placement_complete" : true
+      },
+      "nodes" : [
+        {
+          "id" : "0",
+          "metadata" : {
+            "placement" : {
+              "logical_table_id" : 0,
+              "stage_number" : 0
+            },
+            "tables" : [
+              {
+                "name" : "WaterfallIngress.swap1_lo",
+                "table_type" : "match",
+                "match_type" : "exact"
+              },
+              {
+                "name" : "WaterfallIngress.table_1_lo",
+                "table_type" : "stateful"
+              }
+            ],
+            "min_stage" : 0,
+            "dep_chain" : 7
+          }
+        },
+        {
+          "id" : "1",
+          "metadata" : {
+            "placement" : {
+              "logical_table_id" : 1,
+              "stage_number" : 0
+            },
+            "tables" : [
+              {
+                "name" : "WaterfallIngress.swap1_hi",
+                "table_type" : "match",
+                "match_type" : "exact"
+              },
+              {
+                "name" : "WaterfallIngress.table_1_hi",
+                "table_type" : "stateful"
+              }
+            ],
+            "min_stage" : 0,
+            "dep_chain" : 7
+          }
+        },
+        {
+          "id" : "2",
+          "metadata" : {
+            "placement" : {
+              "logical_table_id" : 0,
+              "stage_number" : 1
+            },
+            "tables" : [
+              {
+                "name" : "WaterfallIngress.swap2_lo",
+                "table_type" : "match",
+                "match_type" : "exact"
+              },
+              {
+                "name" : "WaterfallIngress.table_2_lo",
+                "table_type" : "stateful"
+              }
+            ],
+            "min_stage" : 1,
+            "dep_chain" : 6
+          }
+        },
+        {
+          "id" : "3",
+          "metadata" : {
+            "placement" : {
+              "logical_table_id" : 0,
+              "stage_number" : 2
+            },
+            "tables" : [
+              {
+                "name" : "WaterfallIngress.swap2_hi",
+                "table_type" : "match",
+                "match_type" : "exact"
+              },
+              {
+                "name" : "WaterfallIngress.table_2_hi",
+                "table_type" : "stateful"
+              }
+            ],
+            "min_stage" : 2,
+            "dep_chain" : 5
+          }
+        },
+        {
+          "id" : "4",
+          "metadata" : {
+            "placement" : {
+              "logical_table_id" : 1,
+              "stage_number" : 2
+            },
+            "tables" : [
+              {
+                "name" : "tbl_bypass_egress",
+                "table_type" : "match",
+                "match_type" : "ternary"
+              },
+              {
+                "name" : "tbl_bypass_egress$tind",
+                "table_type" : "ternary_indirect"
+              }
+            ],
+            "min_stage" : 0,
+            "dep_chain" : 0
+          }
+        },
+        {
+          "id" : "5",
+          "metadata" : {
+            "placement" : {
+              "logical_table_id" : 0,
+              "stage_number" : 3
+            },
+            "tables" : [
+              {
+                "name" : "WaterfallIngress.swap3_hi",
+                "table_type" : "match",
+                "match_type" : "exact"
+              },
+              {
+                "name" : "WaterfallIngress.table_3_hi",
+                "table_type" : "stateful"
+              }
+            ],
+            "min_stage" : 3,
+            "dep_chain" : 4
+          }
+        },
+        {
+          "id" : "6",
+          "metadata" : {
+            "placement" : {
+              "logical_table_id" : 0,
+              "stage_number" : 4
+            },
+            "tables" : [
+              {
+                "name" : "WaterfallIngress.swap3_lo",
+                "table_type" : "match",
+                "match_type" : "exact"
+              },
+              {
+                "name" : "WaterfallIngress.table_3_lo",
+                "table_type" : "stateful"
+              }
+            ],
+            "min_stage" : 4,
+            "dep_chain" : 3
+          }
+        },
+        {
+          "id" : "7",
+          "metadata" : {
+            "placement" : {
+              "logical_table_id" : 0,
+              "stage_number" : 5
+            },
+            "tables" : [
+              {
+                "name" : "WaterfallIngress.swap4_hi",
+                "table_type" : "match",
+                "match_type" : "exact"
+              },
+              {
+                "name" : "WaterfallIngress.table_4_hi",
+                "table_type" : "stateful"
+              }
+            ],
+            "min_stage" : 5,
+            "dep_chain" : 2
+          }
+        },
+        {
+          "id" : "8",
+          "metadata" : {
+            "placement" : {
+              "logical_table_id" : 0,
+              "stage_number" : 6
+            },
+            "tables" : [
+              {
+                "name" : "WaterfallIngress.swap4_lo",
+                "table_type" : "match",
+                "match_type" : "exact"
+              },
+              {
+                "name" : "WaterfallIngress.table_4_lo",
+                "table_type" : "stateful"
+              }
+            ],
+            "min_stage" : 6,
+            "dep_chain" : 1
+          }
+        },
+        {
+          "id" : "9",
+          "metadata" : {
+            "placement" : {
+              "logical_table_id" : 0,
+              "stage_number" : 7
+            },
+            "tables" : [
+              {
+                "name" : "WaterfallIngress.resub",
+                "table_type" : "match",
+                "match_type" : "exact"
+              }
+            ],
+            "min_stage" : 7,
+            "dep_chain" : 0
+          }
+        },
+        {
+          "id" : "10",
+          "metadata" : {
+            "tables" : [
+              {
+                "name" : "SINK",
+                "table_type" : "condition",
+                "condition" : "<null>"
+              }
+            ],
+            "min_stage" : -1,
+            "dep_chain" : -1
+          }
+        }
+      ],
+      "edges" : [
+        {
+          "id" : "0",
+          "source" : "1",
+          "target" : "2",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              },
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain1_hi",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "is_critical" : true,
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "1",
+          "source" : "0",
+          "target" : "2",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              },
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain1_lo",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "is_critical" : true,
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "2",
+          "source" : "0",
+          "target" : "2",
+          "metadata" : {
+            "type" : "action",
+            "sub_type" : "output",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "is_critical" : true,
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "3",
+          "source" : "1",
+          "target" : "3",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              },
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain1_hi",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "4",
+          "source" : "0",
+          "target" : "3",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              },
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain1_lo",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "5",
+          "source" : "2",
+          "target" : "3",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "is_critical" : true,
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "6",
+          "source" : "2",
+          "target" : "3",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "action_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "7",
+          "source" : "1",
+          "target" : "3",
+          "metadata" : {
+            "type" : "action",
+            "sub_type" : "output",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "8",
+          "source" : "1",
+          "target" : "5",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "9",
+          "source" : "3",
+          "target" : "5",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              },
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain2_hi",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "is_critical" : true,
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "10",
+          "source" : "0",
+          "target" : "5",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "11",
+          "source" : "2",
+          "target" : "5",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              },
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain2_lo",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "12",
+          "source" : "2",
+          "target" : "5",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "action_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "13",
+          "source" : "3",
+          "target" : "5",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "action_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "14",
+          "source" : "1",
+          "target" : "5",
+          "metadata" : {
+            "type" : "action",
+            "sub_type" : "output",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "15",
+          "source" : "3",
+          "target" : "5",
+          "metadata" : {
+            "type" : "action",
+            "sub_type" : "output",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "is_critical" : true,
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "16",
+          "source" : "1",
+          "target" : "6",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "17",
+          "source" : "3",
+          "target" : "6",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              },
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain2_hi",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "18",
+          "source" : "5",
+          "target" : "6",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "is_critical" : true,
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "19",
+          "source" : "0",
+          "target" : "6",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "20",
+          "source" : "2",
+          "target" : "6",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              },
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain2_lo",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "21",
+          "source" : "2",
+          "target" : "6",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "action_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "22",
+          "source" : "3",
+          "target" : "6",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "action_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "23",
+          "source" : "5",
+          "target" : "6",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "action_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "24",
+          "source" : "0",
+          "target" : "6",
+          "metadata" : {
+            "type" : "action",
+            "sub_type" : "output",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "25",
+          "source" : "2",
+          "target" : "6",
+          "metadata" : {
+            "type" : "action",
+            "sub_type" : "output",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "26",
+          "source" : "1",
+          "target" : "7",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "27",
+          "source" : "3",
+          "target" : "7",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "28",
+          "source" : "5",
+          "target" : "7",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              },
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain3_hi",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "29",
+          "source" : "0",
+          "target" : "7",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "30",
+          "source" : "2",
+          "target" : "7",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "31",
+          "source" : "6",
+          "target" : "7",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              },
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain3_lo",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "is_critical" : true,
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "32",
+          "source" : "2",
+          "target" : "7",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "action_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "33",
+          "source" : "3",
+          "target" : "7",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "action_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "34",
+          "source" : "5",
+          "target" : "7",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "action_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "35",
+          "source" : "6",
+          "target" : "7",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "action_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "36",
+          "source" : "1",
+          "target" : "7",
+          "metadata" : {
+            "type" : "action",
+            "sub_type" : "output",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "37",
+          "source" : "3",
+          "target" : "7",
+          "metadata" : {
+            "type" : "action",
+            "sub_type" : "output",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "38",
+          "source" : "5",
+          "target" : "7",
+          "metadata" : {
+            "type" : "action",
+            "sub_type" : "output",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "39",
+          "source" : "1",
+          "target" : "8",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "40",
+          "source" : "3",
+          "target" : "8",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "41",
+          "source" : "5",
+          "target" : "8",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              },
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain3_hi",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "42",
+          "source" : "7",
+          "target" : "8",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "is_critical" : true,
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "43",
+          "source" : "0",
+          "target" : "8",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "44",
+          "source" : "2",
+          "target" : "8",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "45",
+          "source" : "6",
+          "target" : "8",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              },
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain3_lo",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "46",
+          "source" : "2",
+          "target" : "8",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "action_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "47",
+          "source" : "3",
+          "target" : "8",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "action_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "48",
+          "source" : "5",
+          "target" : "8",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "action_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "49",
+          "source" : "6",
+          "target" : "8",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "action_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "50",
+          "source" : "7",
+          "target" : "8",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "action_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "51",
+          "source" : "0",
+          "target" : "8",
+          "metadata" : {
+            "type" : "action",
+            "sub_type" : "output",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "52",
+          "source" : "2",
+          "target" : "8",
+          "metadata" : {
+            "type" : "action",
+            "sub_type" : "output",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "53",
+          "source" : "6",
+          "target" : "8",
+          "metadata" : {
+            "type" : "action",
+            "sub_type" : "output",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "54",
+          "source" : "1",
+          "target" : "9",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "55",
+          "source" : "3",
+          "target" : "9",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "56",
+          "source" : "5",
+          "target" : "9",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "57",
+          "source" : "7",
+          "target" : "9",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "58",
+          "source" : "0",
+          "target" : "9",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "59",
+          "source" : "2",
+          "target" : "9",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "60",
+          "source" : "6",
+          "target" : "9",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "61",
+          "source" : "8",
+          "target" : "9",
+          "metadata" : {
+            "type" : "match",
+            "sub_type" : "ixbar_read",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "is_critical" : true,
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "62",
+          "source" : "8",
+          "target" : "9",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "63",
+          "source" : "7",
+          "target" : "8",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "64",
+          "source" : "7",
+          "target" : "9",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "65",
+          "source" : "6",
+          "target" : "7",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "66",
+          "source" : "6",
+          "target" : "8",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "67",
+          "source" : "6",
+          "target" : "9",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "68",
+          "source" : "5",
+          "target" : "6",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "69",
+          "source" : "5",
+          "target" : "7",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "70",
+          "source" : "5",
+          "target" : "8",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "71",
+          "source" : "5",
+          "target" : "9",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "72",
+          "source" : "3",
+          "target" : "5",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "73",
+          "source" : "3",
+          "target" : "6",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "74",
+          "source" : "3",
+          "target" : "7",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "75",
+          "source" : "3",
+          "target" : "8",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "76",
+          "source" : "3",
+          "target" : "9",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "77",
+          "source" : "2",
+          "target" : "3",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "78",
+          "source" : "2",
+          "target" : "5",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "79",
+          "source" : "2",
+          "target" : "6",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "80",
+          "source" : "2",
+          "target" : "7",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "81",
+          "source" : "2",
+          "target" : "8",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "82",
+          "source" : "2",
+          "target" : "9",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "83",
+          "source" : "0",
+          "target" : "2",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "84",
+          "source" : "0",
+          "target" : "3",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              },
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain1_lo",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "85",
+          "source" : "0",
+          "target" : "5",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "86",
+          "source" : "0",
+          "target" : "6",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "87",
+          "source" : "0",
+          "target" : "7",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "88",
+          "source" : "0",
+          "target" : "8",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "89",
+          "source" : "0",
+          "target" : "9",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_lo",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "90",
+          "source" : "1",
+          "target" : "2",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              },
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.remain1_hi",
+                "start_bit" : 0,
+                "width" : 16
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "91",
+          "source" : "1",
+          "target" : "3",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "92",
+          "source" : "1",
+          "target" : "5",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "93",
+          "source" : "1",
+          "target" : "6",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "94",
+          "source" : "1",
+          "target" : "7",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "95",
+          "source" : "1",
+          "target" : "8",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "96",
+          "source" : "1",
+          "target" : "9",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "anti",
+            "anti_type" : "next_table_data",
+            "dep_fields" : [
+              {
+                "gress" : "ingress",
+                "field_name" : "ig_md.found_hi",
+                "start_bit" : 0,
+                "width" : 4
+              }
+            ],
+            "tags" : ["dependency"]
+          }
+        },
+        {
+          "id" : "97",
+          "source" : "0",
+          "target" : "1",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "default_next_table",
+            "tags" : ["flow"]
+          }
+        },
+        {
+          "id" : "98",
+          "source" : "1",
+          "target" : "2",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "default_next_table",
+            "is_critical" : true,
+            "tags" : ["flow"]
+          }
+        },
+        {
+          "id" : "99",
+          "source" : "2",
+          "target" : "3",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "default_next_table",
+            "is_critical" : true,
+            "tags" : ["flow"]
+          }
+        },
+        {
+          "id" : "100",
+          "source" : "3",
+          "target" : "4",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "default_next_table",
+            "tags" : ["flow"]
+          }
+        },
+        {
+          "id" : "101",
+          "source" : "4",
+          "target" : "5",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "default_next_table",
+            "tags" : ["flow"]
+          }
+        },
+        {
+          "id" : "102",
+          "source" : "5",
+          "target" : "6",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "default_next_table",
+            "is_critical" : true,
+            "tags" : ["flow"]
+          }
+        },
+        {
+          "id" : "103",
+          "source" : "6",
+          "target" : "7",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "default_next_table",
+            "is_critical" : true,
+            "tags" : ["flow"]
+          }
+        },
+        {
+          "id" : "104",
+          "source" : "7",
+          "target" : "8",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "default_next_table",
+            "is_critical" : true,
+            "tags" : ["flow"]
+          }
+        },
+        {
+          "id" : "105",
+          "source" : "8",
+          "target" : "9",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "default_next_table",
+            "is_critical" : true,
+            "tags" : ["flow"]
+          }
+        },
+        {
+          "id" : "106",
+          "source" : "9",
+          "target" : "10",
+          "metadata" : {
+            "type" : "control",
+            "sub_type" : "default_next_table",
+            "tags" : ["flow"]
+          }
+        }
+      ]
+    }
+  ],
+  "schema_version" : "1.0.1"
+}

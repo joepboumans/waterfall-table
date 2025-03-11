@@ -1,0 +1,641 @@
+Allocation history of config default_alloc_config
+1: TRYING to allocate SUPERCLUSTER Uid: 203
+    slice lists:	
+        [ ingress::ig_intr_md.ingress_port<9> ^0 ^bit[0..15] intrinsic [0:8]
+          ingress::ig_intr_md._pad2<3> intrinsic [0:2]
+          ingress::ig_intr_md.packet_version<2> intrinsic [0:1]
+          ingress::ig_intr_md._pad1<1> intrinsic [0:0]
+          ingress::ig_intr_md.resubmit_flag<1> ^7 ^bit[0] intrinsic [0:0] ]
+        [ ingress::ig_intr_md_for_tm.ucast_egress_port<9> ^0 meta intrinsic solitary no_split deparsed_bottom_bits deparsed_to_tm [0:8] ]
+    rotational clusters:	
+        [[ingress::ig_intr_md_for_tm.ucast_egress_port<9> ^0 meta intrinsic solitary no_split deparsed_bottom_bits deparsed_to_tm [0:8]], [ingress::ig_intr_md.ingress_port<9> ^0 ^bit[0..15] intrinsic [0:8]]]
+        [[ingress::ig_intr_md._pad2<3> intrinsic [0:2]]]
+        [[ingress::ig_intr_md.packet_version<2> intrinsic [0:1]]]
+        [[ingress::ig_intr_md._pad1<1> intrinsic [0:0]]]
+        [[ingress::ig_intr_md.resubmit_flag<1> ^7 ^bit[0] intrinsic [0:0]]]
+Successfully Allocated
+By slicing into the following superclusters:
+SUPERCLUSTER Uid: 306
+    slice lists:	
+        [ ingress::ig_intr_md.ingress_port<9> ^0 ^bit[0..15] intrinsic [0:8]
+          ingress::ig_intr_md._pad2<3> intrinsic [0:2]
+          ingress::ig_intr_md.packet_version<2> intrinsic [0:1]
+          ingress::ig_intr_md._pad1<1> intrinsic [0:0]
+          ingress::ig_intr_md.resubmit_flag<1> ^7 ^bit[0] intrinsic [0:0] ]
+        [ ingress::ig_intr_md_for_tm.ucast_egress_port<9> ^0 meta intrinsic solitary no_split deparsed_bottom_bits deparsed_to_tm [0:8] ]
+    rotational clusters:	
+        [[ingress::ig_intr_md_for_tm.ucast_egress_port<9> ^0 meta intrinsic solitary no_split deparsed_bottom_bits deparsed_to_tm [0:8]], [ingress::ig_intr_md.ingress_port<9> ^0 ^bit[0..15] intrinsic [0:8]]]
+        [[ingress::ig_intr_md._pad2<3> intrinsic [0:2]]]
+        [[ingress::ig_intr_md.packet_version<2> intrinsic [0:1]]]
+        [[ingress::ig_intr_md._pad1<1> intrinsic [0:0]]]
+        [[ingress::ig_intr_md.resubmit_flag<1> ^7 ^bit[0] intrinsic [0:0]]]
+
+Best Score: {[n_inc_containers: 2, n_wasted_bits: 7, n_inc_small_containers: 2, ], }
+Allocation Decisions:
+allocate: H0[0:8] <- ingress::ig_intr_md.ingress_port<9> ^0 ^bit[0..15] intrinsic [0:8] @[-1r,8w]
+allocate: H0[15:15] <- ingress::ig_intr_md.resubmit_flag<1> ^7 ^bit[0] intrinsic [0:0] @[-1r,8w]
+allocate: H1[0:8] <- ingress::ig_intr_md_for_tm.ucast_egress_port<9> ^0 meta intrinsic solitary no_split deparsed_bottom_bits deparsed_to_tm [0:8] @[-1r,8w]
+2: TRYING to allocate SUPERCLUSTER Uid: 282
+    slice lists:	[ ]
+    rotational clusters:	
+        [[ingress::ig_intr_md_for_dprsr.mirror_type<3> meta intrinsic solitary no_split deparsed_bottom_bits [0:2]]]
+Successfully Allocated
+By slicing into the following superclusters:
+SUPERCLUSTER Uid: 307
+    slice lists:	[ ]
+    rotational clusters:	
+        [[ingress::ig_intr_md_for_dprsr.mirror_type<3> meta intrinsic solitary no_split deparsed_bottom_bits [0:2]]]
+
+Best Score: {[n_inc_containers: 1, n_wasted_bits: 5, n_inc_small_containers: 1, ], }
+Allocation Decisions:
+allocate: B1[0:2] <- ingress::ig_intr_md_for_dprsr.mirror_type<3> meta intrinsic solitary no_split deparsed_bottom_bits [0:2] @[-1r,8w]
+3: TRYING to allocate SUPERCLUSTER Uid: 280
+    slice lists:	[ ]
+    rotational clusters:	
+        [[ingress::ig_intr_md_for_dprsr.digest_type<3> meta intrinsic solitary no_split deparsed_bottom_bits [0:2]]]
+Successfully Allocated
+By slicing into the following superclusters:
+SUPERCLUSTER Uid: 308
+    slice lists:	[ ]
+    rotational clusters:	
+        [[ingress::ig_intr_md_for_dprsr.digest_type<3> meta intrinsic solitary no_split deparsed_bottom_bits [0:2]]]
+
+Best Score: {[n_inc_containers: 1, n_wasted_bits: 5, n_inc_small_containers: 1, ], }
+Allocation Decisions:
+allocate: B2[0:2] <- ingress::ig_intr_md_for_dprsr.digest_type<3> meta intrinsic solitary no_split deparsed_bottom_bits [0:2] @[-1r,8w]
+4: TRYING to allocate SUPERCLUSTER Uid: 281
+    slice lists:	[ ]
+    rotational clusters:	
+        [[ingress::ig_intr_md_for_dprsr.resubmit_type<3> meta intrinsic solitary no_split deparsed_bottom_bits [0:2]]]
+Successfully Allocated
+By slicing into the following superclusters:
+SUPERCLUSTER Uid: 309
+    slice lists:	[ ]
+    rotational clusters:	
+        [[ingress::ig_intr_md_for_dprsr.resubmit_type<3> meta intrinsic solitary no_split deparsed_bottom_bits [0:2]]]
+
+Best Score: {[n_inc_containers: 1, n_wasted_bits: 5, n_inc_small_containers: 1, ], }
+Allocation Decisions:
+allocate: B3[0:2] <- ingress::ig_intr_md_for_dprsr.resubmit_type<3> meta intrinsic solitary no_split deparsed_bottom_bits [0:2] @[-1r,8w]
+5: TRYING to allocate SUPERCLUSTER Uid: 287
+    slice lists:	
+        [ ingress::$tmp2<10> meta mirror%{52:ingress::ig_intr_md_for_dprsr.mirror_type#0}% no_split exact_containers [0:9]
+          ingress::__phv_dummy_padding__<6> exact_containers [0:5] ]
+    rotational clusters:	
+        [[ingress::$tmp2<10> meta mirror%{52:ingress::ig_intr_md_for_dprsr.mirror_type#0}% no_split exact_containers [0:9]]]
+        [[ingress::__phv_dummy_padding__<6> exact_containers [0:5]]]
+Successfully Allocated
+By slicing into the following superclusters:
+SUPERCLUSTER Uid: 313
+    slice lists:	
+        [ ingress::$tmp2<10> meta mirror%{52:ingress::ig_intr_md_for_dprsr.mirror_type#0}% no_split exact_containers [0:9]
+          ingress::__phv_dummy_padding__<6> exact_containers [0:5] ]
+    rotational clusters:	
+        [[ingress::$tmp2<10> meta mirror%{52:ingress::ig_intr_md_for_dprsr.mirror_type#0}% no_split exact_containers [0:9]]]
+        [[ingress::__phv_dummy_padding__<6> exact_containers [0:5]]]
+
+Best Score: {[n_inc_containers: 1, n_inc_small_containers: 1, ], }
+Allocation Decisions:
+allocate: H2[0:9] <- ingress::$tmp2<10> meta mirror%{52:ingress::ig_intr_md_for_dprsr.mirror_type#0}% no_split exact_containers [0:9] @[-1r,8w]
+6: TRYING to allocate SUPERCLUSTER Uid: 283
+    slice lists:	[ ]
+    rotational clusters:	
+        [[ingress::ig_intr_md_for_tm.bypass_egress<1> meta intrinsic no_split deparsed_to_tm [0:0]]]
+Successfully Allocated
+By slicing into the following superclusters:
+SUPERCLUSTER Uid: 314
+    slice lists:	[ ]
+    rotational clusters:	
+        [[ingress::ig_intr_md_for_tm.bypass_egress<1> meta intrinsic no_split deparsed_to_tm [0:0]]]
+
+Best Score: {[n_inc_containers: 1, n_inc_small_containers: 1, ], }
+Allocation Decisions:
+allocate: B4[0:0] <- ingress::ig_intr_md_for_tm.bypass_egress<1> meta intrinsic no_split deparsed_to_tm [0:0] @[-1r,8w]
+7: TRYING to allocate SUPERCLUSTER Uid: 262
+    slice lists:	
+        [ ingress::ig_md.resubmit_md.type<8> exact_containers [0:7] ]
+    rotational clusters:	
+        [[ingress::ig_md.resubmit_md.type<8> exact_containers [0:7]]]
+Successfully Allocated
+By slicing into the following superclusters:
+SUPERCLUSTER Uid: 318
+    slice lists:	
+        [ ingress::ig_md.resubmit_md.type<8> exact_containers [0:7] ]
+    rotational clusters:	
+        [[ingress::ig_md.resubmit_md.type<8> exact_containers [0:7]]]
+
+Best Score: {[n_inc_containers: 1, n_inc_small_containers: 1, ], }
+Allocation Decisions:
+allocate: B5[0:7] <- ingress::ig_md.resubmit_md.type<8> exact_containers [0:7] @[-1r,8w]
+8: TRYING to allocate SUPERCLUSTER Uid: 233
+    slice lists:	
+        [ ingress::hdr.ipv4.total_len<16> ^0 ^bit[0..31] deparsed exact_containers [0:15]
+          ingress::hdr.ipv4.diffserv<8> ^0 ^bit[0..15] deparsed exact_containers [0:7]
+          ingress::hdr.ipv4.ihl<4> ^0 ^bit[0..7] deparsed exact_containers [0:3]
+          ingress::hdr.ipv4.version<4> ^4 ^bit[0..3] deparsed exact_containers [0:3] ]
+    rotational clusters:	
+        [[ingress::hdr.ipv4.total_len<16> ^0 ^bit[0..31] deparsed exact_containers [0:15]]]
+        [[ingress::hdr.ipv4.diffserv<8> ^0 ^bit[0..15] deparsed exact_containers [0:7]]]
+        [[ingress::hdr.ipv4.ihl<4> ^0 ^bit[0..7] deparsed exact_containers [0:3]]]
+        [[ingress::hdr.ipv4.version<4> ^4 ^bit[0..3] deparsed exact_containers [0:3]]]
+Successfully Allocated
+By slicing into the following superclusters:
+SUPERCLUSTER Uid: 323
+    slice lists:	
+        [ ingress::hdr.ipv4.total_len<16> ^0 ^bit[0..31] deparsed exact_containers [0:15]
+          ingress::hdr.ipv4.diffserv<8> ^0 ^bit[0..15] deparsed exact_containers [0:7]
+          ingress::hdr.ipv4.ihl<4> ^0 ^bit[0..7] deparsed exact_containers [0:3]
+          ingress::hdr.ipv4.version<4> ^4 ^bit[0..3] deparsed exact_containers [0:3] ]
+    rotational clusters:	
+        [[ingress::hdr.ipv4.total_len<16> ^0 ^bit[0..31] deparsed exact_containers [0:15]]]
+        [[ingress::hdr.ipv4.diffserv<8> ^0 ^bit[0..15] deparsed exact_containers [0:7]]]
+        [[ingress::hdr.ipv4.ihl<4> ^0 ^bit[0..7] deparsed exact_containers [0:3]]]
+        [[ingress::hdr.ipv4.version<4> ^4 ^bit[0..3] deparsed exact_containers [0:3]]]
+
+Best Score: {n_inc_tphv_collections: 1, T[n_set_gress: 1, n_set_parser_group_gress: 1, n_set_deparser_group_gress: 1, n_inc_containers: 1, ], }
+Allocation Decisions:
+allocate: TW0[0:15] <- ingress::hdr.ipv4.total_len<16> ^0 ^bit[0..31] deparsed exact_containers [0:15] @[-1r,8w]
+allocate: TW0[16:23] <- ingress::hdr.ipv4.diffserv<8> ^0 ^bit[0..15] deparsed exact_containers [0:7] @[-1r,8w]
+allocate: TW0[24:27] <- ingress::hdr.ipv4.ihl<4> ^0 ^bit[0..7] deparsed exact_containers [0:3] @[-1r,8w]
+allocate: TW0[28:31] <- ingress::hdr.ipv4.version<4> ^4 ^bit[0..3] deparsed exact_containers [0:3] @[-1r,8w]
+9: TRYING to allocate SUPERCLUSTER Uid: 252
+    slice lists:	
+        [ ingress::hdr.tcp.window<16> ^0 ^bit[0..127] deparsed exact_containers [0:15]
+          ingress::hdr.tcp.flags<8> ^0 ^bit[0..111] deparsed exact_containers [0:7]
+          ingress::hdr.tcp.res<4> ^0 ^bit[0..103] deparsed exact_containers [0:3]
+          ingress::hdr.tcp.data_offset<4> ^4 ^bit[0..99] deparsed exact_containers [0:3] ]
+    rotational clusters:	
+        [[ingress::hdr.tcp.window<16> ^0 ^bit[0..127] deparsed exact_containers [0:15]]]
+        [[ingress::hdr.tcp.flags<8> ^0 ^bit[0..111] deparsed exact_containers [0:7]]]
+        [[ingress::hdr.tcp.res<4> ^0 ^bit[0..103] deparsed exact_containers [0:3]]]
+        [[ingress::hdr.tcp.data_offset<4> ^4 ^bit[0..99] deparsed exact_containers [0:3]]]
+Successfully Allocated
+By slicing into the following superclusters:
+SUPERCLUSTER Uid: 346
+    slice lists:	
+        [ ingress::hdr.tcp.window<16> ^0 ^bit[0..127] deparsed exact_containers [0:15]
+          ingress::hdr.tcp.flags<8> ^0 ^bit[0..111] deparsed exact_containers [0:7]
+          ingress::hdr.tcp.res<4> ^0 ^bit[0..103] deparsed exact_containers [0:3]
+          ingress::hdr.tcp.data_offset<4> ^4 ^bit[0..99] deparsed exact_containers [0:3] ]
+    rotational clusters:	
+        [[ingress::hdr.tcp.window<16> ^0 ^bit[0..127] deparsed exact_containers [0:15]]]
+        [[ingress::hdr.tcp.flags<8> ^0 ^bit[0..111] deparsed exact_containers [0:7]]]
+        [[ingress::hdr.tcp.res<4> ^0 ^bit[0..103] deparsed exact_containers [0:3]]]
+        [[ingress::hdr.tcp.data_offset<4> ^4 ^bit[0..99] deparsed exact_containers [0:3]]]
+
+Best Score: {T[n_set_parser_group_gress: 1, n_inc_containers: 1, ], }
+Allocation Decisions:
+allocate: TW1[0:15] <- ingress::hdr.tcp.window<16> ^0 ^bit[0..127] deparsed exact_containers [0:15] @[-1r,8w]
+allocate: TW1[16:23] <- ingress::hdr.tcp.flags<8> ^0 ^bit[0..111] deparsed exact_containers [0:7] @[-1r,8w]
+allocate: TW1[24:27] <- ingress::hdr.tcp.res<4> ^0 ^bit[0..103] deparsed exact_containers [0:3] @[-1r,8w]
+allocate: TW1[28:31] <- ingress::hdr.tcp.data_offset<4> ^4 ^bit[0..99] deparsed exact_containers [0:3] @[-1r,8w]
+10: TRYING to allocate SUPERCLUSTER Uid: 229
+    slice lists:	
+        [ ingress::hdr.ipv4.hdr_checksum<16> ^0 ^bit[0..95] deparsed exact_containers [0:15]
+          ingress::hdr.ipv4.protocol<8> ^0 ^bit[0..79] deparsed exact_containers [0:7]
+          ingress::hdr.ipv4.ttl<8> ^0 ^bit[0..71] deparsed exact_containers [0:7] ]
+    rotational clusters:	
+        [[ingress::hdr.ipv4.hdr_checksum<16> ^0 ^bit[0..95] deparsed exact_containers [0:15]]]
+        [[ingress::hdr.ipv4.protocol<8> ^0 ^bit[0..79] deparsed exact_containers [0:7]]]
+        [[ingress::hdr.ipv4.ttl<8> ^0 ^bit[0..71] deparsed exact_containers [0:7]]]
+Successfully Allocated
+By slicing into the following superclusters:
+SUPERCLUSTER Uid: 369
+    slice lists:	
+        [ ingress::hdr.ipv4.hdr_checksum<16> ^0 ^bit[0..95] deparsed exact_containers [0:15]
+          ingress::hdr.ipv4.protocol<8> ^0 ^bit[0..79] deparsed exact_containers [0:7]
+          ingress::hdr.ipv4.ttl<8> ^0 ^bit[0..71] deparsed exact_containers [0:7] ]
+    rotational clusters:	
+        [[ingress::hdr.ipv4.hdr_checksum<16> ^0 ^bit[0..95] deparsed exact_containers [0:15]]]
+        [[ingress::hdr.ipv4.protocol<8> ^0 ^bit[0..79] deparsed exact_containers [0:7]]]
+        [[ingress::hdr.ipv4.ttl<8> ^0 ^bit[0..71] deparsed exact_containers [0:7]]]
+
+Best Score: {T[n_set_parser_group_gress: 1, n_inc_containers: 1, ], }
+Allocation Decisions:
+allocate: TW2[0:15] <- ingress::hdr.ipv4.hdr_checksum<16> ^0 ^bit[0..95] deparsed exact_containers [0:15] @[-1r,8w]
+allocate: TW2[16:23] <- ingress::hdr.ipv4.protocol<8> ^0 ^bit[0..79] deparsed exact_containers [0:7] @[-1r,8w]
+allocate: TW2[24:31] <- ingress::hdr.ipv4.ttl<8> ^0 ^bit[0..71] deparsed exact_containers [0:7] @[-1r,8w]
+11: TRYING to allocate SUPERCLUSTER Uid: 231
+    slice lists:	
+        [ ingress::hdr.ipv4.frag_offset<13> ^0 ^bit[0..63] deparsed exact_containers [0:12]
+          ingress::hdr.ipv4.flags<3> ^5 ^bit[0..50] deparsed exact_containers [0:2]
+          ingress::hdr.ipv4.identification<16> ^0 ^bit[0..47] deparsed exact_containers [0:15] ]
+    rotational clusters:	
+        [[ingress::hdr.ipv4.frag_offset<13> ^0 ^bit[0..63] deparsed exact_containers [0:12]]]
+        [[ingress::hdr.ipv4.flags<3> ^5 ^bit[0..50] deparsed exact_containers [0:2]]]
+        [[ingress::hdr.ipv4.identification<16> ^0 ^bit[0..47] deparsed exact_containers [0:15]]]
+Successfully Allocated
+By slicing into the following superclusters:
+SUPERCLUSTER Uid: 392
+    slice lists:	
+        [ ingress::hdr.ipv4.frag_offset<13> ^0 ^bit[0..63] deparsed exact_containers [0:12]
+          ingress::hdr.ipv4.flags<3> ^5 ^bit[0..50] deparsed exact_containers [0:2]
+          ingress::hdr.ipv4.identification<16> ^0 ^bit[0..47] deparsed exact_containers [0:15] ]
+    rotational clusters:	
+        [[ingress::hdr.ipv4.frag_offset<13> ^0 ^bit[0..63] deparsed exact_containers [0:12]]]
+        [[ingress::hdr.ipv4.flags<3> ^5 ^bit[0..50] deparsed exact_containers [0:2]]]
+        [[ingress::hdr.ipv4.identification<16> ^0 ^bit[0..47] deparsed exact_containers [0:15]]]
+
+Best Score: {T[n_set_parser_group_gress: 1, n_inc_containers: 1, ], }
+Allocation Decisions:
+allocate: TW3[0:12] <- ingress::hdr.ipv4.frag_offset<13> ^0 ^bit[0..63] deparsed exact_containers [0:12] @[-1r,8w]
+allocate: TW3[13:15] <- ingress::hdr.ipv4.flags<3> ^5 ^bit[0..50] deparsed exact_containers [0:2] @[-1r,8w]
+allocate: TW3[16:31] <- ingress::hdr.ipv4.identification<16> ^0 ^bit[0..47] deparsed exact_containers [0:15] @[-1r,8w]
+12: TRYING to allocate SUPERCLUSTER Uid: 243
+    slice lists:	
+        [ ingress::hdr.udp.checksum<16> ^0 ^bit[0..63] deparsed exact_containers [0:15]
+          ingress::hdr.udp.hdr_length<16> ^0 ^bit[0..47] deparsed exact_containers [0:15] ]
+    rotational clusters:	
+        [[ingress::hdr.udp.checksum<16> ^0 ^bit[0..63] deparsed exact_containers [0:15]]]
+        [[ingress::hdr.udp.hdr_length<16> ^0 ^bit[0..47] deparsed exact_containers [0:15]]]
+Successfully Allocated
+By slicing into the following superclusters:
+SUPERCLUSTER Uid: 427
+    slice lists:	
+        [ ingress::hdr.udp.checksum<16> ^0 ^bit[0..63] deparsed exact_containers [0:15]
+          ingress::hdr.udp.hdr_length<16> ^0 ^bit[0..47] deparsed exact_containers [0:15] ]
+    rotational clusters:	
+        [[ingress::hdr.udp.checksum<16> ^0 ^bit[0..63] deparsed exact_containers [0:15]]]
+        [[ingress::hdr.udp.hdr_length<16> ^0 ^bit[0..47] deparsed exact_containers [0:15]]]
+
+Best Score: {T[n_overlay_bits: 32, ], }
+Allocation Decisions:
+allocate: TW1[0:15] <- ingress::hdr.udp.checksum<16> ^0 ^bit[0..63] deparsed exact_containers [0:15] @[-1r,8w]
+allocate: TW1[16:31] <- ingress::hdr.udp.hdr_length<16> ^0 ^bit[0..47] deparsed exact_containers [0:15] @[-1r,8w]
+13: TRYING to allocate SUPERCLUSTER Uid: 245
+    slice lists:	
+        [ ingress::hdr.udp.dst_port<16> ^0 ^bit[0..31] deparsed exact_containers [0:15]
+          ingress::hdr.udp.src_port<16> ^0 ^bit[0..15] deparsed exact_containers [0:15] ]
+    rotational clusters:	
+        [[ingress::hdr.udp.dst_port<16> ^0 ^bit[0..31] deparsed exact_containers [0:15]]]
+        [[ingress::hdr.udp.src_port<16> ^0 ^bit[0..15] deparsed exact_containers [0:15]]]
+Successfully Allocated
+By slicing into the following superclusters:
+SUPERCLUSTER Uid: 463
+    slice lists:	
+        [ ingress::hdr.udp.dst_port<16> ^0 ^bit[0..31] deparsed exact_containers [0:15] ]
+    rotational clusters:	
+        [[ingress::hdr.udp.dst_port<16> ^0 ^bit[0..31] deparsed exact_containers [0:15]]]
+
+SUPERCLUSTER Uid: 465
+    slice lists:	
+        [ ingress::hdr.udp.src_port<16> ^0 ^bit[0..15] deparsed exact_containers [0:15] ]
+    rotational clusters:	
+        [[ingress::hdr.udp.src_port<16> ^0 ^bit[0..15] deparsed exact_containers [0:15]]]
+
+Best Score: {T[n_set_parser_group_gress: 2, n_inc_containers: 2, ], }
+Allocation Decisions:
+allocate: TH0[0:15] <- ingress::hdr.udp.dst_port<16> ^0 ^bit[0..31] deparsed exact_containers [0:15] @[-1r,8w]
+allocate: TH1[0:15] <- ingress::hdr.udp.src_port<16> ^0 ^bit[0..15] deparsed exact_containers [0:15] @[-1r,8w]
+14: TRYING to allocate SUPERCLUSTER Uid: 250
+    slice lists:	
+        [ ingress::hdr.tcp.urgent_ptr<16> ^0 ^bit[0..159] deparsed exact_containers [0:15]
+          ingress::hdr.tcp.checksum<16> ^0 ^bit[0..143] deparsed exact_containers [0:15] ]
+    rotational clusters:	
+        [[ingress::hdr.tcp.urgent_ptr<16> ^0 ^bit[0..159] deparsed exact_containers [0:15]]]
+        [[ingress::hdr.tcp.checksum<16> ^0 ^bit[0..143] deparsed exact_containers [0:15]]]
+Successfully Allocated
+By slicing into the following superclusters:
+SUPERCLUSTER Uid: 498
+    slice lists:	
+        [ ingress::hdr.tcp.urgent_ptr<16> ^0 ^bit[0..159] deparsed exact_containers [0:15] ]
+    rotational clusters:	
+        [[ingress::hdr.tcp.urgent_ptr<16> ^0 ^bit[0..159] deparsed exact_containers [0:15]]]
+
+SUPERCLUSTER Uid: 500
+    slice lists:	
+        [ ingress::hdr.tcp.checksum<16> ^0 ^bit[0..143] deparsed exact_containers [0:15] ]
+    rotational clusters:	
+        [[ingress::hdr.tcp.checksum<16> ^0 ^bit[0..143] deparsed exact_containers [0:15]]]
+
+Best Score: {T[n_overlay_bits: 32, ], }
+Allocation Decisions:
+allocate: TH0[0:15] <- ingress::hdr.tcp.urgent_ptr<16> ^0 ^bit[0..159] deparsed exact_containers [0:15] @[-1r,8w]
+allocate: TH1[0:15] <- ingress::hdr.tcp.checksum<16> ^0 ^bit[0..143] deparsed exact_containers [0:15] @[-1r,8w]
+15: TRYING to allocate SUPERCLUSTER Uid: 258
+    slice lists:	
+        [ ingress::hdr.tcp.dst_port<16> ^0 ^bit[0..31] deparsed exact_containers [0:15]
+          ingress::hdr.tcp.src_port<16> ^0 ^bit[0..15] deparsed exact_containers [0:15] ]
+    rotational clusters:	
+        [[ingress::hdr.tcp.dst_port<16> ^0 ^bit[0..31] deparsed exact_containers [0:15]]]
+        [[ingress::hdr.tcp.src_port<16> ^0 ^bit[0..15] deparsed exact_containers [0:15]]]
+Successfully Allocated
+By slicing into the following superclusters:
+SUPERCLUSTER Uid: 533
+    slice lists:	
+        [ ingress::hdr.tcp.dst_port<16> ^0 ^bit[0..31] deparsed exact_containers [0:15] ]
+    rotational clusters:	
+        [[ingress::hdr.tcp.dst_port<16> ^0 ^bit[0..31] deparsed exact_containers [0:15]]]
+
+SUPERCLUSTER Uid: 535
+    slice lists:	
+        [ ingress::hdr.tcp.src_port<16> ^0 ^bit[0..15] deparsed exact_containers [0:15] ]
+    rotational clusters:	
+        [[ingress::hdr.tcp.src_port<16> ^0 ^bit[0..15] deparsed exact_containers [0:15]]]
+
+Best Score: {T[n_set_parser_group_gress: 2, n_inc_containers: 2, ], }
+Allocation Decisions:
+allocate: TH2[0:15] <- ingress::hdr.tcp.dst_port<16> ^0 ^bit[0..31] deparsed exact_containers [0:15] @[-1r,8w]
+allocate: TH3[0:15] <- ingress::hdr.tcp.src_port<16> ^0 ^bit[0..15] deparsed exact_containers [0:15] @[-1r,8w]
+16: TRYING to allocate SUPERCLUSTER Uid: 215
+    slice lists:	
+        [ ingress::hdr.ethernet.src_addr<48> ^0 ^bit[0..95] deparsed exact_containers [0:31] ]
+    rotational clusters:	
+        [[ingress::hdr.ethernet.src_addr<48> ^0 ^bit[0..95] deparsed exact_containers [0:31]]]
+Successfully Allocated
+By slicing into the following superclusters:
+SUPERCLUSTER Uid: 572
+    slice lists:	
+        [ ingress::hdr.ethernet.src_addr<48> ^0 ^bit[0..95] deparsed exact_containers [0:15] ]
+    rotational clusters:	
+        [[ingress::hdr.ethernet.src_addr<48> ^0 ^bit[0..95] deparsed exact_containers [0:15]]]
+
+SUPERCLUSTER Uid: 574
+    slice lists:	
+        [ ingress::hdr.ethernet.src_addr<48> ^0 ^bit[0..79] deparsed exact_containers [16:31] ]
+    rotational clusters:	
+        [[ingress::hdr.ethernet.src_addr<48> ^0 ^bit[0..79] deparsed exact_containers [16:31]]]
+
+Best Score: {T[n_set_parser_group_gress: 2, n_inc_containers: 2, ], }
+Allocation Decisions:
+allocate: TH4[0:15] <- ingress::hdr.ethernet.src_addr<48> ^0 ^bit[0..95] deparsed exact_containers [0:15] @[-1r,8w]
+allocate: TH5[0:15] <- ingress::hdr.ethernet.src_addr<48> ^0 ^bit[0..79] deparsed exact_containers [16:31] @[-1r,8w]
+17: TRYING to allocate SUPERCLUSTER Uid: 222
+    slice lists:	
+        [ ingress::hdr.ethernet.dst_addr<48> ^0 ^bit[0..47] deparsed exact_containers [0:31] ]
+    rotational clusters:	
+        [[ingress::hdr.ethernet.dst_addr<48> ^0 ^bit[0..47] deparsed exact_containers [0:31]]]
+Successfully Allocated
+By slicing into the following superclusters:
+SUPERCLUSTER Uid: 628
+    slice lists:	
+        [ ingress::hdr.ethernet.dst_addr<48> ^0 ^bit[0..47] deparsed exact_containers [0:7] ]
+    rotational clusters:	
+        [[ingress::hdr.ethernet.dst_addr<48> ^0 ^bit[0..47] deparsed exact_containers [0:7]]]
+
+SUPERCLUSTER Uid: 640
+    slice lists:	
+        [ ingress::hdr.ethernet.dst_addr<48> ^0 ^bit[0..39] deparsed exact_containers [8:15] ]
+    rotational clusters:	
+        [[ingress::hdr.ethernet.dst_addr<48> ^0 ^bit[0..39] deparsed exact_containers [8:15]]]
+
+SUPERCLUSTER Uid: 647
+    slice lists:	
+        [ ingress::hdr.ethernet.dst_addr<48> ^0 ^bit[0..31] deparsed exact_containers [16:23] ]
+    rotational clusters:	
+        [[ingress::hdr.ethernet.dst_addr<48> ^0 ^bit[0..31] deparsed exact_containers [16:23]]]
+
+SUPERCLUSTER Uid: 648
+    slice lists:	
+        [ ingress::hdr.ethernet.dst_addr<48> ^0 ^bit[0..23] deparsed exact_containers [24:31] ]
+    rotational clusters:	
+        [[ingress::hdr.ethernet.dst_addr<48> ^0 ^bit[0..23] deparsed exact_containers [24:31]]]
+
+Best Score: {T[n_set_parser_group_gress: 4, n_inc_containers: 4, ], }
+Allocation Decisions:
+allocate: TB0[0:7] <- ingress::hdr.ethernet.dst_addr<48> ^0 ^bit[0..47] deparsed exact_containers [0:7] @[-1r,8w]
+allocate: TB1[0:7] <- ingress::hdr.ethernet.dst_addr<48> ^0 ^bit[0..39] deparsed exact_containers [8:15] @[-1r,8w]
+allocate: TB2[0:7] <- ingress::hdr.ethernet.dst_addr<48> ^0 ^bit[0..31] deparsed exact_containers [16:23] @[-1r,8w]
+allocate: TB3[0:7] <- ingress::hdr.ethernet.dst_addr<48> ^0 ^bit[0..23] deparsed exact_containers [24:31] @[-1r,8w]
+18: TRYING to allocate SUPERCLUSTER Uid: 238
+    slice lists:	
+        [ ingress::hdr.ipv4.dst_addr<32> ^0 ^bit[0..159] deparsed exact_containers [0:31] ]
+    rotational clusters:	
+        [[ingress::hdr.ipv4.dst_addr<32> ^0 ^bit[0..159] deparsed exact_containers [0:31]]]
+Successfully Allocated
+By slicing into the following superclusters:
+SUPERCLUSTER Uid: 653
+    slice lists:	
+        [ ingress::hdr.ipv4.dst_addr<32> ^0 ^bit[0..159] deparsed exact_containers [0:31] ]
+    rotational clusters:	
+        [[ingress::hdr.ipv4.dst_addr<32> ^0 ^bit[0..159] deparsed exact_containers [0:31]]]
+
+Best Score: {n_inc_tphv_collections: 1, T[n_set_gress: 1, n_set_parser_group_gress: 1, n_set_deparser_group_gress: 1, n_inc_containers: 1, ], }
+Allocation Decisions:
+allocate: TW4[0:31] <- ingress::hdr.ipv4.dst_addr<32> ^0 ^bit[0..159] deparsed exact_containers [0:31] @[-1r,8w]
+19: TRYING to allocate SUPERCLUSTER Uid: 255
+    slice lists:	
+        [ ingress::hdr.tcp.ack_no<32> ^0 ^bit[0..95] deparsed exact_containers [0:31] ]
+    rotational clusters:	
+        [[ingress::hdr.tcp.ack_no<32> ^0 ^bit[0..95] deparsed exact_containers [0:31]]]
+Successfully Allocated
+By slicing into the following superclusters:
+SUPERCLUSTER Uid: 696
+    slice lists:	
+        [ ingress::hdr.tcp.ack_no<32> ^0 ^bit[0..95] deparsed exact_containers [0:31] ]
+    rotational clusters:	
+        [[ingress::hdr.tcp.ack_no<32> ^0 ^bit[0..95] deparsed exact_containers [0:31]]]
+
+Best Score: {T[n_set_parser_group_gress: 1, n_inc_containers: 1, ], }
+Allocation Decisions:
+allocate: TW5[0:31] <- ingress::hdr.tcp.ack_no<32> ^0 ^bit[0..95] deparsed exact_containers [0:31] @[-1r,8w]
+20: TRYING to allocate SUPERCLUSTER Uid: 257
+    slice lists:	
+        [ ingress::hdr.tcp.seq_no<32> ^0 ^bit[0..63] deparsed exact_containers [0:31] ]
+    rotational clusters:	
+        [[ingress::hdr.tcp.seq_no<32> ^0 ^bit[0..63] deparsed exact_containers [0:31]]]
+Successfully Allocated
+By slicing into the following superclusters:
+SUPERCLUSTER Uid: 739
+    slice lists:	
+        [ ingress::hdr.tcp.seq_no<32> ^0 ^bit[0..63] deparsed exact_containers [0:31] ]
+    rotational clusters:	
+        [[ingress::hdr.tcp.seq_no<32> ^0 ^bit[0..63] deparsed exact_containers [0:31]]]
+
+Best Score: {T[n_set_parser_group_gress: 1, n_inc_containers: 1, ], }
+Allocation Decisions:
+allocate: TW6[0:31] <- ingress::hdr.tcp.seq_no<32> ^0 ^bit[0..63] deparsed exact_containers [0:31] @[-1r,8w]
+21: TRYING to allocate SUPERCLUSTER Uid: 278
+    slice lists:	
+        [ ingress::ig_md.remain1_lo<16> meta [0:15] ]
+        [ ingress::hdr.ipv4.src_addr<32> ^0 ^bit[0..127] deparsed exact_containers [0:15] ]
+        [ ingress::ig_md.remain2_lo<16> meta [0:15] ]
+        [ ingress::ig_md.remain3_lo<16> meta [0:15] ]
+        [ ingress::ig_md.resubmit_md.remain_lo<16> exact_containers [0:15] ]
+    rotational clusters:	
+        [[ingress::ig_md.remain1_lo<16> meta [0:15]], [ingress::hdr.ipv4.src_addr<32> ^0 ^bit[0..127] deparsed exact_containers [0:15]], [ingress::ig_md.remain2_lo<16> meta [0:15]], [ingress::ig_md.remain3_lo<16> meta [0:15]], [ingress::ig_md.resubmit_md.remain_lo<16> exact_containers [0:15]]]
+Successfully Allocated
+By slicing into the following superclusters:
+SUPERCLUSTER Uid: 786
+    slice lists:	
+        [ ingress::ig_md.remain1_lo<16> meta [0:15] ]
+        [ ingress::hdr.ipv4.src_addr<32> ^0 ^bit[0..127] deparsed exact_containers [0:15] ]
+        [ ingress::ig_md.remain2_lo<16> meta [0:15] ]
+        [ ingress::ig_md.remain3_lo<16> meta [0:15] ]
+        [ ingress::ig_md.resubmit_md.remain_lo<16> exact_containers [0:15] ]
+    rotational clusters:	
+        [[ingress::ig_md.remain1_lo<16> meta [0:15]], [ingress::hdr.ipv4.src_addr<32> ^0 ^bit[0..127] deparsed exact_containers [0:15]], [ingress::ig_md.remain2_lo<16> meta [0:15]], [ingress::ig_md.remain3_lo<16> meta [0:15]], [ingress::ig_md.resubmit_md.remain_lo<16> exact_containers [0:15]]]
+
+Best Score: {[n_overlay_bits: 52, n_packing_bits: 6, n_inc_containers: 2, n_inc_small_containers: 2, ], }
+Allocation Decisions:
+allocate: H2[0:15] <- ingress::ig_md.remain1_lo<16> meta [0:15] @[-1r,8w]
+allocate: H2[0:15] <- ingress::ig_md.remain3_lo<16> meta [0:15] @[-1r,8w]
+allocate: H3[0:15] <- ingress::hdr.ipv4.src_addr<32> ^0 ^bit[0..127] deparsed exact_containers [0:15] @[-1r,8w]
+allocate: H4[0:15] <- ingress::ig_md.remain2_lo<16> meta [0:15] @[-1r,8w]
+allocate: H4[0:15] <- ingress::ig_md.resubmit_md.remain_lo<16> exact_containers [0:15] @[-1r,8w]
+22: TRYING to allocate SUPERCLUSTER Uid: 279
+    slice lists:	
+        [ ingress::ig_md.remain1_hi<16> meta [0:15] ]
+        [ ingress::hdr.ipv4.src_addr<32> ^0 ^bit[0..111] deparsed exact_containers [16:31] ]
+        [ ingress::ig_md.remain2_hi<16> meta [0:15] ]
+        [ ingress::ig_md.remain3_hi<16> meta [0:15] ]
+        [ ingress::ig_md.resubmit_md.remain_hi<16> exact_containers [0:15] ]
+    rotational clusters:	
+        [[ingress::ig_md.remain1_hi<16> meta [0:15]], [ingress::hdr.ipv4.src_addr<32> ^0 ^bit[0..111] deparsed exact_containers [16:31]], [ingress::ig_md.remain2_hi<16> meta [0:15]], [ingress::ig_md.remain3_hi<16> meta [0:15]], [ingress::ig_md.resubmit_md.remain_hi<16> exact_containers [0:15]]]
+Successfully Allocated
+By slicing into the following superclusters:
+SUPERCLUSTER Uid: 856
+    slice lists:	
+        [ ingress::ig_md.remain1_hi<16> meta [0:15] ]
+        [ ingress::hdr.ipv4.src_addr<32> ^0 ^bit[0..111] deparsed exact_containers [16:31] ]
+        [ ingress::ig_md.remain2_hi<16> meta [0:15] ]
+        [ ingress::ig_md.remain3_hi<16> meta [0:15] ]
+        [ ingress::ig_md.resubmit_md.remain_hi<16> exact_containers [0:15] ]
+    rotational clusters:	
+        [[ingress::ig_md.remain1_hi<16> meta [0:15]], [ingress::hdr.ipv4.src_addr<32> ^0 ^bit[0..111] deparsed exact_containers [16:31]], [ingress::ig_md.remain2_hi<16> meta [0:15]], [ingress::ig_md.remain3_hi<16> meta [0:15]], [ingress::ig_md.resubmit_md.remain_hi<16> exact_containers [0:15]]]
+
+Best Score: {[n_overlay_bits: 32, n_inc_containers: 3, n_inc_small_containers: 3, ], }
+Allocation Decisions:
+allocate: H5[0:15] <- ingress::hdr.ipv4.src_addr<32> ^0 ^bit[0..111] deparsed exact_containers [16:31] @[-1r,8w]
+allocate: H6[0:15] <- ingress::ig_md.remain1_hi<16> meta [0:15] @[-1r,8w]
+allocate: H6[0:15] <- ingress::ig_md.remain3_hi<16> meta [0:15] @[-1r,8w]
+allocate: H7[0:15] <- ingress::ig_md.remain2_hi<16> meta [0:15] @[-1r,8w]
+allocate: H7[0:15] <- ingress::ig_md.resubmit_md.remain_hi<16> exact_containers [0:15] @[-1r,8w]
+23: TRYING to allocate SUPERCLUSTER Uid: 209
+    slice lists:	
+        [ ingress::hdr.ethernet.ether_type<16> ^0 ^bit[0..111] deparsed exact_containers [0:15] ]
+    rotational clusters:	
+        [[ingress::hdr.ethernet.ether_type<16> ^0 ^bit[0..111] deparsed exact_containers [0:15]]]
+Successfully Allocated
+By slicing into the following superclusters:
+SUPERCLUSTER Uid: 922
+    slice lists:	
+        [ ingress::hdr.ethernet.ether_type<16> ^0 ^bit[0..111] deparsed exact_containers [0:15] ]
+    rotational clusters:	
+        [[ingress::hdr.ethernet.ether_type<16> ^0 ^bit[0..111] deparsed exact_containers [0:15]]]
+
+Best Score: {T[n_set_parser_group_gress: 1, n_inc_containers: 1, ], }
+Allocation Decisions:
+allocate: TH6[0:15] <- ingress::hdr.ethernet.ether_type<16> ^0 ^bit[0..111] deparsed exact_containers [0:15] @[-1r,8w]
+24: TRYING to allocate SUPERCLUSTER Uid: 216
+    slice lists:	
+        [ ingress::hdr.ethernet.src_addr<48> ^0 ^bit[0..63] deparsed exact_containers [32:47] ]
+    rotational clusters:	
+        [[ingress::hdr.ethernet.src_addr<48> ^0 ^bit[0..63] deparsed exact_containers [32:47]]]
+Successfully Allocated
+By slicing into the following superclusters:
+SUPERCLUSTER Uid: 933
+    slice lists:	
+        [ ingress::hdr.ethernet.src_addr<48> ^0 ^bit[0..63] deparsed exact_containers [32:47] ]
+    rotational clusters:	
+        [[ingress::hdr.ethernet.src_addr<48> ^0 ^bit[0..63] deparsed exact_containers [32:47]]]
+
+Best Score: {T[n_set_parser_group_gress: 1, n_inc_containers: 1, ], }
+Allocation Decisions:
+allocate: TH7[0:15] <- ingress::hdr.ethernet.src_addr<48> ^0 ^bit[0..63] deparsed exact_containers [32:47] @[-1r,8w]
+25: TRYING to allocate SUPERCLUSTER Uid: 224
+    slice lists:	
+        [ ingress::hdr.ethernet.dst_addr<48> ^0 ^bit[0..15] deparsed exact_containers [32:47] ]
+    rotational clusters:	
+        [[ingress::hdr.ethernet.dst_addr<48> ^0 ^bit[0..15] deparsed exact_containers [32:47]]]
+Successfully Allocated
+By slicing into the following superclusters:
+SUPERCLUSTER Uid: 944
+    slice lists:	
+        [ ingress::hdr.ethernet.dst_addr<48> ^0 ^bit[0..15] deparsed exact_containers [32:47] ]
+    rotational clusters:	
+        [[ingress::hdr.ethernet.dst_addr<48> ^0 ^bit[0..15] deparsed exact_containers [32:47]]]
+
+Best Score: {T[n_set_parser_group_gress: 1, n_inc_containers: 1, ], }
+Allocation Decisions:
+allocate: TH8[0:15] <- ingress::hdr.ethernet.dst_addr<48> ^0 ^bit[0..15] deparsed exact_containers [32:47] @[-1r,8w]
+26: TRYING to allocate SUPERCLUSTER Uid: 301
+    slice lists:	
+        [ ingress::hdr.ethernet.$valid<1> pov [0:0]
+          ingress::hdr.ipv4.$valid<1> pov [0:0]
+          ingress::hdr.udp.$valid<1> pov [0:0]
+          ingress::hdr.tcp.$valid<1> pov [0:0] ]
+    rotational clusters:	
+        [[ingress::hdr.ethernet.$valid<1> pov [0:0]]]
+        [[ingress::hdr.ipv4.$valid<1> pov [0:0]]]
+        [[ingress::hdr.udp.$valid<1> pov [0:0]]]
+        [[ingress::hdr.tcp.$valid<1> pov [0:0]]]
+Successfully Allocated
+By slicing into the following superclusters:
+SUPERCLUSTER Uid: 954
+    slice lists:	
+        [ ingress::hdr.ethernet.$valid<1> pov [0:0]
+          ingress::hdr.ipv4.$valid<1> pov [0:0]
+          ingress::hdr.udp.$valid<1> pov [0:0]
+          ingress::hdr.tcp.$valid<1> pov [0:0] ]
+    rotational clusters:	
+        [[ingress::hdr.ethernet.$valid<1> pov [0:0]]]
+        [[ingress::hdr.ipv4.$valid<1> pov [0:0]]]
+        [[ingress::hdr.udp.$valid<1> pov [0:0]]]
+        [[ingress::hdr.tcp.$valid<1> pov [0:0]]]
+
+Best Score: {[n_inc_containers: 1, n_inc_small_containers: 1, ], }
+Allocation Decisions:
+allocate: B6[0:0] <- ingress::hdr.ethernet.$valid<1> pov [0:0] @[-1r,8w]
+allocate: B6[1:1] <- ingress::hdr.ipv4.$valid<1> pov [0:0] @[-1r,8w]
+allocate: B6[2:2] <- ingress::hdr.udp.$valid<1> pov [0:0] @[-1r,8w]
+allocate: B6[3:3] <- ingress::hdr.tcp.$valid<1> pov [0:0] @[-1r,8w]
+27: TRYING to allocate SUPERCLUSTER Uid: 200
+    slice lists:	
+        [ ingress::ig_intr_md.ingress_mac_tstamp<48> intrinsic [0:31] ]
+    rotational clusters:	
+        [[ingress::ig_intr_md.ingress_mac_tstamp<48> intrinsic [0:31]]]
+Successfully Allocated
+By slicing into the following superclusters:
+SUPERCLUSTER Uid: 959
+    slice lists:	
+        [ ingress::ig_intr_md.ingress_mac_tstamp<48> intrinsic [0:31] ]
+    rotational clusters:	
+        [[ingress::ig_intr_md.ingress_mac_tstamp<48> intrinsic [0:31]]]
+
+Best Score: {}
+Allocation Decisions:
+28: TRYING to allocate SUPERCLUSTER Uid: 263
+    slice lists:	[ ]
+    rotational clusters:	
+        [[ingress::ig_md.found_hi<4> meta [0:3]]]
+Successfully Allocated
+By slicing into the following superclusters:
+SUPERCLUSTER Uid: 999
+    slice lists:	[ ]
+    rotational clusters:	
+        [[ingress::ig_md.found_hi<4> meta [0:3]]]
+
+Best Score: {[n_packing_bits: 4, n_packing_priority: 100000, n_field_packing_score: 3584, ], }
+Allocation Decisions:
+allocate: H0[9:12] <- ingress::ig_md.found_hi<4> meta [0:3] @[-1r,8w]
+29: TRYING to allocate SUPERCLUSTER Uid: 264
+    slice lists:	[ ]
+    rotational clusters:	
+        [[ingress::ig_md.found_lo<4> meta [0:3]]]
+Successfully Allocated
+By slicing into the following superclusters:
+SUPERCLUSTER Uid: 1000
+    slice lists:	[ ]
+    rotational clusters:	
+        [[ingress::ig_md.found_lo<4> meta [0:3]]]
+
+Best Score: {[n_packing_bits: 4, n_packing_priority: 100000, ], }
+Allocation Decisions:
+allocate: B4[1:4] <- ingress::ig_md.found_lo<4> meta [0:3] @[-1r,8w]
+30: TRYING to allocate SUPERCLUSTER Uid: 202
+    slice lists:	
+        [ ingress::ig_intr_md.ingress_mac_tstamp<48> intrinsic [32:47] ]
+    rotational clusters:	
+        [[ingress::ig_intr_md.ingress_mac_tstamp<48> intrinsic [32:47]]]
+Successfully Allocated
+By slicing into the following superclusters:
+SUPERCLUSTER Uid: 1005
+    slice lists:	
+        [ ingress::ig_intr_md.ingress_mac_tstamp<48> intrinsic [32:47] ]
+    rotational clusters:	
+        [[ingress::ig_intr_md.ingress_mac_tstamp<48> intrinsic [32:47]]]
+
+Best Score: {}
+Allocation Decisions:
+
