@@ -190,9 +190,10 @@ void Waterfall::run() {
         for (const uint32_t &x : ControlPlane::mLearnInterface.mLearnDataVec) {
           uint8_t src_addr[4];
           memcpy(src_addr, &x, 4);
-          for (size_t i = 0; i < 4; i++) {
-            std::cout << int(src_addr[i]) << " ";
+          for (size_t i = 4; i >= 0; i--) {
+            std::cout << int(src_addr[i]) << ".";
           }
+          std::cout << " ";
         }
         std::cout << std::endl;
       }
