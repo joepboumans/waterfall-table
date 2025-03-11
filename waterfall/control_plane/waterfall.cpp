@@ -102,8 +102,6 @@ Waterfall::Waterfall() : ControlPlane("waterfall") {
         for (const auto &currLoc : loc) {
           std::string currLookup =
               "WaterfallIngress.lookup" + std::to_string(x) + currLoc;
-          std::cout << "Adding " << currLookup << " with found_hi " << i
-                    << " and found_lo " << j << std::endl;
           ControlPlane::addEntry(mSwapVec[idx],
                                  {{"ig_intr_md.resubmit_flag", 0},
                                   {"ig_md.found_hi", i},
@@ -146,8 +144,6 @@ Waterfall::getTableList(std::string name, uint32_t len) {
         throw std::runtime_error("Could not find table in BfRt");
       }
       vec.push_back(table);
-      std::cout << "Added " << currName << " to " << name << " list"
-                << std::endl;
     }
   }
   return vec;
