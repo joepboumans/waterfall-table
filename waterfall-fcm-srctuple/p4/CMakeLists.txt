@@ -112,7 +112,7 @@ function(P4_BUILD_TARGET t arch target p4program)
 endfunction()
 
 
-p4_build_target("waterfall" "tna" "tofino" ${CMAKE_CURRENT_SOURCE_DIR}/waterfall.p4)
-add_custom_target(waterfall DEPENDS
-    waterfall-tofino
+p4_build_target("waterfall-fcm" "tna" "tofino" ${CMAKE_CURRENT_SOURCE_DIR}/waterfall_fcm.p4)
+add_custom_target(waterfall-fcm DEPENDS
+    waterfall-fcm-tofino
 )
