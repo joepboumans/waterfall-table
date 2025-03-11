@@ -1,4 +1,5 @@
 #include "ControlPlane.hpp"
+#include "bf_types/bf_types.h"
 #include <filesystem>
 #include <iostream>
 
@@ -190,27 +191,59 @@ void ControlPlane::addEntry(shared_ptr<const BfRtTable> table,
   }
 
   const uint64_t flags = 0;
-  table->tableEntryAdd(*mSession, mDeviceTarget, flags, *tableKey, *tableData);
+  bf_status_t bf_status = table->tableEntryAdd(*mSession, mDeviceTarget, flags,
+                                               *tableKey, *tableData);
+  if (bf_status != BF_SUCCESS) {
+    printf("Error: %s\n", bf_err_str(bf_status));
+    throw runtime_error("Failed to add entry to table");
+  }
 }
 
 void ControlPlane::addEntry(shared_ptr<const BfRtTable> table,
                             vector<pair<string, uint64_t>> keys,
                             string action) {
   unique_ptr<BfRtTableKey> tableKey;
-  table->keyAllocate(&tableKey);
+  bf_status_t bf_status = table->keyAllocate(&tableKey);
+  if (bf_status != BF_SUCCESS) {
+    printf("Error: %s\n", bf_err_str(bf_status));
+    throw runtime_error("Failed to allocate key");
+  }
+
   for (const auto [keyName, keyValue] : keys) {
     bf_rt_id_t fieldId;
-    table->keyFieldIdGet(keyName, &fieldId);
-    tableKey->setValue(fieldId, keyValue);
+    bf_status = table->keyFieldIdGet(keyName, &fieldId);
+    if (bf_status != BF_SUCCESS) {
+      printf("Error: %s\n", bf_err_str(bf_status));
+      throw runtime_error("Failed on getting key id");
+    }
+    bf_status = tableKey->setValue(fieldId, keyValue);
+    if (bf_status != BF_SUCCESS) {
+      printf("Error: %s\n", bf_err_str(bf_status));
+      throw runtime_error("Failed to set key value");
+    }
   }
 
   unique_ptr<BfRtTableData> tableData;
   bf_rt_id_t actionId;
-  table->actionIdGet(action, &actionId);
-  table->dataAllocate(actionId, &tableData);
+  bf_status = table->actionIdGet(action, &actionId);
+  if (bf_status != BF_SUCCESS) {
+    printf("Error: %s\nWith action: %s\n", bf_err_str(bf_status),
+           action.data());
+    throw runtime_error("Failed to get action id");
+  }
+  bf_status = table->dataAllocate(actionId, &tableData);
+  if (bf_status != BF_SUCCESS) {
+    printf("Error: %s\n", bf_err_str(bf_status));
+    throw runtime_error("Failed to allocate data");
+  }
 
   const uint64_t flags = 0;
-  table->tableEntryAdd(*mSession, mDeviceTarget, flags, *tableKey, *tableData);
+  bf_status = table->tableEntryAdd(*mSession, mDeviceTarget, flags, *tableKey,
+                                   *tableData);
+  if (bf_status != BF_SUCCESS) {
+    printf("Error: %s\n", bf_err_str(bf_status));
+    throw runtime_error("Failed to add entry to table");
+  }
 }
 
 unordered_map<string, uint64_t>

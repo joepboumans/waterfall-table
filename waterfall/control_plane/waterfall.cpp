@@ -45,40 +45,110 @@ Waterfall::Waterfall() : ControlPlane("waterfall") {
     std::cout << "Added port " << port << " to pm" << std::endl;
   }
 
-  auto resubTable = Waterfall::getTable("resub");
-  ControlPlane::addEntry(resubTable, {{"ig_md.found", true}},
-                         "SwitchIngress.no_action");
-  ControlPlane::addEntry(resubTable, {{"ig_md.found", false}},
-                         "SwitchIngress.resubmit_hdr");
-
-  std::cout << "Start adding Swap entries" << std::endl;
+  std::cout << "Start adding Swap entries..." << std::endl;
 
   mTablesVec = Waterfall::getTableList("table_", 4);
   mSwapVec = Waterfall::getTableList("swap", 4);
+  auto resubTable = Waterfall::getTable("resub");
 
-  ControlPlane::addEntry(mSwapVec[0], {{"ig_intr_md.resubmit_flag", 0}},
-                         "SwitchIngress.lookup1");
-  ControlPlane::addEntry(mSwapVec[0], {{"ig_intr_md.resubmit_flag", 1}},
-                         "SwitchIngress.do_swap1");
-  for (size_t i = 2; i < 5; i++) {
-    std::string currLookup = "SwitchIngress.lookup" + std::to_string(i);
+  std::cout << "...got all tables" << std::endl;
+  std::cout << "Start adding all entries to the swaps and resub..."
+            << std::endl;
 
-    ControlPlane::addEntry(mSwapVec[i - 1], {{"ig_intr_md.resubmit_flag", 0}},
+  std::vector<std::string> loc = {"_hi", "_lo"};
+  uint32_t idx = 0;
+  for (const auto &currLoc : loc) {
+    std::string currLookup =
+        "WaterfallIngress.lookup" + std::to_string(1) + currLoc;
+    ControlPlane::addEntry(mSwapVec[idx], {{"ig_intr_md.resubmit_flag", 0}},
                            currLookup);
-
-    std::string currDoSwap = "SwitchIngress.do_swap" + std::to_string(i);
-    ControlPlane::addEntry(mSwapVec[i - 1], {{"ig_intr_md.resubmit_flag", 1}},
+    std::string currDoSwap =
+        "WaterfallIngress.do_swap" + std::to_string(1) + currLoc;
+    ControlPlane::addEntry(mSwapVec[idx], {{"ig_intr_md.resubmit_flag", 1}},
                            currDoSwap);
+    idx++;
   }
+
+  for (size_t i = 0; i <= 4; i++) {
+    for (size_t j = 0; j <= 4; j++) {
+      // If the found indexes are equal and a match has been found
+      if (j == i and j > 0 and i > 0) {
+        ControlPlane::addEntry(resubTable,
+                               {{"ig_md.found_hi", i}, {"ig_md.found_lo", j}},
+                               "WaterfallIngress.no_resubmit");
+
+        idx = 2;
+        for (size_t x = 2; x <= 4; x++) {
+          for (const auto &currLoc : loc) {
+            ControlPlane::addEntry(mSwapVec[idx],
+                                   {{"ig_intr_md.resubmit_flag", 0},
+                                    {"ig_md.found_hi", i},
+                                    {"ig_md.found_lo", j}},
+                                   "WaterfallIngress.no_action");
+            idx++;
+          }
+        }
+        continue;
+      }
+
+      // Resubmit if the indexes do not match. Add all mismatching entries to
+      // prevent undefined behaviour
+      ControlPlane::addEntry(resubTable,
+                             {{"ig_md.found_hi", i}, {"ig_md.found_lo", j}},
+                             "WaterfallIngress.resubmit_hdr");
+
+      idx = 2;
+      for (size_t x = 2; x <= 4; x++) {
+        for (const auto &currLoc : loc) {
+          std::string currLookup =
+              "WaterfallIngress.lookup" + std::to_string(x) + currLoc;
+          std::cout << "Adding " << currLookup << " with found_hi " << i
+                    << " and found_lo " << j << std::endl;
+          ControlPlane::addEntry(mSwapVec[idx],
+                                 {{"ig_intr_md.resubmit_flag", 0},
+                                  {"ig_md.found_hi", i},
+                                  {"ig_md.found_lo", j}},
+                                 currLookup);
+          idx++;
+        }
+      }
+    }
+  }
+
+  // If it has been resubmitted then always perform a swap
+  idx = 2;
+  for (size_t x = 2; x <= 4; x++) {
+    for (const auto &currLoc : loc) {
+      std::string currDoSwap =
+          "WaterfallIngress.do_swap" + std::to_string(x) + currLoc;
+      ControlPlane::addEntry(mSwapVec[idx],
+                             {
+                                 {"ig_intr_md.resubmit_flag", 1},
+                             },
+                             currDoSwap);
+      idx++;
+    }
+  }
+  std::cout << "... added all entries succesfully" << std::endl;
 }
 
 // Returns a list of len tables which all share the same name
 std::vector<std::shared_ptr<const bfrt::BfRtTable>>
 Waterfall::getTableList(std::string name, uint32_t len) {
-  std::vector<std::shared_ptr<const bfrt::BfRtTable>> vec(len);
-  for (uint32_t x = 1; x < len + 1; x++) {
-    std::string currName = name + std::to_string(x);
-    vec[x - 1] = ControlPlane::getTable(currName);
+  std::vector<std::shared_ptr<const bfrt::BfRtTable>> vec;
+  for (uint32_t x = 1; x <= len; x++) {
+    for (const auto &loc : {"_hi", "_lo"}) {
+      std::string currName = name + std::to_string(x) + loc;
+      auto table = ControlPlane::getTable(currName);
+      if (table == NULL) {
+        std::cout << "Table " << currName << " could not be found!"
+                  << std::endl;
+        throw std::runtime_error("Could not find table in BfRt");
+      }
+      vec.push_back(table);
+      std::cout << "Added " << currName << " to " << name << " list"
+                << std::endl;
+    }
   }
   return vec;
 }
