@@ -1,10 +1,5 @@
 cmake*
-CMake*
 Make*
-waterfall/waterfall/*
-waterfall-fcm/waterfall_fcm/*
-waterfall-fcm-small/waterfall_fcm/*
-waterfall-fcm-srctuple/waterfall_fcm/*
 pcap_output
 bf_drivers.*
 model*
@@ -13,7 +8,7 @@ zlog*
 *pycache*
 ptf.log
 ptf.pcap
-*/ptf/EM/.cache*
-*/ptf/EM/build/
-*/ptf/EM/lib/*
-*/ptf/EM/compile_commands.json
+.cache
+build/
+lib/*
+compile_commands.json
