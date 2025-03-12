@@ -11,8 +11,6 @@ public:
   Waterfall();
   void run();
   std::vector<std::shared_ptr<const bfrt::BfRtTable>>
-  getTableListWaterfall(std::string, uint32_t len);
-  std::vector<std::shared_ptr<const bfrt::BfRtTable>>
       getTableList(std::vector<std::string>);
 
 private:
