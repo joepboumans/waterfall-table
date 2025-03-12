@@ -163,6 +163,9 @@ Waterfall::Waterfall() : ControlPlane("waterfall_fcm") {
   uint32_t pkt_count = 0;
   pkt_count = ControlPlane::getEntry(mPktCount, 0);
   std::cout << "Packet count: " << pkt_count << std::endl;
+
+  pkt_count = ControlPlane::getAllEntries(mPktCount);
+  std::cout << "Packet count: " << pkt_count << std::endl;
 }
 
 // Returns a list of len tables which all share the same name

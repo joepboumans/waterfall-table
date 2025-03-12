@@ -42,6 +42,7 @@ public:
            std::vector<std::pair<std::string, std::uint64_t>> keys,
            std::string action = std::string());
   uint64_t getEntry(std::shared_ptr<const bfrt::BfRtTable> table, uint64_t idx);
+  uint64_t getAllEntries(std::shared_ptr<const bfrt::BfRtTable> table);
 
   learnInterface mLearnInterface;
 
