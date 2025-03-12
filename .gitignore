@@ -1,4 +1,6 @@
 cmake*
+CMakeCache*
+CMakeFiles
 Make*
 pcap_output
 bf_drivers.*
