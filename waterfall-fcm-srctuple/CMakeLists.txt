@@ -17,4 +17,4 @@ endif()
 add_subdirectory(control_plane)
 add_subdirectory(p4)
 
-add_custom_target(default DEPENDS main waterfall-fcm)
+add_custom_target(default DEPENDS main waterfall_fcm)

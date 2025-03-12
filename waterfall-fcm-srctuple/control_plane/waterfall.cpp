@@ -18,19 +18,19 @@ extern "C" {
 #include <traffic_mgr/traffic_mgr.h>
 }
 
-Waterfall::Waterfall() : ControlPlane("waterfall") {
-  /*const auto forwardTable = ControlPlane::getTable("SwitchIngress.forward");*/
-  /*ControlPlane::addEntry(forwardTable, {{"ig_intr_md.ingress_port", 132}},*/
-  /*                       {{"dst_port", 140}}, "SwitchIngress.hit");*/
-  /*ControlPlane::addEntry(forwardTable, {{"ig_intr_md.ingress_port", 140}},*/
-  /*                       {{"dst_port", 132}}, "SwitchIngress.hit");*/
-  /**/
+Waterfall::Waterfall() : ControlPlane("waterfall_fcm") {
   std::array<uint32_t, 2> ports = {
       132,
       140,
   };
+  const auto forwardTable = ControlPlane::getTable("WaterfallIngress.forward");
+  ControlPlane::addEntry(forwardTable, {{"ig_intr_md.ingress_port", ports[0]}},
+                         {{"dst_port", ports[1]}}, "WaterfallIngress.hit");
+  ControlPlane::addEntry(forwardTable, {{"ig_intr_md.ingress_port", ports[1]}},
+                         {{"dst_port", ports[0]}}, "SwitchIngress.hit");
 
   for (auto &port : ports) {
+
     bf_pal_front_port_handle_t port_handle;
     bf_status_t bf_status =
         bf_pm_port_dev_port_to_front_panel_port_get(0, port, &port_handle);
@@ -46,12 +46,11 @@ Waterfall::Waterfall() : ControlPlane("waterfall") {
   }
 
   std::cout << "Start adding Swap entries..." << std::endl;
-
-  mTablesVec = Waterfall::getTableList("table_", 4);
-  mSwapVec = Waterfall::getTableList("swap", 4);
+  mTablesVec = Waterfall::getTableListWaterfall("table_", 4);
+  mSwapVec = Waterfall::getTableListWaterfall("swap", 4);
   auto resubTable = Waterfall::getTable("resub");
+  std::cout << "...got swap tables" << std::endl;
 
-  std::cout << "...got all tables" << std::endl;
   std::cout << "Start adding all entries to the swaps and resub..."
             << std::endl;
 
@@ -128,11 +127,26 @@ Waterfall::Waterfall() : ControlPlane("waterfall") {
     }
   }
   std::cout << "... added all entries succesfully" << std::endl;
+
+  std::cout << "Start setting up names for Sketch regs" << std::endl;
+  mSketchVec.resize(2);
+  std::vector<std::vector<std::string>> sketchNames(2);
+  for (size_t d = 1; d <= 2; d++) {
+    for (size_t l = 1; l <= 3; l++) {
+      std::string name =
+          "sketch_reg_l" + std::to_string(l) + "_d" + std::to_string(d);
+      sketchNames[d - 1].push_back(name);
+    }
+  }
+  std::cout << "Start adding FCM Sketch tables" << std::endl;
+  for (size_t d = 0; d <= 1; d++) {
+    mSketchVec[d] = Waterfall::getTableList(sketchNames[d]);
+  }
 }
 
 // Returns a list of len tables which all share the same name
 std::vector<std::shared_ptr<const bfrt::BfRtTable>>
-Waterfall::getTableList(std::string name, uint32_t len) {
+Waterfall::getTableListWaterfall(std::string name, uint32_t len) {
   std::vector<std::shared_ptr<const bfrt::BfRtTable>> vec;
   for (uint32_t x = 1; x <= len; x++) {
     for (const auto &loc : {"_hi", "_lo"}) {
@@ -145,6 +159,21 @@ Waterfall::getTableList(std::string name, uint32_t len) {
       }
       vec.push_back(table);
     }
+  }
+  return vec;
+}
+
+// Returns a list of len tables which all share the same name
+std::vector<std::shared_ptr<const bfrt::BfRtTable>>
+Waterfall::getTableList(std::vector<std::string> names) {
+  std::vector<std::shared_ptr<const bfrt::BfRtTable>> vec;
+  for (const auto &name : names) {
+    auto table = ControlPlane::getTable(name);
+    if (table == NULL) {
+      std::cout << "Table " << name << " could not be found!" << std::endl;
+      throw std::runtime_error("Could not find table in BfRt");
+    }
+    vec.push_back(table);
   }
   return vec;
 }
@@ -191,7 +220,7 @@ void Waterfall::run() {
           uint8_t src_addr[4];
           memcpy(src_addr, &x, 4);
           // Skip local messages
-          if(src_addr[3] == 192 and src_addr[2] == 168) {
+          if (src_addr[3] == 192 and src_addr[2] == 168) {
             continue;
           }
           for (int i = 3; i >= 0; i--) {
@@ -215,7 +244,7 @@ void Waterfall::run() {
     uint8_t src_addr[4];
     memcpy(src_addr, &x, 4);
     // Skip local messages
-    if(src_addr[3] == 192 and src_addr[2] == 168) {
+    if (src_addr[3] == 192 and src_addr[2] == 168) {
       continue;
     }
     uniqueSrcAddress.insert(x);

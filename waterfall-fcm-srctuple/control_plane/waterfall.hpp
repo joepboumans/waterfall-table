@@ -11,11 +11,14 @@ public:
   Waterfall();
   void run();
   std::vector<std::shared_ptr<const bfrt::BfRtTable>>
-  getTableList(std::string, uint32_t len);
+  getTableListWaterfall(std::string, uint32_t len);
+  std::vector<std::shared_ptr<const bfrt::BfRtTable>>
+      getTableList(std::vector<std::string>);
 
 private:
   std::vector<std::shared_ptr<const bfrt::BfRtTable>> mTablesVec;
   std::vector<std::shared_ptr<const bfrt::BfRtTable>> mSwapVec;
+  std::vector<std::vector<std::shared_ptr<const bfrt::BfRtTable>>> mSketchVec;
 };
 
 #endif // _WATERFALL_HPP
