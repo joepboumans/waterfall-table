@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <unordered_map>
@@ -40,6 +41,7 @@ public:
   getEntry(std::shared_ptr<const bfrt::BfRtTable> table,
            std::vector<std::pair<std::string, std::uint64_t>> keys,
            std::string action = std::string());
+  uint64_t getEntry(std::shared_ptr<const bfrt::BfRtTable> table, uint64_t idx);
 
   learnInterface mLearnInterface;
 

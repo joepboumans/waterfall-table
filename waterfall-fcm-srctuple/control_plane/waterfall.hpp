@@ -17,6 +17,7 @@ private:
   std::vector<std::vector<std::shared_ptr<const bfrt::BfRtTable>>> mTablesVec;
   std::vector<std::vector<std::shared_ptr<const bfrt::BfRtTable>>> mSwapVec;
   std::vector<std::vector<std::shared_ptr<const bfrt::BfRtTable>>> mSketchVec;
+  std::shared_ptr<const bfrt::BfRtTable> mPktCount;
 };
 
 #endif // _WATERFALL_HPP

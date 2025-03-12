@@ -3,6 +3,7 @@
 
 #include "waterfall.hpp"
 #include "ControlPlane.hpp"
+#include "bf_rt/bf_rt_common.h"
 #include <bf_rt/bf_rt_table.hpp>
 #include <chrono>
 #include <cinttypes>
@@ -12,6 +13,7 @@
 #include <stdexcept>
 #include <string>
 #include <unistd.h>
+#include <unordered_map>
 
 extern "C" {
 #include <bf_pm/bf_pm_intf.h>
@@ -20,8 +22,8 @@ extern "C" {
 
 Waterfall::Waterfall() : ControlPlane("waterfall_fcm") {
   std::array<uint32_t, 2> ports = {
-      132,
-      140,
+      0,
+      1,
   };
   const auto forwardTable = ControlPlane::getTable("WaterfallIngress.forward");
   ControlPlane::addEntry(forwardTable, {{"ig_intr_md.ingress_port", ports[0]}},
@@ -148,25 +150,19 @@ Waterfall::Waterfall() : ControlPlane("waterfall_fcm") {
   for (size_t d = 0; d <= 1; d++) {
     mSketchVec[d] = Waterfall::getTableList(sketchNames[d]);
   }
-}
 
-// Returns a list of len tables which all share the same name
-std::vector<std::shared_ptr<const bfrt::BfRtTable>>
-Waterfall::getTableListWaterfall(std::string name, uint32_t len) {
-  std::vector<std::shared_ptr<const bfrt::BfRtTable>> vec;
-  for (uint32_t x = 1; x <= len; x++) {
-    for (const auto &loc : {"_hi", "_lo"}) {
-      std::string currName = name + std::to_string(x) + loc;
-      auto table = ControlPlane::getTable(currName);
-      if (table == NULL) {
-        std::cout << "Table " << currName << " could not be found!"
-                  << std::endl;
-        throw std::runtime_error("Could not find table in BfRt");
-      }
-      vec.push_back(table);
-    }
+  std::cout << "Add pkt count reg" << std::endl;
+  mPktCount = ControlPlane::getTable("FcmEgress.num_pkt");
+
+  std::vector<bf_rt_id_t> fieldIds;
+  bf_status_t bf_status = mPktCount->keyFieldIdListGet(&fieldIds);
+  for (const auto &id : fieldIds) {
+    std::cout << id << " ";
   }
-  return vec;
+  std::cout << std::endl;
+  uint32_t pkt_count = 0;
+  pkt_count = ControlPlane::getEntry(mPktCount, 0);
+  std::cout << "Packet count: " << pkt_count << std::endl;
 }
 
 // Returns a list of len tables which all share the same name
@@ -257,6 +253,9 @@ void Waterfall::run() {
   }
   std::cout << "Found " << uniqueSrcAddress.size() << " unique tupels"
             << std::endl;
+
+  uint32_t pkt_count = ControlPlane::getEntry(mPktCount, 0);
+  std::cout << "Package count :" << pkt_count << std::endl;
   std::cout << "Finished the test exit via ctrl-c" << std::endl;
   while (true) {
     sleep(100);
