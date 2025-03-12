@@ -45,27 +45,39 @@ Waterfall::Waterfall() : ControlPlane("waterfall_fcm") {
     std::cout << "Added port " << port << " to pm" << std::endl;
   }
 
-  std::cout << "Start adding Swap entries..." << std::endl;
-  mTablesVec = Waterfall::getTableListWaterfall("table_", 4);
-  mSwapVec = Waterfall::getTableListWaterfall("swap", 4);
+  std::cout << "Start setting up swap and tables..." << std::endl;
+  std::vector<std::string> loc = {"_hi", "_lo"};
+  std::vector<std::vector<std::string>> tableNames(2);
+  for (size_t l = 0; l <= 1; l++) {
+    for (size_t x = 1; x <= 4; x++) {
+      std::string name = "table_" + std::to_string(x) + loc[l];
+      tableNames[l].push_back(name);
+    }
+    mTablesVec.push_back(Waterfall::getTableList(tableNames[l]));
+  }
+  std::vector<std::vector<std::string>> swapNames(2);
+  for (size_t l = 0; l <= 1; l++) {
+    for (size_t x = 1; x <= 4; x++) {
+      std::string name = "swap" + std::to_string(x) + loc[l];
+      swapNames[l].push_back(name);
+    }
+    mSwapVec.push_back(Waterfall::getTableList(swapNames[l]));
+  }
+  std::cout << "...got swap and tables" << std::endl;
   auto resubTable = Waterfall::getTable("resub");
-  std::cout << "...got swap tables" << std::endl;
 
   std::cout << "Start adding all entries to the swaps and resub..."
             << std::endl;
 
-  std::vector<std::string> loc = {"_hi", "_lo"};
-  uint32_t idx = 0;
-  for (const auto &currLoc : loc) {
+  for (size_t l = 0; l <= 1; l++) {
     std::string currLookup =
-        "WaterfallIngress.lookup" + std::to_string(1) + currLoc;
-    ControlPlane::addEntry(mSwapVec[idx], {{"ig_intr_md.resubmit_flag", 0}},
+        "WaterfallIngress.lookup" + std::to_string(1) + loc[l];
+    ControlPlane::addEntry(mSwapVec[l][0], {{"ig_intr_md.resubmit_flag", 0}},
                            currLookup);
     std::string currDoSwap =
-        "WaterfallIngress.do_swap" + std::to_string(1) + currLoc;
-    ControlPlane::addEntry(mSwapVec[idx], {{"ig_intr_md.resubmit_flag", 1}},
+        "WaterfallIngress.do_swap" + std::to_string(1) + loc[l];
+    ControlPlane::addEntry(mSwapVec[l][0], {{"ig_intr_md.resubmit_flag", 1}},
                            currDoSwap);
-    idx++;
   }
 
   for (size_t i = 0; i <= 4; i++) {
@@ -76,15 +88,13 @@ Waterfall::Waterfall() : ControlPlane("waterfall_fcm") {
                                {{"ig_md.found_hi", i}, {"ig_md.found_lo", j}},
                                "WaterfallIngress.no_resubmit");
 
-        idx = 2;
         for (size_t x = 2; x <= 4; x++) {
-          for (const auto &currLoc : loc) {
-            ControlPlane::addEntry(mSwapVec[idx],
+          for (size_t l = 0; l <= 1; l++) {
+            ControlPlane::addEntry(mSwapVec[l][x - 1],
                                    {{"ig_intr_md.resubmit_flag", 0},
                                     {"ig_md.found_hi", i},
                                     {"ig_md.found_lo", j}},
                                    "WaterfallIngress.no_action");
-            idx++;
           }
         }
         continue;
@@ -96,34 +106,30 @@ Waterfall::Waterfall() : ControlPlane("waterfall_fcm") {
                              {{"ig_md.found_hi", i}, {"ig_md.found_lo", j}},
                              "WaterfallIngress.resubmit_hdr");
 
-      idx = 2;
       for (size_t x = 2; x <= 4; x++) {
-        for (const auto &currLoc : loc) {
+        for (size_t l = 0; l <= 1; l++) {
           std::string currLookup =
-              "WaterfallIngress.lookup" + std::to_string(x) + currLoc;
-          ControlPlane::addEntry(mSwapVec[idx],
+              "WaterfallIngress.lookup" + std::to_string(x) + loc[l];
+          ControlPlane::addEntry(mSwapVec[l][x - 1],
                                  {{"ig_intr_md.resubmit_flag", 0},
                                   {"ig_md.found_hi", i},
                                   {"ig_md.found_lo", j}},
                                  currLookup);
-          idx++;
         }
       }
     }
   }
 
   // If it has been resubmitted then always perform a swap
-  idx = 2;
   for (size_t x = 2; x <= 4; x++) {
-    for (const auto &currLoc : loc) {
+    for (size_t l = 0; l <= 1; l++) {
       std::string currDoSwap =
-          "WaterfallIngress.do_swap" + std::to_string(x) + currLoc;
-      ControlPlane::addEntry(mSwapVec[idx],
+          "WaterfallIngress.do_swap" + std::to_string(x) + loc[l];
+      ControlPlane::addEntry(mSwapVec[l][x - 1],
                              {
                                  {"ig_intr_md.resubmit_flag", 1},
                              },
                              currDoSwap);
-      idx++;
     }
   }
   std::cout << "... added all entries succesfully" << std::endl;

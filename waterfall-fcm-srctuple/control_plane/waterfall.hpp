@@ -16,8 +16,8 @@ public:
       getTableList(std::vector<std::string>);
 
 private:
-  std::vector<std::shared_ptr<const bfrt::BfRtTable>> mTablesVec;
-  std::vector<std::shared_ptr<const bfrt::BfRtTable>> mSwapVec;
+  std::vector<std::vector<std::shared_ptr<const bfrt::BfRtTable>>> mTablesVec;
+  std::vector<std::vector<std::shared_ptr<const bfrt::BfRtTable>>> mSwapVec;
   std::vector<std::vector<std::shared_ptr<const bfrt::BfRtTable>>> mSketchVec;
 };
 
