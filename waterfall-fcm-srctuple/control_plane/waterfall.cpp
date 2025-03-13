@@ -164,8 +164,10 @@ Waterfall::Waterfall() : ControlPlane("waterfall_fcm") {
   pkt_count = ControlPlane::getEntry(mPktCount, 0);
   std::cout << "Packet count: " << pkt_count << std::endl;
 
-  pkt_count = ControlPlane::getAllEntries(mPktCount);
-  std::cout << "Packet count: " << pkt_count << std::endl;
+  /*for (size_t d = 0; d <= 1; d++) {*/
+  /*  for (auto &table : mSketchVec[d]) {*/
+  /*  }*/
+  /*}*/
 }
 
 // Returns a list of len tables which all share the same name
@@ -259,6 +261,8 @@ void Waterfall::run() {
 
   uint32_t pkt_count = ControlPlane::getEntry(mPktCount, 0);
   std::cout << "Package count :" << pkt_count << std::endl;
+  pkt_count = ControlPlane::getAllEntries(mSketchVec[0][0]);
+  std::cout << "packet count: " << pkt_count << std::endl;
   std::cout << "Finished the test exit via ctrl-c" << std::endl;
   while (true) {
     sleep(100);

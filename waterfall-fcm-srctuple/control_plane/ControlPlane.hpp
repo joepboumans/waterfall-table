@@ -42,7 +42,10 @@ public:
            std::vector<std::pair<std::string, std::uint64_t>> keys,
            std::string action = std::string());
   uint64_t getEntry(std::shared_ptr<const bfrt::BfRtTable> table, uint64_t idx);
-  uint64_t getAllEntries(std::shared_ptr<const bfrt::BfRtTable> table);
+  std::vector<uint32_t>
+  getAllEntries(std::shared_ptr<const bfrt::BfRtTable> table);
+  uint32_t getValueFromData(std::unique_ptr<bfrt::BfRtTableData> &tableData,
+                            bf_rt_id_t fieldId);
 
   learnInterface mLearnInterface;
 
