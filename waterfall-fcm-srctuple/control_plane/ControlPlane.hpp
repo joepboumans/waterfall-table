@@ -28,6 +28,7 @@ public:
   std::shared_ptr<const bfrt::BfRtLearn> getLearnFilter(std::string name);
   std::shared_ptr<bfrt::BfRtSession> getSession();
   bf_rt_target_t getDeviceTarget();
+  learnInterface mLearnInterface;
 
   void addEntry(std::shared_ptr<const bfrt::BfRtTable> table,
                 std::vector<std::pair<std::string, std::uint64_t>> keys,
@@ -46,8 +47,6 @@ public:
   getAllEntries(std::shared_ptr<const bfrt::BfRtTable> table);
   uint32_t getValueFromData(std::unique_ptr<bfrt::BfRtTableData> &tableData,
                             bf_rt_id_t fieldId);
-
-  learnInterface mLearnInterface;
 
 private:
   bf_switchd_context_t *mSwitchContext;

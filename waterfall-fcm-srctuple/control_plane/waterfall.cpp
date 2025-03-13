@@ -4,6 +4,7 @@
 #include "waterfall.hpp"
 #include "ControlPlane.hpp"
 #include "bf_rt/bf_rt_common.h"
+#include "zlib.h"
 #include <bf_rt/bf_rt_table.hpp>
 #include <chrono>
 #include <cinttypes>
@@ -20,8 +21,11 @@ extern "C" {
 #include <traffic_mgr/traffic_mgr.h>
 }
 
+using namespace std;
+using namespace bfrt;
+
 Waterfall::Waterfall() : ControlPlane("waterfall_fcm") {
-  std::array<uint32_t, 2> ports = {
+  array<uint32_t, 2> ports = {
       0,
       1,
   };
@@ -42,25 +46,25 @@ Waterfall::Waterfall() : ControlPlane("waterfall_fcm") {
 
     if (bf_status != BF_SUCCESS) {
       printf("Error: %s\n", bf_err_str(bf_status));
-      throw std::runtime_error("Failed to add entry");
+      throw runtime_error("Failed to add entry");
     }
     std::cout << "Added port " << port << " to pm" << std::endl;
   }
 
   std::cout << "Start setting up swap and tables..." << std::endl;
-  std::vector<std::string> loc = {"_hi", "_lo"};
-  std::vector<std::vector<std::string>> tableNames(2);
+  vector<string> loc = {"_hi", "_lo"};
+  vector<vector<string>> tableNames(2);
   for (size_t l = 0; l <= 1; l++) {
     for (size_t x = 1; x <= 4; x++) {
-      std::string name = "table_" + std::to_string(x) + loc[l];
+      string name = "table_" + to_string(x) + loc[l];
       tableNames[l].push_back(name);
     }
     mTablesVec.push_back(Waterfall::getTableList(tableNames[l]));
   }
-  std::vector<std::vector<std::string>> swapNames(2);
+  vector<vector<string>> swapNames(2);
   for (size_t l = 0; l <= 1; l++) {
     for (size_t x = 1; x <= 4; x++) {
-      std::string name = "swap" + std::to_string(x) + loc[l];
+      string name = "swap" + to_string(x) + loc[l];
       swapNames[l].push_back(name);
     }
     mSwapVec.push_back(Waterfall::getTableList(swapNames[l]));
@@ -72,12 +76,10 @@ Waterfall::Waterfall() : ControlPlane("waterfall_fcm") {
             << std::endl;
 
   for (size_t l = 0; l <= 1; l++) {
-    std::string currLookup =
-        "WaterfallIngress.lookup" + std::to_string(1) + loc[l];
+    string currLookup = "WaterfallIngress.lookup" + to_string(1) + loc[l];
     ControlPlane::addEntry(mSwapVec[l][0], {{"ig_intr_md.resubmit_flag", 0}},
                            currLookup);
-    std::string currDoSwap =
-        "WaterfallIngress.do_swap" + std::to_string(1) + loc[l];
+    string currDoSwap = "WaterfallIngress.do_swap" + to_string(1) + loc[l];
     ControlPlane::addEntry(mSwapVec[l][0], {{"ig_intr_md.resubmit_flag", 1}},
                            currDoSwap);
   }
@@ -110,8 +112,7 @@ Waterfall::Waterfall() : ControlPlane("waterfall_fcm") {
 
       for (size_t x = 2; x <= 4; x++) {
         for (size_t l = 0; l <= 1; l++) {
-          std::string currLookup =
-              "WaterfallIngress.lookup" + std::to_string(x) + loc[l];
+          string currLookup = "WaterfallIngress.lookup" + to_string(x) + loc[l];
           ControlPlane::addEntry(mSwapVec[l][x - 1],
                                  {{"ig_intr_md.resubmit_flag", 0},
                                   {"ig_md.found_hi", i},
@@ -125,8 +126,7 @@ Waterfall::Waterfall() : ControlPlane("waterfall_fcm") {
   // If it has been resubmitted then always perform a swap
   for (size_t x = 2; x <= 4; x++) {
     for (size_t l = 0; l <= 1; l++) {
-      std::string currDoSwap =
-          "WaterfallIngress.do_swap" + std::to_string(x) + loc[l];
+      string currDoSwap = "WaterfallIngress.do_swap" + to_string(x) + loc[l];
       ControlPlane::addEntry(mSwapVec[l][x - 1],
                              {
                                  {"ig_intr_md.resubmit_flag", 1},
@@ -138,11 +138,10 @@ Waterfall::Waterfall() : ControlPlane("waterfall_fcm") {
 
   std::cout << "Start setting up names for Sketch regs" << std::endl;
   mSketchVec.resize(2);
-  std::vector<std::vector<std::string>> sketchNames(2);
+  vector<vector<string>> sketchNames(2);
   for (size_t d = 1; d <= 2; d++) {
     for (size_t l = 1; l <= 3; l++) {
-      std::string name =
-          "sketch_reg_l" + std::to_string(l) + "_d" + std::to_string(d);
+      string name = "sketch_reg_l" + to_string(l) + "_d" + to_string(d);
       sketchNames[d - 1].push_back(name);
     }
   }
@@ -154,7 +153,7 @@ Waterfall::Waterfall() : ControlPlane("waterfall_fcm") {
   std::cout << "Add pkt count reg" << std::endl;
   mPktCount = ControlPlane::getTable("FcmEgress.num_pkt");
 
-  std::vector<bf_rt_id_t> fieldIds;
+  vector<bf_rt_id_t> fieldIds;
   bf_status_t bf_status = mPktCount->keyFieldIdListGet(&fieldIds);
   for (const auto &id : fieldIds) {
     std::cout << id << " ";
@@ -171,14 +170,14 @@ Waterfall::Waterfall() : ControlPlane("waterfall_fcm") {
 }
 
 // Returns a list of len tables which all share the same name
-std::vector<std::shared_ptr<const bfrt::BfRtTable>>
-Waterfall::getTableList(std::vector<std::string> names) {
-  std::vector<std::shared_ptr<const bfrt::BfRtTable>> vec;
+vector<shared_ptr<const bfrt::BfRtTable>>
+Waterfall::getTableList(vector<string> names) {
+  vector<shared_ptr<const bfrt::BfRtTable>> vec;
   for (const auto &name : names) {
     auto table = ControlPlane::getTable(name);
     if (table == NULL) {
       std::cout << "Table " << name << " could not be found!" << std::endl;
-      throw std::runtime_error("Could not find table in BfRt");
+      throw runtime_error("Could not find table in BfRt");
     }
     vec.push_back(table);
   }
@@ -246,7 +245,7 @@ void Waterfall::run() {
 
     /*usleep(100);*/
   }
-  std::set<uint64_t> uniqueSrcAddress;
+  set<uint64_t> uniqueSrcAddress;
   for (const auto &x : ControlPlane::mLearnInterface.mLearnDataVec) {
     uint8_t src_addr[4];
     memcpy(src_addr, &x, 4);
@@ -261,12 +260,48 @@ void Waterfall::run() {
 
   uint32_t pkt_count = ControlPlane::getEntry(mPktCount, 0);
   std::cout << "Package count :" << pkt_count << std::endl;
-  pkt_count = ControlPlane::getAllEntries(mSketchVec[0][0]);
-  std::cout << "packet count: " << pkt_count << std::endl;
+
+  if (pkt_count > 0) {
+    std::cout << "Printing values from first table: " << std::endl;
+    for (size_t d = 0; d < 2; d++) {
+      for (size_t l = 0; l < 3; l++) {
+        std::cout << "Getting data from d" << d << " l" << l << std::endl;
+        vector<uint32_t> values = getAllEntries(mSketchVec[d][l]);
+        for (size_t i = 0; i < values.size(); i++) {
+          if (values[i] == 0) {
+            continue;
+          }
+          std::cout << i << " : " << values[i] << std::endl;
+        }
+      }
+    }
+  }
   std::cout << "Finished the test exit via ctrl-c" << std::endl;
   while (true) {
     sleep(100);
   }
+}
+
+// Returns hash value of Waterfall or FCM Sketch table
+// h indicates which table or depth
+uint32_t Waterfall::hashing(uint8_t *nums, size_t sz, uint32_t h) {
+  uint32_t crc = 0;
+  switch (h) {
+  case 3:
+    crc = 0xFFF00000;
+    break;
+  case 2:
+    crc = 0xFF000000;
+    break;
+  case 1:
+    crc = 0xF0000000;
+    break;
+  case 0:
+    crc = 0x00000000;
+    break;
+  }
+  crc = crc32(crc, nums, sz);
+  return crc;
 }
 
 #endif
