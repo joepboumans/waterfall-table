@@ -19,7 +19,7 @@ private:
   std::vector<std::vector<std::shared_ptr<const bfrt::BfRtTable>>> mSketchVec;
   std::shared_ptr<const bfrt::BfRtTable> mPktCount;
 
-  uint32_t hashing(uint8_t *nums, size_t sz, uint32_t depth);
+  uint32_t hashing(const uint8_t *nums, size_t sz, uint32_t depth);
 };
 
 #endif // _WATERFALL_HPP

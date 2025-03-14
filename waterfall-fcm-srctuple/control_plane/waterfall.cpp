@@ -5,6 +5,7 @@
 #include "ControlPlane.hpp"
 #include "bf_rt/bf_rt_common.h"
 #include "zlib.h"
+#include <algorithm>
 #include <bf_rt/bf_rt_table.hpp>
 #include <chrono>
 #include <cinttypes>
@@ -20,6 +21,17 @@ extern "C" {
 #include <bf_pm/bf_pm_intf.h>
 #include <traffic_mgr/traffic_mgr.h>
 }
+
+#define NUM_STAGES 3
+#define DEPTH 2
+#define K 8
+#define W3 8192          // 32-bit, level 3
+#define W2 (K * W3)      // 16-bit, level 2
+#define W1 (K * W2)      // 8-bit, level 1
+#define ADD_LEVEL1 255   // 2^8 -2 + 1 (actual count is 254)
+#define ADD_LEVEL2 65789 // (2^8 - 2) + (2^16 - 2) + 1 (actual count is 65788)
+#define OVERFLOW_LEVEL1 254   // 2^8 - 1 maximum count is 254
+#define OVERFLOW_LEVEL2 65534 // 2^16 - 1 maximum count is 65536
 
 using namespace std;
 using namespace bfrt;
@@ -245,15 +257,12 @@ void Waterfall::run() {
 
     /*usleep(100);*/
   }
-  set<uint64_t> uniqueSrcAddress;
+  set<vector<uint8_t>> uniqueSrcAddress;
   for (const auto &x : ControlPlane::mLearnInterface.mLearnDataVec) {
-    uint8_t src_addr[4];
-    memcpy(src_addr, &x, 4);
-    // Skip local messages
-    if (src_addr[3] == 192 and src_addr[2] == 168) {
-      continue;
-    }
-    uniqueSrcAddress.insert(x);
+    vector<uint8_t> src_addr(4);
+    memcpy(src_addr.data(), &x, 4);
+    std::reverse(src_addr.begin(), src_addr.end());
+    uniqueSrcAddress.insert(src_addr);
   }
   std::cout << "Found " << uniqueSrcAddress.size() << " unique tupels"
             << std::endl;
@@ -261,18 +270,23 @@ void Waterfall::run() {
   uint32_t pkt_count = ControlPlane::getEntry(mPktCount, 0);
   std::cout << "Package count :" << pkt_count << std::endl;
 
-  if (pkt_count > 0) {
-    std::cout << "Printing values from first table: " << std::endl;
+  for (const auto &srcAddr : uniqueSrcAddress) {
     for (size_t d = 0; d < 2; d++) {
+      uint32_t idx = hashing(srcAddr.data(), 4, d) % W1;
       for (size_t l = 0; l < 3; l++) {
-        std::cout << "Getting data from d" << d << " l" << l << std::endl;
-        vector<uint32_t> values = getAllEntries(mSketchVec[d][l]);
-        for (size_t i = 0; i < values.size(); i++) {
-          if (values[i] == 0) {
-            continue;
+        uint64_t val = getEntry(mSketchVec[d][l], idx);
+        idx = idx / 8;
+        if (val <= 0) {
+          if (l == 0) {
+            std::cout << "d" << d << " l" << l << " at idx " << idx << " : "
+                      << val << std::endl;
+            throw runtime_error("First counter layer is emtpy for idx, should "
+                                "at least containt 1");
           }
-          std::cout << i << " : " << values[i] << std::endl;
+          continue;
         }
+        std::cout << "d" << d << " l" << l << " at idx " << idx << " : " << val
+                  << std::endl;
       }
     }
   }
@@ -284,7 +298,7 @@ void Waterfall::run() {
 
 // Returns hash value of Waterfall or FCM Sketch table
 // h indicates which table or depth
-uint32_t Waterfall::hashing(uint8_t *nums, size_t sz, uint32_t h) {
+uint32_t Waterfall::hashing(const uint8_t *nums, size_t sz, uint32_t h) {
   uint32_t crc = 0;
   switch (h) {
   case 3:
