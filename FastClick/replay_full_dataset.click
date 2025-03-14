@@ -8,11 +8,12 @@
  */
 
 define($trace /data/users/jboumans/equinix-chicago.20160121-130000.UTC.pcap)
-define($RATE 10Gbps)
+define($RATE 20Gbps)
 define($max_packets_in_queue 500000)
 define($replay_count -1)
 
 //d :: DPDKInfo(NB_SOCKET_MBUF  1048575) //Should be a bit more than 4 times the limit
+d :: DPDKInfo(NB_SOCKET_MBUF  2097151) //Should be a bit more than 4 times the limit
 
 /* Can be whatever */
 /* Hotpot: b8:3f:d2:b0:d7:79, Grill: b8:3f:d2:9f:2e:9b Onie: 70:b3:d5:cc:ff:3c */
@@ -24,14 +25,14 @@ define($bout 32)
 
 /* Melanox grill: 0000:0a:00.1, 0000:0a:00.0 */
 define($txport 0)
-define($quick false)
+define($quick true)
 define($txverbose 99)
 
 //switcharoo
-fdIN :: FromDump($trace, STOP true, BURST 1, TIMING false, TIMING_FNT "100", ACTIVE true)
+fdIN :: FromDump($trace, STOP true, BURST 1, TIMING false, ACTIVE true)
 
 //switcharoo
-tdIN :: ToDPDKDevice($txport, BLOCKING true, BURST $bout, VERBOSE $txverbose, IQUEUE $bout, NDESC 0, TCO 0)
+tdIN :: ToDPDKDevice($txport, BLOCKING true, BURST $bout, VERBOSE $txverbose, IQUEUE $bout, NDESC 0, TCO 1)
 
 elementclass Generator { $magic |
     input
@@ -48,4 +49,4 @@ elementclass Generator { $magic |
 fdIN
 -> unqueue0 :: BandwidthRatedUnqueue($RATE, LINK_RATE true, ACTIVE true)
 -> gen0 :: Generator(\<5700>)
--> tdIN; StaticThreadSched(fdIN 0/1, unqueue0 0/1);
+-> tdIN;
