@@ -26,7 +26,8 @@ extern "C" {
 using namespace std;
 using namespace bfrt;
 
-Waterfall::Waterfall() : ControlPlane("waterfall_fcm") {
+Waterfall::Waterfall(TupleSize sz)
+    : ControlPlane("waterfall_fcm"), mTupleSz(sz) {
   array<uint32_t, 2> ports = {
       0,
       1,
@@ -227,39 +228,22 @@ void Waterfall::run() {
             << ControlPlane::mLearnInterface.mLearnDataVec.size()
             << " total packets" << std::endl;
 
-  set<vector<uint8_t>> uniqueSrcAddress;
   for (const auto &x : ControlPlane::mLearnInterface.mLearnDataVec) {
     vector<uint8_t> src_addr(4);
     memcpy(src_addr.data(), &x, 4);
     std::reverse(src_addr.begin(), src_addr.end());
-    uniqueSrcAddress.insert(src_addr);
+    TUPLE tup(src_addr.data(), mTupleSz);
+    mUnqiueTuples.insert(tup);
   }
-
-  if (ControlPlane::mLearnInterface.mLearnDataVec.size() <= 10000) {
-    std::cout << "Received the following data from digest: " << std::endl;
-    for (const uint32_t &x : ControlPlane::mLearnInterface.mLearnDataVec) {
-      vector<uint8_t> src_addr(4);
-      memcpy(src_addr.data(), &x, 4);
-      std::reverse(src_addr.begin(), src_addr.end());
-      for (int i = 0; i < src_addr.size(); i++) {
-        std::cout << int(src_addr[i]);
-        if (i < src_addr.size() - 1) {
-          std::cout << ".";
-        }
-      }
-      std::cout << " ";
-    }
-    std::cout << std::endl;
-  }
-  std::cout << "Found " << uniqueSrcAddress.size() << " unique tupels"
+  std::cout << "Found " << mUnqiueTuples.size() << " unique tupels"
             << std::endl;
 
   uint32_t pkt_count = ControlPlane::getEntry(mPktCount, 0);
   std::cout << "Package count :" << pkt_count << std::endl;
 
-  for (const auto &srcAddr : uniqueSrcAddress) {
+  for (const auto &srcAddr : mUnqiueTuples) {
     for (size_t d = 0; d < 2; d++) {
-      uint32_t idx = hashing(srcAddr.data(), 4, d) % W1;
+      uint32_t idx = hashing(srcAddr.num_array, 4, d) % W1;
       for (size_t l = 0; l < 3; l++) {
         uint64_t val = getEntry(mSketchVec[d][l], idx);
         idx = idx / 8;
@@ -276,10 +260,6 @@ void Waterfall::run() {
                   << std::endl;
       }
     }
-  }
-  std::cout << "Finished the test exit via ctrl-c" << std::endl;
-  while (true) {
-    sleep(100);
   }
 }
 
@@ -303,6 +283,60 @@ uint32_t Waterfall::hashing(const uint8_t *nums, size_t sz, uint32_t h) {
   }
   crc = crc32(crc, nums, sz);
   return crc;
+}
+
+void Waterfall::verify(vector<TUPLE> inTuples) {
+  printf("[WaterfallFcm - verify] Calculate Waterfall F1-score...");
+  uint32_t true_pos = 0;
+  uint32_t false_pos = 0;
+  uint32_t true_neg = 0;
+  uint32_t false_neg = 0;
+
+  // Compare dataset tuples with Waterfall Tuples
+  printf("False positives (Halucinations?):");
+  for (auto &tup : mUnqiueTuples) {
+    if (std::search(inTuples.begin(), inTuples.end(), tup) != inTuples.end()) {
+      true_pos++;
+    } else {
+      false_pos++;
+      std::cout << tup << std::endl;
+    }
+  }
+
+  printf("False negatives (Not seen by Waterfall):");
+  for (auto &tup : inTuples) {
+    if (std::search(mUnqiueTuples.begin(), mUnqiueTuples.end(), tup) !=
+        mUnqiueTuples.end()) {
+      continue;
+    } else {
+      false_neg++;
+      std::cout << tup << std::endl;
+    }
+  }
+
+  // F1 Score
+  double recall = 0.0;
+  double precision = 0.0;
+  double f1 = 0.0;
+  precision = (double)true_pos / (true_pos + false_pos);
+  recall = (double)true_pos / (true_pos + false_neg);
+  f1 = 2 * ((recall * precision) / (precision + recall));
+  printf("[WaterfallFcm - verify] recall = %.5f precision = %.5f f1 = %.5f",
+         recall, precision, f1);
+
+  set<TUPLE> uniqueInTuples;
+  for (auto &tup : inTuples) {
+    uniqueInTuples.insert(tup);
+  }
+  double load_factor = (double)uniqueInTuples.size() / mUnqiueTuples.size();
+  printf("([WaterfallFcm - verify] Load factor : %f\tUnique Tuples : %zu ",
+         load_factor, mUnqiueTuples.size());
+
+  size_t learnDataVecSize = ControlPlane::mLearnInterface.mLearnDataVec.size();
+  double total_lf = (double)learnDataVecSize / uniqueInTuples.size();
+  printf("[WaterfallFcm - verify] Total load factor : %f\tTotal received "
+         "tuples %zu",
+         total_lf, learnDataVecSize);
 }
 
 #endif

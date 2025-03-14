@@ -1,6 +1,7 @@
 #ifndef _COMMON_H
 #define _COMMON_H
 
+/*#include "BOBHash32.h"*/
 #include <cstddef>
 #include <cstdint>
 #include <cstdio>
@@ -17,7 +18,8 @@
 #define NUM_STAGES 3
 #define DEPTH 2
 #define K 8
-#define W3 8192          // 32-bit, level 3
+#define W3 8192 // 32-bit, level 3
+/*#define W3 2357          // 32-bit, level 3*/
 #define W2 (K * W3)      // 16-bit, level 2
 #define W1 (K * W2)      // 8-bit, level 1
 #define ADD_LEVEL1 255   // 2^8 -2 + 1 (actual count is 254)
@@ -50,15 +52,15 @@ struct TUPLE {
     if (tuple.sz == 4) {
       return os << srcIp << "\tsz " << int(tuple.sz);
     } else if (tuple.sz == 8) {
-      return os << srcIp << "|" << dstIp << "\tsz " << tuple.sz;
+      return os << srcIp << "|" << dstIp << "\tsz " << int(tuple.sz);
     }
     return os << srcIp << ":" << srcPort << "|" << dstIp << ":" << dstPort
-              << "|" << protocol << "\tsz " << tuple.sz;
+              << "|" << protocol << "\tsz " << int(tuple.sz);
   }
 
   operator string() {
-    char ftuple[this->sz];
-    memcpy(ftuple, this, this->sz);
+    char ftuple[MAX_TUPLE_SZ];
+    memcpy(ftuple, this->num_array, this->sz);
     return ftuple;
   }
   operator uint8_t *() { return this->num_array; }
@@ -121,15 +123,24 @@ struct TUPLE {
   }
 
   /*auto operator<=>(const TUPLE &) const = default;*/
-  /*bool operator==(const TUPLE &rhs) const {*/
-  /*  for (size_t i = 0; i < this->sz; i++) {*/
-  /*    if (this->num_array[i] != rhs.num_array[i]) {*/
-  /*      return false;*/
-  /*    }*/
-  /*  }*/
-  /*  return true;*/
-  /*}*/
+  bool operator==(const TUPLE &rhs) const {
+    for (size_t i = 0; i < this->sz; i++) {
+      if (this->num_array[i] != rhs.num_array[i]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  bool operator<(const TUPLE &rhs) const {
+    int cmp = std::memcmp(num_array, rhs.num_array, sz);
+    if (cmp != 0) {
+      return cmp < 0;
+    }
+    return false;
+  }
 };
+typedef vector<TUPLE> TRACE;
 
 /*struct TupleHash {*/
 /*  std::size_t operator()(const TUPLE &k) const {*/
@@ -138,6 +149,5 @@ struct TUPLE {
 /*    // return XXH32(k.num_array, sizeof(FIVE_TUPLE), 0);*/
 /*  }*/
 /*};*/
-typedef vector<TUPLE> TRACE;
 
 #endif

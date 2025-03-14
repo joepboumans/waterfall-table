@@ -24,7 +24,7 @@ using std::vector;
 class pcapReader {
 public:
   vector<TUPLE> mTuples;
-  pcapReader(std::string filePath) {
+  pcapReader(std::string filePath, TupleSize sz) {
     char errbuf[PCAP_ERRBUF_SIZE];
 
     std::cout << "Opening file " << filePath << std::endl;
@@ -61,14 +61,14 @@ public:
       inet_ntop(AF_INET, &(ipHeader->ip_src), srcIP, INET_ADDRSTRLEN);
       inet_ntop(AF_INET, &(ipHeader->ip_dst), dstIP, INET_ADDRSTRLEN);
 
-      std::cout << "IPv4 Packet ";
-      std::cout << "Source IP: " << srcIP << " ";
-      std::cout << "Destination IP: " << dstIP << " ";
-      std::cout << "Protocol: "
-                << (protocol == IPPROTO_TCP
-                        ? "TCP"
-                        : (protocol == IPPROTO_UDP ? "UDP" : "Other"))
-                << std::endl;
+      /*std::cout << "IPv4 Packet ";*/
+      /*std::cout << "Source IP: " << srcIP << " ";*/
+      /*std::cout << "Destination IP: " << dstIP << " ";*/
+      /*std::cout << "Protocol: "*/
+      /*          << (protocol == IPPROTO_TCP*/
+      /*                  ? "TCP"*/
+      /*                  : (protocol == IPPROTO_UDP ? "UDP" : "Other"))*/
+      /*          << std::endl;*/
 
       TUPLE tup;
       memcpy(&tup.num_array[0], &ipHeader->ip_src, sizeof(ipHeader->ip_src));
@@ -95,6 +95,7 @@ public:
         continue;
       }
 
+      tup.sz = sz;
       packetCount++;
       mTuples.push_back(tup);
     }
