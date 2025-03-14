@@ -14,6 +14,13 @@ using namespace std;
 using namespace bfrt;
 using keyDataPairs = std::vector<std::pair<BfRtTableKey *, BfRtTableData *>>;
 
+inline void bfCheckStatus(bf_status_t bf_status, std::string msg) {
+  if (bf_status != BF_SUCCESS) {
+    printf("Error: %s\n", bf_err_str(bf_status));
+    throw runtime_error(msg);
+  }
+}
+
 bf_status_t
 handleLearnCallback(const bf_rt_target_t &bf_rt_tgt,
                     const shared_ptr<bfrt::BfRtSession> session,
@@ -39,10 +46,7 @@ handleLearnCallback(const bf_rt_target_t &bf_rt_tgt,
 
   bf_status_t bf_status =
       cpLearnInterface->mLearn->bfRtLearnNotifyAck(session, learn_msg_hdl);
-  if (bf_status != BF_SUCCESS) {
-    printf("Notifying ack failed with %s\n", bf_err_str(bf_status));
-    throw runtime_error("Failed to ack learn filter");
-  }
+  bfCheckStatus(bf_status, "Failed to ack learn filter");
   return BF_SUCCESS;
 }
 
@@ -94,10 +98,7 @@ ControlPlane::ControlPlane(string programName) {
   bf_status = devMgr.bfRtInfoGet(mDeviceTarget.dev_id, programName, &infoPtr);
   mInfo = shared_ptr<const BfRtInfo>(infoPtr);
   // Check for status
-  if (bf_status != BF_SUCCESS) {
-    printf("Error: %s\n", bf_err_str(bf_status));
-    throw runtime_error("Failed to get BfRt info");
-  }
+  bfCheckStatus(bf_status, "Failed to get BfRt info");
   printf("Retrieved BfRtInfo\n");
   // Create a session object
   mSession = BfRtSession::sessionCreate();
@@ -115,26 +116,17 @@ ControlPlane::~ControlPlane() {
 shared_ptr<const BfRtTable> ControlPlane::getTable(string name) {
   const BfRtTable *tablePtr = nullptr;
   bf_status_t bf_status = mInfo->bfrtTableFromNameGet(name, &tablePtr);
-  if (bf_status != BF_SUCCESS) {
-    printf("Error: %s\n", bf_err_str(bf_status));
-    throw runtime_error("Failed to get table");
-  }
+  bfCheckStatus(bf_status, "Failed to get table");
 
   vector<bf_rt_id_t> keyList;
   bf_status = tablePtr->keyFieldIdListGet(&keyList);
-  if (bf_status != BF_SUCCESS) {
-    printf("Error: %s\n", bf_err_str(bf_status));
-    throw runtime_error("Failed to get learn filter id list");
-  }
+  bfCheckStatus(bf_status, "Failed to get learn filter id list");
 
   std::cout << "Key list: ";
   for (auto id : keyList) {
     string name;
     bf_status = tablePtr->keyFieldNameGet(id, &name);
-    if (bf_status != BF_SUCCESS) {
-      printf("Error: %s\n", bf_err_str(bf_status));
-      throw runtime_error("Failed to get name of learnFieldId");
-    }
+    bfCheckStatus(bf_status, "Failed to get name of learnFieldId");
     std::cout << name << " : " << id << " ";
   }
   std::cout << std::endl;
@@ -142,18 +134,12 @@ shared_ptr<const BfRtTable> ControlPlane::getTable(string name) {
   std::cout << "Data list: ";
   vector<bf_rt_id_t> dataList;
   bf_status = tablePtr->dataFieldIdListGet(&dataList);
-  if (bf_status != BF_SUCCESS) {
-    printf("Error: %s\n", bf_err_str(bf_status));
-    throw runtime_error("Failed to get learn filter id list");
-  }
+  bfCheckStatus(bf_status, "Failed to get learn filter id list");
 
   for (auto id : dataList) {
     string name;
     bf_status = tablePtr->dataFieldNameGet(id, &name);
-    if (bf_status != BF_SUCCESS) {
-      printf("Error: %s\n", bf_err_str(bf_status));
-      throw runtime_error("Failed to get name of learnFieldId");
-    }
+    bfCheckStatus(bf_status, "Failed to get name of learnFieldId");
     std::cout << name << " : " << id << " ";
   }
   std::cout << std::endl;
@@ -163,25 +149,16 @@ shared_ptr<const BfRtTable> ControlPlane::getTable(string name) {
 shared_ptr<const BfRtLearn> ControlPlane::getLearnFilter(string name) {
   const BfRtLearn *learnPtr = nullptr;
   bf_status_t bf_status = mInfo->bfrtLearnFromNameGet(name, &learnPtr);
-  if (bf_status != BF_SUCCESS) {
-    printf("Error: %s\n", bf_err_str(bf_status));
-    throw runtime_error("Failed to get learn filter or digest");
-  }
+  bfCheckStatus(bf_status, "Failed to get learn filter or digest");
 
   vector<bf_rt_id_t> list;
   bf_status = learnPtr->learnFieldIdListGet(&list);
-  if (bf_status != BF_SUCCESS) {
-    printf("Error: %s\n", bf_err_str(bf_status));
-    throw runtime_error("Failed to get learn filter id list");
-  }
+  bfCheckStatus(bf_status, "Failed to get learn filter id list");
 
   for (auto id : list) {
     string name;
     bf_status = learnPtr->learnFieldNameGet(id, &name);
-    if (bf_status != BF_SUCCESS) {
-      printf("Error: %s\n", bf_err_str(bf_status));
-      throw runtime_error("Failed to get name of learnFieldId");
-    }
+    bfCheckStatus(bf_status, "Failed to get name of learnFieldId");
     std::cout << name << " : " << id << " ";
   }
   std::cout << std::endl;
@@ -194,10 +171,7 @@ shared_ptr<const BfRtLearn> ControlPlane::getLearnFilter(string name) {
   bf_status = learnPtr->bfRtLearnCallbackRegister(
       mSession, mDeviceTarget, cbFunc, (void *)&mLearnInterface);
 
-  if (bf_status != BF_SUCCESS) {
-    printf("Error: %s\n", bf_err_str(bf_status));
-    throw runtime_error("Failed to setup Learn callback");
-  }
+  bfCheckStatus(bf_status, "Failed to setup Learn callback");
   return shared_ptr<const BfRtLearn>(learnPtr);
 }
 
@@ -239,10 +213,7 @@ void ControlPlane::addEntry(shared_ptr<const BfRtTable> table,
   const uint64_t flags = 0;
   bf_status_t bf_status = table->tableEntryAdd(*mSession, mDeviceTarget, flags,
                                                *tableKey, *tableData);
-  if (bf_status != BF_SUCCESS) {
-    printf("Error: %s\n", bf_err_str(bf_status));
-    throw runtime_error("Failed to add entry to table");
-  }
+  bfCheckStatus(bf_status, "Failed to add entry to table");
 }
 
 void ControlPlane::addEntry(shared_ptr<const BfRtTable> table,
@@ -250,23 +221,15 @@ void ControlPlane::addEntry(shared_ptr<const BfRtTable> table,
                             string action) {
   unique_ptr<BfRtTableKey> tableKey;
   bf_status_t bf_status = table->keyAllocate(&tableKey);
-  if (bf_status != BF_SUCCESS) {
-    printf("Error: %s\n", bf_err_str(bf_status));
-    throw runtime_error("Failed to allocate key");
-  }
+  bfCheckStatus(bf_status, "Failed to allocate key");
 
   for (const auto [keyName, keyValue] : keys) {
     bf_rt_id_t fieldId;
     bf_status = table->keyFieldIdGet(keyName, &fieldId);
-    if (bf_status != BF_SUCCESS) {
-      printf("Error: %s\n", bf_err_str(bf_status));
-      throw runtime_error("Failed on getting key id");
-    }
+    bfCheckStatus(bf_status, "Failed on getting key id");
+
     bf_status = tableKey->setValue(fieldId, keyValue);
-    if (bf_status != BF_SUCCESS) {
-      printf("Error: %s\n", bf_err_str(bf_status));
-      throw runtime_error("Failed to set key value");
-    }
+    bfCheckStatus(bf_status, "Failed to set key value");
   }
 
   unique_ptr<BfRtTableData> tableData;
@@ -278,18 +241,12 @@ void ControlPlane::addEntry(shared_ptr<const BfRtTable> table,
     throw runtime_error("Failed to get action id");
   }
   bf_status = table->dataAllocate(actionId, &tableData);
-  if (bf_status != BF_SUCCESS) {
-    printf("Error: %s\n", bf_err_str(bf_status));
-    throw runtime_error("Failed to allocate data");
-  }
+  bfCheckStatus(bf_status, "Failed to allocate data");
 
   const uint64_t flags = 0;
   bf_status = table->tableEntryAdd(*mSession, mDeviceTarget, flags, *tableKey,
                                    *tableData);
-  if (bf_status != BF_SUCCESS) {
-    printf("Error: %s\n", bf_err_str(bf_status));
-    throw runtime_error("Failed to add entry to table");
-  }
+  bfCheckStatus(bf_status, "Failed to add entry to table");
 }
 
 unordered_map<string, uint64_t>
@@ -297,64 +254,45 @@ ControlPlane::getEntry(shared_ptr<const BfRtTable> table,
                        vector<pair<string, uint64_t>> keys, string action) {
   unique_ptr<BfRtTableKey> tableKey;
   bf_status_t bf_status = table->keyAllocate(&tableKey);
-  if (bf_status != BF_SUCCESS) {
-    printf("Error: %s\n", bf_err_str(bf_status));
-    throw runtime_error("Failed to allocate key");
-  }
+  bfCheckStatus(bf_status, "Failed to allocate key");
+
   for (const auto [keyName, keyValue] : keys) {
     bf_rt_id_t fieldId;
     bf_status = table->keyFieldIdGet(keyName, &fieldId);
-    if (bf_status != BF_SUCCESS) {
-      printf("Error: %s\n", bf_err_str(bf_status));
-      throw runtime_error("Failed to get key id");
-    }
+    bfCheckStatus(bf_status, "Failed to get key id");
+
     bf_status = tableKey->setValue(fieldId, keyValue);
-    if (bf_status != BF_SUCCESS) {
-      printf("Error: %s\n", bf_err_str(bf_status));
-      throw runtime_error("Failed to set key value");
-    }
+    bfCheckStatus(bf_status, "Failed to set key value");
   }
 
   unique_ptr<BfRtTableData> tableData;
   bf_status = table->dataAllocate(&tableData);
-  if (bf_status != BF_SUCCESS) {
-    printf("Error: %s\n", bf_err_str(bf_status));
-    throw runtime_error("Failed to allocate data");
-  }
+  bfCheckStatus(bf_status, "Failed to allocate data");
+
   uint64_t getFlags = 0;
   BF_RT_FLAG_SET(getFlags, BF_RT_FROM_HW);
   bf_status = table->tableEntryGet(*mSession, mDeviceTarget, getFlags,
                                    *tableKey, tableData.get());
-  if (bf_status != BF_SUCCESS) {
-    printf("Error: %s\n", bf_err_str(bf_status));
-    throw runtime_error("Failed to get entry");
-  }
+  bfCheckStatus(bf_status, "Failed to get entry");
 
   vector<bf_rt_id_t> dataFieldIds;
   bf_rt_id_t actionId;
   if (action != "") {
     bf_status = table->actionIdGet(action, &actionId);
-    if (bf_status != BF_SUCCESS) {
-      printf("Error: %s\n", bf_err_str(bf_status));
-      throw runtime_error("Failed to get action id");
-    }
+    bfCheckStatus(bf_status, "Failed to get action id");
+
     bf_status = table->dataFieldIdListGet(actionId, &dataFieldIds);
   } else {
     bf_status = table->dataFieldIdListGet(&dataFieldIds);
   }
-  if (bf_status != BF_SUCCESS) {
-    printf("Error: %s\n", bf_err_str(bf_status));
-    throw runtime_error("Failed to get list of field ids");
-  }
+  bfCheckStatus(bf_status, "Failed to get list of field ids");
 
   unordered_map<string, uint64_t> obtainedValues;
   for (const auto id : dataFieldIds) {
     bool isActive = false;
     bf_status = tableData->isActive(id, &isActive);
-    if (bf_status != BF_SUCCESS) {
-      printf("Error: %s\n", bf_err_str(bf_status));
-      throw runtime_error("Failed to check if table is active");
-    }
+    bfCheckStatus(bf_status, "Failed to check if table is active");
+
     if (!isActive) {
       continue;
     }
@@ -365,66 +303,56 @@ ControlPlane::getEntry(shared_ptr<const BfRtTable> table,
     } else {
       bf_status = table->dataFieldNameGet(id, &fieldName);
     }
-    if (bf_status != BF_SUCCESS) {
-      printf("Error: %s\n", bf_err_str(bf_status));
-      throw runtime_error("Failed to get field Id name");
-    }
+    bfCheckStatus(bf_status, "Failed to get field Id name");
+
     if (fieldName == "") {
       continue;
     }
 
     uint64_t fieldValue;
     bf_status = tableData->getValue(id, &fieldValue);
-    if (bf_status != BF_SUCCESS) {
-      printf("Error: %s\n", bf_err_str(bf_status));
-      throw runtime_error("Failed to get value");
-    }
+    bfCheckStatus(bf_status, "Failed to get value");
+
     obtainedValues.insert({fieldName, fieldValue});
   }
   return obtainedValues;
 }
 
+// Gets data from idx of table. Works only registers or tables containing single
+// fields
 uint64_t ControlPlane::getEntry(shared_ptr<const BfRtTable> table,
                                 uint64_t idx) {
-
   unique_ptr<BfRtTableKey> tableKey;
   bf_status_t bf_status = table->keyAllocate(&tableKey);
-  if (bf_status != BF_SUCCESS) {
-    printf("Error: %s\n", bf_err_str(bf_status));
-    throw runtime_error("Failed to allocate key");
+  bfCheckStatus(bf_status, "Failed to allocate key");
+
+  vector<bf_rt_id_t> keyIds;
+  bf_status = table->keyFieldIdListGet(&keyIds);
+  bfCheckStatus(bf_status, "Failed to get key Ids");
+  if (keyIds.size() != 1) {
+    throw runtime_error(
+        "Too many field ids for using getting index from table with size " +
+        std::to_string(keyIds.size()));
   }
+
+  bf_status = tableKey->setValue(keyIds[0], idx);
+  bfCheckStatus(bf_status, "Failed to get key Ids");
 
   unique_ptr<BfRtTableData> tableData;
   bf_status = table->dataAllocate(&tableData);
-  if (bf_status != BF_SUCCESS) {
-    printf("Error: %s\n", bf_err_str(bf_status));
-    throw runtime_error("Failed to allocate data");
-  }
 
   uint64_t getFlags = 0;
   BF_RT_FLAG_SET(getFlags, BF_RT_FROM_HW);
   bf_status = table->tableEntryGet(*mSession, mDeviceTarget, getFlags,
                                    *tableKey, tableData.get());
-  if (bf_status != BF_SUCCESS) {
-    printf("Error: %s\n", bf_err_str(bf_status));
-    throw runtime_error("Failed to get entry");
-  }
+  bfCheckStatus(bf_status, "Failed to get entry");
 
   vector<bf_rt_id_t> dataFieldIds;
   bf_status = table->dataFieldIdListGet(&dataFieldIds);
-  if (bf_status != BF_SUCCESS) {
-    printf("Error: %s\n", bf_err_str(bf_status));
-    throw runtime_error("Failed to get list of field ids");
-  }
+  bfCheckStatus(bf_status, "Failed to get list of field ids");
 
   for (const auto id : dataFieldIds) {
-    vector<uint64_t> fieldValue;
-    bf_status = tableData->getValue(id, &fieldValue);
-    if (bf_status != BF_SUCCESS) {
-      printf("Error: %s\n", bf_err_str(bf_status));
-      throw runtime_error("Failed to get value");
-    }
-    return accumulate(fieldValue.begin(), fieldValue.end(), 0);
+    return getValueFromData(tableData, id);
   }
   return -1;
 }
@@ -433,26 +361,16 @@ vector<uint32_t>
 ControlPlane::getAllEntries(shared_ptr<const BfRtTable> table) {
   unique_ptr<BfRtTableKey> tableKey;
   bf_status_t bf_status = table->keyAllocate(&tableKey);
-  if (bf_status != BF_SUCCESS) {
-    printf("Error: %s\n", bf_err_str(bf_status));
-    throw runtime_error("Failed to allocate key");
-  }
+  bfCheckStatus(bf_status, "Failed to allocate key");
 
   vector<bf_rt_id_t> keyList;
   bf_status = table->keyFieldIdListGet(&keyList);
-  if (bf_status != BF_SUCCESS) {
-    printf("Error: %s\n", bf_err_str(bf_status));
-    throw runtime_error("Failed to get learn filter id list");
-  }
+  bfCheckStatus(bf_status, "Failed to get id list");
 
   size_t tableSz = 0;
   bf_status = table->tableSizeGet(*mSession, mDeviceTarget, &tableSz);
-  if (bf_status != BF_SUCCESS) {
-    printf("Error: %s\n", bf_err_str(bf_status));
-    throw runtime_error("Failed to get table of size");
-  }
+  bfCheckStatus(bf_status, "Failed to get size from table");
 
-  std::cout << "Table has " << tableSz << " entries" << std::endl;
   uint32_t count = 0;
   uint32_t outSz;
 
@@ -461,93 +379,39 @@ ControlPlane::getAllEntries(shared_ptr<const BfRtTable> table) {
   for (auto &[key, data] : retTableData) {
     unique_ptr<BfRtTableKey> k;
     bf_status = table->keyAllocate(&k);
-    if (bf_status != BF_SUCCESS) {
-      printf("Error: %s\n", bf_err_str(bf_status));
-      throw runtime_error("Failed to allocate key");
-    }
+    bfCheckStatus(bf_status, "Failed to allocate key");
     key = k.release();
 
     unique_ptr<BfRtTableData> d;
     bf_status = table->dataAllocate(&d);
-    if (bf_status != BF_SUCCESS) {
-      printf("Error: %s\n", bf_err_str(bf_status));
-      throw runtime_error("Failed to allocate data");
-    }
+    bfCheckStatus(bf_status, "Failed to allocate data");
     data = d.release();
   }
 
-  std::cout << "Getting " << tableSz << " entries from table" << std::endl;
   uint64_t getFlags = 0;
   BF_RT_FLAG_SET(getFlags, BF_RT_FROM_HW);
   bf_status =
       table->tableEntryGetNext_n(*mSession, mDeviceTarget, getFlags, *tableKey,
                                  tableSz, &retTableData, &outSz);
-  if (bf_status != BF_SUCCESS) {
-    printf("Error: %s\n", bf_err_str(bf_status));
-    throw runtime_error("Failed to get entry");
-  }
-  std::cout << "Got " << outSz << " entries of " << tableSz
-            << " total from table" << std::endl;
-
-  vector<bf_rt_id_t> dataFieldIds;
-  bf_status = table->dataFieldIdListGet(&dataFieldIds);
-  if (bf_status != BF_SUCCESS) {
-    printf("Error: %s\n", bf_err_str(bf_status));
-    throw runtime_error("Failed to get list of field ids");
-  }
-  for (auto id : dataFieldIds) {
-    string name;
-    bf_status = table->dataFieldNameGet(id, &name);
-    if (bf_status != BF_SUCCESS) {
-      printf("Error: %s\n", bf_err_str(bf_status));
-      throw runtime_error("Failed to get name of learnFieldId");
-    }
-    std::cout << name << " : " << id << " ";
-  }
-  std::cout << std::endl;
+  bfCheckStatus(bf_status, "Failed to get all entries");
 
   vector<uint32_t> retValues;
   retValues.reserve(tableSz);
   for (auto &[key, data] : retTableData) {
-
-    uint64_t value;
-    bf_status = key->getValue(65557, &value);
-    if (bf_status != BF_SUCCESS) {
-      printf("Error: %s\n", bf_err_str(bf_status));
-      throw runtime_error("Failed to get table value");
-    }
-
-    bool isActive = false;
-    bf_status = data->isActive(1, &isActive);
-    if (bf_status != BF_SUCCESS) {
-      printf("Error: %s\n", bf_err_str(bf_status));
-      throw runtime_error("Failed to get active status");
-    }
-    if (!isActive) {
-      printf("Error: %s\n", bf_err_str(bf_status));
-      throw runtime_error("Field is not active!");
-    }
-
-    vector<uint64_t> fieldValue;
     unique_ptr<BfRtTableData> d(data);
-    bf_status_t bf_status = d->getValue(1, &fieldValue);
-    if (bf_status != BF_SUCCESS) {
-      printf("Error: %s\n", bf_err_str(bf_status));
-      throw runtime_error("Failed to get value in parsing retValues");
-    }
-    uint32_t ret = accumulate(fieldValue.begin(), fieldValue.end(), 0);
+    uint32_t ret = getValueFromData(d, 1);
     retValues.push_back(ret);
   }
   return retValues;
 }
 
-uint32_t ControlPlane::getValueFromData(unique_ptr<BfRtTableData> &tableData,
+uint64_t ControlPlane::getValueFromData(unique_ptr<BfRtTableData> &tableData,
                                         bf_rt_id_t fieldId) {
-  vector<uint32_t> fieldValue;
+  vector<uint64_t> fieldValue;
   bf_status_t bf_status = tableData->getValue(fieldId, &fieldValue);
-  if (bf_status != BF_SUCCESS) {
-    printf("Error: %s\n", bf_err_str(bf_status));
-    throw runtime_error("Failed to get value in getValueFromData");
-  }
+  bfCheckStatus(bf_status, "Failed to get data in getValueFromData");
+
+  // Returns vector of uint64_t[4], first value is register in sim, second is
+  // value when from switch
   return accumulate(fieldValue.begin(), fieldValue.end(), 0);
 }

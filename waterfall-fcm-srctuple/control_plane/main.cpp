@@ -1,6 +1,3 @@
-/*
-    Put copyright here
-*/
 
 #include "waterfall.hpp"
 #include <bf_rt/bf_rt.hpp>
@@ -15,5 +12,6 @@ int main(int argc, char *argv[]) {
   printf("Start running Control plane\n");
   Waterfall Waterfall;
   Waterfall.run();
+
   printf("Finished running!\n");
 }

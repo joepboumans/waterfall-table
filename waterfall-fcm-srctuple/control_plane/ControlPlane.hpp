@@ -45,7 +45,7 @@ public:
   uint64_t getEntry(std::shared_ptr<const bfrt::BfRtTable> table, uint64_t idx);
   std::vector<uint32_t>
   getAllEntries(std::shared_ptr<const bfrt::BfRtTable> table);
-  uint32_t getValueFromData(std::unique_ptr<bfrt::BfRtTableData> &tableData,
+  uint64_t getValueFromData(std::unique_ptr<bfrt::BfRtTableData> &tableData,
                             bf_rt_id_t fieldId);
 
 private:
