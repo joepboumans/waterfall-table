@@ -5,6 +5,7 @@
 #include "common.h"
 #include <bf_rt/bf_rt_table.hpp>
 #include <cstdint>
+#include <fstream>
 #include <memory>
 
 class Waterfall : ControlPlane {
@@ -13,6 +14,7 @@ public:
   void run();
   void collectFromDataPlane();
   void verify(vector<TUPLE> inTuples);
+  void setupLogging(std::string &datasetName);
 
 private:
   std::vector<std::vector<std::shared_ptr<const bfrt::BfRtTable>>> mTablesVec;
@@ -31,6 +33,10 @@ private:
 
   uint32_t hashing(const uint8_t *nums, size_t sz, uint32_t depth);
   vector<vector<uint32_t>> getInitialDegrees();
+  double mF1 = 0.0;
+  double mAverageRelativeError = 0.0;
+  double mAverageAbsoluteError = 0.0;
+  double mF1HeavyHitter = 0.0;
   void calculateFSD();
   vector<double> mEstFSD;
   uint32_t mItersEM = 5;
@@ -38,6 +44,20 @@ private:
   double mWMRE = 0.0;
   void calculateEntropy(std::vector<double> &ns);
   double mEntropy = 0.0;
+
+  // Logging members
+  char mFilePathOverall[400];
+  char mFilePathEst[400];
+  char mFilePathNs[400];
+  std::ofstream mFileOverall;
+  std::ofstream mFileEst;
+  std::ofstream mFileNs;
+  string mHeaderFileOverall;
+  string mHeaderEst;
+  string mHeaderNs;
+  void writeResOverall();
+  void writeResEst(uint32_t iter, size_t time, size_t totalTime, double card);
+  void writeResNs(vector<double> &ns);
 };
 
 #endif // _WATERFALL_HPP

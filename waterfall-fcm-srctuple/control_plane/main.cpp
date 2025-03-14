@@ -11,8 +11,7 @@
 #include <unistd.h>
 
 int main(int argc, char *argv[]) {
-  std::string filePath =
-      "/workspace/PDS-Simulator/data/equinix-chicago.20160121-130000.UTC.pcap";
+  std::string filePath = "/workspace/PDS-Simulator/data/32_test.pcap";
   printf("Loading in data set\n");
   pcapReader dataReader(filePath, TupleSize::SrcTuple);
 

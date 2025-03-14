@@ -9,16 +9,14 @@
 #include <algorithm>
 #include <bf_rt/bf_rt_table.hpp>
 #include <chrono>
-#include <cinttypes>
 #include <cstdint>
+#include <filesystem>
 #include <iostream>
 #include <memory>
 #include <stdexcept>
 #include <string>
 #include <unistd.h>
 #include <unordered_map>
-
-using std::unordered_map;
 
 extern "C" {
 #include <bf_pm/bf_pm_intf.h>
@@ -163,15 +161,6 @@ Waterfall::Waterfall(TupleSize sz)
   for (const auto &id : fieldIds) {
     std::cout << id << " ";
   }
-  std::cout << std::endl;
-  uint32_t pkt_count = 0;
-  pkt_count = ControlPlane::getEntry(mPktCount, 0);
-  std::cout << "Packet count: " << pkt_count << std::endl;
-
-  /*for (size_t d = 0; d <= 1; d++) {*/
-  /*  for (auto &table : mSketchVec[d]) {*/
-  /*  }*/
-  /*}*/
 }
 
 // Returns a list of len tables which all share the same name
@@ -270,19 +259,20 @@ void Waterfall::collectFromDataPlane() {
   std::cout << "Package count :" << pkt_count << std::endl;
 
   // Collect data from FCM Sketch with indexes from Waterfall
-  mSketchData.resize(2);
+  mSketchData.resize(DEPTH);
   vector<uint32_t> sketchLengths = {W1, W2, W3};
-  for (size_t d = 0; d < 2; d++) {
-    mSketchData[d].resize(3);
-    for (size_t l = 0; l < 3; l++) {
-      mSketchData[d].resize(sketchLengths[l]);
+  for (size_t d = 0; d < DEPTH; d++) {
+    mSketchData[d].resize(NUM_STAGES);
+    for (size_t l = 0; l < NUM_STAGES; l++) {
+      mSketchData[d][l].resize(sketchLengths[l]);
     }
   }
 
+  std::cout << "Start collecting sketch data from data plane..." << std::endl;
   for (const auto &srcAddr : mUniqueTuples) {
-    for (size_t d = 0; d < 2; d++) {
+    for (size_t d = 0; d < DEPTH; d++) {
       uint32_t idx = hashing(srcAddr.num_array, 4, d) % W1;
-      for (size_t l = 0; l < 3; l++) {
+      for (size_t l = 0; l < NUM_STAGES; l++) {
         uint64_t val = getEntry(mSketchVec[d][l], idx);
         mSketchData[d][l][idx] = val;
         idx = idx / 8;
@@ -319,7 +309,7 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
       true_pos++;
     } else {
       false_pos++;
-      std::cout << tup << std::endl;
+      /*std::cout << tup << std::endl;*/
     }
   }
 
@@ -329,7 +319,7 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
       continue;
     } else {
       false_neg++;
-      std::cout << tup << std::endl;
+      /*std::cout << tup << std::endl;*/
     }
   }
 
@@ -361,25 +351,29 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
   for (auto &tup : inTuples) {
     mTrueCounts[tup]++;
   }
+  std::cout << "[Waterfall] Created True Counts, start making True FSD"
+            << std::endl;
   using pair_type = decltype(mTrueCounts)::value_type;
-  auto max_count =
+  auto maxCountElement =
       std::max_element(mTrueCounts.begin(), mTrueCounts.end(),
                        [](const pair_type &p1, const pair_type &p2) {
                          return p1.second < p2.second;
                        });
 
+  mTrueFSD.resize(maxCountElement->second + 1);
   for (const auto &[tuple, count] : mTrueCounts) {
     mTrueFSD[count]++;
   }
 
-  double wmre = 0.0;
+  std::cout << "[Waterfall] Finished True FSD" << std::endl;
+
   auto start = std::chrono::high_resolution_clock::now();
   calculateFSD();
   auto stop = std::chrono::high_resolution_clock::now();
   auto time =
       std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
 
-  printf("[EM_FSD] WMRE : %f\n", wmre);
+  printf("[EM_FSD] WMRE : %f\n", mWMRE);
   printf("[EM_FSD] Total time %li ms\n", time.count());
 }
 
@@ -564,6 +558,8 @@ void Waterfall::calculateFSD() {
 
   calculateWMRE(EM.ns);
   calculateEntropy(EM.ns);
+  writeResEst(0, 0, 0, EM.n_old);
+  writeResNs(EM.ns);
 
   for (size_t iter = 1; iter < mItersEM + 1; iter++) {
     auto start = std::chrono::high_resolution_clock::now();
@@ -576,6 +572,8 @@ void Waterfall::calculateFSD() {
 
     calculateWMRE(EM.ns);
     calculateEntropy(EM.ns);
+    writeResEst(iter, time.count(), total_time.count(), EM.n_old);
+    writeResNs(EM.ns);
   }
 
   mEstFSD = EM.ns;
@@ -585,27 +583,26 @@ void Waterfall::calculateFSD() {
 vector<vector<uint32_t>> Waterfall::getInitialDegrees() {
   std::cout << "[WaterfallFCM] Calculate initial degrees from Waterfall..."
             << std::endl;
-  vector<vector<uint32_t>> init_degree(DEPTH, vector<uint32_t>(W1));
-
+  vector<vector<uint32_t>> initialDegrees(DEPTH, vector<uint32_t>(W1));
   for (size_t d = 0; d < DEPTH; d++) {
     for (auto &tuple : mUniqueTuples) {
       uint32_t hash_idx = hashing(tuple.num_array, tuple.sz, d);
-      init_degree[d][hash_idx]++;
+      initialDegrees[d][hash_idx]++;
     }
   }
 
   std::cout << "[WaterfallFCM] ...done!" << std::endl;
   for (size_t d = 0; d < DEPTH; d++) {
     std::cout << "Depth " << d << std::endl;
-    for (size_t i = 0; i < init_degree.size(); i++) {
-      if (init_degree[d][i] == 0) {
+    for (size_t i = 0; i < initialDegrees.size(); i++) {
+      if (initialDegrees[d][i] == 0) {
         continue;
       }
-      std::cout << i << ":" << init_degree[d][i] << " ";
+      std::cout << i << ":" << initialDegrees[d][i] << " ";
     }
     std::cout << std::endl;
   }
-  return init_degree;
+  return initialDegrees;
 }
 
 void Waterfall::calculateWMRE(vector<double> &ns) {
@@ -656,4 +653,69 @@ void Waterfall::calculateEntropy(vector<double> &ns) {
   mEntropy = std::abs(entropyEst - entropyTrue) / entropyTrue;
   printf("Entropy Relative Error (RE) = %f (true : %f, est : %f)\n", mEntropy,
          entropyTrue, entropyEst);
+}
+
+void Waterfall::setupLogging(string &datasetName) {
+  // Setup logging
+  mHeaderEst = "Epoch,Estimation Time,Total Time,Weighted Mean Relative Error,"
+               "Cardinality,Entropy";
+  mHeaderFileOverall = "Average Relative Error,Average Absolute "
+                       "Error,Weighted Mean Relative "
+                       "Error,F1 Heavy Hitter,Insertions,F1 Member";
+
+  string name_dir = "results/waterfall/";
+  if (!std::filesystem::is_directory(name_dir)) {
+    std::filesystem::create_directories(name_dir);
+  }
+
+  sprintf(mFilePathOverall, "%s/%s.csv", name_dir.c_str(), datasetName.c_str());
+  // Remove previous csv file and setup csv file
+  std::remove(mFilePathOverall);
+  mFileOverall.open(mFilePathOverall, std::ios::out);
+  mFileOverall << mHeaderFileOverall << std::endl;
+
+  sprintf(mFilePathEst, "%s/em_%s.csv", name_dir.c_str(), datasetName.c_str());
+
+  std::remove(mFilePathEst);
+  mFileEst.open(mFilePathEst, std::ios::out);
+  mFileEst << mHeaderEst << std::endl;
+
+  sprintf(mFilePathNs, "%s/ns_%s.dat", name_dir.c_str(), datasetName.c_str());
+
+  std::remove(mFilePathNs);
+  mFileNs.open(mFilePathNs, std::ios::out | std::ios::binary);
+}
+
+void Waterfall::writeResOverall() {
+  // Save data into csv
+  char csv[300];
+  sprintf(csv, "%.3f,%.3f,%.3f,%.3f,%.3f", mAverageRelativeError,
+          mAverageAbsoluteError, mWMRE, mF1HeavyHitter, mF1);
+  mFileOverall << csv << std::endl;
+}
+
+void Waterfall::writeResEst(uint32_t iter, size_t time, size_t totalTime,
+                            double card) {
+  // Save data into csv
+  char csv[300];
+  sprintf(csv, "%u,%ld,%ld,%.6f,%.1f,%.6f", iter, time, totalTime, mWMRE, card,
+          mEntropy);
+  mFileEst << csv << std::endl;
+}
+
+void Waterfall::writeResNs(vector<double> &ns) {
+  uint32_t num_entries = 0;
+  for (uint32_t i = 0; i < ns.size(); i++) {
+    if (ns[i] != 0) {
+      num_entries++;
+    }
+  }
+  // Write NS FSD size and then the FSD as uint64_t
+  mFileNs.write((char *)&num_entries, sizeof(num_entries));
+  for (uint32_t i = 0; i < ns.size(); i++) {
+    if (ns[i] != 0) {
+      mFileNs.write((char *)&i, sizeof(i));
+      mFileNs.write((char *)&ns[i], sizeof(ns[i]));
+    }
+  }
 }
