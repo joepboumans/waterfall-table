@@ -153,14 +153,8 @@ Waterfall::Waterfall(TupleSize sz)
     mSketchVec[d] = Waterfall::getTableList(sketchNames[d]);
   }
 
-  std::cout << "Add pkt count reg" << std::endl;
+  std::cout << "Get num_pkt register" << std::endl;
   mPktCount = ControlPlane::getTable("FcmEgress.num_pkt");
-
-  vector<bf_rt_id_t> fieldIds;
-  bf_status_t bf_status = mPktCount->keyFieldIdListGet(&fieldIds);
-  for (const auto &id : fieldIds) {
-    std::cout << id << " ";
-  }
 }
 
 // Returns a list of len tables which all share the same name
@@ -511,7 +505,7 @@ void Waterfall::calculateFSD() {
 
   std::cout << "[EM_WFCM] ...done!" << std::endl;
 
-  if (0) {
+  if (1) {
     // Print vc with thresholds
     for (size_t d = 0; d < DEPTH; d++) {
       for (size_t st = 0; st < virtualCounters[d].size(); st++) {
@@ -586,7 +580,7 @@ vector<vector<uint32_t>> Waterfall::getInitialDegrees() {
   vector<vector<uint32_t>> initialDegrees(DEPTH, vector<uint32_t>(W1));
   for (size_t d = 0; d < DEPTH; d++) {
     for (auto &tuple : mUniqueTuples) {
-      uint32_t hash_idx = hashing(tuple.num_array, tuple.sz, d);
+      uint32_t hash_idx = hashing(tuple.num_array, tuple.sz, d) % W1;
       initialDegrees[d][hash_idx]++;
     }
   }
