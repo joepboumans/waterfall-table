@@ -4,6 +4,7 @@
 #include "waterfall.hpp"
 #include "ControlPlane.hpp"
 #include "bf_rt/bf_rt_common.h"
+#include "common.h"
 #include "zlib.h"
 #include <algorithm>
 #include <bf_rt/bf_rt_table.hpp>
@@ -21,17 +22,6 @@ extern "C" {
 #include <bf_pm/bf_pm_intf.h>
 #include <traffic_mgr/traffic_mgr.h>
 }
-
-#define NUM_STAGES 3
-#define DEPTH 2
-#define K 8
-#define W3 8192          // 32-bit, level 3
-#define W2 (K * W3)      // 16-bit, level 2
-#define W1 (K * W2)      // 8-bit, level 1
-#define ADD_LEVEL1 255   // 2^8 -2 + 1 (actual count is 254)
-#define ADD_LEVEL2 65789 // (2^8 - 2) + (2^16 - 2) + 1 (actual count is 65788)
-#define OVERFLOW_LEVEL1 254   // 2^8 - 1 maximum count is 254
-#define OVERFLOW_LEVEL2 65534 // 2^16 - 1 maximum count is 65536
 
 using namespace std;
 using namespace bfrt;
