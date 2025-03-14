@@ -198,7 +198,7 @@ Waterfall::getTableList(vector<string> names) {
 
 void Waterfall::run() {
   const auto digest = ControlPlane::getLearnFilter("digest");
-  printf("Setup learnfilter with callback\n");
+  printf("Learnfilter is setup, can now start to receive data...\n");
 
   auto firstReceivedTime = std::chrono::high_resolution_clock::now();
   auto lastReceivedTime = std::chrono::high_resolution_clock::now();
@@ -209,6 +209,7 @@ void Waterfall::run() {
       if (!hasReceivedFirstDigest) {
         firstReceivedTime = std::chrono::high_resolution_clock::now();
         hasReceivedFirstDigest = true;
+        std::cout << "First data received from digest" << std::endl;
       }
 
       ControlPlane::mLearnInterface.hasNewData = false;
@@ -218,7 +219,7 @@ void Waterfall::run() {
     auto time = std::chrono::high_resolution_clock::now();
     if (std::chrono::duration_cast<std::chrono::milliseconds>(time -
                                                               lastReceivedTime)
-                .count() >= 10000 and
+                .count() >= 5000 and
         hasReceivedFirstDigest) {
       std::cout << "Have no received any digest for over 1s, quiting run loop"
                 << std::endl;
@@ -228,41 +229,37 @@ void Waterfall::run() {
       std::cout << "Took a total of " << totalTime.count()
                 << " ms to receive all digests" << std::endl;
 
-      std::cout << "Recieved data from digest "
-                << ControlPlane::mLearnInterface.mLearnDataVec.size()
-                << " total packets" << std::endl;
-
-      if (ControlPlane::mLearnInterface.mLearnDataVec.size() <= 10000) {
-        std::cout << "Recieved data from digest" << std::endl;
-        for (const uint32_t &x : ControlPlane::mLearnInterface.mLearnDataVec) {
-          uint8_t src_addr[4];
-          memcpy(src_addr, &x, 4);
-          // Skip local messages
-          if (src_addr[3] == 192 and src_addr[2] == 168) {
-            continue;
-          }
-          for (int i = 3; i >= 0; i--) {
-            std::cout << int(src_addr[i]);
-            if (i > 0) {
-              std::cout << ".";
-            }
-          }
-          std::cout << " ";
-        }
-        std::cout << std::endl;
-      }
-
       break;
     }
-
-    /*usleep(100);*/
   }
+
+  std::cout << "Recieved data from digest "
+            << ControlPlane::mLearnInterface.mLearnDataVec.size()
+            << " total packets" << std::endl;
+
   set<vector<uint8_t>> uniqueSrcAddress;
   for (const auto &x : ControlPlane::mLearnInterface.mLearnDataVec) {
     vector<uint8_t> src_addr(4);
     memcpy(src_addr.data(), &x, 4);
     std::reverse(src_addr.begin(), src_addr.end());
     uniqueSrcAddress.insert(src_addr);
+  }
+
+  if (ControlPlane::mLearnInterface.mLearnDataVec.size() <= 10000) {
+    std::cout << "Received the following data from digest: " << std::endl;
+    for (const uint32_t &x : ControlPlane::mLearnInterface.mLearnDataVec) {
+      vector<uint8_t> src_addr(4);
+      memcpy(src_addr.data(), &x, 4);
+      std::reverse(src_addr.begin(), src_addr.end());
+      for (int i = 0; i < src_addr.size(); i++) {
+        std::cout << int(src_addr[i]);
+        if (i < src_addr.size() - 1) {
+          std::cout << ".";
+        }
+      }
+      std::cout << " ";
+    }
+    std::cout << std::endl;
   }
   std::cout << "Found " << uniqueSrcAddress.size() << " unique tupels"
             << std::endl;
