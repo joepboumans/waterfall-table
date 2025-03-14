@@ -286,6 +286,10 @@ uint32_t Waterfall::hashing(const uint8_t *nums, size_t sz, uint32_t h) {
 }
 
 void Waterfall::verify(vector<TUPLE> inTuples) {
+  set<TUPLE> mUnqiueInTuples;
+  for (auto &tup : inTuples) {
+    mUnqiueInTuples.insert(tup);
+  }
   printf("[WaterfallFcm - verify] Calculate Waterfall F1-score...");
   uint32_t true_pos = 0;
   uint32_t false_pos = 0;
@@ -293,9 +297,9 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
   uint32_t false_neg = 0;
 
   // Compare dataset tuples with Waterfall Tuples
-  printf("False positives (Halucinations?):");
+  printf("False positives (Halucinations?):\n");
   for (auto &tup : mUnqiueTuples) {
-    if (std::search(inTuples.begin(), inTuples.end(), tup) != inTuples.end()) {
+    if (mUnqiueInTuples.find(tup) != mUnqiueInTuples.end()) {
       true_pos++;
     } else {
       false_pos++;
@@ -303,14 +307,13 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
     }
   }
 
-  printf("False negatives (Not seen by Waterfall):");
+  printf("False negatives (Not seen by Waterfall):\n");
   for (auto &tup : inTuples) {
-    if (std::search(mUnqiueTuples.begin(), mUnqiueTuples.end(), tup) !=
-        mUnqiueTuples.end()) {
+    if (mUnqiueTuples.find(tup) != mUnqiueTuples.end()) {
       continue;
     } else {
       false_neg++;
-      std::cout << tup << std::endl;
+      /*std::cout << tup << std::endl;*/
     }
   }
 
@@ -321,21 +324,17 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
   precision = (double)true_pos / (true_pos + false_pos);
   recall = (double)true_pos / (true_pos + false_neg);
   f1 = 2 * ((recall * precision) / (precision + recall));
-  printf("[WaterfallFcm - verify] recall = %.5f precision = %.5f f1 = %.5f",
+  printf("[WaterfallFcm - verify] recall = %.5f precision = %.5f f1 = %.5f\n",
          recall, precision, f1);
 
-  set<TUPLE> uniqueInTuples;
-  for (auto &tup : inTuples) {
-    uniqueInTuples.insert(tup);
-  }
-  double load_factor = (double)uniqueInTuples.size() / mUnqiueTuples.size();
-  printf("([WaterfallFcm - verify] Load factor : %f\tUnique Tuples : %zu ",
+  double load_factor = (double)mUnqiueInTuples.size() / mUnqiueTuples.size();
+  printf("([WaterfallFcm - verify] Load factor : %f\tUnique Tuples : %zu \n",
          load_factor, mUnqiueTuples.size());
 
   size_t learnDataVecSize = ControlPlane::mLearnInterface.mLearnDataVec.size();
-  double total_lf = (double)learnDataVecSize / uniqueInTuples.size();
+  double total_lf = (double)learnDataVecSize / mUnqiueInTuples.size();
   printf("[WaterfallFcm - verify] Total load factor : %f\tTotal received "
-         "tuples %zu",
+         "tuples %zu\n",
          total_lf, learnDataVecSize);
 }
 

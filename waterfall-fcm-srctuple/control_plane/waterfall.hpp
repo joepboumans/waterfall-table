@@ -21,6 +21,7 @@ private:
   std::vector<std::vector<std::shared_ptr<const bfrt::BfRtTable>>> mSketchVec;
   std::shared_ptr<const bfrt::BfRtTable> mPktCount;
   std::set<TUPLE> mUnqiueTuples;
+  std::set<TUPLE> mUnqiueInTuples;
   TupleSize mTupleSz;
 
   uint32_t hashing(const uint8_t *nums, size_t sz, uint32_t depth);
