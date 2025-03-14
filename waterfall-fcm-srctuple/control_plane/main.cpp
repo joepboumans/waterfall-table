@@ -19,6 +19,7 @@ int main(int argc, char *argv[]) {
   printf("Start running Control plane\n");
   Waterfall Waterfall(TupleSize::SrcTuple);
   Waterfall.run();
+  Waterfall.collectFromDataPlane();
   Waterfall.verify(dataReader.mTuples);
 
   printf("Finished running!\n");

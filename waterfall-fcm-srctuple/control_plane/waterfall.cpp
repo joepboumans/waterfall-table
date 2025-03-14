@@ -1,10 +1,10 @@
-#ifndef _SIMPLE_DIGEST_CPP
-#define _SIMPLE_DIGEST_CPP
 
 #include "waterfall.hpp"
 #include "ControlPlane.hpp"
+#include "EM_WFCM.hpp"
 #include "bf_rt/bf_rt_common.h"
 #include "common.h"
+#include "ptf/EM/common.h"
 #include "zlib.h"
 #include <algorithm>
 #include <bf_rt/bf_rt_table.hpp>
@@ -17,6 +17,8 @@
 #include <string>
 #include <unistd.h>
 #include <unordered_map>
+
+using std::unordered_map;
 
 extern "C" {
 #include <bf_pm/bf_pm_intf.h>
@@ -187,6 +189,28 @@ Waterfall::getTableList(vector<string> names) {
   return vec;
 }
 
+// Returns hash value of Waterfall or FCM Sketch table
+// h indicates which table or depth
+uint32_t Waterfall::hashing(const uint8_t *nums, size_t sz, uint32_t h) {
+  uint32_t crc = 0;
+  switch (h) {
+  case 3:
+    crc = 0xFFF00000;
+    break;
+  case 2:
+    crc = 0xFF000000;
+    break;
+  case 1:
+    crc = 0xF0000000;
+    break;
+  case 0:
+    crc = 0x00000000;
+    break;
+  }
+  crc = crc32(crc, nums, sz);
+  return crc;
+}
+
 void Waterfall::run() {
   const auto digest = ControlPlane::getLearnFilter("digest");
   printf("Learnfilter is setup, can now start to receive data...\n");
@@ -223,30 +247,46 @@ void Waterfall::run() {
       break;
     }
   }
+}
 
+void Waterfall::collectFromDataPlane() {
   std::cout << "Recieved data from digest "
             << ControlPlane::mLearnInterface.mLearnDataVec.size()
             << " total packets" << std::endl;
 
+  // Collect data from Waterfall
   for (const auto &x : ControlPlane::mLearnInterface.mLearnDataVec) {
     vector<uint8_t> src_addr(4);
     memcpy(src_addr.data(), &x, 4);
     std::reverse(src_addr.begin(), src_addr.end());
     TUPLE tup(src_addr.data(), mTupleSz);
-    mUnqiueTuples.insert(tup);
+    mUniqueTuples.insert(tup);
   }
-  std::cout << "Found " << mUnqiueTuples.size() << " unique tupels"
+  std::cout << "Found " << mUniqueTuples.size() << " unique tupels"
             << std::endl;
 
+  // Get pkt count from FCM Sketch
   uint32_t pkt_count = ControlPlane::getEntry(mPktCount, 0);
   std::cout << "Package count :" << pkt_count << std::endl;
 
-  for (const auto &srcAddr : mUnqiueTuples) {
+  // Collect data from FCM Sketch with indexes from Waterfall
+  mSketchData.resize(2);
+  vector<uint32_t> sketchLengths = {W1, W2, W3};
+  for (size_t d = 0; d < 2; d++) {
+    mSketchData[d].resize(3);
+    for (size_t l = 0; l < 3; l++) {
+      mSketchData[d].resize(sketchLengths[l]);
+    }
+  }
+
+  for (const auto &srcAddr : mUniqueTuples) {
     for (size_t d = 0; d < 2; d++) {
       uint32_t idx = hashing(srcAddr.num_array, 4, d) % W1;
       for (size_t l = 0; l < 3; l++) {
         uint64_t val = getEntry(mSketchVec[d][l], idx);
+        mSketchData[d][l][idx] = val;
         idx = idx / 8;
+
         if (val <= 0) {
           if (l == 0) {
             std::cout << "d" << d << " l" << l << " at idx " << idx << " : "
@@ -256,33 +296,9 @@ void Waterfall::run() {
           }
           continue;
         }
-        std::cout << "d" << d << " l" << l << " at idx " << idx << " : " << val
-                  << std::endl;
       }
     }
   }
-}
-
-// Returns hash value of Waterfall or FCM Sketch table
-// h indicates which table or depth
-uint32_t Waterfall::hashing(const uint8_t *nums, size_t sz, uint32_t h) {
-  uint32_t crc = 0;
-  switch (h) {
-  case 3:
-    crc = 0xFFF00000;
-    break;
-  case 2:
-    crc = 0xFF000000;
-    break;
-  case 1:
-    crc = 0xF0000000;
-    break;
-  case 0:
-    crc = 0x00000000;
-    break;
-  }
-  crc = crc32(crc, nums, sz);
-  return crc;
 }
 
 void Waterfall::verify(vector<TUPLE> inTuples) {
@@ -298,7 +314,7 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
 
   // Compare dataset tuples with Waterfall Tuples
   printf("False positives (Halucinations?):\n");
-  for (auto &tup : mUnqiueTuples) {
+  for (auto &tup : mUniqueTuples) {
     if (mUnqiueInTuples.find(tup) != mUnqiueInTuples.end()) {
       true_pos++;
     } else {
@@ -309,15 +325,15 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
 
   printf("False negatives (Not seen by Waterfall):\n");
   for (auto &tup : inTuples) {
-    if (mUnqiueTuples.find(tup) != mUnqiueTuples.end()) {
+    if (mUniqueTuples.find(tup) != mUniqueTuples.end()) {
       continue;
     } else {
       false_neg++;
-      /*std::cout << tup << std::endl;*/
+      std::cout << tup << std::endl;
     }
   }
 
-  // F1 Score
+  // F1 Score - Accuracy of detect flows
   double recall = 0.0;
   double precision = 0.0;
   double f1 = 0.0;
@@ -327,15 +343,317 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
   printf("[WaterfallFcm - verify] recall = %.5f precision = %.5f f1 = %.5f\n",
          recall, precision, f1);
 
-  double load_factor = (double)mUnqiueInTuples.size() / mUnqiueTuples.size();
+  double load_factor = (double)mUnqiueInTuples.size() / mUniqueTuples.size();
   printf("([WaterfallFcm - verify] Load factor : %f\tUnique Tuples : %zu \n",
-         load_factor, mUnqiueTuples.size());
+         load_factor, mUniqueTuples.size());
 
   size_t learnDataVecSize = ControlPlane::mLearnInterface.mLearnDataVec.size();
   double total_lf = (double)learnDataVecSize / mUnqiueInTuples.size();
   printf("[WaterfallFcm - verify] Total load factor : %f\tTotal received "
          "tuples %zu\n",
          total_lf, learnDataVecSize);
+
+  // Cardinality - Number of seen unique flows
+  std::cout << "[Waterfall] Cardinality : " << mUniqueTuples.size()
+            << std::endl;
+
+  // FSD
+  for (auto &tup : inTuples) {
+    mTrueCounts[tup]++;
+  }
+  using pair_type = decltype(mTrueCounts)::value_type;
+  auto max_count =
+      std::max_element(mTrueCounts.begin(), mTrueCounts.end(),
+                       [](const pair_type &p1, const pair_type &p2) {
+                         return p1.second < p2.second;
+                       });
+
+  for (const auto &[tuple, count] : mTrueCounts) {
+    mTrueFSD[count]++;
+  }
+
+  double wmre = 0.0;
+  auto start = std::chrono::high_resolution_clock::now();
+  calculateFSD();
+  auto stop = std::chrono::high_resolution_clock::now();
+  auto time =
+      std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
+
+  printf("[EM_FSD] WMRE : %f\n", wmre);
+  printf("[EM_FSD] Total time %li ms\n", time.count());
 }
 
-#endif
+void Waterfall::calculateFSD() {
+  std::cout << "[EM_WFCM] Setting up summary and overflow paths..."
+            << std::endl;
+  // Summarize counters into single counters
+  // depth, stage, idx, {value, total degree, sketch degree}
+  vector<vector<vector<vector<uint32_t>>>> summary(DEPTH);
+  // depth, degree, value, count
+  vector<vector<vector<uint32_t>>> virtualCounters;
+  // depth, value, count
+  vector<vector<uint32_t>> initFSD(DEPTH);
+  // depth, stage, idx, layer, {stage, local degree, total degree, min value}
+  vector<vector<vector<vector<vector<uint32_t>>>>> overflowPaths(DEPTH);
+  // depth, degree, value, {stage, local colls, total colls, min value}
+  vector<vector<vector<vector<vector<uint32_t>>>>> thresholds;
+  // depth, degree, value, sketch degree
+  vector<vector<vector<uint32_t>>> sketchDegrees;
+  vector<uint32_t> maxDegrees = {0, 0};
+  uint32_t maxCounterVal = 0;
+  vector<vector<uint32_t>> initDegrees = getInitialDegrees();
+  vector<uint32_t> stageSzes = {W1, W2, W3};
+  vector<uint32_t> counterOverflowVal = {OVERFLOW_LEVEL1, OVERFLOW_LEVEL2};
+
+  // Setup sizes for summary and overflow_paths
+  for (size_t d = 0; d < DEPTH; d++) {
+    summary[d].resize(NUM_STAGES);
+    overflowPaths[d].resize(NUM_STAGES);
+    for (size_t stage = 0; stage < NUM_STAGES; stage++) {
+      summary[d][stage].resize(stageSzes[stage], vector<uint32_t>(3, 0));
+      overflowPaths[d][stage].resize(stageSzes[stage]);
+    }
+  }
+  std::cout << "[EM_WFCM] ...done!" << std::endl;
+  std::cout << "[EM_WFCM] Setting up virtual counters and thresholds..."
+            << std::endl;
+
+  virtualCounters.resize(DEPTH);
+  sketchDegrees.resize(DEPTH);
+  thresholds.resize(DEPTH);
+
+  std::cout << "[EM_WFCM] ...done!" << std::endl;
+  std::cout << "[EM_WFCM] Load count from sketches into virtual counters and "
+               "thresholds..."
+            << std::endl;
+  for (size_t d = 0; d < DEPTH; d++) {
+    for (size_t stage = 0; stage < NUM_STAGES; stage++) {
+      for (size_t i = 0; i < stageSzes[stage]; i++) {
+        if (mSketchData[d][stage][i] <= 0) {
+          continue;
+        }
+
+        // Limit value to OVERFLOW_LEVELX values
+        summary[d][stage][i][0] = mSketchData[d][stage][i];
+        if (mSketchData[d][stage][i] > counterOverflowVal[stage]) {
+          summary[d][stage][i][0] = counterOverflowVal[stage];
+        }
+
+        // Store local and initial degree
+        if (stage == 0) {
+          summary[d][stage][i][1] = 1;
+          summary[d][stage][i][2] = initDegrees[d][i];
+        } else if (stage > 0) { // Start checking childeren from stage 1 and up
+          for (size_t k = 0; k < K; k++) {
+            uint32_t child_idx = i * K + k;
+
+            // Add childs count, total and sketch degree to current counter
+            if (mSketchData[d][stage - 1][child_idx] >
+                counterOverflowVal[stage - 1]) {
+              summary[d][stage][i][0] += summary[d][stage - 1][child_idx][0];
+              summary[d][stage][i][1] += summary[d][stage - 1][child_idx][1];
+              summary[d][stage][i][2] += summary[d][stage - 1][child_idx][2];
+
+              // Add overflow path of child to my own path
+              for (auto &path : overflowPaths[d][stage - 1][child_idx]) {
+                overflowPaths[d][stage][i].push_back(path);
+              }
+            }
+          }
+        }
+
+        // If not overflown and non-zero, we are at the end of the path
+        if (!(mSketchData[d][stage][i] > counterOverflowVal[stage]) &&
+            summary[d][stage][i][0] > 0) {
+
+          uint32_t count = summary[d][stage][i][0];
+          uint32_t sketch_degree = summary[d][stage][i][1];
+          uint32_t degree = summary[d][stage][i][2];
+          maxCounterVal = std::max(maxCounterVal, count);
+          maxDegrees[d] = std::max(maxDegrees[d], degree);
+
+          if (maxCounterVal >= initFSD[d].size()) {
+            initFSD[d].resize(maxCounterVal + 2);
+          }
+
+          if (degree == 1) {
+            initFSD[d][count]++;
+          } else if (degree == count) {
+            initFSD[d][1] += count;
+          } else if (degree + 1 == count) {
+            initFSD[d][1] += (count - 1);
+            initFSD[d][2] += 1;
+          } else {
+            if (degree >= virtualCounters[d].size()) {
+              virtualCounters[d].resize(degree + 1);
+              thresholds[d].resize(degree + 1);
+              sketchDegrees[d].resize(degree + 1);
+            }
+
+            // Separate L1 VC's as these do not require thresholds to solve.
+            // Store L1 VC in degree 0
+            if (sketch_degree == 1) {
+              sketch_degree = degree;
+              degree = 1;
+            }
+            // Add entry to VC with its degree [1] and count [0]
+            virtualCounters[d][degree].push_back(count);
+            sketchDegrees[d][degree].push_back(sketch_degree);
+
+            thresholds[d][degree].push_back(overflowPaths[d][stage][i]);
+          }
+
+        } else {
+          uint32_t max_val = summary[d][stage][i][0];
+          uint32_t local_degree = summary[d][stage][i][1];
+          uint32_t total_degree = summary[d][stage][i][2];
+          vector<uint32_t> local = {static_cast<uint32_t>(stage), local_degree,
+                                    total_degree, max_val};
+          overflowPaths[d][stage][i].push_back(local);
+        }
+      }
+    }
+  }
+
+  std::cout << "[EM_WFCM] ...done!" << std::endl;
+
+  if (0) {
+    // Print vc with thresholds
+    for (size_t d = 0; d < DEPTH; d++) {
+      for (size_t st = 0; st < virtualCounters[d].size(); st++) {
+        if (virtualCounters[d][st].size() == 0) {
+          continue;
+        }
+        for (size_t i = 0; i < virtualCounters[d][st].size(); i++) {
+          printf("Depth %zu, Degree %zu, Sketch Degree %u, Index %zu ]= Val "
+                 "%d \tThresholds: ",
+                 d, st, sketchDegrees[d][st][i], i, virtualCounters[d][st][i]);
+          for (auto &t : thresholds[d][st][i]) {
+            std::cout << "<";
+            for (auto &x : t) {
+              std::cout << x;
+              if (&x != &t.back()) {
+                std::cout << ", ";
+              }
+            }
+            std::cout << ">";
+            if (&t != &thresholds[d][st][i].back()) {
+              std::cout << ", ";
+            }
+          }
+          std::cout << std::endl;
+        }
+      }
+      for (size_t i = 0; i < initFSD[d].size(); i++) {
+        if (initFSD[d][i] != 0) {
+          printf("Depth %zu, Index %zu ]= Val %d\n", d, i, initFSD[d][i]);
+        }
+      }
+    }
+  }
+
+  std::cout << "Maximum degree is: " << maxDegrees[0] << ", " << maxDegrees[1]
+            << std::endl;
+  std::cout << "Maximum counter value is: " << maxCounterVal << std::endl;
+
+  std::cout << "[EMS_FSD] Initializing EMS_FSD..." << std::endl;
+  EM_WFCM EM(thresholds, maxCounterVal, maxDegrees, virtualCounters,
+             sketchDegrees, initFSD);
+  std::cout << "[EMS_FSD] ...done!" << std::endl;
+  auto total_start = std::chrono::high_resolution_clock::now();
+
+  calculateWMRE(EM.ns);
+  calculateEntropy(EM.ns);
+
+  for (size_t iter = 1; iter < mItersEM + 1; iter++) {
+    auto start = std::chrono::high_resolution_clock::now();
+    EM.next_epoch();
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    auto time = std::chrono::duration_cast<chrono::milliseconds>(stop - start);
+    auto total_time =
+        std::chrono::duration_cast<chrono::milliseconds>(stop - total_start);
+
+    calculateWMRE(EM.ns);
+    calculateEntropy(EM.ns);
+  }
+
+  mEstFSD = EM.ns;
+}
+
+// Gets maps of flows to the first counter layer of FCM
+vector<vector<uint32_t>> Waterfall::getInitialDegrees() {
+  std::cout << "[WaterfallFCM] Calculate initial degrees from Waterfall..."
+            << std::endl;
+  vector<vector<uint32_t>> init_degree(DEPTH, vector<uint32_t>(W1));
+
+  for (size_t d = 0; d < DEPTH; d++) {
+    for (auto &tuple : mUniqueTuples) {
+      uint32_t hash_idx = hashing(tuple.num_array, tuple.sz, d);
+      init_degree[d][hash_idx]++;
+    }
+  }
+
+  std::cout << "[WaterfallFCM] ...done!" << std::endl;
+  for (size_t d = 0; d < DEPTH; d++) {
+    std::cout << "Depth " << d << std::endl;
+    for (size_t i = 0; i < init_degree.size(); i++) {
+      if (init_degree[d][i] == 0) {
+        continue;
+      }
+      std::cout << i << ":" << init_degree[d][i] << " ";
+    }
+    std::cout << std::endl;
+  }
+  return init_degree;
+}
+
+void Waterfall::calculateWMRE(vector<double> &ns) {
+  static uint32_t iter = 1;
+  static double d_wmre = 0.0;
+  double wmre_nom = 0.0;
+  double wmre_denom = 0.0;
+  uint32_t max_len = std::max(mTrueFSD.size(), ns.size());
+  mTrueFSD.resize(max_len);
+  ns.resize(max_len);
+
+  for (size_t i = 0; i < max_len; i++) {
+    wmre_nom += std::abs(double(mTrueFSD[i]) - ns[i]);
+    wmre_denom += double((double(mTrueFSD[i]) + ns[i]) / 2);
+  }
+  mWMRE = wmre_nom / wmre_denom;
+  std::cout << "[EM WFCM - iter " << iter << "] intermediary wmre " << mWMRE
+            << " delta: " << mWMRE - d_wmre << std::endl;
+  d_wmre = mWMRE;
+  iter++;
+}
+
+void Waterfall::calculateEntropy(vector<double> &ns) {
+  double entropyEst = 0;
+
+  double totEst = 0;
+  double entrEst = 0;
+
+  for (int i = 1; i < ns.size(); ++i) {
+    if (ns[i] == 0)
+      continue;
+    totEst += i * ns[i];
+    entrEst += i * ns[i] * log2(i);
+  }
+  entropyEst = -entrEst / totEst + log2(totEst);
+
+  double entropyTrue = 0;
+  double totTrue = 0;
+  double entrTrue = 0;
+  for (int i = 0; i < mTrueFSD.size(); ++i) {
+    if (mTrueFSD[i] == 0)
+      continue;
+    totTrue += i * mTrueFSD[i];
+    entrTrue += i * mTrueFSD[i] * log2(i);
+  }
+  entropyTrue = -entrTrue / totTrue + log2(totTrue);
+
+  mEntropy = std::abs(entropyEst - entropyTrue) / entropyTrue;
+  printf("Entropy Relative Error (RE) = %f (true : %f, est : %f)\n", mEntropy,
+         entropyTrue, entropyEst);
+}

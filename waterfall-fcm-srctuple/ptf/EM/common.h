@@ -14,6 +14,7 @@
 #include <set>
 #include <unordered_map>
 #include <vector>
+#include <zlib.h>
 
 #define NUM_STAGES 3
 #define DEPTH 2
@@ -123,7 +124,7 @@ struct TUPLE {
     return *this;
   }
 
-  /*auto operator<=>(const TUPLE &) const = default;*/
+  auto operator<=>(const TUPLE &) const = default;
   bool operator==(const TUPLE &rhs) const {
     for (size_t i = 0; i < this->sz; i++) {
       if (this->num_array[i] != rhs.num_array[i]) {
@@ -142,12 +143,11 @@ struct TUPLE {
   }
 };
 
-/*struct TupleHash {*/
-/*  std::size_t operator()(const TUPLE &k) const {*/
-/*    static BOBHash32 hasher(750);*/
-/*    return hasher.run((const char *)k.num_array, k.sz);*/
-/*    // return XXH32(k.num_array, sizeof(FIVE_TUPLE), 0);*/
-/*  }*/
-/*};*/
+struct TupleHash {
+  std::size_t operator()(const TUPLE &k) const {
+    uint32_t crc = 0;
+    return crc32(crc, k.num_array, k.sz);
+  }
+};
 
 #endif
