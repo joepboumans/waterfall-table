@@ -318,19 +318,7 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
       continue;
     } else {
       false_neg++;
-      std::cout << tup << std::endl;
-    }
-  }
-
-  for (auto depth : mSketchVec) {
-    for (auto sketch : depth) {
-      {
-        vector<uint32_t> entries = ControlPlane::getAllEntries(sketch);
-        for (size_t i = 0; i < entries.size(); i++) {
-          std::cout << i << " : " << entries[i] << "\t";
-        }
-        std::cout << std::endl;
-      }
+      /*std::cout << tup << std::endl;*/
     }
   }
 
