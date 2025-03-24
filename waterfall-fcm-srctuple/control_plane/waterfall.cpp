@@ -331,12 +331,12 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
   printf("[WaterfallFcm - verify] recall = %.5f precision = %.5f f1 = %.5f\n",
          recall, precision, f1);
 
-  double load_factor = (double)mUnqiueInTuples.size() / mUniqueTuples.size();
+  double load_factor = (double)mUniqueInTuples.size() / mUniqueTuples.size();
   printf("([WaterfallFcm - verify] Load factor : %f\tUnique Tuples : %zu \n",
          load_factor, mUniqueTuples.size());
 
   size_t learnDataVecSize = ControlPlane::mLearnInterface.mLearnDataVec.size();
-  double total_lf = (double)learnDataVecSize / mUnqiueInTuples.size();
+  double total_lf = (double)learnDataVecSize / mUniqueInTuples.size();
   printf("[WaterfallFcm - verify] Total load factor : %f\tTotal received "
          "tuples %zu\n",
          total_lf, learnDataVecSize);
