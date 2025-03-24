@@ -31,6 +31,9 @@ handleLearnCallback(const bf_rt_target_t &bf_rt_tgt,
   learnInterface *cpLearnInterface = (learnInterface *)cookie;
   uint64_t val;
   bf_rt_id_t field = 1;
+  bf_status_t bf_status =
+      cpLearnInterface->mLearn->bfRtLearnNotifyAck(session, learn_msg_hdl);
+  bfCheckStatus(bf_status, "Failed to ack learn filter");
 
   std::cout << "Got " << learnDataVec.size() << " entries from digest" << std::endl;
   for (auto &data : learnDataVec) {
@@ -41,9 +44,6 @@ handleLearnCallback(const bf_rt_target_t &bf_rt_tgt,
   }
   cpLearnInterface->hasNewData = true;
 
-  bf_status_t bf_status =
-      cpLearnInterface->mLearn->bfRtLearnNotifyAck(session, learn_msg_hdl);
-  bfCheckStatus(bf_status, "Failed to ack learn filter");
   return BF_SUCCESS;
 }
 
