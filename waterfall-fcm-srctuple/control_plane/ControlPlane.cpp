@@ -35,10 +35,6 @@ handleLearnCallback(const bf_rt_target_t &bf_rt_tgt,
   for (auto &data : learnDataVec) {
     data->getValue(field, &val);
     cpLearnInterface->mLearnDataVec.push_back(val);
-    data->getValue(2, &val);
-    cpLearnInterface->mLearnDataVec.push_back(val);
-    /*data->getValue(3, &val);*/
-    /*cpLearnInterface->mLearnDataVec.push_back(val);*/
   }
   cpLearnInterface->hasNewData = true;
 
