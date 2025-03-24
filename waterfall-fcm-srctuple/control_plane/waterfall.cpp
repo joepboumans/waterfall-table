@@ -313,7 +313,7 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
   }
 
   printf("False negatives (Not seen by Waterfall):\n");
-  for (auto &tup : inTuples) {
+  for (auto &tup : mUniqueTuples) {
     if (mUniqueTuples.find(tup) != mUniqueTuples.end()) {
       continue;
     } else {
