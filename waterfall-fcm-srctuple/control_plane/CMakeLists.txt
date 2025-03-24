@@ -33,4 +33,3 @@ target_link_libraries(main
     ${BFUTILS_LIBRARY}
     ${TARGET_SYS_LIBRARY}
 )
-

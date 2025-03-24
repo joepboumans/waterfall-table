@@ -10,7 +10,7 @@
 
 class Waterfall : ControlPlane {
 public:
-  Waterfall(TupleSize sz);
+  Waterfall(TupleSize sz, bool real);
   void run();
   void collectFromDataPlane();
   void verify(vector<TUPLE> inTuples);

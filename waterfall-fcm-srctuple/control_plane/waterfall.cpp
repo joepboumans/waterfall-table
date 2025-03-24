@@ -26,12 +26,17 @@ extern "C" {
 using namespace std;
 using namespace bfrt;
 
-Waterfall::Waterfall(TupleSize sz)
+Waterfall::Waterfall(TupleSize sz, bool real)
     : ControlPlane("waterfall_fcm"), mTupleSz(sz) {
-  array<uint32_t, 2> ports = {
-      0,
-      1,
-  };
+
+  array<uint32_t, 2> ports = {0, 0};
+  if (real) {
+    ports = {132, 140};
+
+  } else {
+    ports = {0, 1};
+  }
+
   const auto forwardTable = ControlPlane::getTable("WaterfallIngress.forward");
   ControlPlane::addEntry(forwardTable, {{"ig_intr_md.ingress_port", ports[0]}},
                          {{"dst_port", ports[1]}}, "WaterfallIngress.hit");
@@ -303,7 +308,7 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
       true_pos++;
     } else {
       false_pos++;
-      /*std::cout << tup << std::endl;*/
+      std::cout << tup << std::endl;
     }
   }
 
@@ -313,7 +318,19 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
       continue;
     } else {
       false_neg++;
-      /*std::cout << tup << std::endl;*/
+      std::cout << tup << std::endl;
+    }
+  }
+
+  for (auto depth : mSketchVec) {
+    for (auto sketch : depth) {
+      {
+        vector<uint32_t> entries = ControlPlane::getAllEntries(sketch);
+        for (size_t i = 0; i < entries.size(); i++) {
+          std::cout << i << " : " << entries[i] << "\t";
+        }
+        std::cout << std::endl;
+      }
     }
   }
 

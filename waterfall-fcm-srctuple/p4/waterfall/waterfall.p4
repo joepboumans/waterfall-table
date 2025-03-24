@@ -90,7 +90,7 @@ parser WaterfallIngressParser(packet_in pkt, out header_t hdr, out waterfall_met
     IP_PROTOCOLS_TCP:
       parse_tcp;
     default:
-      accept;
+      reject;
     }
   }
 
