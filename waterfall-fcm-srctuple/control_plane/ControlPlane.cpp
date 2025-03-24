@@ -33,12 +33,14 @@ handleLearnCallback(const bf_rt_target_t &bf_rt_tgt,
   bf_rt_id_t field = 1;
 
   for (auto &data : learnDataVec) {
-    data->getValue(field, &val);
+    bf_status_t bf_status = data->getValue(field, &val);
+    bfCheckStatus(bf_status, "Failed to get data from learn filter");
     cpLearnInterface->mLearnDataVec.push_back(val);
+    
   }
   cpLearnInterface->hasNewData = true;
 
-  bf_status_t bf_status =
+  bf_status =
       cpLearnInterface->mLearn->bfRtLearnNotifyAck(session, learn_msg_hdl);
   bfCheckStatus(bf_status, "Failed to ack learn filter");
   return BF_SUCCESS;
