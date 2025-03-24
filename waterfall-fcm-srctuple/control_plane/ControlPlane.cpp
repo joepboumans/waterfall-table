@@ -32,6 +32,7 @@ handleLearnCallback(const bf_rt_target_t &bf_rt_tgt,
   uint64_t val;
   bf_rt_id_t field = 1;
 
+  std::cout << "Got " << learnDataVec.size() << " entries from digest" << std::endl;
   for (auto &data : learnDataVec) {
     bf_status_t bf_status = data->getValue(field, &val);
     bfCheckStatus(bf_status, "Failed to get data from learn filter");
