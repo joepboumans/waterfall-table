@@ -318,7 +318,7 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
       continue;
     } else {
       false_neg++;
-      /*std::cout << tup << std::endl;*/
+      std::cout << tup << std::endl;
     }
   }
 

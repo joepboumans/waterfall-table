@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
   bool real = false;
   std::string filePath = "/workspace/PDS-Simulator/data/32_test.pcap";
   while (1) {
-    const int opt = getopt_long(argc, argv, "d:r:", longopts, 0);
+    const int opt = getopt_long(argc, argv, "d:r", longopts, 0);
     if (opt == -1) {
       break;
     }
