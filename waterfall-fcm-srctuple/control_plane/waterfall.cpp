@@ -10,6 +10,7 @@
 #include <bf_rt/bf_rt_table.hpp>
 #include <chrono>
 #include <cstdint>
+#include <cstring>
 #include <filesystem>
 #include <iostream>
 #include <memory>
@@ -326,9 +327,12 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
       for (size_t loc = 0; loc < mTablesVec.size(); loc++) {
         for (size_t t = 0; t < mTablesVec[loc].size(); t++) {
           uint32_t idx = hashing(tup.num_array, 4, t) % WATERFALL_WIDTH;
-          uint64_t val = ControlPlane::getEntry(mTablesVec[loc][t], idx);
-          std::cout << "Table " << loc << " at idx " << idx << " : " << val
-                    << std::endl;
+          uint16_t val = ControlPlane::getEntry(mTablesVec[loc][t], idx);
+          array<uint8_t, 2> srcAddr;
+          memcpy(srcAddr.data(), &val, 2);
+
+          std::cout << "Table " << loc << " at idx " << idx << " : "
+                    << srcAddr[1] << "." << srcAddr[0] << std::endl;
         }
       }
     }
