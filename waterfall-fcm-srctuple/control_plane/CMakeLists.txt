@@ -19,7 +19,7 @@ find_library(BFUTILS_LIBRARY libbfutils.so PATHS ${SDE_LIB_PATH})
 find_library(TARGET_SYS_LIBRARY libtarget_sys.so PATHS ${SDE_LIB_PATH})
 
 # Optimization flags...
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -flto -ftree-vectorize -lpcap -lpthread ")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Og -flto -ftree-vectorize -lpcap -lpthread ")
 
 add_executable(main main.cpp ControlPlane.cpp waterfall.cpp)
 target_include_directories(main PUBLIC ${SDE_INSTALL}/include/ ${CMAKE_SOURCE_DIR} ${CMAKE_HOME_DIRECTORY})
