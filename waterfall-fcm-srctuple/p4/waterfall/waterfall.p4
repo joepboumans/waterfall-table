@@ -163,8 +163,6 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     void apply(inout bit<FLOW_ID_BIT_WIDTH> val, out bit<4> read_value) {
       if (hdr.ipv4.src_addr[31:16] == val) {
         read_value = 0x1;
-      } else {
-        read_value = 0x0;
       }
     }
   };
@@ -173,8 +171,6 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     void apply(inout bit<FLOW_ID_BIT_WIDTH> val, out bit<4> read_value) {
       if (hdr.ipv4.src_addr[15:0] == val) {
         read_value = 0x1;
-      } else {
-        read_value = 0x0;
       }
     }
   };
