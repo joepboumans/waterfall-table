@@ -28,6 +28,8 @@
 #define OVERFLOW_LEVEL1 254   // 2^8 - 1 maximum count is 254
 #define OVERFLOW_LEVEL2 65534 // 2^16 - 1 maximum count is 65536
 
+#define WATERFALL_WIDTH 65536
+
 using std::string;
 using std::vector;
 
