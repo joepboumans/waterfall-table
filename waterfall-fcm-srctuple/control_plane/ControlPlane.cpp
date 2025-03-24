@@ -33,14 +33,12 @@ handleLearnCallback(const bf_rt_target_t &bf_rt_tgt,
   bf_rt_id_t field = 1;
 
   for (auto &data : learnDataVec) {
-    data->getValue(1, &val);
+    data->getValue(field, &val);
     cpLearnInterface->mLearnDataVec.push_back(val);
-    /*data->getValue(2, &val);*/
-    /*cpLearnInterface->mLearnDataVec.push_back(val);*/
+    data->getValue(2, &val);
+    cpLearnInterface->mLearnDataVec.push_back(val);
     /*data->getValue(3, &val);*/
     /*cpLearnInterface->mLearnDataVec.push_back(val);*/
-    /*std::cout << "Data val " << val << std::endl;*/
-    /*std::cout << "Msg hdl " << learn_msg_hdl << std::endl;*/
   }
   cpLearnInterface->hasNewData = true;
 
