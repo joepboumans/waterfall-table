@@ -292,7 +292,7 @@ void Waterfall::collectFromDataPlane() {
 
 void Waterfall::verify(vector<TUPLE> inTuples) {
   for (auto &tup : inTuples) {
-    mUnqiueInTuples.insert(tup);
+    mUniqueInTuples.insert(tup);
   }
   printf("[WaterfallFcm - verify] Calculate Waterfall F1-score...");
   uint32_t true_pos = 0;
@@ -303,7 +303,7 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
   // Compare dataset tuples with Waterfall Tuples
   printf("False positives (Halucinations?):\n");
   for (auto &tup : mUniqueTuples) {
-    if (mUnqiueInTuples.find(tup) != mUnqiueInTuples.end()) {
+    if (mUniqueInTuples.find(tup) != mUniqueInTuples.end()) {
       true_pos++;
     } else {
       false_pos++;
