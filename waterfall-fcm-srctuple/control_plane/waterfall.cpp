@@ -317,7 +317,13 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
       continue;
     } else {
       false_neg++;
-      std::cout << tup << std::endl;
+      std::cout << tup << " : ";
+      for (size_t d = 0; d < DEPTH; d++) {
+        uint32_t idx = hashing(tup.num_array, 4, d) %W1;
+        uint64_t val = ControlPlane::getEntry(mSketchVec[d][0], idx);
+            std::cout << "d" << d << " at idx " << idx << " : "
+                      << val << std::endl;
+      }
     }
   }
 
