@@ -332,7 +332,8 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
                     << std::endl;
 
           std::cout << "Table " << loc << " at idx " << idx << " : "
-                    << uint8_t(val >> 8) << "." << uint8_t(val) << std::endl;
+                    << int(uint8_t(val >> 8)) << "." << int(uint8_t(val))
+                    << std::endl;
         }
       }
     }
