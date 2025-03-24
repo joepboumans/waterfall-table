@@ -291,7 +291,6 @@ void Waterfall::collectFromDataPlane() {
 }
 
 void Waterfall::verify(vector<TUPLE> inTuples) {
-  set<TUPLE> mUnqiueInTuples;
   for (auto &tup : inTuples) {
     mUnqiueInTuples.insert(tup);
   }
@@ -313,7 +312,7 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
   }
 
   printf("False negatives (Not seen by Waterfall):\n");
-  for (auto &tup : mUniqueTuples) {
+  for (auto &tup : mUniqueInTuples) {
     if (mUniqueTuples.find(tup) != mUniqueTuples.end()) {
       continue;
     } else {
