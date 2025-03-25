@@ -2,9 +2,17 @@
 #include "bf_types/bf_types.h"
 #include <filesystem>
 #include <iostream>
+#include <numeric>
 
 using namespace std;
 using namespace bfrt;
+
+inline void bfCheckStatus(bf_status_t bf_status, std::string msg) {
+  if (bf_status != BF_SUCCESS) {
+    printf("Error: %s\n", bf_err_str(bf_status));
+    throw runtime_error(msg);
+  }
+}
 
 bf_status_t
 handleLearnCallback(const bf_rt_target_t &bf_rt_tgt,
@@ -296,4 +304,54 @@ ControlPlane::getEntry(shared_ptr<const BfRtTable> table,
   }
 
   return obtainedValues;
+}
+
+// Gets data from idx of table. Works only registers or tables containing single
+// fields
+uint64_t ControlPlane::getEntry(shared_ptr<const BfRtTable> table,
+                                uint64_t idx) {
+  unique_ptr<BfRtTableKey> tableKey;
+  bf_status_t bf_status = table->keyAllocate(&tableKey);
+  bfCheckStatus(bf_status, "Failed to allocate key");
+
+  vector<bf_rt_id_t> keyIds;
+  bf_status = table->keyFieldIdListGet(&keyIds);
+  bfCheckStatus(bf_status, "Failed to get key Ids");
+  if (keyIds.size() != 1) {
+    throw runtime_error(
+        "Too many field ids for using getting index from table with size " +
+        std::to_string(keyIds.size()));
+  }
+
+  bf_status = tableKey->setValue(keyIds[0], idx);
+  bfCheckStatus(bf_status, "Failed to get key Ids");
+
+  unique_ptr<BfRtTableData> tableData;
+  bf_status = table->dataAllocate(&tableData);
+
+  uint64_t getFlags = 0;
+  BF_RT_FLAG_SET(getFlags, BF_RT_FROM_HW);
+  bf_status = table->tableEntryGet(*mSession, mDeviceTarget, getFlags,
+                                   *tableKey, tableData.get());
+  bfCheckStatus(bf_status, "Failed to get entry");
+
+  vector<bf_rt_id_t> dataFieldIds;
+  bf_status = table->dataFieldIdListGet(&dataFieldIds);
+  bfCheckStatus(bf_status, "Failed to get list of field ids");
+
+  for (const auto id : dataFieldIds) {
+    return getValueFromData(tableData, id);
+  }
+  return -1;
+}
+
+uint64_t ControlPlane::getValueFromData(unique_ptr<BfRtTableData> &tableData,
+                                        bf_rt_id_t fieldId) {
+  vector<uint64_t> fieldValue;
+  bf_status_t bf_status = tableData->getValue(fieldId, &fieldValue);
+  bfCheckStatus(bf_status, "Failed to get data in getValueFromData");
+
+  // Returns vector of uint64_t[4], first value is register in sim, second is
+  // value when from switch
+  return accumulate(fieldValue.begin(), fieldValue.end(), 0);
 }
