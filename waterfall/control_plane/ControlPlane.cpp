@@ -42,21 +42,9 @@ handleLearnCallback(const bf_rt_target_t &bf_rt_tgt,
     }
     std::cout << "\t";
     cpLearnInterface->mLearnDataVec.push_back(val);
-    /*data->getValue(2, &val);*/
-    /*cpLearnInterface->mLearnDataVec.push_back(val);*/
-    /*data->getValue(3, &val);*/
-    /*cpLearnInterface->mLearnDataVec.push_back(val);*/
-    /*std::cout << "Data val " << val << std::endl;*/
-    /*std::cout << "Msg hdl " << learn_msg_hdl << std::endl;*/
   }
   cpLearnInterface->hasNewData = true;
 
-  bf_status_t bf_status =
-      cpLearnInterface->mLearn->bfRtLearnNotifyAck(session, learn_msg_hdl);
-  if (bf_status != BF_SUCCESS) {
-    printf("Notifying ack failed with %s\n", bf_err_str(bf_status));
-    throw runtime_error("Failed to ack learn filter");
-  }
   return BF_SUCCESS;
 }
 

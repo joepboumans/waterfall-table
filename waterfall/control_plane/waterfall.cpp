@@ -216,6 +216,7 @@ void Waterfall::run() {
       break;
     }
   }
+  usleep(10);
 }
 
 void Waterfall::collectFromDataPlane() {
