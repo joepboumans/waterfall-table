@@ -26,7 +26,6 @@ Waterfall::Waterfall(TupleSize sz, bool real)
   array<uint32_t, 2> ports = {0, 0};
   if (real) {
     ports = {132, 140};
-
   } else {
     ports = {0, 1};
   }
@@ -136,6 +135,11 @@ Waterfall::Waterfall(TupleSize sz, bool real)
                              currDoSwap);
     }
   }
+  ControlPlane::addEntry(resubTable,
+                         {
+                           {"ig_intr_md.resubmit_flag", 1},
+                         },
+                         "WaterfallIngress.do_digest");
   std::cout << "... added all entries succesfully" << std::endl;
 }
 
