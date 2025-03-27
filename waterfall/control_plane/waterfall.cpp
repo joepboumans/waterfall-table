@@ -21,7 +21,7 @@ extern "C" {
 using namespace std;
 
 Waterfall::Waterfall(TupleSize sz, bool real)
-    : ControlPlane("waterfall_fcm"), mTupleSz(sz) {
+    : ControlPlane("waterfall"), mTupleSz(sz) {
 
   array<uint32_t, 2> ports = {0, 0};
   if (real) {
