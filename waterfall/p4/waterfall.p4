@@ -96,7 +96,7 @@ parser WaterfallIngressParser(packet_in pkt, out header_t hdr, out waterfall_met
 
   state parse_tcp {
     pkt.extract(hdr.tcp);
-    transition reject;
+    transition accept;
   }
 
   state parse_udp {
@@ -183,6 +183,8 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     void apply(inout bit<FLOW_ID_BIT_WIDTH> val, out bit<4> read_value) {
       if (hdr.ipv4.src_addr[31:16] == val) {
         read_value = 0x2;
+      } else {
+        read_value = 0x0;
       }
     }
   };
@@ -191,6 +193,8 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     void apply(inout bit<FLOW_ID_BIT_WIDTH> val, out bit<4> read_value) {
       if (hdr.ipv4.src_addr[15:0] == val) {
         read_value = 0x2;
+      } else {
+        read_value = 0x0;
       }
     }
   };
@@ -199,6 +203,8 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     void apply(inout bit<FLOW_ID_BIT_WIDTH> val, out bit<4> read_value) {
       if (hdr.ipv4.src_addr[31:16] == val) {
         read_value = 0x3;
+      } else {
+        read_value = 0x0;
       }
     }
   };
@@ -207,6 +213,8 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     void apply(inout bit<FLOW_ID_BIT_WIDTH> val, out bit<4> read_value) {
       if (hdr.ipv4.src_addr[15:0] == val) {
         read_value = 0x3;
+      } else {
+        read_value = 0x0;
       }
     }
   };
@@ -215,6 +223,8 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     void apply(inout bit<FLOW_ID_BIT_WIDTH> val, out bit<4> read_value) {
       if (hdr.ipv4.src_addr[31:16] == val) {
         read_value = 0x4;
+      } else {
+        read_value = 0x0;
       }
     }
   };
@@ -223,6 +233,8 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     void apply(inout bit<FLOW_ID_BIT_WIDTH> val, out bit<4> read_value) {
       if (hdr.ipv4.src_addr[15:0] == val) {
         read_value = 0x4;
+      } else {
+        read_value = 0x0;
       }
     }
   };
@@ -287,8 +299,6 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     ig_md.resubmit_md.remain_hi = hdr.ipv4.src_addr[31:16];
     ig_md.resubmit_md.remain_lo = hdr.ipv4.src_addr[15:0];
     ig_md.resubmit_md.type = RESUB;
-    ig_intr_dprsr_md.resubmit_type = DPRSR_RESUB;
-    ig_intr_dprsr_md.digest_type = DIGEST;
 
     ig_intr_tm_md.ucast_egress_port = ig_intr_md.ingress_port;
     ig_intr_tm_md.bypass_egress = 1w1;
@@ -320,6 +330,8 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
   }
 
   action do_swap1_lo() {
+    ig_intr_dprsr_md.resubmit_type = DPRSR_RESUB;
+    ig_intr_dprsr_md.digest_type = DIGEST;
     ig_md.remain1_lo = table_1_lo_swap.execute(hash1.get({hdr.ipv4.src_addr}));
   }
 
@@ -561,7 +573,7 @@ control WaterfallIngressDeparser( packet_out pkt, inout header_t hdr, in waterfa
 
   apply {
     if (ig_intr_dprsr_md.digest_type == DIGEST) {
-      digest.pack({hdr.ipv4.src_addr});
+      digest.pack({ig_md.resubmit_md.remain_hi, ig_md.resubmit_md.remain_lo});
     }
     if (ig_intr_dprsr_md.resubmit_type == DPRSR_RESUB) {
       resubmit.emit(ig_md.resubmit_md);
