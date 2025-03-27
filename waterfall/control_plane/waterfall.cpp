@@ -269,9 +269,6 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
         for (size_t t = 0; t < mTablesVec[currLoc].size(); t++) {
           uint32_t idx = hashing(tup.num_array, 4, t) % WATERFALL_WIDTH;
           uint16_t val = ControlPlane::getEntry(mTablesVec[currLoc][t], idx);
-          std::cout << "Table " << t << loc[currLoc] << " at idx " << idx << " : " << val
-                    << std::endl;
-
           std::cout << "Table " << currLoc << " at idx " << idx << " : "
                     << int(uint8_t(val >> 8)) << "." << int(uint8_t(val))
                     << std::endl;

@@ -24,27 +24,27 @@ handleLearnCallback(const bf_rt_target_t &bf_rt_tgt,
 
   learnInterface *cpLearnInterface = (learnInterface *)cookie;
 
-  std::cout << "Got " << learnDataVec.size()
-            << " digest packets which are: " << std::endl;
+  /*std::cout << "Got " << learnDataVec.size()*/
+  /*          << " digest packets which are: " << std::endl;*/
   for (auto &data : learnDataVec) {
     uint64_t val_hi;
     data->getValue(1, &val_hi);
     uint64_t val_lo;
     data->getValue(2, &val_lo);
     uint64_t val = (val_hi << 16) + val_lo;
-    vector<uint8_t> src_addr(4);
-    memcpy(src_addr.data(), &val, 4);
-    std::reverse(src_addr.begin(), src_addr.end());
-    for (auto &x : src_addr) {
-      std::cout << int(x);
-      if (&x != &src_addr.back()) {
-        std::cout << ".";
-      }
-    }
-    std::cout << "\t";
+    /*vector<uint8_t> src_addr(4);*/
+    /*memcpy(src_addr.data(), &val, 4);*/
+    /*std::reverse(src_addr.begin(), src_addr.end());*/
+    /*for (auto &x : src_addr) {*/
+    /*  std::cout << int(x);*/
+    /*  if (&x != &src_addr.back()) {*/
+    /*    std::cout << ".";*/
+    /*  }*/
+    /*}*/
+    /*std::cout << "\t";*/
     cpLearnInterface->mLearnDataVec.push_back(val);
   }
-  std::cout << std::endl;
+  /*std::cout << std::endl;*/
   cpLearnInterface->hasNewData = true;
 
   bf_status_t bf_status =
