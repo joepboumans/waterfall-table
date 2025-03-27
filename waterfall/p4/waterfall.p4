@@ -32,7 +32,8 @@ struct port_metadata_t {
 }
 
 struct digest_t {
-  bit<32> src_addr;
+  bit<16> src_addr_hi;
+  bit<16> src_addr_lo;
 }
 
 struct waterfall_metadata_t {
