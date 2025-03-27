@@ -200,7 +200,7 @@ void Waterfall::run() {
     if (std::chrono::duration_cast<std::chrono::milliseconds>(time -
                                                               lastReceivedTime)
                 .count() >= 5000 and
-        hasReceivedFirstDigest) {
+        ControlPlane::mLearnInterface.mLearnDataVec.size() > 1) {
       std::cout << "Have no received any digest for over 1s, quiting run loop"
                 << std::endl;
 
