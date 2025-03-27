@@ -24,7 +24,8 @@ handleLearnCallback(const bf_rt_target_t &bf_rt_tgt,
 
   learnInterface *cpLearnInterface = (learnInterface *)cookie;
 
-  std::cout << "Got " << learnDataVec.size() << " digest packets which are: ";
+  std::cout << "Got " << learnDataVec.size()
+            << " digest packets which are: " << std::endl;
   for (auto &data : learnDataVec) {
     uint64_t val_hi;
     data->getValue(1, &val_hi);
@@ -43,6 +44,7 @@ handleLearnCallback(const bf_rt_target_t &bf_rt_tgt,
     std::cout << "\t";
     cpLearnInterface->mLearnDataVec.push_back(val);
   }
+  std::cout << std::endl;
   cpLearnInterface->hasNewData = true;
 
   bf_status_t bf_status =
