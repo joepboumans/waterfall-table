@@ -300,6 +300,8 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     ig_md.resubmit_md.remain_hi = hdr.ipv4.src_addr[31:16];
     ig_md.resubmit_md.remain_lo = hdr.ipv4.src_addr[15:0];
     ig_md.resubmit_md.type = RESUB;
+    ig_intr_dprsr_md.resubmit_type = DPRSR_RESUB;
+    ig_intr_dprsr_md.digest_type = DIGEST;
 
     ig_intr_tm_md.ucast_egress_port = ig_intr_md.ingress_port;
     ig_intr_tm_md.bypass_egress = 1w1;

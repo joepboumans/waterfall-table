@@ -29,9 +29,11 @@ int main(int argc, char *argv[]) {
     case 'd':
       filePath = optarg;
       std::cout << "Input dataset: " << filePath << std::endl;
+      break;
     case 'r':
       real = true;
       std::cout << "Set to run on real hardware" << std::endl;
+      break;
     }
   }
 
