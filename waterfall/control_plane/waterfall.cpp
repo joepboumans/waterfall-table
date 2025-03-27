@@ -30,14 +30,11 @@ Waterfall::Waterfall(TupleSize sz, bool real)
     ports = {0, 1};
   }
 
-  /*const auto forwardTable =
-   * ControlPlane::getTable("WaterfallIngress.forward");*/
-  /*ControlPlane::addEntry(forwardTable, {{"ig_intr_md.ingress_port",
-   * ports[0]}},*/
-  /*                       {{"dst_port", ports[1]}}, "WaterfallIngress.hit");*/
-  /*ControlPlane::addEntry(forwardTable, {{"ig_intr_md.ingress_port",
-   * ports[1]}},*/
-  /*                       {{"dst_port", ports[0]}}, "SwitchIngress.hit");*/
+  const auto forwardTable = ControlPlane::getTable("WaterfallIngress.forward");
+  ControlPlane::addEntry(forwardTable, {{"ig_intr_md.ingress_port", ports[0]}},
+                         {{"dst_port", ports[1]}}, "WaterfallIngress.hit");
+  ControlPlane::addEntry(forwardTable, {{"ig_intr_md.ingress_port", ports[1]}},
+                         {{"dst_port", ports[0]}}, "SwitchIngress.hit");
 
   for (auto &port : ports) {
 
