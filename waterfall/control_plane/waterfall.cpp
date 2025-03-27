@@ -30,10 +30,13 @@ Waterfall::Waterfall(TupleSize sz, bool real)
     ports = {0, 1};
   }
 
-  /*const auto forwardTable = ControlPlane::getTable("WaterfallIngress.forward");*/
-  /*ControlPlane::addEntry(forwardTable, {{"ig_intr_md.ingress_port", ports[0]}},*/
+  /*const auto forwardTable =
+   * ControlPlane::getTable("WaterfallIngress.forward");*/
+  /*ControlPlane::addEntry(forwardTable, {{"ig_intr_md.ingress_port",
+   * ports[0]}},*/
   /*                       {{"dst_port", ports[1]}}, "WaterfallIngress.hit");*/
-  /*ControlPlane::addEntry(forwardTable, {{"ig_intr_md.ingress_port", ports[1]}},*/
+  /*ControlPlane::addEntry(forwardTable, {{"ig_intr_md.ingress_port",
+   * ports[1]}},*/
   /*                       {{"dst_port", ports[0]}}, "SwitchIngress.hit");*/
 
   for (auto &port : ports) {
@@ -52,11 +55,12 @@ Waterfall::Waterfall(TupleSize sz, bool real)
     std::cout << "Added port " << port << " to pm" << std::endl;
   }
 
+  uint32_t nTables = 3;
   std::cout << "Start setting up swap and tables..." << std::endl;
   vector<string> loc = {"_hi", "_lo"};
   vector<vector<string>> tableNames(2);
   for (size_t l = 0; l <= 1; l++) {
-    for (size_t x = 1; x <= 4; x++) {
+    for (size_t x = 1; x <= nTables; x++) {
       string name = "table_" + to_string(x) + loc[l];
       tableNames[l].push_back(name);
     }
@@ -64,7 +68,7 @@ Waterfall::Waterfall(TupleSize sz, bool real)
   }
   vector<vector<string>> swapNames(2);
   for (size_t l = 0; l <= 1; l++) {
-    for (size_t x = 1; x <= 4; x++) {
+    for (size_t x = 1; x <= nTables; x++) {
       string name = "swap" + to_string(x) + loc[l];
       swapNames[l].push_back(name);
     }
@@ -85,15 +89,15 @@ Waterfall::Waterfall(TupleSize sz, bool real)
                            currDoSwap);
   }
 
-  for (size_t i = 0; i <= 4; i++) {
-    for (size_t j = 0; j <= 4; j++) {
+  for (size_t i = 0; i <= nTables; i++) {
+    for (size_t j = 0; j <= nTables; j++) {
       // If the found indexes are equal and a match has been found
       if (j == i and j > 0 and i > 0) {
         ControlPlane::addEntry(resubTable,
                                {{"ig_md.found_hi", i}, {"ig_md.found_lo", j}},
                                "WaterfallIngress.no_resubmit");
 
-        for (size_t x = 2; x <= 4; x++) {
+        for (size_t x = 2; x <= nTables; x++) {
           for (size_t l = 0; l <= 1; l++) {
             ControlPlane::addEntry(mSwapVec[l][x - 1],
                                    {{"ig_intr_md.resubmit_flag", 0},
@@ -111,7 +115,7 @@ Waterfall::Waterfall(TupleSize sz, bool real)
                              {{"ig_md.found_hi", i}, {"ig_md.found_lo", j}},
                              "WaterfallIngress.resubmit_hdr");
 
-      for (size_t x = 2; x <= 4; x++) {
+      for (size_t x = 2; x <= nTables; x++) {
         for (size_t l = 0; l <= 1; l++) {
           string currLookup = "WaterfallIngress.lookup" + to_string(x) + loc[l];
           ControlPlane::addEntry(mSwapVec[l][x - 1],
@@ -125,7 +129,7 @@ Waterfall::Waterfall(TupleSize sz, bool real)
   }
 
   // If it has been resubmitted then always perform a swap
-  for (size_t x = 2; x <= 4; x++) {
+  for (size_t x = 2; x <= nTables; x++) {
     for (size_t l = 0; l <= 1; l++) {
       string currDoSwap = "WaterfallIngress.do_swap" + to_string(x) + loc[l];
       ControlPlane::addEntry(mSwapVec[l][x - 1],
