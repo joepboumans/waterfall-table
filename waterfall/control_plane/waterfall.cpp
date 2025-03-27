@@ -227,7 +227,7 @@ void Waterfall::collectFromDataPlane() {
     TUPLE tup(src_addr.data(), mTupleSz);
     mUniqueTuples.insert(tup);
   }
-  std::cout << "Found " << mUniqueTuples.size() << " unique tupels"
+  std::cout << "Found " << mUniqueTuples.size() << " unique tuples"
             << std::endl;
 }
 
@@ -259,14 +259,15 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
     } else {
       false_neg++;
       std::cout << tup << " : ";
-      for (size_t loc = 0; loc < mTablesVec.size(); loc++) {
-        for (size_t t = 0; t < mTablesVec[loc].size(); t++) {
+      vector<string> loc = {"_hi", "_lo"};
+      for (size_t currLoc = 0; currLoc < mTablesVec.size(); currLoc++) {
+        for (size_t t = 0; t < mTablesVec[currLoc].size(); t++) {
           uint32_t idx = hashing(tup.num_array, 4, t) % WATERFALL_WIDTH;
-          uint16_t val = ControlPlane::getEntry(mTablesVec[loc][t], idx);
-          std::cout << "Table " << loc << " at idx " << idx << " : " << val
+          uint16_t val = ControlPlane::getEntry(mTablesVec[currLoc][t], idx);
+          std::cout << "Table " << t << loc[currLoc] << " at idx " << idx << " : " << val
                     << std::endl;
 
-          std::cout << "Table " << loc << " at idx " << idx << " : "
+          std::cout << "Table " << currLoc << " at idx " << idx << " : "
                     << int(uint8_t(val >> 8)) << "." << int(uint8_t(val))
                     << std::endl;
         }
