@@ -45,6 +45,12 @@ handleLearnCallback(const bf_rt_target_t &bf_rt_tgt,
   }
   cpLearnInterface->hasNewData = true;
 
+  bf_status_t bf_status =
+      cpLearnInterface->mLearn->bfRtLearnNotifyAck(session, learn_msg_hdl);
+  if (bf_status != BF_SUCCESS) {
+    printf("Notifying ack failed with %s\n", bf_err_str(bf_status));
+    throw runtime_error("Failed to ack learn filter");
+  }
   return BF_SUCCESS;
 }
 
