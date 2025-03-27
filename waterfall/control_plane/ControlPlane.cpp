@@ -1,5 +1,6 @@
 #include "ControlPlane.hpp"
 #include "bf_types/bf_types.h"
+#include <cstdint>
 #include <filesystem>
 #include <iostream>
 #include <numeric>
@@ -22,11 +23,13 @@ handleLearnCallback(const bf_rt_target_t &bf_rt_tgt,
                     const void *cookie) {
 
   learnInterface *cpLearnInterface = (learnInterface *)cookie;
-  uint64_t val;
-  bf_rt_id_t field = 1;
 
   for (auto &data : learnDataVec) {
-    data->getValue(1, &val);
+    uint64_t val_hi;
+    data->getValue(1, &val_hi);
+    uint64_t val_lo;
+    data->getValue(2, &val_lo);
+    uint64_t val = (val_hi << 16) + val_lo;
     cpLearnInterface->mLearnDataVec.push_back(val);
     /*data->getValue(2, &val);*/
     /*cpLearnInterface->mLearnDataVec.push_back(val);*/
