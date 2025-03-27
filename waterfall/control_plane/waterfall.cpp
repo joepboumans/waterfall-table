@@ -240,7 +240,7 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
   for (auto &tup : inTuples) {
     mUniqueInTuples.insert(tup);
   }
-  printf("[WaterfallFcm - verify] Calculate Waterfall F1-score...");
+  printf("[WaterfallFcm - verify] Calculate Waterfall F1-score...\n");
   uint32_t true_pos = 0;
   uint32_t false_pos = 0;
   uint32_t true_neg = 0;
@@ -252,8 +252,12 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
     if (mUniqueInTuples.find(tup) != mUniqueInTuples.end()) {
       true_pos++;
     } else {
-      false_pos++;
       std::cout << tup << std::endl;
+      // Ignore local network tuples
+      if(tup.num_array[0] == 192 and tup.num_array[1] == 168) {
+        continue
+      }
+      false_pos++;
     }
   }
 
@@ -263,7 +267,7 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
       continue;
     } else {
       false_neg++;
-      std::cout << tup << " : ";
+      std::cout << tup << " : " << std::endl;
       vector<string> loc = {"_hi", "_lo"};
       for (size_t currLoc = 0; currLoc < mTablesVec.size(); currLoc++) {
         for (size_t t = 0; t < mTablesVec[currLoc].size(); t++) {
