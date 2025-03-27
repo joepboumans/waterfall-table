@@ -532,7 +532,7 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
   }
 
   apply { 
-    /*forward.apply();*/
+    forward.apply();
 
     swap1_hi.apply();
     swap1_lo.apply();
