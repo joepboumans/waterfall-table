@@ -30,11 +30,11 @@ Waterfall::Waterfall(TupleSize sz, bool real)
     ports = {0, 1};
   }
 
-  const auto forwardTable = ControlPlane::getTable("WaterfallIngress.forward");
-  ControlPlane::addEntry(forwardTable, {{"ig_intr_md.ingress_port", ports[0]}},
-                         {{"dst_port", ports[1]}}, "WaterfallIngress.hit");
-  ControlPlane::addEntry(forwardTable, {{"ig_intr_md.ingress_port", ports[1]}},
-                         {{"dst_port", ports[0]}}, "SwitchIngress.hit");
+  /*const auto forwardTable = ControlPlane::getTable("WaterfallIngress.forward");*/
+  /*ControlPlane::addEntry(forwardTable, {{"ig_intr_md.ingress_port", ports[0]}},*/
+  /*                       {{"dst_port", ports[1]}}, "WaterfallIngress.hit");*/
+  /*ControlPlane::addEntry(forwardTable, {{"ig_intr_md.ingress_port", ports[1]}},*/
+  /*                       {{"dst_port", ports[0]}}, "SwitchIngress.hit");*/
 
   for (auto &port : ports) {
 
@@ -137,7 +137,7 @@ Waterfall::Waterfall(TupleSize sz, bool real)
   }
   ControlPlane::addEntry(resubTable,
                          {
-                           {"ig_intr_md.resubmit_flag", 1},
+                             {"ig_intr_md.resubmit_flag", 1},
                          },
                          "WaterfallIngress.do_digest");
   std::cout << "... added all entries succesfully" << std::endl;
@@ -254,7 +254,7 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
     } else {
       std::cout << tup << std::endl;
       // Ignore local network tuples
-      if(tup.num_array[0] == 192 and tup.num_array[1] == 168) {
+      if (tup.num_array[0] == 192 and tup.num_array[1] == 168) {
         continue;
       }
       false_pos++;
