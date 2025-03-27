@@ -255,7 +255,7 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
       std::cout << tup << std::endl;
       // Ignore local network tuples
       if(tup.num_array[0] == 192 and tup.num_array[1] == 168) {
-        continue
+        continue;
       }
       false_pos++;
     }
