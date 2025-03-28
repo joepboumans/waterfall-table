@@ -314,8 +314,9 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
       true_pos++;
     } else {
       std::cout << tup << std::endl;
-      // Ignore local messages
+      // Ignore local messages and delete it from the set
       if (tup.num_array[0] == 192 and tup.num_array[1] == 168) {
+        mUniqueTuples.erase(tup);
         continue;
       }
       false_pos++;
