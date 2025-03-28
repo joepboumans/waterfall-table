@@ -29,10 +29,18 @@ define($quick true)
 define($txverbose 99)
 
 //switcharoo
-fdIN :: FromDump($trace, STOP true, BURST 1, TIMING false, ACTIVE true)
+fdIN :: FromDump($trace, STOP true, BURST 1, TIMING true, ACTIVE true)
 
 //switcharoo
 tdIN :: ToDPDKDevice($txport, BLOCKING true, BURST $bout, VERBOSE $txverbose, IQUEUE $bout, NDESC 0, TCO 1)
+
+elementclass NoNumberise { $magic |
+    input
+    -> Strip(14) 
+    -> check :: MarkIPHeader
+    -> Unstrip(14) 
+    -> output
+}
 
 elementclass GeneratorEtherRewrite { $magic |
     input
