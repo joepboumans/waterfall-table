@@ -91,8 +91,8 @@ public:
                sizeof(udpHeader->uh_sport));
         memcpy(&tup.num_array[10], &udpHeader->uh_dport,
                sizeof(udpHeader->uh_dport));
-      } else {
-        continue;
+        /*} else {*/
+        /*  continue;*/
       }
 
       tup.sz = sz;
