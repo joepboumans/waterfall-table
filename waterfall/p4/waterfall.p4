@@ -77,7 +77,9 @@ parser WaterfallIngressParser(packet_in pkt, out header_t hdr, out waterfall_met
     pkt.extract(hdr.ethernet);
     transition select(hdr.ethernet.ether_type) {
     ETHERTYPE_IPV4:
-      parse_ipv4;
+      parse_ipversion;
+    ETHERTYPE_IPV6:
+      parse_ipversion;
     ETHERTYPE_VLAN:
       parse_vlan;
     default:
@@ -90,6 +92,18 @@ parser WaterfallIngressParser(packet_in pkt, out header_t hdr, out waterfall_met
     transition select(hdr.vlan_tag.ether_type) {
       ETHERTYPE_IPV4: parse_ipv4;
       default: reject;
+    }
+  }
+
+  state parse_ipversion {
+    pkt.extract(hdr.ipv4);
+    transition select(hdr.ipv4.version) {
+    4:
+      parse_ipv4;
+    6:
+      reject;
+    default:
+      reject;
     }
   }
 
