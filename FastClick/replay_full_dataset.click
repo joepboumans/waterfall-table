@@ -58,8 +58,14 @@ elementclass Generator { $magic |
     input
     -> MarkMACHeader
     -> EnsureDPDKBuffer
-   // -> shaper :: BandwidthRatedUnqueue($RATE, LINK_RATE true, ACTIVE true) // from Habib
-    -> EtherEncap(0x0810, 1:1:1:1:1:1, 2:2:2:2:2:2) // comment this if you want to use test.pcap
+    -> CheckIPVersion()
+    -> Classifier (
+      0: packets with IP version == 4,
+      1: packets with IP version == 6
+    )
+[Classifier:0] -> EtherEncap(0x0800, 1:1:1:1:1:1, 2:2:2:2:2:2) // comment this if you want to use test.pcap
+[Classifier:1] -> EtherEncap(0x08DD, 1:1:1:1:1:1, 2:2:2:2:2:2) // comment this if you want to use test.pcap
+    -> Merge()
     -> doethRewrite :: { input[0] -> active::Switch(OUTPUT 0)[0] -> rwIN :: EtherRewrite($INsrcmac, $INdstmac) -> [0]output; active[1] -> [0]output }
     -> Pad
     -> cnt :: AverageCounter(IGNORE 0)
