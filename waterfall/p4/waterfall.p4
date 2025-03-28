@@ -560,8 +560,8 @@ control WaterfallIngress(inout header_t hdr, inout waterfall_metadata_t ig_md,
     swap3_hi.apply();
     swap3_lo.apply();
 
-    /*swap4_hi.apply();*/
-    /*swap4_lo.apply();*/
+    swap4_hi.apply();
+    swap4_lo.apply();
 
     resub.apply();
   }

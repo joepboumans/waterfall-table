@@ -52,7 +52,7 @@ Waterfall::Waterfall(TupleSize sz, bool real)
     std::cout << "Added port " << port << " to pm" << std::endl;
   }
 
-  uint32_t nTables = 3;
+  uint32_t nTables = 4;
   std::cout << "Start setting up swap and tables..." << std::endl;
   vector<string> loc = {"_hi", "_lo"};
   vector<vector<string>> tableNames(2);
