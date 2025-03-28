@@ -369,6 +369,8 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
   // Cardinality - Number of seen unique flows
   std::cout << "[Waterfall] Cardinality : " << mUniqueTuples.size()
             << std::endl;
+  // Wait for 5s to show results
+  sleep(5);
 
   // FSD
   for (auto &tup : inTuples) {
@@ -534,7 +536,7 @@ void Waterfall::calculateFSD() {
 
   std::cout << "[EM_WFCM] ...done!" << std::endl;
 
-  if (1) {
+  if (0) {
     // Print vc with thresholds
     for (size_t d = 0; d < DEPTH; d++) {
       for (size_t st = 0; st < virtualCounters[d].size(); st++) {
