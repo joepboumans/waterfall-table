@@ -29,20 +29,19 @@ handleLearnCallback(const bf_rt_target_t &bf_rt_tgt,
                     const void *cookie) {
 
   learnInterface *cpLearnInterface = (learnInterface *)cookie;
-  uint64_t val;
-  bf_rt_id_t field = 1;
+  for (auto &data : learnDataVec) {
+    uint64_t val_hi;
+    data->getValue(1, &val_hi);
+    uint64_t val_lo;
+    data->getValue(2, &val_lo);
+    uint64_t val = (val_hi << 16) + val_lo;
+    cpLearnInterface->mLearnDataVec.push_back(val);
+  }
+  cpLearnInterface->hasNewData = true;
+
   bf_status_t bf_status =
       cpLearnInterface->mLearn->bfRtLearnNotifyAck(session, learn_msg_hdl);
   bfCheckStatus(bf_status, "Failed to ack learn filter");
-
-  std::cout << "Got " << learnDataVec.size() << " entries from digest" << std::endl;
-  for (auto &data : learnDataVec) {
-    bf_status_t bf_status = data->getValue(field, &val);
-    bfCheckStatus(bf_status, "Failed to get data from learn filter");
-    cpLearnInterface->mLearnDataVec.push_back(val);
-    
-  }
-  cpLearnInterface->hasNewData = true;
 
   return BF_SUCCESS;
 }
@@ -72,6 +71,7 @@ ControlPlane::ControlPlane(string programName) {
   mSwitchContext->conf_file = confPath.data();
   mSwitchContext->dev_sts_thread = true;
   mSwitchContext->dev_sts_port = 7777;
+  /*mSwitchContext->kernel_pkt = true;*/
 
   /* Initialize libbf_switchd. */
   bf_status_t bf_status = bf_switchd_lib_init(mSwitchContext);
