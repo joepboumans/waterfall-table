@@ -114,32 +114,6 @@ shared_ptr<const BfRtTable> ControlPlane::getTable(string name) {
   const BfRtTable *tablePtr = nullptr;
   bf_status_t bf_status = mInfo->bfrtTableFromNameGet(name, &tablePtr);
   bfCheckStatus(bf_status, "Failed to get table");
-
-  /*vector<bf_rt_id_t> keyList;*/
-  /*bf_status = tablePtr->keyFieldIdListGet(&keyList);*/
-  /*bfCheckStatus(bf_status, "Failed to get learn filter id list");*/
-  /**/
-  /*std::cout << "Key list: ";*/
-  /*for (auto id : keyList) {*/
-  /*  string name;*/
-  /*  bf_status = tablePtr->keyFieldNameGet(id, &name);*/
-  /*  bfCheckStatus(bf_status, "Failed to get name of learnFieldId");*/
-  /*  std::cout << name << " : " << id << " ";*/
-  /*}*/
-  /*std::cout << std::endl;*/
-  /**/
-  /*std::cout << "Data list: ";*/
-  /*vector<bf_rt_id_t> dataList;*/
-  /*bf_status = tablePtr->dataFieldIdListGet(&dataList);*/
-  /*bfCheckStatus(bf_status, "Failed to get learn filter id list");*/
-  /**/
-  /*for (auto id : dataList) {*/
-  /*  string name;*/
-  /*  bf_status = tablePtr->dataFieldNameGet(id, &name);*/
-  /*  bfCheckStatus(bf_status, "Failed to get name of learnFieldId");*/
-  /*  std::cout << name << " : " << id << " ";*/
-  /*}*/
-  /*std::cout << std::endl;*/
   return shared_ptr<const BfRtTable>(tablePtr);
 }
 
@@ -148,19 +122,9 @@ shared_ptr<const BfRtLearn> ControlPlane::getLearnFilter(string name) {
   bf_status_t bf_status = mInfo->bfrtLearnFromNameGet(name, &learnPtr);
   bfCheckStatus(bf_status, "Failed to get learn filter or digest");
 
-  /*vector<bf_rt_id_t> list;*/
-  /*bf_status = learnPtr->learnFieldIdListGet(&list);*/
-  /*bfCheckStatus(bf_status, "Failed to get learn filter id list");*/
-  /**/
-  /*for (auto id : list) {*/
-  /*  string name;*/
-  /*  bf_status = learnPtr->learnFieldNameGet(id, &name);*/
-  /*  bfCheckStatus(bf_status, "Failed to get name of learnFieldId");*/
-  /*  std::cout << name << " : " << id << " ";*/
-  /*}*/
-  /*std::cout << std::endl;*/
-  // Average data set has 35 milion packets so 50M should always fit
-  mLearnInterface.mLearnDataVec.reserve(40000000);
+  // Most datasets have max 600k unique tuples so reserving 750k would required
+  // no resizing
+  mLearnInterface.mLearnDataVec.reserve(7500000);
 
   bfrt::bfRtCbFunction cbFunc = handleLearnCallback;
   mLearnInterface.mLearn = shared_ptr<const bfrt::BfRtLearn>(learnPtr);

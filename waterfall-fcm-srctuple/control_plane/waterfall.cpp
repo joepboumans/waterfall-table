@@ -224,7 +224,7 @@ void Waterfall::run() {
                                                               lastReceivedTime)
                 .count() >= 5000 and
         hasReceivedFirstDigest) {
-      std::cout << "Have no received any digest for over 1s, quiting run loop"
+      std::cout << "Have no received any digest for over 5s, quiting run loop"
                 << std::endl;
 
       auto totalTime = std::chrono::duration_cast<std::chrono::milliseconds>(
@@ -234,6 +234,7 @@ void Waterfall::run() {
 
       break;
     }
+    sleep(1);
   }
 }
 
@@ -357,6 +358,13 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
   printf("[WaterfallFcm - verify] Total load factor : %f\tTotal received "
          "tuples %zu\n",
          total_lf, learnDataVecSize);
+
+  if (precision != 1.0 or recall != 0.0) {
+    std::cerr << "Could not find all tuples!" << std::endl;
+    std::cerr << "Precision : " << precision << " Recall : " << recall
+              << std::endl;
+    throw runtime_error("Error in parsing tuples from digest");
+  }
 
   // Cardinality - Number of seen unique flows
   std::cout << "[Waterfall] Cardinality : " << mUniqueTuples.size()
