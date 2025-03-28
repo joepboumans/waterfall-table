@@ -58,6 +58,8 @@ elementclass Generator { $magic |
     input
     -> MarkMACHeader
     -> EnsureDPDKBuffer
+   // -> shaper :: BandwidthRatedUnqueue($RATE, LINK_RATE true, ACTIVE true) // from Habib
+    -> EtherEncap(0x0800, 1:1:1:1:1:1, 2:2:2:2:2:2) // comment this if you want to use test.pcap
     -> doethRewrite :: { input[0] -> active::Switch(OUTPUT 0)[0] -> rwIN :: EtherRewrite($INsrcmac, $INdstmac) -> [0]output; active[1] -> [0]output }
     -> Pad
     -> cnt :: AverageCounter(IGNORE 0)
@@ -65,23 +67,5 @@ elementclass Generator { $magic |
 }
 
 fdIN
-  -> dup :: Duplicate(2)
-
-dup[0]
-  -> ipv4_test :: ByteTest(0, 0xF0, 0x40)
-  -> EtherEncap(0x0800, 1:1:1:1:1:1, 2:2:2:2:2:2)
-  -> merge_in1 :: MergeFIFO()
-
-dup[1]
-  -> ipv6_test :: ByteTest(0, 0xF0, 0x60)
-  -> EtherEncap(0x08DD, 1:1:1:1:1:1, 2:2:2:2:2:2)
-  -> merge_in2 :: MergeFIFO()
-
-merge_in1[0] -> merge :: MergeFIFO(2)
-merge_in2[0] -> merge 
-merge -> gen0 :: Generator(\<5700>)
-      -> tdIN;
-
-//fdIN
-//-> gen0 :: Generator(\<5700>)
-//-> tdIN;
+-> gen0 :: Generator(\<5700>)
+-> tdIN;
