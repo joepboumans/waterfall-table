@@ -586,12 +586,4 @@ control WaterfallIngressDeparser( packet_out pkt, inout header_t hdr, in waterfa
     pkt.emit(hdr);
   }
 }
-
-
-
-Pipeline(WaterfallIngressParser(), WaterfallIngress(), WaterfallIngressDeparser(),
-         EmptyEgressParser(), EmptyEgress(), EmptyEgressDeparser()) pipe;
-
-Switch(pipe) main;
-
 #endif
