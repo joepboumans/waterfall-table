@@ -122,6 +122,24 @@ shared_ptr<const BfRtLearn> ControlPlane::getLearnFilter(string name) {
   bf_status_t bf_status = mInfo->bfrtLearnFromNameGet(name, &learnPtr);
   bfCheckStatus(bf_status, "Failed to get learn filter or digest");
 
+  std::vector<bf_rt_id_t> list;
+  bf_status = learnPtr->learnFieldIdListGet(&list);
+  if (bf_status != BF_SUCCESS) {
+    printf("Error: %s\n", bf_err_str(bf_status));
+    throw runtime_error("Failed to get learn filter id list");
+  }
+
+  for (auto id : list) {
+    std::string name;
+    bf_status = learnPtr->learnFieldNameGet(id, &name);
+    if (bf_status != BF_SUCCESS) {
+      printf("Error: %s\n", bf_err_str(bf_status));
+      throw runtime_error("Failed to get name of learnFieldId");
+    }
+    std::cout << name << " : " << id << " ";
+  }
+  std::cout << std::endl;
+  sleep(5);
   // Most datasets have max 600k unique tuples so reserving 750k would required
   // no resizing
   mLearnInterface.mLearnDataVec.reserve(7500000);
