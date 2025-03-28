@@ -359,7 +359,7 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
   printf("[WaterfallFcm - verify] recall = %.5f precision = %.5f f1 = %.5f\n",
          recall, precision, f1);
 
-  double load_factor = (double)mUniqueInTuples.size() / mUniqueTuples.size();
+  double load_factor = (double)mUniqueTuples.size() / mUniqueInTuples.size();
   printf("([WaterfallFcm - verify] Load factor : %f\tUnique Tuples : %zu \n",
          load_factor, mUniqueTuples.size());
 
