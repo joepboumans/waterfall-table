@@ -34,6 +34,18 @@ fdIN :: FromDump($trace, STOP true, BURST 1, TIMING false, ACTIVE true)
 //switcharoo
 tdIN :: ToDPDKDevice($txport, BLOCKING true, BURST $bout, VERBOSE $txverbose, IQUEUE $bout, NDESC 0, TCO 1)
 
+elementclass GeneratorEtherRewrite { $magic |
+    input
+      -> EnsureDPDKBuffer
+      -> rwIN :: EtherRewrite($INsrcmac,$INdstmac)
+      -> Pad()
+      -> NoNumberise($magic)
+      -> replay :: BandwidthRatedUnqueue($RATE, LINK_RATE true, ACTIVE true)
+      -> avgSIN :: AverageCounter(IGNORE $ignore)
+      -> { input[0] -> MarkIPHeader(OFFSET 14) -> ipc :: IPClassifier(tcp or udp, -) ->  ResetIPChecksum(L4 true) -> [0]output; ipc[1] -> [0]output; }
+      -> output;
+}
+
 elementclass Generator { $magic |
     input
     -> MarkMACHeader
@@ -47,6 +59,5 @@ elementclass Generator { $magic |
 }
 
 fdIN
--> unqueue0 :: BandwidthRatedUnqueue($RATE, LINK_RATE true, ACTIVE true)
--> gen0 :: Generator(\<5700>)
+-> gen0 :: GeneratorEtherRewrite(\<5700>)
 -> tdIN;
