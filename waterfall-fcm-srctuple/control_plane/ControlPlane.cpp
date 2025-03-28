@@ -71,7 +71,7 @@ ControlPlane::ControlPlane(string programName) {
   mSwitchContext->conf_file = confPath.data();
   mSwitchContext->dev_sts_thread = true;
   mSwitchContext->dev_sts_port = 7777;
-  /*mSwitchContext->kernel_pkt = true;*/
+  mSwitchContext->kernel_pkt = true;
 
   /* Initialize libbf_switchd. */
   bf_status_t bf_status = bf_switchd_lib_init(mSwitchContext);
