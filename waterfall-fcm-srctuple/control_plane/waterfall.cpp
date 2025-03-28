@@ -313,8 +313,12 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
     if (mUniqueInTuples.find(tup) != mUniqueInTuples.end()) {
       true_pos++;
     } else {
-      false_pos++;
       std::cout << tup << std::endl;
+      // Ignore local messages
+      if (tup.num_array[0] == 192 and tup.num_array[1] == 168) {
+        continue;
+      }
+      false_pos++;
     }
   }
 
