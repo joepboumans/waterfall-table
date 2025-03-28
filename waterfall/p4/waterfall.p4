@@ -87,7 +87,7 @@ parser WaterfallIngressParser(packet_in pkt, out header_t hdr, out waterfall_met
 
   state parse_vlan {
     pkt.extract(hdr.vlan_tag);
-    transition select(hdr.vlan_tag.etherType) {
+    transition select(hdr.vlan_tag.ether_type) {
       ETHERTYPE_IPV4: parse_ipv4;
       default: reject;
     }
