@@ -139,7 +139,6 @@ shared_ptr<const BfRtLearn> ControlPlane::getLearnFilter(string name) {
     std::cout << name << " : " << id << " ";
   }
   std::cout << std::endl;
-  sleep(5);
   // Most datasets have max 600k unique tuples so reserving 750k would required
   // no resizing
   mLearnInterface.mLearnDataVec.reserve(7500000);
