@@ -262,7 +262,7 @@ void Waterfall::collectFromDataPlane() {
 
   // Get pkt count from FCM Sketch
   uint32_t pkt_count = ControlPlane::getEntry(mPktCount, 0);
-  std::cout << "Package count :" << pkt_count << std::endl;
+  std::cout << "Package count : " << pkt_count << std::endl;
 
   // Collect data from FCM Sketch with indexes from Waterfall
   mSketchData.resize(DEPTH);
@@ -370,7 +370,7 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
          "tuples %zu\n",
          total_lf, learnDataVecSize);
 
-  if (precision != 1.0 or recall != 0.0) {
+  if (precision != 1.0 or recall != 1.0) {
     std::cerr << "Could not find all tuples!" << std::endl;
     std::cerr << "Precision : " << precision << " Recall : " << recall
               << std::endl;
