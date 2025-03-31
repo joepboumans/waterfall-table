@@ -277,7 +277,7 @@ void Waterfall::collectFromDataPlane() {
   std::cout << "Start collecting sketch data from data plane..." << std::endl;
   for (const auto &srcAddr : mUniqueTuples) {
     for (size_t d = 0; d < DEPTH; d++) {
-      uint32_t idx = hashing(srcAddr.num_array, 4, d) % W1;
+      uint32_t idx = hashing(srcAddr.num_array, mTupleSz, d) % W1;
       for (size_t l = 0; l < NUM_STAGES; l++) {
         uint64_t val = getEntry(mSketchVec[d][l], idx);
         mSketchData[d][l][idx] = val;
@@ -338,7 +338,7 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
       vector<string> loc = {"_hi", "_lo"};
       for (size_t currLoc = 0; currLoc < mTablesVec.size(); currLoc++) {
         for (size_t t = 0; t < mTablesVec[currLoc].size(); t++) {
-          uint32_t idx = hashing(tup.num_array, 4, t) % WATERFALL_WIDTH;
+          uint32_t idx = hashing(tup.num_array, mTupleSz, t) % WATERFALL_WIDTH;
           uint16_t val = ControlPlane::getEntry(mTablesVec[currLoc][t], idx);
           std::cout << "Table" << t << loc[currLoc] << " at idx " << idx
                     << " : " << int(uint8_t(val >> 8)) << "."
@@ -399,6 +399,8 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
     mTrueFSD[count]++;
   }
 
+  std::cout << "[Waterfall] Max True Count : " << maxCountElement->second
+            << std::endl;
   std::cout << "[Waterfall] Finished True FSD" << std::endl;
 
   auto start = std::chrono::high_resolution_clock::now();
@@ -630,7 +632,7 @@ vector<vector<uint32_t>> Waterfall::getInitialDegrees() {
   for (size_t d = 0; d < DEPTH; d++) {
     std::cout << "Depth " << d << std::endl;
     for (size_t i = 0; i < initialDegrees[d].size(); i++) {
-      if (initialDegrees[d][i] == 0) {
+      if (initialDegrees[d][i] <= 1) {
         continue;
       }
       std::cout << i << ":" << initialDegrees[d][i] << " ";
