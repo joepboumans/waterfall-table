@@ -597,7 +597,7 @@ void Waterfall::calculateFSD() {
   writeResEst(0, 0, 0, EM.n_old);
   writeResNs(EM.ns);
 
-  for (size_t iter = 1; iter < mItersEM + 1; iter++) {
+  for (size_t iter = 1; iter <= mItersEM; iter++) {
     auto start = std::chrono::high_resolution_clock::now();
     EM.next_epoch();
 

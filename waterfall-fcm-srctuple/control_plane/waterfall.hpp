@@ -39,7 +39,7 @@ private:
   double mF1HeavyHitter = 0.0;
   void calculateFSD();
   vector<double> mEstFSD;
-  uint32_t mItersEM = 5;
+  uint32_t mItersEM = 15;
   void calculateWMRE(std::vector<double> &ns);
   double mWMRE = 0.0;
   void calculateEntropy(std::vector<double> &ns);
