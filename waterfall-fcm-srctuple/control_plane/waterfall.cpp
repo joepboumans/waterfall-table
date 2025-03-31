@@ -613,7 +613,7 @@ void Waterfall::calculateFSD() {
   }
   std::cout << "Finished estimation!" << std::endl;
 
-  mEstFSD = EM.ns;
+  /*mEstFSD = EM.ns;*/
 }
 
 // Gets maps of flows to the first counter layer of FCM
