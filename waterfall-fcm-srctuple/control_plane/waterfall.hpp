@@ -31,6 +31,7 @@ private:
   std::vector<std::vector<std::vector<uint32_t>>> mSketchData;
   TupleSize mTupleSz;
 
+  void printSketch();
   uint32_t hashing(const uint8_t *nums, size_t sz, uint32_t depth);
   vector<vector<uint32_t>> getInitialDegrees();
   double mF1 = 0.0;

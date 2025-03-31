@@ -204,6 +204,24 @@ uint32_t Waterfall::hashing(const uint8_t *nums, size_t sz, uint32_t h) {
   return crc;
 }
 
+void Waterfall::printSketch() {
+  vector<uint32_t> stageSzes = {W1, W2, W3};
+  std::cout << "[FCM] ------------------" << std::endl;
+  for (size_t d = 0; d < DEPTH; d++) {
+    std::cout << "[FCM] Depth " << d << std::endl;
+    for (size_t s = 0; s < NUM_STAGES; s++) {
+      std::cout << "[FCM] Stage " << s << " with " << stageSzes[s]
+                << " counters" << std::endl;
+      std::cout << string(s * 3, ' ');
+      for (size_t i = 0; i < std::min(stageSzes[s], (uint32_t)300); i++) {
+        std::cout << mSketchData[d][s][i] << " ";
+      }
+      std::cout << std::endl;
+    }
+  }
+  std::cout << "[FCM] ------------------" << std::endl;
+}
+
 void Waterfall::run() {
   const auto digest = ControlPlane::getLearnFilter("digest");
   printf("Learnfilter is setup, can now start to receive data...\n");
@@ -295,6 +313,8 @@ void Waterfall::collectFromDataPlane() {
       }
     }
   }
+
+  printSketch();
 }
 
 void Waterfall::verify(vector<TUPLE> inTuples) {
