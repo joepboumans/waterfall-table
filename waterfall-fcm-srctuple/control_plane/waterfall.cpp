@@ -632,7 +632,7 @@ vector<vector<uint32_t>> Waterfall::getInitialDegrees() {
   for (size_t d = 0; d < DEPTH; d++) {
     std::cout << "Depth " << d << std::endl;
     for (size_t i = 0; i < initialDegrees[d].size(); i++) {
-      if (initialDegrees[d][i] <= 1) {
+      if (initialDegrees[d][i] <= 4) {
         continue;
       }
       std::cout << i << ":" << initialDegrees[d][i] << " ";
