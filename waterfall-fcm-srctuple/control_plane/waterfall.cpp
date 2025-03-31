@@ -370,12 +370,12 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
          "tuples %zu\n",
          total_lf, learnDataVecSize);
 
-  /*if (precision != 1.0 or recall != 1.0) {*/
-  /*  std::cerr << "Could not find all tuples!" << std::endl;*/
-  /*  std::cerr << "Precision : " << precision << " Recall : " << recall*/
-  /*            << std::endl;*/
-  /*  throw runtime_error("Error in parsing tuples from digest");*/
-  /*}*/
+  if (precision != 1.0 or recall != 1.0) {
+    std::cerr << "Could not find all tuples!" << std::endl;
+    std::cerr << "Precision : " << precision << " Recall : " << recall
+              << std::endl;
+    throw runtime_error("Error in parsing tuples from digest");
+  }
 
   // Cardinality - Number of seen unique flows
   std::cout << "[Waterfall] Cardinality : " << mUniqueTuples.size()
