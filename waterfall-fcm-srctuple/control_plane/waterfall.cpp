@@ -611,6 +611,7 @@ void Waterfall::calculateFSD() {
     writeResEst(iter, time.count(), total_time.count(), EM.n_old);
     writeResNs(EM.ns);
   }
+  std::cout << "Finished estimation!" << std::endl;
 
   mEstFSD = EM.ns;
 }
@@ -723,23 +724,28 @@ void Waterfall::setupLogging(string &datasetName) {
 }
 
 void Waterfall::writeResOverall() {
+  std::cout << "Writing overall results" << std::endl;
   // Save data into csv
   char csv[300];
   sprintf(csv, "%.3f,%.3f,%.3f,%.3f,%.3f", mAverageRelativeError,
           mAverageAbsoluteError, mWMRE, mF1HeavyHitter, mF1);
   mFileOverall << csv << std::endl;
+  std::cout << "Written results" << std::endl;
 }
 
 void Waterfall::writeResEst(uint32_t iter, size_t time, size_t totalTime,
                             double card) {
+  std::cout << "Writing estimations results" << std::endl;
   // Save data into csv
   char csv[300];
   sprintf(csv, "%u,%ld,%ld,%.6f,%.1f,%.6f", iter, time, totalTime, mWMRE, card,
           mEntropy);
   mFileEst << csv << std::endl;
+  std::cout << "Written results" << std::endl;
 }
 
 void Waterfall::writeResNs(vector<double> &ns) {
+  std::cout << "Writing NS results" << std::endl;
   uint32_t num_entries = 0;
   for (uint32_t i = 0; i < ns.size(); i++) {
     if (ns[i] != 0) {
@@ -754,4 +760,5 @@ void Waterfall::writeResNs(vector<double> &ns) {
       mFileNs.write((char *)&ns[i], sizeof(ns[i]));
     }
   }
+  std::cout << "Written results" << std::endl;
 }
