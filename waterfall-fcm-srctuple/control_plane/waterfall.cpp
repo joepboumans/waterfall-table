@@ -335,16 +335,14 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
         uint64_t val = ControlPlane::getEntry(mSketchVec[d][0], idx);
         std::cout << "d" << d << " at idx " << idx << " : " << val << std::endl;
       }
-      for (size_t loc = 0; loc < mTablesVec.size(); loc++) {
-        for (size_t t = 0; t < mTablesVec[loc].size(); t++) {
+      vector<string> loc = {"_hi", "_lo"};
+      for (size_t currLoc = 0; currLoc < mTablesVec.size(); currLoc++) {
+        for (size_t t = 0; t < mTablesVec[currLoc].size(); t++) {
           uint32_t idx = hashing(tup.num_array, 4, t) % WATERFALL_WIDTH;
-          uint16_t val = ControlPlane::getEntry(mTablesVec[loc][t], idx);
-          std::cout << "Table " << loc << " at idx " << idx << " : " << val
-                    << std::endl;
-
-          std::cout << "Table " << loc << " at idx " << idx << " : "
-                    << int(uint8_t(val >> 8)) << "." << int(uint8_t(val))
-                    << std::endl;
+          uint16_t val = ControlPlane::getEntry(mTablesVec[currLoc][t], idx);
+          std::cout << "Table" << t << loc[currLoc] << " at idx " << idx
+                    << " : " << int(uint8_t(val >> 8)) << "."
+                    << int(uint8_t(val)) << std::endl;
         }
       }
     }
@@ -631,7 +629,7 @@ vector<vector<uint32_t>> Waterfall::getInitialDegrees() {
   std::cout << "[WaterfallFCM] ...done!" << std::endl;
   for (size_t d = 0; d < DEPTH; d++) {
     std::cout << "Depth " << d << std::endl;
-    for (size_t i = 0; i < initialDegrees.size(); i++) {
+    for (size_t i = 0; i < initialDegrees[d].size(); i++) {
       if (initialDegrees[d][i] == 0) {
         continue;
       }
