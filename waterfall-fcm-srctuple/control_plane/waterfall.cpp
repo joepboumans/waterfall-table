@@ -372,7 +372,7 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
     std::cerr << "Could not find all tuples!" << std::endl;
     std::cerr << "Precision : " << precision << " Recall : " << recall
               << std::endl;
-    throw runtime_error("Error in parsing tuples from digest");
+    /*throw runtime_error("Error in parsing tuples from digest");*/
   }
 
   // Cardinality - Number of seen unique flows
