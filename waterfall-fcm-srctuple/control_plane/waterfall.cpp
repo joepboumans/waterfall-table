@@ -214,6 +214,13 @@ void Waterfall::printSketch() {
                 << " counters" << std::endl;
       std::cout << string(s * 3, ' ');
       for (size_t i = 0; i < std::min(stageSzes[s], (uint32_t)300); i++) {
+        if (i >= mSketchData[d][s].size()) {
+          break;
+        }
+        if (mSketchData[d][s][i] == 0) {
+          i--;
+          continue;
+        }
         std::cout << mSketchData[d][s][i] << " ";
       }
       std::cout << std::endl;
