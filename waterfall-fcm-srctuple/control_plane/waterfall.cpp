@@ -265,6 +265,8 @@ void Waterfall::run() {
       break;
     }
     sleep(1);
+    std::cout << "Current received digest : "
+              << ControlPlane::mLearnInterface.mLearnDataVec.size() << '\r';
   }
 }
 
