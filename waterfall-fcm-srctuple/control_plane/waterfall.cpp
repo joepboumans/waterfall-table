@@ -300,16 +300,16 @@ void Waterfall::collectFromDataPlane() {
         uint64_t val = getEntry(mSketchVec[d][l], idx);
         mSketchData[d][l][idx] = val;
 
+        idx = idx / 8;
         if (val <= 0) {
           if (l == 0) {
-            std::cout << "d" << d << " l" << l << " at idx " << idx << " : "
+            std::cout << "d" << d << " l" << l << " at idx " << idx * 8 << " : "
                       << val << std::endl;
             throw runtime_error("First counter layer is emtpy for idx, should "
                                 "at least containt 1");
           }
           continue;
         }
-        idx = idx / 8;
       }
     }
   }
