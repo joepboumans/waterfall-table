@@ -43,7 +43,6 @@ Waterfall::Waterfall(TupleSize sz, bool real)
                          {{"dst_port", ports[0]}}, "SwitchIngress.hit");
 
   for (auto &port : ports) {
-
     bf_pal_front_port_handle_t port_handle;
     bf_status_t bf_status =
         bf_pm_port_dev_port_to_front_panel_port_get(0, port, &port_handle);
@@ -68,6 +67,7 @@ Waterfall::Waterfall(TupleSize sz, bool real)
     }
     mTablesVec.push_back(Waterfall::getTableList(tableNames[l]));
   }
+
   vector<vector<string>> swapNames(2);
   for (size_t l = 0; l <= 1; l++) {
     for (size_t x = 1; x <= 4; x++) {
@@ -299,7 +299,6 @@ void Waterfall::collectFromDataPlane() {
       for (size_t l = 0; l < NUM_STAGES; l++) {
         uint64_t val = getEntry(mSketchVec[d][l], idx);
         mSketchData[d][l][idx] = val;
-        idx = idx / 8;
 
         if (val <= 0) {
           if (l == 0) {
@@ -310,6 +309,7 @@ void Waterfall::collectFromDataPlane() {
           }
           continue;
         }
+        idx = idx / 8;
       }
     }
   }
