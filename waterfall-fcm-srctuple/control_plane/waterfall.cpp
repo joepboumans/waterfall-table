@@ -462,7 +462,8 @@ void Waterfall::calculateFSD() {
   uint32_t maxCounterVal = 0;
   vector<vector<uint32_t>> initDegrees = getInitialDegrees();
   vector<uint32_t> stageSzes = {W1, W2, W3};
-  vector<uint32_t> counterOverflowVal = {OVERFLOW_LEVEL1, OVERFLOW_LEVEL2};
+  vector<uint32_t> counterOverflowVal = {OVERFLOW_LEVEL1, OVERFLOW_LEVEL2,
+                                         OVERFLOW_LEVEL3};
 
   // Setup sizes for summary and overflow_paths
   for (size_t d = 0; d < DEPTH; d++) {
