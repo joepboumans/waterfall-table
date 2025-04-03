@@ -175,7 +175,7 @@ control FCMSketch (
 	// level 2, depth 1, only when level 1 output is 255
 	RegisterAction<bit<16>, bit<16>, bit<32>>(sketch_reg_l2_d1) increment_l2_d1 = {
 		void apply(inout bit<16> value, out bit<32> result) {
-			result = (bit<32>)value + ADD_LEVEL1; // return level 1 + 2
+			result = (bit<32>)value; // return level 1 + 2
 			value = value |+| 1;
 		}
 	};
@@ -198,7 +198,7 @@ control FCMSketch (
 	// level 2, depth 2, only when level 1 output is 255
 	RegisterAction<bit<16>, bit<16>, bit<32>>(sketch_reg_l2_d2) increment_l2_d2 = {
 		void apply(inout bit<16> value, out bit<32> result) {
-			result = (bit<32>)value + ADD_LEVEL1; // return level 1 + 2
+			result = (bit<32>)value; // return level 1 + 2
 			value = value |+| 1;
 		}
 	};
@@ -237,7 +237,7 @@ control FCMSketch (
 	}
 	// action for level 2, depth 1
 	action fcm_action_l2_d1() {
-    bit<32> res = increment_l2_d1.execute(fcm_mdata.hash_meta_d1[18:3]);
+    fcm_mdata.result_d1 = increment_l2_d1.execute(fcm_mdata.hash_meta_d1[18:3]) + ADD_LEVEL1;
 	}
 	// action for level 3, depth 1
 	action fcm_action_l3_d1() {
@@ -250,7 +250,7 @@ control FCMSketch (
 	}
 	// action for level 2, depth 2
 	action fcm_action_l2_d2() {
-    bit<32> res = increment_l2_d2.execute(fcm_mdata.hash_meta_d2[18:3]);
+    fcm_mdata.result_d2 = increment_l2_d2.execute(fcm_mdata.hash_meta_d2[18:3]) + ADD_LEVEL2;
 	}
 	// action for level 3, depth 2
 	action fcm_action_l3_d2() {
