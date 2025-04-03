@@ -406,7 +406,7 @@ void Waterfall::collectFromDataSet(vector<TUPLE> inTuples) {
           error = true;
           break;
         }
-        idx /= K;
+        idx = idx / 8;
       }
     }
     if (error) {
