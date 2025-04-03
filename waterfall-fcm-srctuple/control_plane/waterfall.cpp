@@ -274,10 +274,10 @@ void Waterfall::collectFromDataPlane() {
 
     memcpy(src_addr.data(), &x, 4);
     std::reverse(src_addr.begin(), src_addr.end());
-    if (src_addr[0] == 192 and src_addr[1] == 168) {
+    TUPLE tup(src_addr.data(), mTupleSz);
+    if (tup.num_array[0] == 192 and tup.num_array[1] == 168) {
       continue;
     }
-    TUPLE tup(src_addr.data(), mTupleSz);
     mUniqueTuples.insert(tup);
   }
   std::cout << "Found " << mUniqueTuples.size() << " unique tupels"
