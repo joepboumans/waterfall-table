@@ -373,12 +373,26 @@ ControlPlane::getAllEntries(shared_ptr<const BfRtTable> table) {
                                  tableSz, &retTableData, &outSz);
   bfCheckStatus(bf_status, "Failed to get all entries");
 
+  vector<bf_rt_id_t> dataFieldIds;
+  bf_status = table->dataFieldIdListGet(&dataFieldIds);
+  bfCheckStatus(bf_status, "Failed to get list of field ids");
+
+  std::cout << "Data field ids: ";
+  for (auto &id : dataFieldIds) {
+    std::cout << id << " ";
+  }
+  std::cout << std::endl;
+
   vector<uint32_t> retValues;
   retValues.reserve(tableSz);
   for (auto &[key, data] : retTableData) {
     unique_ptr<BfRtTableData> d(data);
-    uint32_t ret = getValueFromData(d, 1);
-    retValues.push_back(ret);
+
+    for (const auto id : dataFieldIds) {
+      uint32_t ret = getValueFromData(d, id);
+      retValues.push_back(ret);
+      break;
+    }
   }
   return retValues;
 }
