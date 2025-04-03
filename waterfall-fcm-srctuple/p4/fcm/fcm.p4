@@ -175,15 +175,15 @@ control FCMSketch (
 	// level 2, depth 1, only when level 1 output is 255
 	RegisterAction<bit<16>, bit<16>, bit<32>>(sketch_reg_l2_d1) increment_l2_d1 = {
 		void apply(inout bit<16> value, out bit<32> result) {
-			result = (bit<32>)value; // return level 1 + 2
 			value = value |+| 1;
+			result = (bit<32>)value; // return level 1 + 2
 		}
 	};
 	// level 3, depth 1, only when level 2 output is 65789
 	RegisterAction<bit<32>, bit<13>, bit<32>>(sketch_reg_l3_d1) increment_l3_d1 = {
 		void apply(inout bit<32> value, out bit<32> result) {
-			result = value + ADD_LEVEL2; // return level 1 + 2 + 3
 			value = value |+| 1;
+			result = value + ADD_LEVEL2; // return level 1 + 2 + 3
 			
 		}
 	};
@@ -198,15 +198,15 @@ control FCMSketch (
 	// level 2, depth 2, only when level 1 output is 255
 	RegisterAction<bit<16>, bit<16>, bit<32>>(sketch_reg_l2_d2) increment_l2_d2 = {
 		void apply(inout bit<16> value, out bit<32> result) {
-			result = (bit<32>)value; // return level 1 + 2
 			value = value |+| 1;
+			result = (bit<32>)value; // return level 1 + 2
 		}
 	};
 	// level 3, depth 2, only when level 2 output is 65789
 	RegisterAction<bit<32>, bit<13>, bit<32>>(sketch_reg_l3_d2) increment_l3_d2 = {
 		void apply(inout bit<32> value, out bit<32> result) {
+			value = value |+| 1;
 			result = value + ADD_LEVEL2; // return level 1 + 2 + 3
-			value = value |+| 1; // increment assuming no 32-bit overflow
 			
 		}
 	};
