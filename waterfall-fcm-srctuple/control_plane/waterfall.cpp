@@ -350,7 +350,7 @@ void Waterfall::collectFromDataSet(vector<TUPLE> inTuples) {
     }
   }
 
-  std::cout << "Start collecting sketch data from data plane..." << std::endl;
+  std::cout << "Start collecting sketch data from dataset..." << std::endl;
   vector<uint32_t> stageSzes = {W1, W2, W3};
   vector<uint32_t> counterOverflowVal = {OVERFLOW_LEVEL1, OVERFLOW_LEVEL2,
                                          OVERFLOW_LEVEL3};
@@ -364,6 +364,7 @@ void Waterfall::collectFromDataSet(vector<TUPLE> inTuples) {
           continue;
         } else {
           mSketchData[d][l][idx]++;
+          break;
         }
       }
     }
