@@ -345,6 +345,9 @@ ControlPlane::getAllEntries(shared_ptr<const BfRtTable> table) {
   bf_status = table->keyFieldIdListGet(&keyList);
   bfCheckStatus(bf_status, "Failed to get id list");
 
+  bf_status = tableKey->setValue(keyList[0], 0);
+  bfCheckStatus(bf_status, "Failed to set tableKey value");
+
   size_t tableSz = 0;
   bf_status = table->tableSizeGet(*mSession, mDeviceTarget, &tableSz);
   bfCheckStatus(bf_status, "Failed to get size from table");
