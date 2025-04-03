@@ -372,8 +372,8 @@ void Waterfall::collectFromDataSet(vector<TUPLE> inTuples) {
 
   bool error = false;
   std::cout << "Compare dataset to sketch data..." << std::endl;
-  for (const auto &srcAddr : mUniqueTuples) {
-    for (size_t d = 0; d < DEPTH; d++) {
+  for (size_t d = 0; d < DEPTH; d++) {
+    for (const auto &srcAddr : mUniqueTuples) {
       uint32_t idx = hashing(srcAddr.num_array, mTupleSz, d) % W1;
       for (size_t l = 0; l < NUM_STAGES; l++) {
         uint64_t val = getEntry(mSketchVec[d][l], idx);
@@ -387,6 +387,10 @@ void Waterfall::collectFromDataSet(vector<TUPLE> inTuples) {
         }
         idx /= 8;
       }
+    }
+    if (error) {
+      throw runtime_error(
+          "Received FCM Sketch data not equal to calculated data");
     }
   }
 
