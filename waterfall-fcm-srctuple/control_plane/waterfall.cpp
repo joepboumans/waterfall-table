@@ -377,9 +377,17 @@ void Waterfall::collectFromDataSet(vector<TUPLE> inTuples) {
   vector<vector<vector<uint32_t>>> dpSketches(DEPTH);
   for (size_t d = 0; d < DEPTH; d++) {
     dpSketches[d].resize(NUM_STAGES);
+    std::cout << "Depth " << d << std::endl;
     for (size_t l = 0; l < NUM_STAGES; l++) {
+      std::cout << "Stage " << l << std::endl;
       dpSketches[d][l].resize(sketchLengths[l], 0);
       dpSketches[d][l] = getAllEntries(mSketchVec[d][l]);
+      for (size_t i = 0; i < dpSketches[d][l].size(); i++) {
+        if (dpSketches[d][l][i] < 1) {
+          continue;
+        }
+        std::cout << i << " : " << dpSketches[d][l][i] << std::endl;
+      }
     }
   }
 
