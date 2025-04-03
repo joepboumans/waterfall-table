@@ -152,14 +152,14 @@ Waterfall::Waterfall(TupleSize sz, bool real)
   std::cout << "Start setting up names for Sketch regs" << std::endl;
   mSketchVec.resize(2);
   vector<vector<string>> sketchNames(2);
-  for (size_t d = 1; d <= 2; d++) {
-    for (size_t l = 1; l <= 3; l++) {
+  for (size_t d = 1; d <= DEPTH; d++) {
+    for (size_t l = 1; l <= NUM_STAGES; l++) {
       string name = "sketch_reg_l" + to_string(l) + "_d" + to_string(d);
       sketchNames[d - 1].push_back(name);
     }
   }
   std::cout << "Start adding FCM Sketch tables" << std::endl;
-  for (size_t d = 0; d <= 1; d++) {
+  for (size_t d = 0; d < DEPTH; d++) {
     mSketchVec[d] = Waterfall::getTableList(sketchNames[d]);
   }
 
@@ -346,7 +346,7 @@ void Waterfall::collectFromDataSet(vector<TUPLE> inTuples) {
   for (size_t d = 0; d < DEPTH; d++) {
     mSketchData[d].resize(NUM_STAGES);
     for (size_t l = 0; l < NUM_STAGES; l++) {
-      mSketchData[d][l].resize(sketchLengths[l]);
+      mSketchData[d][l].resize(sketchLengths[l], 0);
     }
   }
 
@@ -380,7 +380,8 @@ void Waterfall::collectFromDataSet(vector<TUPLE> inTuples) {
 
         if (val != mSketchData[d][l][idx]) {
           std::cout << "d" << d << " l" << l << " at idx " << idx << " : "
-                    << val << " != " << mSketchData[d][l][idx] << std::endl;
+                    << val << " != " << mSketchData[d][l][idx] << " with tuple "
+                    << srcAddr << std::endl;
           error = true;
           break;
         }
