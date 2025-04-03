@@ -383,6 +383,7 @@ void Waterfall::collectFromDataSet(vector<TUPLE> inTuples) {
           throw runtime_error(
               "Received FCM Sketch data not equal to calculated data");
         }
+        idx /= 8;
       }
     }
   }
