@@ -250,7 +250,7 @@ control FCMSketch (
 	}
 	// action for level 2, depth 2
 	action fcm_action_l2_d2() {
-    fcm_mdata.result_d2 = increment_l2_d2.execute(fcm_mdata.hash_meta_d2[18:3]) + ADD_LEVEL2;
+    fcm_mdata.result_d2 = increment_l2_d2.execute(fcm_mdata.hash_meta_d2[18:3]) + ADD_LEVEL1;
 	}
 	// action for level 3, depth 2
 	action fcm_action_l3_d2() {
