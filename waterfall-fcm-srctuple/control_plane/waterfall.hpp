@@ -13,6 +13,7 @@ public:
   Waterfall(TupleSize sz, bool real);
   void run();
   void collectFromDataPlane();
+  void collectFromDataSet(std::vector<TUPLE> inTuples);
   void verify(vector<TUPLE> inTuples);
   void setupLogging(std::string &datasetName);
 

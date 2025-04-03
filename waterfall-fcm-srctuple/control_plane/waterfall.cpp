@@ -319,6 +319,59 @@ void Waterfall::collectFromDataPlane() {
   printSketch();
 }
 
+void Waterfall::collectFromDataSet(vector<TUPLE> inTuples) {
+  std::cout << "Recieved data from digest "
+            << ControlPlane::mLearnInterface.mLearnDataVec.size()
+            << " total packets" << std::endl;
+
+  // Collect data from Waterfall
+  for (const auto &x : ControlPlane::mLearnInterface.mLearnDataVec) {
+    vector<uint8_t> src_addr(4);
+
+    memcpy(src_addr.data(), &x, 4);
+    std::reverse(src_addr.begin(), src_addr.end());
+    TUPLE tup(src_addr.data(), mTupleSz);
+    mUniqueTuples.insert(tup);
+  }
+  std::cout << "Found " << mUniqueTuples.size() << " unique tupels"
+            << std::endl;
+
+  // Get pkt count from FCM Sketch
+  uint32_t pkt_count = ControlPlane::getEntry(mPktCount, 0);
+  std::cout << "Package count : " << pkt_count << std::endl;
+
+  // Collect data from FCM Sketch with indexes from Waterfall
+  mSketchData.resize(DEPTH);
+  vector<uint32_t> sketchLengths = {W1, W2, W3};
+  for (size_t d = 0; d < DEPTH; d++) {
+    mSketchData[d].resize(NUM_STAGES);
+    for (size_t l = 0; l < NUM_STAGES; l++) {
+      mSketchData[d][l].resize(sketchLengths[l]);
+    }
+  }
+
+  std::cout << "Start collecting sketch data from data plane..." << std::endl;
+  vector<uint32_t> stageSzes = {W1, W2, W3};
+  vector<uint32_t> counterOverflowVal = {OVERFLOW_LEVEL1, OVERFLOW_LEVEL2,
+                                         OVERFLOW_LEVEL3};
+  for (auto &srcAddr : inTuples) {
+    for (size_t d = 0; d < DEPTH; d++) {
+      uint32_t idx = hashing(srcAddr.num_array, mTupleSz, d) % W1;
+      for (size_t l = 0; l < NUM_STAGES; l++) {
+        if (mSketchData[d][l][idx] + 1 > counterOverflowVal[l]) {
+          mSketchData[d][l][idx] = counterOverflowVal[l] + 1;
+          idx = idx / 8;
+          continue;
+        } else {
+          mSketchData[d][l][idx]++;
+        }
+      }
+    }
+  }
+
+  printSketch();
+}
+
 void Waterfall::verify(vector<TUPLE> inTuples) {
   for (auto &tup : inTuples) {
     mUniqueInTuples.insert(tup);
@@ -549,10 +602,10 @@ void Waterfall::calculateFSD() {
               sketch_degree = degree;
               degree = 1;
             }
+
             // Add entry to VC with its degree [1] and count [0]
             virtualCounters[d][degree].push_back(count);
             sketchDegrees[d][degree].push_back(sketch_degree);
-
             thresholds[d][degree].push_back(overflowPaths[d][stage][i]);
           }
 

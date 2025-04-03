@@ -7,16 +7,19 @@
 #include <cstdlib>
 #include <dvm/bf_drv_intf.h>
 #include <getopt.h>
+#include <iterator>
 #include <target-utils/clish/thread.h>
 #include <unistd.h>
 
 int main(int argc, char *argv[]) {
   option longopts[] = {{"dataset", required_argument, NULL, 'd'},
-                       {"real", optional_argument, NULL, 'r'}};
+                       {"real", optional_argument, NULL, 'r'},
+                       {"sim", optional_argument, NULL, 's'}};
   bool real = false;
+  bool sim = false;
   std::string filePath = "/workspace/PDS-Simulator/data/32_test.pcap";
   while (1) {
-    const int opt = getopt_long(argc, argv, "d:r", longopts, 0);
+    const int opt = getopt_long(argc, argv, "d:rs", longopts, 0);
     if (opt == -1) {
       break;
     }
@@ -25,9 +28,15 @@ int main(int argc, char *argv[]) {
     case 'd':
       filePath = optarg;
       std::cout << "Input dataset: " << filePath << std::endl;
+      break;
     case 'r':
       real = true;
       std::cout << "Set to run on real hardware" << std::endl;
+      break;
+    case 's':
+      sim = true;
+      std::cout << "Using dataset for FCM instead of Dataplane" << std::endl;
+      break;
     }
   }
 
@@ -42,7 +51,11 @@ int main(int argc, char *argv[]) {
   Waterfall Waterfall(TupleSize::SrcTuple, real);
   Waterfall.setupLogging(baseName);
   Waterfall.run();
-  Waterfall.collectFromDataPlane();
+  if (sim) {
+    Waterfall.collectFromDataSet(dataReader.mTuples);
+  } else {
+    Waterfall.collectFromDataPlane();
+  }
   Waterfall.verify(dataReader.mTuples);
 
   printf("Finished running!\n");
