@@ -370,6 +370,23 @@ void Waterfall::collectFromDataSet(vector<TUPLE> inTuples) {
     }
   }
 
+  std::cout << "Compare dataset to sketch data..." << std::endl;
+  for (const auto &srcAddr : mUniqueTuples) {
+    for (size_t d = 0; d < DEPTH; d++) {
+      uint32_t idx = hashing(srcAddr.num_array, mTupleSz, d) % W1;
+      for (size_t l = 0; l < NUM_STAGES; l++) {
+        uint64_t val = getEntry(mSketchVec[d][l], idx);
+
+        if (val != mSketchData[d][l][idx]) {
+          std::cout << "d" << d << " l" << l << " at idx " << idx << " : "
+                    << val << " != " << mSketchData[d][l][idx] << std::endl;
+          throw runtime_error(
+              "Received FCM Sketch data not equal to calculated data");
+        }
+      }
+    }
+  }
+
   printSketch();
 }
 
@@ -706,16 +723,16 @@ vector<vector<uint32_t>> Waterfall::getInitialDegrees() {
   }
 
   std::cout << "[WaterfallFCM] ...done!" << std::endl;
-  for (size_t d = 0; d < DEPTH; d++) {
-    std::cout << "Depth " << d << std::endl;
-    for (size_t i = 0; i < initialDegrees[d].size(); i++) {
-      if (initialDegrees[d][i] <= 4) {
-        continue;
-      }
-      std::cout << i << ":" << initialDegrees[d][i] << " ";
-    }
-    std::cout << std::endl;
-  }
+  // for (size_t d = 0; d < DEPTH; d++) {
+  //   std::cout << "Depth " << d << std::endl;
+  //   for (size_t i = 0; i < initialDegrees[d].size(); i++) {
+  //     if (initialDegrees[d][i] <= 4) {
+  //       continue;
+  //     }
+  //     std::cout << i << ":" << initialDegrees[d][i] << " ";
+  //   }
+  //   std::cout << std::endl;
+  // }
   return initialDegrees;
 }
 
