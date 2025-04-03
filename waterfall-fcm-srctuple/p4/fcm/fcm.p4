@@ -237,7 +237,7 @@ control FCMSketch (
 	}
 	// action for level 2, depth 1
 	action fcm_action_l2_d1() {
-    fcm_mdata.result_d1 = (bit<32>)increment_l2_d1.execute(fcm_mdata.hash_meta_d1[18:3]) + ADD_LEVEL1;
+    fcm_mdata.result_d1 = increment_l2_d1.execute(fcm_mdata.hash_meta_d1[18:3]);
 	}
 	// action for level 3, depth 1
 	action fcm_action_l3_d1() {
@@ -250,7 +250,7 @@ control FCMSketch (
 	}
 	// action for level 2, depth 2
 	action fcm_action_l2_d2() {
-    fcm_mdata.result_d2 = (bit<32>)increment_l2_d2.execute(fcm_mdata.hash_meta_d2[18:3]) + ADD_LEVEL1;
+    fcm_mdata.result_d2 = increment_l2_d2.execute(fcm_mdata.hash_meta_d2[18:3]);
 	}
 	// action for level 3, depth 2
 	action fcm_action_l3_d2() {
@@ -288,7 +288,7 @@ control FCMSketch (
 		}
 		const default_action = NoAction();
 		const entries = {
-			32w65789: fcm_action_l3_d1();
+			32w65535: fcm_action_l3_d1();
 		}
 		size = 2;
 	}
@@ -320,7 +320,7 @@ control FCMSketch (
 		}
 		const default_action = NoAction();
 		const entries = {
-			32w65789: fcm_action_l3_d2();
+			32w65535: fcm_action_l3_d2();
 		}
 		size = 2;
 	}
