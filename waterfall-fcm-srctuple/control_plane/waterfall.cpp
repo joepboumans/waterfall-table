@@ -275,12 +275,9 @@ void Waterfall::collectFromDataPlane() {
     memcpy(src_addr.data(), &x, 4);
     std::reverse(src_addr.begin(), src_addr.end());
     TUPLE tup(src_addr.data(), mTupleSz);
-    if (tup.num_array[0] == 192 and tup.num_array[1] == 168) {
-      continue;
-    }
     mUniqueTuples.insert(tup);
   }
-  std::cout << "Found " << mUniqueTuples.size() << " unique tupels"
+  std::cout << "Found " << mUniqueTuples.size() << " unique tuples"
             << std::endl;
 
   // Get pkt count from FCM Sketch
@@ -334,6 +331,9 @@ void Waterfall::collectFromDataSet(vector<TUPLE> inTuples) {
     memcpy(src_addr.data(), &x, 4);
     std::reverse(src_addr.begin(), src_addr.end());
     TUPLE tup(src_addr.data(), mTupleSz);
+    if (tup.num_array[0] == 192 and tup.num_array[1] == 168) {
+      continue;
+    }
     mUniqueTuples.insert(tup);
   }
   std::cout << "Found " << mUniqueTuples.size() << " unique tupels"
