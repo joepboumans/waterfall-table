@@ -366,12 +366,14 @@ ControlPlane::getAllEntries(shared_ptr<const BfRtTable> table) {
     data = d.release();
   }
 
+  std::cout << "Getting " << tableSz << " values from Table " << std::endl;
   uint64_t getFlags = 0;
   BF_RT_FLAG_SET(getFlags, BF_RT_FROM_HW);
   bf_status =
       table->tableEntryGetNext_n(*mSession, mDeviceTarget, getFlags, *tableKey,
                                  tableSz, &retTableData, &outSz);
   bfCheckStatus(bf_status, "Failed to get all entries");
+  std::cout << "Got " << outSz << " values from Table" << std::endl;
 
   vector<bf_rt_id_t> dataFieldIds;
   bf_status = table->dataFieldIdListGet(&dataFieldIds);
