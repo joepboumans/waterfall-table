@@ -357,8 +357,8 @@ void Waterfall::collectFromDataSet(vector<TUPLE> inTuples) {
   vector<uint32_t> stageSzes = {W1, W2, W3};
   vector<uint32_t> counterOverflowVal = {OVERFLOW_LEVEL1, OVERFLOW_LEVEL2,
                                          OVERFLOW_LEVEL3};
-  for (auto &srcAddr : inTuples) {
-    for (size_t d = 0; d < DEPTH; d++) {
+  for (size_t d = 0; d < DEPTH; d++) {
+    for (auto &srcAddr : inTuples) {
       uint32_t idx = hashing(srcAddr.num_array, mTupleSz, d) % W1;
       for (size_t l = 0; l < NUM_STAGES; l++) {
         if (mSketchData[d][l][idx] + 1 > counterOverflowVal[l]) {
@@ -373,13 +373,23 @@ void Waterfall::collectFromDataSet(vector<TUPLE> inTuples) {
     }
   }
 
+  // Collect data from FCM Sketch with indexes from Waterfall
+  vector<vector<vector<uint32_t>>> dpSketches(DEPTH);
+  for (size_t d = 0; d < DEPTH; d++) {
+    dpSketches[d].resize(NUM_STAGES);
+    for (size_t l = 0; l < NUM_STAGES; l++) {
+      dpSketches[d][l].resize(sketchLengths[l], 0);
+      dpSketches[d][l] = getAllEntries(mSketchVec[d][l]);
+    }
+  }
+
   bool error = false;
   std::cout << "Compare dataset to sketch data..." << std::endl;
   for (size_t d = 0; d < DEPTH; d++) {
     for (const auto &srcAddr : mUniqueTuples) {
       uint32_t idx = hashing(srcAddr.num_array, mTupleSz, d) % W1;
       for (size_t l = 0; l < NUM_STAGES; l++) {
-        uint64_t val = getEntry(mSketchVec[d][l], idx);
+        uint64_t val = dpSketches[d][l][idx];
 
         if (val != mSketchData[d][l][idx]) {
           std::cout << "d" << d << " l" << l << " at idx " << idx << " : "
@@ -388,7 +398,7 @@ void Waterfall::collectFromDataSet(vector<TUPLE> inTuples) {
           error = true;
           break;
         }
-        idx /= 8;
+        idx /= K;
       }
     }
     if (error) {
