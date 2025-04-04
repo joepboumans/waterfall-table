@@ -295,6 +295,7 @@ void Waterfall::collectFromDataPlane() {
   }
 
   std::cout << "Start collecting sketch data from data plane..." << std::endl;
+  auto start = std::chrono::high_resolution_clock::now();
   for (const auto &srcAddr : mUniqueTuples) {
     for (size_t d = 0; d < DEPTH; d++) {
       uint32_t idx = hashing(srcAddr.num_array, mTupleSz, d) % W1;
@@ -315,6 +316,12 @@ void Waterfall::collectFromDataPlane() {
       }
     }
   }
+  auto stop = std::chrono::high_resolution_clock::now();
+  mCollectionTime =
+      std::chrono::duration_cast<std::chrono::milliseconds>(stop - start)
+          .count();
+  std::cout << "Finished collecting data, took " << mCollectionTime
+            << " ms to collect sketch data" << std::endl;
 
   printSketch();
 }
@@ -423,9 +430,12 @@ void Waterfall::collectFromDataSet(vector<TUPLE> inTuples) {
 }
 
 void Waterfall::verify(vector<TUPLE> inTuples) {
+  // Collect unique set of tuples from dataset
   for (auto &tup : inTuples) {
     mUniqueInTuples.insert(tup);
   }
+  mTrueSize = mUniqueInTuples.size(); // (True Cardinality)
+
   printf("[WaterfallFcm - verify] Calculate Waterfall F1-score...");
   uint32_t true_pos = 0;
   uint32_t false_pos = 0;
@@ -474,35 +484,44 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
   }
 
   // F1 Score - Accuracy of detect flows
-  double recall = 0.0;
-  double precision = 0.0;
-  double f1 = 0.0;
-  precision = (double)true_pos / (true_pos + false_pos);
-  recall = (double)true_pos / (true_pos + false_neg);
-  f1 = 2 * ((recall * precision) / (precision + recall));
-  printf("[WaterfallFcm - verify] recall = %.5f precision = %.5f f1 = %.5f\n",
-         recall, precision, f1);
+  mRecall = 0.0;
+  mPrecision = 0.0;
+  mF1 = 0.0;
 
-  double load_factor = (double)mUniqueTuples.size() / mUniqueInTuples.size();
+  mPrecision = (double)true_pos / (true_pos + false_pos);
+  mRecall = (double)true_pos / (true_pos + false_neg);
+  mF1 = 2 * ((mRecall * mPrecision) / (mPrecision + mRecall));
+
+  printf("[WaterfallFcm - verify] recall = %.5f precision = %.5f f1 = %.5f\n",
+         mRecall, mPrecision, mF1);
+
+  double uniqueLoadFactor =
+      (double)mUniqueTuples.size() / mUniqueInTuples.size();
   printf("([WaterfallFcm - verify] Load factor : %f\tUnique Tuples : %zu \n",
-         load_factor, mUniqueTuples.size());
+         uniqueLoadFactor, mUniqueTuples.size());
 
   size_t learnDataVecSize = ControlPlane::mLearnInterface.mLearnDataVec.size();
-  double total_lf = (double)learnDataVecSize / mUniqueInTuples.size();
+  mLoadFactor = (double)learnDataVecSize / mTrueSize;
   printf("[WaterfallFcm - verify] Total load factor : %f\tTotal received "
          "tuples %zu\n",
-         total_lf, learnDataVecSize);
+         mLoadFactor, learnDataVecSize);
 
-  if (precision != 1.0 or recall != 1.0) {
+  if (mPrecision != 1.0 or mRecall != 1.0) {
     std::cerr << "Could not find all tuples!" << std::endl;
-    std::cerr << "Precision : " << precision << " Recall : " << recall
+    std::cerr << "Precision : " << mPrecision << " Recall : " << mRecall
               << std::endl;
     /*throw runtime_error("Error in parsing tuples from digest");*/
   }
 
+  // Bandwidth - Number of packets over the dataset
+  mBandwidth = learnDataVecSize * mTupleSz;
+
   // Cardinality - Number of seen unique flows
+  mCardErr = std::abs((int)mUniqueTuples.size() - (int)mUniqueInTuples.size()) /
+             mUniqueInTuples.size();
   std::cout << "[Waterfall] Cardinality : " << mUniqueTuples.size()
-            << std::endl;
+            << " Card Error : " << mCardErr << std::endl;
+
   // Wait for 5s to show results
   sleep(5);
 
@@ -536,6 +555,7 @@ void Waterfall::verify(vector<TUPLE> inTuples) {
 
   printf("[EM_FSD] WMRE : %f\n", mWMRE);
   printf("[EM_FSD] Total time %li ms\n", time.count());
+  writeResOverall();
 }
 
 void Waterfall::calculateFSD() {
@@ -720,26 +740,31 @@ void Waterfall::calculateFSD() {
 
   calculateWMRE(EM.ns);
   calculateEntropy(EM.ns);
-  writeResEst(0, 0, 0, EM.n_old);
+  mTrueSize = mUniqueInTuples.size();
+  mCardinality = EM.n_new;
+  mCardErrEst = std::abs((EM.n_new - mTrueSize)) / mTrueSize;
+  writeResEst(0, 0, 0);
   writeResNs(EM.ns);
 
   for (size_t iter = 1; iter <= mItersEM; iter++) {
     auto start = std::chrono::high_resolution_clock::now();
     EM.next_epoch();
-
     auto stop = std::chrono::high_resolution_clock::now();
-    auto time = std::chrono::duration_cast<chrono::milliseconds>(stop - start);
+
+    auto time =
+        std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
     auto total_time =
         std::chrono::duration_cast<chrono::milliseconds>(stop - total_start);
 
     calculateWMRE(EM.ns);
     calculateEntropy(EM.ns);
-    writeResEst(iter, time.count(), total_time.count(), EM.n_old);
+    mCardinality = EM.n_new;
+    mCardErrEst = std::abs((EM.n_new - mTrueSize)) / mTrueSize;
+
+    writeResEst(iter, time.count(), total_time.count());
     writeResNs(EM.ns);
   }
   std::cout << "Finished estimation!" << std::endl;
-
-  /*mEstFSD = EM.ns;*/
 }
 
 // Gets maps of flows to the first counter layer of FCM
@@ -755,16 +780,6 @@ vector<vector<uint32_t>> Waterfall::getInitialDegrees() {
   }
 
   std::cout << "[WaterfallFCM] ...done!" << std::endl;
-  // for (size_t d = 0; d < DEPTH; d++) {
-  //   std::cout << "Depth " << d << std::endl;
-  //   for (size_t i = 0; i < initialDegrees[d].size(); i++) {
-  //     if (initialDegrees[d][i] <= 4) {
-  //       continue;
-  //     }
-  //     std::cout << i << ":" << initialDegrees[d][i] << " ";
-  //   }
-  //   std::cout << std::endl;
-  // }
   return initialDegrees;
 }
 
@@ -819,12 +834,15 @@ void Waterfall::calculateEntropy(vector<double> &ns) {
 }
 
 void Waterfall::setupLogging(string &datasetName) {
-  // Setup logging
+
   mHeaderEst = "Epoch,Estimation Time,Total Time,Weighted Mean Relative Error,"
-               "Cardinality,Entropy";
-  mHeaderFileOverall = "Average Relative Error,Average Absolute "
-                       "Error,Weighted Mean Relative "
-                       "Error,F1 Heavy Hitter,Insertions,F1 Member";
+               "Cardinality,Cardinality Error,True Cardinality,Entropy";
+
+  mHeaderFileOverall =
+      "Average Relative Error,Average Absolute "
+      "Error,Weighted Mean Relative "
+      "Error,F1 Heavy Hitter,Insertions,Bandwidth,Load "
+      "Factor,Cardinality Error,Recall,Precision,F1,Collection Time";
 
   string name_dir = "results/waterfall/";
   if (!std::filesystem::is_directory(name_dir)) {
@@ -844,7 +862,6 @@ void Waterfall::setupLogging(string &datasetName) {
   mFileEst << mHeaderEst << std::endl;
 
   sprintf(mFilePathNs, "%s/ns_%s.dat", name_dir.c_str(), datasetName.c_str());
-
   std::remove(mFilePathNs);
   mFileNs.open(mFilePathNs, std::ios::out | std::ios::binary);
 }
@@ -853,19 +870,20 @@ void Waterfall::writeResOverall() {
   std::cout << "Writing overall results" << std::endl;
   // Save data into csv
   char csv[300];
-  sprintf(csv, "%.3f,%.3f,%.3f,%.3f,%.3f", mAverageRelativeError,
-          mAverageAbsoluteError, mWMRE, mF1HeavyHitter, mF1);
+  sprintf(csv, "%.3f,%.3f,%.3f,%.3f,%d,%d,%.3f,%.3f,%.3f,%.3f,%zu",
+          mAverageRelativeError, mAverageAbsoluteError, mWMRE, mF1HeavyHitter,
+          mInsertions, mBandwidth, mLoadFactor, mRecall, mPrecision, mF1,
+          mCollectionTime);
   mFileOverall << csv << std::endl;
   std::cout << "Written results" << std::endl;
 }
 
-void Waterfall::writeResEst(uint32_t iter, size_t time, size_t totalTime,
-                            double card) {
+void Waterfall::writeResEst(uint32_t iter, size_t time, size_t totalTime) {
   std::cout << "Writing estimations results" << std::endl;
   // Save data into csv
   char csv[300];
-  sprintf(csv, "%u,%ld,%ld,%.6f,%.1f,%.6f", iter, time, totalTime, mWMRE, card,
-          mEntropy);
+  sprintf(csv, "%u,%ld,%ld,%.6f,%.1f,%.6f,%d,%.6f", iter, time, totalTime,
+          mWMRE, mCardinality, mCardErrEst, mTrueSize, mEntropy);
   mFileEst << csv << std::endl;
   std::cout << "Written results" << std::endl;
 }

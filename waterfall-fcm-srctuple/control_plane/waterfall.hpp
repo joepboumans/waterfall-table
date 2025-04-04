@@ -35,12 +35,21 @@ private:
   void printSketch();
   uint32_t hashing(const uint8_t *nums, size_t sz, uint32_t depth);
   vector<vector<uint32_t>> getInitialDegrees();
+  uint32_t mInsertions = 0;
+  double mLoadFactor = 0.0;
+  uint32_t mBandwidth = 0.0;
+  size_t mCardErr = 0;
   double mF1 = 0.0;
+  double mRecall = 0.0;
+  double mPrecision = 0.0;
   double mAverageRelativeError = 0.0;
   double mAverageAbsoluteError = 0.0;
   double mF1HeavyHitter = 0.0;
+  size_t mCollectionTime = 0;
   void calculateFSD();
-  vector<double> mEstFSD;
+  double mCardinality = 0.0;
+  double mCardErrEst = 0.0;
+  uint32_t mTrueSize = 0.0;
   uint32_t mItersEM = 15;
   void calculateWMRE(std::vector<double> &ns);
   double mWMRE = 0.0;
@@ -58,7 +67,7 @@ private:
   string mHeaderEst;
   string mHeaderNs;
   void writeResOverall();
-  void writeResEst(uint32_t iter, size_t time, size_t totalTime, double card);
+  void writeResEst(uint32_t iter, size_t time, size_t totalTime);
   void writeResNs(vector<double> &ns);
 };
 
